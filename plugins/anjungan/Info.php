@@ -7,7 +7,7 @@ return [
     'version'       =>  '1.0',
     'compatibility' =>  '6.*.*',
     'icon'          =>  'desktop',
-    'pages'            =>  ['Anjungan Pasien Mandiri' => 'anjungan'],
+    'pages'         =>  ['Anjungan Pasien Mandiri' => 'anjungan'],
     'install'       =>  function () use ($core) {
       $core->db()->pdo()->exec("INSERT INTO `mlite_settings` (`module`, `field`, `value`) VALUES ('anjungan', 'display_poli', '')");
       $core->db()->pdo()->exec("INSERT INTO `mlite_settings` (`module`, `field`, `value`) VALUES ('anjungan', 'carabayar', '')");
