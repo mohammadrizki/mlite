@@ -34,6 +34,7 @@
               <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
               <li><a href="#status_rawat" data-no_rawat="{$value.no_rawat}" data-stts="{$value.stts}">Status Rawat</a></li>
               <li><a href="#status_lanjut" data-no_rawat="{$value.no_rawat}">Status Lanjut</a></li>
+              <li><a href="{?=url([ADMIN,'dokter_igd','lokalis'])?}"  data-toggle="modal" data-target="#lokalisModal">Status Lokalis</a></li>
               {/if}
               <li class="dropdown-submenu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Surat-Surat</a>
@@ -112,6 +113,13 @@
 </div>
 <div class="modal fade" id="printModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="lokalisModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-full" role="document">
       <div class="modal-content">
           ...
       </div>
@@ -286,22 +294,61 @@
     var url = baseURL + '/igd/statuslanjut?t=' + mlite.token;
     var no_rawat = $(this).attr("data-no_rawat");
     // tampilkan dialog konfirmasi
-    bootbox.confirm("Apakah pasien dimasukkan dalam kamar inap?", function(result){
-      // ketika ditekan tombol ok
-      if (result){
-        // mengirimkan perintah penghapusan
-        $.post(url, {
-          no_rawat: no_rawat
-        } ,function(data) {
-          // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
-          $("#display").load(baseURL + '/igd/display?t=' + mlite.token);
-          $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-          "Status periksa pasien telah disimpan!"+
-          "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-          "</div>").show();
-        });
+
+    var set_status_lanjut = ''
+        + '<div class="form-group">'
+        + '<label for="status_keluar">Pilih Status Lanjut</label>'
+        + '<select name="status_lanjut" id="status_lanjut" class="form-control" data-use-dimmer="false">'
+        + '<option value="ralan">Rawat Jalan</option>'
+        + '<option value="ranap">Rawat Inap</option>'
+        + '</select>'
+        + '</div>'
+        + '';
+
+    // bootbox.confirm("Apakah pasien dimasukkan dalam kamar inap?", function(result){
+    //   // ketika ditekan tombol ok
+    //   if (result){
+    //     // mengirimkan perintah penghapusan
+    //     $.post(url, {
+    //       no_rawat: no_rawat
+    //     } ,function(data) {
+    //       // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
+    //       $("#display").load(baseURL + '/igd/display?t=' + mlite.token);
+    //       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+    //       "Status periksa pasien telah disimpan!"+
+    //       "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+    //       "</div>").show();
+    //     });
+    //   }
+    // });
+    bootbox.dialog({
+      message: set_status_lanjut,
+      title: 'Set Status Lanjut Pasien',
+      buttons: {
+        main: {
+          label: 'Simpan',
+          className: 'btn-primary',
+          callback() {
+            var status_lanjut = $('#status_lanjut').find(':selected').val();
+            //console.log(tgl_keluar);
+            $.post(url, {
+              no_rawat: no_rawat,
+              status_lanjut: status_lanjut
+            } ,function(data) {
+              // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
+              $("#display").load(baseURL + '/igd/display?t=' + mlite.token);
+              $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+              "Status lanjut pasien telah disimpan!"+
+              "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+              "</div>").show();
+            });
+          }
+        }
       }
     });
+    $('select').selectator();
+    event.stopPropagation();
+    return false;
   });
   $(".alert-dismissible").fadeTo(3000, 500).slideUp(500);
   $('.dataTables').DataTable({

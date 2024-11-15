@@ -8,7 +8,6 @@
             <div class="col-sm-4">
               <div class="input-group" style="width: 100%">
                 <input type="text" id="no_rkm_medis" name="no_rkm_medis" class="form-control" value="{$pasien.no_rkm_medis}" {if: !empty($pasien.no_rkm_medis)}disabled{/if}>
-                <input name="no_rkm_medis_baru" class="form-control" type="hidden" value="{$no_rkm_medis_baru}" id="no_rkm_medis_baru" >
                 <span class="input-group-addon"><input type="checkbox" name="manual" id="norm_manual"></span>
               </div>
             </div>
@@ -237,7 +236,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script type="text/javascript">
-  $('select').selectator();
+  $('#form select').selectator();
 </script>
 <script type="text/javascript">
    $(function () {
@@ -253,7 +252,6 @@
 </script>
 <script>
   $('#nm_prop').keyup(function(){
-     event.preventDefault();
      var query = $(this).val();
      if(query != '')
      {
@@ -275,7 +273,6 @@
      $('#propinsiList').fadeOut();
   });
   $('#nm_kab').keyup(function(){
-     event.preventDefault();
      var query = $(this).val();
      if(query != '')
      {
@@ -297,7 +294,6 @@
        $('#kabupatenList').fadeOut();
   });
   $('#nm_kec').keyup(function(){
-       event.preventDefault();
        var query = $(this).val();
        if(query != '')
        {
@@ -319,7 +315,6 @@
        $('#kecamatanList').fadeOut();
   });
   $('#nm_kel').keyup(function(){
-       event.preventDefault();
        var query = $(this).val();
        if(query != '')
        {
@@ -371,7 +366,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {else}
   $("#no_ktp").on('keyup', function (event) {
@@ -398,7 +392,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {/if}
   {if: $cek_pcare}
@@ -429,7 +422,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {else}
   $("#no_peserta").on('keyup', function (event) {
@@ -457,7 +449,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {/if}
 </script>
@@ -546,7 +537,6 @@
                 }
             }
             var baseURL = mlite.url + '/' + mlite.admin;
-            event.preventDefault();
         }
         if (queryString["nama"] != null && queryString["no_telp"] != null) {
             $('input:text[name=nm_pasien]').val(queryString["nama"]);

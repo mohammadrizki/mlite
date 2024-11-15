@@ -182,6 +182,7 @@ class Admin extends AdminModule
       if($_POST['kat'] == 'obat') {
 
         $get_gudangbarang = $this->db('gudangbarang')->where('kode_brng', $_POST['kd_jenis_prw'])->where('kd_bangsal', $this->settings->get('farmasi.deporalan'))->oneArray();
+        $get_databarang = $this->db('databarang')->where('kode_brng', $_POST['kd_jenis_prw'])->oneArray();
 
         $this->db('gudangbarang')
           ->where('kode_brng', $_POST['kd_jenis_prw'])
@@ -214,7 +215,7 @@ class Admin extends AdminModule
             'jam' => $_POST['jam_rawat'],
             'no_rawat' => $_POST['no_rawat'],
             'kode_brng' => $_POST['kd_jenis_prw'],
-            'h_beli' => $_POST['biaya'],
+            'h_beli' => $get_databarang['h_beli'],
             'biaya_obat' => $_POST['biaya'],
             'jml' => $_POST['jml'],
             'embalase' => '0',
@@ -936,7 +937,7 @@ class Admin extends AdminModule
         </style>
         ';
         
-        $url = url('admin/tmp/billing.besar.html');
+        $url = url(ADMIN.'/tmp/billing.besar.html');
         $html = file_get_contents($url);
         $mpdf->WriteHTML($this->core->setPrintCss(),\Mpdf\HTMLParserMode::HEADER_CSS);
         $mpdf->WriteHTML($css);

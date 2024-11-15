@@ -24,8 +24,14 @@
             <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{$value.no_rkm_medis} <span class="caret"></span></button></span>
             <ul class="dropdown-menu" role="menu">
               {if: $cek_vclaim}
-                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor Kartu</a></li>
-                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor KTP</a></li>
+                <li class="dropdown-submenu">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">[BPJS]</a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">Cek Nomor Kartu</a></li>
+                    <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">Cek Nomor KTP</a></li>
+                    <li><a href="{?=url([ADMIN, 'jkn_mobile', 'onsite', $value.no_peserta, $value.kd_pj, $value.tgl_registrasi])?}" data-toggle="modal" data-target="#onsite">Antrian Onsite</a></li>
+                  </ul>
+                </li>
               {/if}
               {if: $cek_pcare}
                 <li><a href="{?=url([ADMIN, 'pasien', 'pcare_bynokartu', 'noka', $value.no_peserta])?}" data-toggle="modal" data-target="#asuransiModal">[PCare] Cek Nomor Kartu</a></li>
@@ -35,9 +41,6 @@
               {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
               <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-umur="{$value.umurdaftar} {$value.sttsumur}">SOAP & Pemeriksaan</a></li>
               <li><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Layanan & Tindakan</a></li>
-              <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
-              <li><a href="#status_rawat" data-no_rawat="{$value.no_rawat}" data-stts="{$value.stts}">Status Rawat</a></li>
-              <li><a href="#status_lanjut" data-no_rawat="{$value.no_rawat}">Status Lanjut</a></li>
               <li class="dropdown-submenu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Surat-Surat</a>
                 <ul class="dropdown-menu">
@@ -47,6 +50,9 @@
                   <li><a href="{?=url([ADMIN,'rawat_jalan','suratsakit',convertNorawat($value.no_rawat)])?}" target="_blank">Surat Keterangan Sakit</a></li>
                 </ul>
               </li>
+              <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
+              <li><a href="#status_rawat" data-no_rawat="{$value.no_rawat}" data-stts="{$value.stts}">Status Rawat</a></li>
+              <li><a href="#status_lanjut" data-no_rawat="{$value.no_rawat}">Status Lanjut</a></li>
               <li><a href="#obat_kronis" data-no_rawat="{$value.no_rawat}">Obat Kronis</a></li>
               <li><a href="#kirimwaModal" data-toggle="modal" data-no_tlp="{$value.no_tlp}" data-nm_pasien="Yang terhormat {$value.nm_pasien} dengan nomor rekam medik {$value.no_rkm_medis}.&#013;&#010;&#013;&#010;-------------------&#013;&#010; Pesan WhatsApp ini dikirim otomatis oleh {$nama_instansi} &#013;&#010;Terima Kasih">Kirim WhatsApp</a></li>
               {/if}
@@ -109,6 +115,13 @@
   </div>
 </div>
 <div class="modal fade" id="asuransiModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="onsite" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             ...
@@ -339,28 +352,68 @@
         }
     });
   });
+
   $('a[href="#status_lanjut"]').click(function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var url = baseURL + '/rawat_jalan/statuslanjut?t=' + mlite.token;
     var no_rawat = $(this).attr("data-no_rawat");
     // tampilkan dialog konfirmasi
-    bootbox.confirm("Apakah pasien dimasukkan dalam kamar inap?", function(result){
-      // ketika ditekan tombol ok
-      if (result){
-        // mengirimkan perintah penghapusan
-        $.post(url, {
-          no_rawat: no_rawat
-        } ,function(data) {
-          // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
-          $("#display").load(baseURL + '/rawat_jalan/display?t=' + mlite.token);
-          $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-          "Status periksa pasien telah disimpan!"+
-          "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-          "</div>").show();
-        });
+
+    var set_status_lanjut = ''
+        + '<div class="form-group">'
+        + '<label for="status_keluar">Pilih Status Lanjut</label>'
+        + '<select name="status_lanjut" id="status_lanjut" class="form-control" data-use-dimmer="false">'
+        + '<option value="ralan">Rawat Jalan</option>'
+        + '<option value="ranap">Rawat Inap</option>'
+        + '</select>'
+        + '</div>'
+        + '';
+
+    // bootbox.confirm("Apakah pasien dimasukkan dalam kamar inap?", function(result){
+    //   // ketika ditekan tombol ok
+    //   if (result){
+    //     // mengirimkan perintah penghapusan
+    //     $.post(url, {
+    //       no_rawat: no_rawat
+    //     } ,function(data) {
+    //       // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
+    //       $("#display").load(baseURL + '/rawat_jalan/display?t=' + mlite.token);
+    //       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+    //       "Status periksa pasien telah disimpan!"+
+    //       "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+    //       "</div>").show();
+    //     });
+    //   }
+    // });
+    bootbox.dialog({
+      message: set_status_lanjut,
+      title: 'Set Status Lanjut Pasien',
+      buttons: {
+        main: {
+          label: 'Simpan',
+          className: 'btn-primary',
+          callback() {
+            var status_lanjut = $('#status_lanjut').find(':selected').val();
+            //console.log(tgl_keluar);
+            $.post(url, {
+              no_rawat: no_rawat,
+              status_lanjut: status_lanjut
+            } ,function(data) {
+              // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
+              $("#display").load(baseURL + '/rawat_jalan/display?t=' + mlite.token);
+              $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+              "Status lanjut pasien telah disimpan!"+
+              "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+              "</div>").show();
+            });
+          }
+        }
       }
     });
+    $('select').selectator();
+    event.stopPropagation();
+    return false;
   });
   $('a[href="#obat_kronis"]').click(function(event){
     var baseURL = mlite.url + '/' + mlite.admin;

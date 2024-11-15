@@ -1,4 +1,4 @@
-<article class="row">
+<div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -10,7 +10,7 @@
                     <li class="{if: $tab == 'inactive'}active{/if}">
                         <a href="{?=url(ADMIN.'/modules/manage/inactive')?}" role="tab">Tidak Aktif</a>
                     </li>
-				        </ul>
+				</ul>
             </div>
             <div class="panel-body">
                 {if: !empty($modules)}
@@ -72,7 +72,7 @@
             </div>
         </div>
     </div>
-</article>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="moduleModal" tabindex="-1" role="dialog">

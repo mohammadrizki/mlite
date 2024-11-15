@@ -74,6 +74,10 @@ abstract class Main
             mkdir(UPLOADS."/settings", 0777);
         }
 
+        if (!is_dir(UPLOADS."/users")) {
+            mkdir(UPLOADS."/users", 0777);
+        }
+
         if (!is_dir(UPLOADS."/invoices")) {
             mkdir(UPLOADS."/invoices", 0777);
         }
@@ -181,7 +185,9 @@ abstract class Main
         $hasBacklink = strpos($checkBuffer, base64_decode('UG93ZXJlZCBieSA8YSBocmVmPSJodHRwczovL21saXRlLmlkLyI+bUxJVEU8L2E+')) !== false;
         $hasHeader = get_headers_list('X-Created-By') === 'Medic LITE Indonesia <mlite.id>';
         $license = License::verify($core->settings->get('settings.license'));
-        if (($license == License::UNREGISTERED) && $isHTML && (!$hasBacklink)) {
+        if (!$core->settings->get('settings.version')) {
+            redirect(url('install.php'));
+        } elseif (($license == License::UNREGISTERED) && $isHTML && (!$hasBacklink)) {
             return '<center><strong>Ciluk baaa......</strong><br />Menghapus trade mark saya yaa....! Upsss....</center>';
         //} elseif ($license == License::TIME_OUT) {
         //    return $buffer.'<script>alert("Upstream Server\nCan\'t connect to server and verify it.");</script>';
@@ -206,7 +212,15 @@ abstract class Main
             }
 
             if (empty(parseURL(1))) {
-                redirect(url([ADMIN, 'dashboard', 'main']));
+                if(MULTI_APP) {
+                    if(!empty(MULTI_APP_REDIRECT)) {
+                        redirect(url([ADMIN, MULTI_APP_REDIRECT, 'main']));
+                    } else {
+                        redirect(url([ADMIN, 'dashboard', 'main']));
+                    }
+                } else {
+                    redirect(url([ADMIN, 'dashboard', 'main']));
+                }
             } elseif (!isset($_GET['t']) || ($_SESSION['token'] != @$_GET['t'])) {
                 return false;
             }
@@ -215,7 +229,7 @@ abstract class Main
         } elseif (isset($_COOKIE['mlite_remember'])) {
             $token = explode(":", $_COOKIE['mlite_remember']);
             if (count($token) == 2) {
-                $row = $this->db('mlite_users')->leftJoin('remember_me', 'remember_me.user_id = mlite_users.id')->where('mlite_users.id', $token[0])->where('remember_me.token', $token[1])->select(['mlite_users.*', 'remember_me.expiry', 'token_id' => 'remember_me.id'])->oneArray();
+                $row = $this->db('mlite_users')->leftJoin('mlite_remember_me', 'mlite_remember_me.user_id = mlite_users.id')->where('mlite_users.id', $token[0])->where('mlite_remember_me.token', $token[1])->select(['mlite_users.*', 'mlite_remember_me.expiry', 'token_id' => 'mlite_remember_me.id'])->oneArray();
 
                 if ($row) {
                     if (time() - $row['expiry'] > 0) {
@@ -226,10 +240,18 @@ abstract class Main
                         $_SESSION['userAgent']  = $_SERVER['HTTP_USER_AGENT'];
                         $_SESSION['IPaddress']  = $_SERVER['REMOTE_ADDR'];
 
-                        $this->db('mlite_remember_me')->where('remember_me.user_id', $token[0])->where('remember_me.token', $token[1])->save(['expiry' => time()+60*60*24*30]);
+                        $this->db('mlite_remember_me')->where('mlite_remember_me.user_id', $token[0])->where('mlite_remember_me.token', $token[1])->save(['expiry' => time()+60*60*24*30]);
 
                         if (strpos($_SERVER['SCRIPT_NAME'], '/'.ADMIN.'/') !== false) {
-                            redirect(url([ADMIN, 'dashboard', 'main']));
+                            if(MULTI_APP) {
+                                if(!empty(MULTI_APP_REDIRECT)) {
+                                    redirect(url([ADMIN, MULTI_APP_REDIRECT, 'main']));
+                                } else {
+                                    redirect(url([ADMIN, 'dashboard', 'main']));
+                                }
+                            } else {
+                                redirect(url([ADMIN, 'dashboard', 'main']));
+                            }
                         }
 
                         return true;
@@ -459,6 +481,19 @@ abstract class Main
         $next_no_jurnal = 'JR'.date('Ymd').''.$next_no_jurnal;
 
         return $next_no_jurnal;
+    }
+
+    public function AccesModule($module)
+    {
+        $access = $this->getUserInfo('access');
+        $accessmodule = ($access == 'all') || in_array($module, explode(',', $access)) ? true : false;
+        return $accessmodule;
+    }
+
+    public function ActiveModule($module)
+    {
+        $activemodule = $this->db('mlite_modules')->where('dir', $module)->oneArray();
+        return isset_or($activemodule['dir']);
     }
 
     public function setPrintHeader()

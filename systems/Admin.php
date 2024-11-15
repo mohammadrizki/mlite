@@ -44,6 +44,8 @@ class Admin extends Main
         $this->assign['wallpaper'] = $this->settings->get('settings.wallpaper');
         $this->assign['theme_admin'] = $this->settings->get('settings.theme_admin');
         $this->assign['version']       = $this->settings->get('settings.version');
+        $this->assign['websocket'] = $this->settings->get('settings.websocket');
+        $this->assign['websocket_proxy'] = $this->settings->get('settings.websocket_proxy');
         $this->assign['update_access'] = ($access == 'all') || in_array('settings', explode(',', $access)) ? true : false;
 
         $this->assign['header'] = isset_or($this->appends['header'], ['']);
@@ -57,6 +59,12 @@ class Admin extends Main
         $this->assign['module_rawat_jalan'] = $this->db('mlite_modules')->where('dir', 'rawat_jalan')->oneArray();
         $this->assign['rawat_inap_access'] = ($access == 'all') || in_array('rawat_inap', explode(',', $access)) ? true : false;
         $this->assign['module_rawat_inap'] = $this->db('mlite_modules')->where('dir', 'rawat_inap')->oneArray();
+        $this->assign['module_apotek_ralan'] = $this->db('mlite_modules')->where('dir', 'apotek_ralan')->oneArray();
+        $this->assign['apotek_ralan_access'] = ($access == 'all') || in_array('apotek_ralan', explode(',', $access)) ? true : false;
+        $this->assign['module_laboratorium'] = $this->db('mlite_modules')->where('dir', 'laboratorium')->oneArray();
+        $this->assign['laboratorium_access'] = ($access == 'all') || in_array('laboratorium', explode(',', $access)) ? true : false;
+        $this->assign['module_radiologi'] = $this->db('mlite_modules')->where('dir', 'radiologi')->oneArray();
+        $this->assign['radiologi_access'] = ($access == 'all') || in_array('radiologi', explode(',', $access)) ? true : false;
 
         $this->assign['dokter_igd_access'] = ($access == 'all') || in_array('dokter_igd', explode(',', $access)) ? true : false;
         $this->assign['dokter_ralan_access'] = ($access == 'all') || in_array('dokter_ralan', explode(',', $access)) ? true : false;

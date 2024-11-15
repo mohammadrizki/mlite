@@ -581,7 +581,7 @@ $("#obat").on("click", ".pilih_obat", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var stok = $(this).attr("data-stok");
   var stokminimal = $(this).attr("data-stokminimal");
   var kat = $(this).attr("data-kat");
@@ -637,10 +637,10 @@ $("#obat_racikan").on("click", ".pilih_obat_racikan", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var stok = $(this).attr("data-stok");
 
-  if(stok < 10) {
+  if(stok < 1) {
     alert('Stok obat ' + nama_brng + ' tidak mencukupi.');
     $('input:hidden[name=kode_brng]').val();
     $('input:text[name=nama_brng]').val();
@@ -805,6 +805,38 @@ $("#rincian").on("click",".hapus_detail", function(event){
         tgl_perawatan: tgl_perawatan,
         jam_rawat: jam_rawat,
         provider: provider
+      } ,function(data) {
+        var url = baseURL + '/dokter_ranap/rincian?t=' + mlite.token;
+        $.post(url, {no_rawat : no_rawat,
+        }, function(data) {
+          // tampilkan data
+          $("#rincian").html(data).show();
+        });
+        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Data rincian rawat jalan telah dihapus!"+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      });
+    }
+  });
+});
+
+// ketika tombol hapus ditekan
+$("#rincian").on("click",".hapus_permintaan_lab", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var url = baseURL + '/dokter_ranap/hapuspermintaanlab?t=' + mlite.token;
+  var noorder = $(this).attr("data-noorder");
+  var no_rawat = $(this).attr("data-no_rawat");
+
+  // tampilkan dialog konfirmasi
+  bootbox.confirm("Apakah Anda yakin ingin menghapus data ini?", function(result){
+    // ketika ditekan tombol ok
+    if (result){
+      // mengirimkan perintah penghapusan
+      $.post(url, {
+        noorder: noorder,
+        no_rawat: no_rawat
       } ,function(data) {
         var url = baseURL + '/dokter_ranap/rincian?t=' + mlite.token;
         $.post(url, {no_rawat : no_rawat,

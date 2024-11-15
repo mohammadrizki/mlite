@@ -10,7 +10,6 @@ $('#aturan_pakai').hide();
 // tombol buka form diklik
 $("#index").on('click', '#bukaform', function(){
   var baseURL = mlite.url + '/' + mlite.admin;
-  event.preventDefault();
   $("#form").show().load(baseURL + '/radiologi/form?t=' + mlite.token);
   $("#bukaform").val("Tutup Form");
   $("#bukaform").attr("id", "tutupform");
@@ -18,7 +17,6 @@ $("#index").on('click', '#bukaform', function(){
 
 // tombol tutup form diklik
 $("#index").on('click', '#tutupform', function(){
-  event.preventDefault();
   $("#form").hide();
   $("#tutupform").val("Buka Form");
   $("#tutupform").attr("id", "bukaform");
@@ -570,7 +568,6 @@ $("#rincian").on("click",".hasil_radiologi", function(event){
     $('#btn_upload').click(function(){
 
       var baseURL = mlite.url + '/' + mlite.admin;
-      event.preventDefault();
       var url= baseURL + '/radiologi/uploadhasil?t=' + mlite.token;
 
       var fd = new FormData();
@@ -805,3 +802,50 @@ $("#form_rincian").on("click","#jam_reg", function(event){
       $("#form_rincian #jam_reg").val(data);
     });
 });
+
+{if: $mlite.websocket == 'ya'}
+
+  {if: $mlite.websocket_proxy != ''}
+    var URL_WEBSOCKET = "{$mlite.websocket_proxy}";
+  {else}
+    var URL_WEBSOCKET = "ws://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
+  {/if}
+
+  var ws = new WebSocket(URL_WEBSOCKET);
+  var baseURL = mlite.url + '/' + mlite.admin;
+  
+  ws.onmessage = function(response){
+    try{
+      output = JSON.parse(response.data);
+      if(output['action'] == 'simpan'){
+        if(output['modul'] == 'rawat_jalan' || output['modul'] == 'igd'){
+          $("#radiologi #display").show().load(baseURL + '/radiologi/display?t=' + mlite.token);
+        }
+      }
+      if(output['action'] == 'permintaan_radiologi'){
+        if(output['modul'] == 'dokter_ralan'){
+          var audio = new Audio('{?=url()?}/assets/sound/alarm.mp3');
+          audio.play();    
+        }
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+  
+  
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
+
+{/if}

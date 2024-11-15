@@ -2,7 +2,6 @@
 namespace Plugins\Rawat_Jalan;
 
 use Systems\AdminModule;
-use Plugins\Icd\DB_ICD;
 use Systems\Lib\BpjsService;
 use LZCompressor\LZString;
 
@@ -83,7 +82,9 @@ class Admin extends AdminModule
             'admin_mode' => $this->settings->get('settings.admin_mode'),
             'waapitoken' => $waapitoken,
             'waapiphonenumber' => $waapiphonenumber,
-            'nama_instansi' => $nama_instansi
+            'nama_instansi' => $nama_instansi, 
+            'username_fp' => $this->settings->get('settings.username_fp'), 
+            'password_fp' => $this->settings->get('settings.password_fp')
           ]
         );
     }
@@ -384,14 +385,14 @@ class Admin extends AdminModule
         ]);
       }
 
-      if($query) {
+      if($query->errorInfo()['0'] == '00000') {
         $data['status'] = 'success';
         echo json_encode($data);
       } else {
         $data['status'] = 'error';
+        $data['msg'] = $query->errorInfo()['2'];
         echo json_encode($data);
       }
-
       exit();
     }
 
@@ -563,7 +564,7 @@ class Admin extends AdminModule
                 'tanggal_booking' => 'booking_periksa.tanggal_booking'
               ])
               ->join('poliklinik', 'poliklinik.kd_poli = booking_periksa.kd_poli')
-              //->where('tambahan_pesan', 'jkn_mobile_v2')
+              //->where('tambahan_pesan', 'jkn_mobile')
               ->toArray()
           ]
         );
@@ -866,7 +867,7 @@ class Admin extends AdminModule
     public function postStatusLanjut()
     {
       $this->db('reg_periksa')->where('no_rawat', $_POST['no_rawat'])->save([
-        'status_lanjut' => 'Ranap'
+        'status_lanjut' => $_POST['status_lanjut']
       ]);
       exit();
     }
@@ -1118,14 +1119,31 @@ class Admin extends AdminModule
 
     public function anyLayanan()
     {
+      $poliklinik = $this->db('poliklinik')->select('kd_poli')->where('status', '1')->toArray();
+      $poliklinik = implode(",", array_column($poliklinik, 'kd_poli'));
+      $poliklinik = explode(',', $poliklinik);
+      if($this->core->getUserInfo('role', null, true) != 'admin') {
+        $poliklinik = explode(',', $this->core->getUserInfo('cap', null, true));
+      }
       $layanan = $this->db('jns_perawatan')
         ->where('status', '1')
         ->like('nm_perawatan', '%'.$_POST['layanan'].'%')
+        ->in('kd_poli', $poliklinik)
         ->limit(10)
         ->toArray();
       echo $this->draw('layanan.html', ['layanan' => $layanan]);
       exit();
     }
+
+    public function postGetLayanan()
+    {
+      $layanan = $this->db('jns_perawatan')
+        ->where('status', '1')
+        ->where('kd_jenis_prw', $_POST['layanan'])
+        ->oneArray();
+      echo json_encode($layanan);
+      exit();
+    }    
 
     public function anyBerkasDigital()
     {
@@ -1344,7 +1362,7 @@ class Admin extends AdminModule
       $mpdf->SetHTMLHeader($this->core->setPrintHeader());
       $mpdf->SetHTMLFooter($this->core->setPrintFooter());
             
-      $url = url('admin/tmp/cetak.rawat_jalan.html');
+      $url = url(ADMIN.'/tmp/cetak.rawat_jalan.html');
       $html = file_get_contents($url);
       $mpdf->WriteHTML($this->core->setPrintCss(),\Mpdf\HTMLParserMode::HEADER_CSS);
       $mpdf->WriteHTML($html,\Mpdf\HTMLParserMode::HTML_BODY);
@@ -1357,7 +1375,7 @@ class Admin extends AdminModule
     public function getExcel()
     {
       $file = "data.pasien.rawat.jalan.xls";
-      $html = file_get_contents(url('admin/tmp/cetak.rawat_jalan.html'));
+      $html = file_get_contents(url(ADMIN.'/tmp/cetak.rawat_jalan.html'));
       header("Content-type: application/vnd-ms-excel");
       header("Content-Disposition: attachment; filename=$file");
       echo "<!DOCTYPE html><html><head></head><body>";
@@ -1542,9 +1560,13 @@ class Admin extends AdminModule
           ->where('no_rkm_medis', $no_rkm_medis)
           ->oneArray();
         $nm_dokter = $this->core->getPegawaiInfo('nama', $kd_dokter);
+        $sip_dokter = $this->core->getDokterInfo('no_ijn_praktek', $kd_dokter);
         $this->tpl->set('pasien', $this->tpl->noParse_array(htmlspecialchars_array($pasien)));
         $this->tpl->set('nm_dokter', $nm_dokter);
+        $this->tpl->set('sip_dokter', $sip_dokter);
+        $this->tpl->set('no_rawat', revertNoRawat($no_rawat));
         $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($this->settings('settings'))));
+        $this->tpl->set('surat', $this->db('mlite_surat_rujukan')->where('no_rawat', revertNoRawat($no_rawat))->oneArray());
         echo $this->tpl->draw(MODULES.'/rawat_jalan/view/admin/surat.rujukan.html', true);
         exit();
     }
@@ -1561,9 +1583,13 @@ class Admin extends AdminModule
           ->where('no_rkm_medis', $no_rkm_medis)
           ->oneArray();
         $nm_dokter = $this->core->getPegawaiInfo('nama', $kd_dokter);
+        $sip_dokter = $this->core->getDokterInfo('no_ijn_praktek', $kd_dokter);
         $this->tpl->set('pasien', $this->tpl->noParse_array(htmlspecialchars_array($pasien)));
         $this->tpl->set('nm_dokter', $nm_dokter);
+        $this->tpl->set('sip_dokter', $sip_dokter);
+        $this->tpl->set('no_rawat', revertNoRawat($no_rawat));
         $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($this->settings('settings'))));
+        $this->tpl->set('surat', $this->db('mlite_surat_sehat')->where('no_rawat', revertNoRawat($no_rawat))->oneArray());
         echo $this->tpl->draw(MODULES.'/rawat_jalan/view/admin/surat.sehat.html', true);
         exit();
     }
@@ -1580,11 +1606,120 @@ class Admin extends AdminModule
           ->where('no_rkm_medis', $no_rkm_medis)
           ->oneArray();
         $nm_dokter = $this->core->getPegawaiInfo('nama', $kd_dokter);
+        $sip_dokter = $this->core->getDokterInfo('no_ijn_praktek', $kd_dokter);
         $this->tpl->set('pasien', $this->tpl->noParse_array(htmlspecialchars_array($pasien)));
         $this->tpl->set('nm_dokter', $nm_dokter);
+        $this->tpl->set('sip_dokter', $sip_dokter);
+        $this->tpl->set('no_rawat', revertNoRawat($no_rawat));
         $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($this->settings('settings'))));
+        $this->tpl->set('surat', $this->db('mlite_surat_sakit')->where('no_rawat', revertNoRawat($no_rawat))->oneArray());
         echo $this->tpl->draw(MODULES.'/rawat_jalan/view/admin/surat.sakit.html', true);
         exit();
+    }
+
+    public function postSimpanSuratSakit()
+    {
+      $query = $this->db('mlite_surat_sakit')->save([
+        'id' => NULL, 
+        'nomor_surat' => $_POST['nomor_surat'], 
+        'no_rawat' => $_POST['no_rawat'], 
+        'no_rkm_medis' => $_POST['no_rkm_medis'], 
+        'nm_pasien' => $_POST['nm_pasien'], 
+        'tgl_lahir' => $_POST['tgl_lahir'], 
+        'umur' => $_POST['umur'], 
+        'jk' => $_POST['jk'], 
+        'alamat' => $_POST['alamat'], 
+        'keadaan' => $_POST['keadaan'], 
+        'diagnosa' => $_POST['diagnosa'], 
+        'lama_angka' => $_POST['lama_angka'], 
+        'lama_huruf' => $_POST['lama_huruf'], 
+        'tanggal_mulai' => $_POST['tanggal_mulai'], 
+        'tanggal_selesai' => $_POST['tanggal_selesai'], 
+        'dokter' => $_POST['dokter'], 
+        'petugas' => $_POST['petugas']
+      ]);
+
+      if($query) {
+        $data['status'] = 'success';
+        echo json_encode($data);
+      } else {
+        $data['status'] = 'error';
+        $data['msg'] = $query->errorInfo()['2'];
+        echo json_encode($data);
+      }
+
+      exit();
+    }
+
+    public function postSimpanSuratSehat()
+    {
+      $query = $this->db('mlite_surat_sehat')->save([
+        'id' => NULL, 
+        'nomor_surat' => $_POST['nomor_surat'], 
+        'no_rawat' => $_POST['no_rawat'], 
+        'no_rkm_medis' => $_POST['no_rkm_medis'], 
+        'nm_pasien' => $_POST['nm_pasien'], 
+        'tgl_lahir' => $_POST['tgl_lahir'], 
+        'umur' => $_POST['umur'], 
+        'jk' => $_POST['jk'], 
+        'alamat' => $_POST['alamat'], 
+        'tanggal' => $_POST['tanggal'], 
+        'berat_badan' => $_POST['berat_badan'], 
+        'tinggi_badan' => $_POST['tinggi_badan'], 
+        'tensi' => $_POST['tensi'], 
+        'gol_darah' => $_POST['gol_darah'], 
+        'riwayat_penyakit' => $_POST['riwayat_penyakit'], 
+        'keperluan' => $_POST['keperluan'], 
+        'dokter' => $_POST['dokter'], 
+        'petugas' => $_POST['petugas']
+      ]);
+
+      if($query) {
+        $data['status'] = 'success';
+        echo json_encode($data);
+      } else {
+        $data['status'] = 'error';
+        $data['msg'] = $query->errorInfo()['2'];
+        echo json_encode($data);
+      }
+
+      exit();
+    }
+
+    public function postSimpanSuratRujukan()
+    {
+      $query = $this->db('mlite_surat_rujukan')->save([
+        'id' => NULL, 
+        'nomor_surat' => $_POST['nomor_surat'], 
+        'no_rawat' => $_POST['no_rawat'], 
+        'no_rkm_medis' => $_POST['no_rkm_medis'], 
+        'nm_pasien' => $_POST['nm_pasien'], 
+        'tgl_lahir' => $_POST['tgl_lahir'], 
+        'umur' => $_POST['umur'], 
+        'jk' => $_POST['jk'], 
+        'alamat' => $_POST['alamat'], 
+        'kepada' => $_POST['kepada'], 
+        'di' => $_POST['di'], 
+        'anamnesa' => $_POST['anamnesa'], 
+        'pemeriksaan_fisik' => $_POST['pemeriksaan_fisik'], 
+        'pemeriksaan_penunjang' => $_POST['pemeriksaan_penunjang'], 
+        'diagnosa' => $_POST['diagnosa'], 
+        'terapi' => $_POST['terapi'], 
+        'alasan_dirujuk' => $_POST['alasan_dirujuk'], 
+        'dokter' => $_POST['dokter'], 
+        'petugas' => $_POST['petugas']
+      ]);
+
+      if($query) {
+        $data['status'] = 'success';
+        echo json_encode($data);
+      } else {
+        $data['status'] = 'error';
+        $data['msg'] = $query->errorInfo()['2'];
+        echo json_encode($data);
+      }
+
+      exit();
     }
 
     public function getJavascript()
@@ -1595,7 +1730,9 @@ class Admin extends AdminModule
         if($cek_pegawai) {
           $cek_role = $this->core->getPegawaiInfo('nik', $this->core->getUserInfo('username', $_SESSION['mlite_user']));
         }
-        echo $this->draw(MODULES.'/rawat_jalan/js/admin/rawat_jalan.js', ['cek_role' => $cek_role]);
+        $this->assign['websocket'] = $this->settings->get('settings.websocket');
+        $this->assign['websocket_proxy'] = $this->settings->get('settings.websocket_proxy');
+        echo $this->draw(MODULES.'/rawat_jalan/js/admin/rawat_jalan.js', ['cek_role' => $cek_role, 'mlite' => $this->assign]);
         exit();
     }
 
@@ -1610,11 +1747,6 @@ class Admin extends AdminModule
         $this->core->addJS(url('assets/jscripts/moment-with-locales.js'));
         $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
         $this->core->addJS(url([ADMIN, 'rawat_jalan', 'javascript']), 'footer');
-    }
-
-    protected function data_icd($table)
-    {
-        return new DB_ICD($table);
     }
 
 }

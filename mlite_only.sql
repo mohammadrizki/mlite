@@ -190,7 +190,7 @@ INSERT INTO `mlite_modules` (`id`, `dir`, `sequence`) VALUES
 (15, 'dokter_igd', '14'),
 (16, 'laboratorium', '15'),
 (17, 'radiologi', '16'),
-(18, 'icd', '17'),
+(18, 'icd_10', '17'),
 (19, 'rawat_inap', '18'),
 (20, 'apotek_ranap', '19'),
 (21, 'dokter_ranap', '20'),
@@ -206,7 +206,8 @@ INSERT INTO `mlite_modules` (`id`, `dir`, `sequence`) VALUES
 (31, 'vedika', '30'),
 (32, 'profil', '31'),
 (33, 'orthanc', '32'),
-(34, 'veronisa', '33');
+(34, 'veronisa', '33'),
+(35, 'icd_9', '34');
 
 CREATE TABLE IF NOT EXISTS `mlite_notifications` (
   `id` int(11) NOT NULL,
@@ -371,9 +372,9 @@ CREATE TABLE IF NOT EXISTS `mlite_satu_sehat_response` (
 
 CREATE TABLE IF NOT EXISTS `mlite_settings` (
   `id` int(11) NOT NULL,
-  `module` text,
-  `field` text,
-  `value` text
+  `module` varchar(100) NOT NULL,
+  `field` varchar(100) NOT NULL,
+  `value` varchar(1000) NOT NULL
 ) ENGINE=MyISAM AUTO_INCREMENT=151 DEFAULT CHARSET=utf8;
 
 INSERT INTO `mlite_settings` (`id`, `module`, `field`, `value`) VALUES
@@ -410,7 +411,7 @@ INSERT INTO `mlite_settings` (`id`, `module`, `field`, `value`) VALUES
 (31, 'settings', 'admin_mode', 'complex'),
 (32, 'settings', 'input_kasir', 'tidak'),
 (33, 'settings', 'editor', 'wysiwyg'),
-(34, 'settings', 'version', '4.0.4'),
+(34, 'settings', 'version', '4.1.7'),
 (35, 'settings', 'update_check', '0'),
 (36, 'settings', 'update_changelog', ''),
 (37, 'settings', 'update_version', '0'),
@@ -526,7 +527,13 @@ INSERT INTO `mlite_settings` (`id`, `module`, `field`, `value`) VALUES
 (147, 'veronisa', 'obat_kronis', ''),
 (148, 'jkn_mobile', 'kirimantrian', 'tidak'),
 (149, 'settings', 'keamanan', 'ya'),
-(150, 'dokter_ralan', 'set_sudah', 'tidak');
+(150, 'dokter_ralan', 'set_sudah', 'tidak'),
+(151, 'settings', 'websocket', 'tidak'),
+(152, 'settings', 'websocket_proxy', ''),
+(153, 'settings', 'username_fp', ''),
+(154, 'settings', 'password_fp', ''),
+(155, 'settings', 'username_frista', ''),
+(156, 'settings', 'password_frista', '');
 
 CREATE TABLE IF NOT EXISTS `mlite_subrekening` (
   `kd_rek` varchar(15) NOT NULL,
@@ -795,7 +802,8 @@ ALTER TABLE `mlite_satu_sehat_response`
   ADD PRIMARY KEY (`no_rawat`);
 
 ALTER TABLE `mlite_settings`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `module` (`module`,`field`);
 
 ALTER TABLE `mlite_subrekening`
   ADD PRIMARY KEY (`kd_rek2`),
@@ -916,3 +924,84 @@ ALTER TABLE `mlite_satu_sehat_response`
 ALTER TABLE `mlite_subrekening`
   ADD CONSTRAINT `mlite_subrekening_ibfk_1` FOREIGN KEY (`kd_rek`) REFERENCES `mlite_rekening` (`kd_rek`) ON UPDATE CASCADE,
   ADD CONSTRAINT `mlite_subrekening_ibfk_2` FOREIGN KEY (`kd_rek2`) REFERENCES `mlite_rekening` (`kd_rek`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+CREATE TABLE `mlite_surat_rujukan` (
+  `id` int(11) NOT NULL,
+  `nomor_surat` varchar(100) DEFAULT NULL,
+  `no_rawat` varchar(100) DEFAULT NULL,
+  `no_rkm_medis` varchar(100) DEFAULT NULL,
+  `nm_pasien` varchar(100) DEFAULT NULL,
+  `tgl_lahir` varchar(100) DEFAULT NULL,
+  `umur` varchar(100) DEFAULT NULL,
+  `jk` varchar(100) DEFAULT NULL,
+  `alamat` varchar(1000) DEFAULT NULL,
+  `kepada` varchar(250) DEFAULT NULL,
+  `di` varchar(250) DEFAULT NULL,
+  `anamnesa` varchar(100) DEFAULT NULL,
+  `pemeriksaan_fisik` varchar(100) DEFAULT NULL,
+  `pemeriksaan_penunjang` varchar(100) DEFAULT NULL,
+  `diagnosa` varchar(100) DEFAULT NULL,
+  `terapi` varchar(100) DEFAULT NULL,
+  `alasan_dirujuk` varchar(250) DEFAULT NULL,
+  `dokter` varchar(100) DEFAULT NULL,
+  `petugas` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `mlite_surat_sakit` (
+  `id` int(11) NOT NULL,
+  `nomor_surat` varchar(100) DEFAULT NULL,
+  `no_rawat` varchar(100) DEFAULT NULL,
+  `no_rkm_medis` varchar(100) DEFAULT NULL,
+  `nm_pasien` varchar(100) DEFAULT NULL,
+  `tgl_lahir` varchar(100) DEFAULT NULL,
+  `umur` varchar(100) DEFAULT NULL,
+  `jk` varchar(100) DEFAULT NULL,
+  `alamat` varchar(1000) DEFAULT NULL,
+  `keadaan` varchar(100) DEFAULT NULL,
+  `diagnosa` varchar(100) DEFAULT NULL,
+  `lama_angka` varchar(100) DEFAULT NULL,
+  `lama_huruf` varchar(100) DEFAULT NULL,
+  `tanggal_mulai` varchar(100) DEFAULT NULL,
+  `tanggal_selesai` varchar(100) DEFAULT NULL,
+  `dokter` varchar(100) DEFAULT NULL,
+  `petugas` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `mlite_surat_sehat` (
+  `id` int(11) NOT NULL,
+  `nomor_surat` varchar(100) DEFAULT NULL,
+  `no_rawat` varchar(100) DEFAULT NULL,
+  `no_rkm_medis` varchar(100) DEFAULT NULL,
+  `nm_pasien` varchar(100) DEFAULT NULL,
+  `tgl_lahir` varchar(100) DEFAULT NULL,
+  `umur` varchar(100) DEFAULT NULL,
+  `jk` varchar(100) DEFAULT NULL,
+  `alamat` varchar(1000) DEFAULT NULL,
+  `tanggal` varchar(100) DEFAULT NULL,
+  `berat_badan` varchar(100) DEFAULT NULL,
+  `tinggi_badan` varchar(100) DEFAULT NULL,
+  `tensi` varchar(100) DEFAULT NULL,
+  `gol_darah` varchar(100) DEFAULT NULL,
+  `riwayat_penyakit` varchar(100) DEFAULT NULL,
+  `keperluan` varchar(100) DEFAULT NULL,
+  `dokter` varchar(100) DEFAULT NULL,
+  `petugas` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `mlite_surat_rujukan`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_surat_sakit`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_surat_sehat`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_surat_rujukan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mlite_surat_sakit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mlite_surat_sehat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

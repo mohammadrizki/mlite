@@ -2,7 +2,6 @@
 namespace Plugins\Laboratorium;
 
 use Systems\AdminModule;
-use Plugins\Icd\DB_ICD;
 use Systems\Lib\QRCode;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
@@ -505,7 +504,7 @@ class Admin extends AdminModule
       </style>
       ';
       
-      $url = url('admin/tmp/cetakhasil.html');
+      $url = url(ADMIN.'/tmp/cetakhasil.html');
       $html = file_get_contents($url);
       $mpdf->WriteHTML($this->core->setPrintCss(),\Mpdf\HTMLParserMode::HEADER_CSS);
       $mpdf->WriteHTML($css);
@@ -1134,7 +1133,9 @@ class Admin extends AdminModule
     public function getJavascript()
     {
         header('Content-type: text/javascript');
-        echo $this->draw(MODULES.'/laboratorium/js/admin/laboratorium.js');
+        $this->assign['websocket'] = $this->settings->get('settings.websocket');
+        $this->assign['websocket_proxy'] = $this->settings->get('settings.websocket_proxy');
+        echo $this->draw(MODULES.'/laboratorium/js/admin/laboratorium.js', ['mlite' => $this->assign]);
         exit();
     }
 
@@ -1147,11 +1148,6 @@ class Admin extends AdminModule
         $this->core->addJS(url('assets/jscripts/moment-with-locales.js'));
         $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
         $this->core->addJS(url([ADMIN, 'laboratorium', 'javascript']), 'footer');
-    }
-
-    protected function data_icd($table)
-    {
-        return new DB_ICD($table);
     }
 
 }

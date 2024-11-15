@@ -2,7 +2,6 @@
 namespace Plugins\Dokter_Igd;
 
 use Systems\AdminModule;
-use Plugins\Icd\DB_ICD;
 
 class Admin extends AdminModule
 {
@@ -529,7 +528,7 @@ class Admin extends AdminModule
         $row['nomor'] = $i++;
         $row['resep_dokter'] = $this->db('resep_dokter')->join('databarang', 'databarang.kode_brng=resep_dokter.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
         foreach ($row['resep_dokter'] as $value) {
-          $value['ralan'] = $value['jml'] * $value['ralan'];
+          $value['ralan'] = $value['jml'] * $value['dasar'];
           $jumlah_total_resep += floatval($value['ralan']);
         }
         $resep[] = $row;
@@ -547,7 +546,7 @@ class Admin extends AdminModule
         $row['nomor'] = $i++;
         $row['resep_dokter_racikan_detail'] = $this->db('resep_dokter_racikan_detail')->join('databarang', 'databarang.kode_brng=resep_dokter_racikan_detail.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
         foreach ($row['resep_dokter_racikan_detail'] as $value) {
-          $value['ralan'] = $value['jml'] * $value['ralan'];
+          $value['ralan'] = $value['jml'] * $value['dasar'];
           $jumlah_total_resep_racikan += floatval($value['ralan']);
         }
         $resep_racikan[] = $row;
@@ -657,7 +656,7 @@ class Admin extends AdminModule
         $row['nomor'] = $i++;
         $row['resep_dokter'] = $this->db('resep_dokter')->join('databarang', 'databarang.kode_brng=resep_dokter.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
         foreach ($row['resep_dokter'] as $value) {
-          $value['ralan'] = $value['jml'] * $value['ralan'];
+          $value['ralan'] = $value['jml'] * $value['dasar'];
           $jumlah_total_resep += floatval($value['ralan']);
         }
         $resep[] = $row;
@@ -676,7 +675,7 @@ class Admin extends AdminModule
         $row['nomor'] = $i++;
         $row['resep_dokter_racikan_detail'] = $this->db('resep_dokter_racikan_detail')->join('databarang', 'databarang.kode_brng=resep_dokter_racikan_detail.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
         foreach ($row['resep_dokter_racikan_detail'] as $value) {
-          $value['ralan'] = $value['jml'] * $value['ralan'];
+          $value['ralan'] = $value['jml'] * $value['dasar'];
           $jumlah_total_resep_racikan += floatval($value['ralan']);
         }
         $resep_racikan[] = $row;
@@ -898,10 +897,17 @@ class Admin extends AdminModule
 
     public function anyLayanan()
     {
+      $poliklinik = $this->db('poliklinik')->select('kd_poli')->where('status', '1')->toArray();
+      $poliklinik = implode(",", array_column($poliklinik, 'kd_poli'));
+      $poliklinik = explode(',', $poliklinik);
+      if($this->core->getUserInfo('role', null, true) != 'admin') {
+        $poliklinik = explode(',', $this->core->getUserInfo('cap', null, true));
+      }
       $layanan = $this->db('jns_perawatan')
         ->where('total_byrdr', '<>', '0')
         ->where('status', '1')
         ->like('nm_perawatan', '%'.$_POST['layanan'].'%')
+        ->in('kd_poli', $poliklinik)
         ->limit(10)
         ->toArray();
       echo $this->draw('layanan.html', ['layanan' => $layanan]);
@@ -1036,7 +1042,7 @@ class Admin extends AdminModule
           $rows = $this->db('databarang')
             ->join('gudangbarang', 'gudangbarang.kode_brng=databarang.kode_brng')
             ->where('status', '1')
-            ->where('stok', '>', '10')
+            ->where('stok', '>', '1')
             ->where('gudangbarang.kd_bangsal', $this->settings->get('farmasi.deporalan'))
             ->like('databarang.nama_brng', '%'.$_GET['nama_brng'].'%')
             ->limit(10)
@@ -1094,11 +1100,11 @@ class Admin extends AdminModule
           if(isset($_GET['s']))
             $phrase = $_GET['s'];
 
-          $rows = $this->data_icd('icd10')->like('kode', '%'.$phrase.'%')->orLike('nama', '%'.$phrase.'%')->toArray();
+          $rows = $this->db('penyakit')->like('kd_penyakit', '%'.$phrase.'%')->orLike('nm_penyakit', '%'.$phrase.'%')->toArray();
           foreach ($rows as $row) {
             $array[] = array(
-                'kd_penyakit' => $row['kode'],
-                'nm_penyakit'  => $row['nama']
+                'kd_penyakit' => $row['kd_penyakit'],
+                'nm_penyakit'  => $row['nm_penyakit']
             );
           }
           echo json_encode($array, true);
@@ -1108,11 +1114,11 @@ class Admin extends AdminModule
           if(isset($_GET['s']))
             $phrase = $_GET['s'];
 
-          $rows = $this->data_icd('icd9')->like('kode', '%'.$phrase.'%')->orLike('nama', '%'.$phrase.'%')->toArray();
+          $rows = $this->db('icd9')->like('kode', '%'.$phrase.'%')->orLike('deskripsi_panjang', '%'.$phrase.'%')->toArray();
           foreach ($rows as $row) {
             $array[] = array(
                 'kode' => $row['kode'],
-                'deskripsi_panjang'  => $row['nama']
+                'deskripsi_panjang'  => $row['deskripsi_panjang']
             );
           }
           echo json_encode($array, true);
@@ -1139,7 +1145,7 @@ class Admin extends AdminModule
         $row['nomor'] = $i++;
         $row['resep_dokter'] = $this->db('resep_dokter')->join('databarang', 'databarang.kode_brng=resep_dokter.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
         foreach ($row['resep_dokter'] as $value) {
-          $value['ralan'] = $value['jml'] * $value['ralan'];
+          $value['ralan'] = $value['jml'] * $value['dasar'];
           $jumlah_total_resep += floatval($value['ralan']);
         }
         $resep[] = $row;
@@ -1158,7 +1164,7 @@ class Admin extends AdminModule
         $row['nomor'] = $i++;
         $row['resep_dokter_racikan_detail'] = $this->db('resep_dokter_racikan_detail')->join('databarang', 'databarang.kode_brng=resep_dokter_racikan_detail.kode_brng')->where('no_resep', $row['no_resep'])->toArray();
         foreach ($row['resep_dokter_racikan_detail'] as $value) {
-          $value['ralan'] = $value['jml'] * $value['ralan'];
+          $value['ralan'] = $value['jml'] * $value['dasar'];
           $jumlah_total_resep_racikan += floatval($value['ralan']);
         }
         $resep_racikan[] = $row;
@@ -1197,6 +1203,12 @@ class Admin extends AdminModule
       exit();
     }
 
+    public function getLokalis()
+    {
+      echo $this->draw('lokalis.html');
+      exit();
+    }
+  
     public function getJavascript()
     {
         header('Content-type: text/javascript');
@@ -1205,7 +1217,9 @@ class Admin extends AdminModule
         if($cek_pegawai) {
           $cek_role = $this->core->getPegawaiInfo('nik', $this->core->getUserInfo('username', $_SESSION['mlite_user']));
         }
-        echo $this->draw(MODULES.'/dokter_igd/js/admin/dokter_igd.js', ['cek_role' => $cek_role]);
+        $this->assign['websocket'] = $this->settings->get('settings.websocket');
+        $this->assign['websocket_proxy'] = $this->settings->get('settings.websocket_proxy');
+        echo $this->draw(MODULES.'/dokter_igd/js/admin/dokter_igd.js', ['cek_role' => $cek_role, 'mlite' => $this->assign]);
         exit();
     }
 
@@ -1226,11 +1240,6 @@ class Admin extends AdminModule
         $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
         $this->core->addCSS(url([ADMIN, 'dokter_igd', 'css']));
         $this->core->addJS(url([ADMIN, 'dokter_igd', 'javascript']), 'footer');
-    }
-
-    protected function data_icd($table)
-    {
-        return new DB_ICD($table);
     }
 
 }

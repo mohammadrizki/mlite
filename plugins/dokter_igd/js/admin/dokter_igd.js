@@ -582,7 +582,7 @@ $("#obat").on("click", ".pilih_obat", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var stok = $(this).attr("data-stok");
   var stokminimal = $(this).attr("data-stokminimal");
   var kat = $(this).attr("data-kat");
@@ -638,10 +638,10 @@ $("#obat_racikan").on("click", ".pilih_obat_racikan", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var stok = $(this).attr("data-stok");
 
-  if(stok < 10) {
+  if(stok < 1) {
     alert('Stok obat ' + nama_brng + ' tidak mencukupi.');
     $('input:hidden[name=kode_brng]').val();
     $('input:text[name=nama_brng]').val();
@@ -1060,7 +1060,7 @@ $(document).ready(function () {
     load: function (search, callback) {
       if (search.length < this.minSearchLength) return callback();
       $.ajax({
-        url: '{?=url()?}/{?=ADMIN?}/dokter_ralan/ajax?show=aturan_pakai&aturan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
+        url: '{?=url()?}/{?=ADMIN?}/dokter_igd/ajax?show=aturan_pakai&aturan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -1084,7 +1084,7 @@ $(document).ready(function () {
     load: function (search, callback) {
       if (search.length < this.minSearchLength) return callback();
       $.ajax({
-        url: '{?=url()?}/{?=ADMIN?}/dokter_ralan/ajax?show=jns_perawatan&nm_perawatan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
+        url: '{?=url()?}/{?=ADMIN?}/dokter_igd/ajax?show=jns_perawatan&nm_perawatan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -1108,7 +1108,7 @@ $(document).ready(function () {
     load: function (search, callback) {
       if (search.length < this.minSearchLength) return callback();
       $.ajax({
-        url: '{?=url()?}/{?=ADMIN?}/dokter_ralan/ajax?show=jns_perawatan_lab&nm_perawatan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
+        url: '{?=url()?}/{?=ADMIN?}/dokter_igd/ajax?show=jns_perawatan_lab&nm_perawatan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -1132,7 +1132,7 @@ $(document).ready(function () {
     load: function (search, callback) {
       if (search.length < this.minSearchLength) return callback();
       $.ajax({
-        url: '{?=url()?}/{?=ADMIN?}/dokter_ralan/ajax?show=jns_perawatan_radiologi&nm_perawatan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
+        url: '{?=url()?}/{?=ADMIN?}/dokter_igd/ajax?show=jns_perawatan_radiologi&nm_perawatan=' + encodeURIComponent(search) + '&t={?=$_SESSION['token']?}',
         type: 'GET',
         dataType: 'json',
         success: function(data) {
@@ -1169,3 +1169,44 @@ $("#form_rincian").on("click","#jam_reg", function(event){
       $("#form_rincian #jam_reg").val(data);
     });
 });
+
+{if: $mlite.websocket == 'ya'}
+
+  {if: $mlite.websocket_proxy != ''}
+    var URL_WEBSOCKET = "{$mlite.websocket_proxy}";
+  {else}
+    var URL_WEBSOCKET = "ws://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
+  {/if}
+
+  var ws = new WebSocket(URL_WEBSOCKET);
+  var baseURL = mlite.url + '/' + mlite.admin;
+  
+  ws.onmessage = function(response){
+    try{
+      output = JSON.parse(response.data);
+      if(output['action'] == 'simpan'){
+        if(output['modul'] == 'rawat_jalan' || output['modul'] == 'igd'){
+          $("#dokter_igd #display").show().load(baseURL + '/dokter_igd/display?t=' + mlite.token);
+        }
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+  
+  
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
+
+{/if}

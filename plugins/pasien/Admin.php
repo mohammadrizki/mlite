@@ -2,11 +2,10 @@
 namespace Plugins\Pasien;
 
 use Systems\AdminModule;
-use Plugins\Pasien\DB_Wilayah;
-use Plugins\Icd\DB_ICD;
 
 class Admin extends AdminModule
 {
+    private $_uploads = WEBAPPS_PATH.'/berkasrawat/pages/upload';
 
     public function navigation()
     {
@@ -283,6 +282,12 @@ class Admin extends AdminModule
       exit();
     }
 
+    public function postMaxid()
+    {
+      echo $this->core->setNoRM();
+      exit();
+    }
+
     public function postSave()
     {
       $_POST['tgl_daftar'] = date('Y-m-d H:i', strtotime($_POST['tgl_daftar']));
@@ -331,7 +336,8 @@ class Admin extends AdminModule
         unset($_POST['nm_kec']);
         unset($_POST['nm_kel']);
         $query = $this->db('pasien')->save($_POST);
-        if($this->db('pasien')->where('no_rkm_medis', $_POST['no_rkm_medis'])->oneArray()) {
+
+        if($query->errorInfo()['0'] == '00000') {
           if($manual == '0') {
             $this->db()->pdo()->exec("UPDATE set_no_rkm_medis SET no_rkm_medis='$_POST[no_rkm_medis]'");
           }
@@ -339,21 +345,27 @@ class Admin extends AdminModule
           echo json_encode($data);
         } else {
           $data['status'] = 'error';
+          $data['msg'] = $query->errorInfo()['2'];
           echo json_encode($data);
         }
+  
       } else {
         unset($_POST['nm_prop']);
         unset($_POST['nm_kab']);
         unset($_POST['nm_kec']);
         unset($_POST['nm_kel']);
+        $_POST['umur'] = $this->hitungUmur($_POST['tgl_lahir']);
         $query = $this->db('pasien')->where('no_rkm_medis', $_POST['no_rkm_medis'])->update($_POST);
-        if($query) {
+
+        if($query->errorInfo()['0'] == '00000') {
           $data['status'] = 'success';
           echo json_encode($data);
         } else {
           $data['status'] = 'error';
+          $data['msg'] = $query->errorInfo()['2'];
           echo json_encode($data);
         }
+  
       }
 
       exit();
@@ -468,13 +480,123 @@ class Admin extends AdminModule
         'margin_bottom' => 4
       ]);
 
-      $url = url('admin/tmp/kartu.html');
+      $url = url(ADMIN.'/tmp/kartu.html');
       $html = file_get_contents($url);
       $mpdf->WriteHTML($html);
 
       // Output a PDF file directly to the browser
       $mpdf->Output();
             
+      exit();
+    }
+
+    public function getFolder($no_rkm_medis, $no_rawat='')
+    {
+      $this->_addHeaderFiles();
+      $pasien = $this->db('pasien')->where('no_rkm_medis', $no_rkm_medis)->oneArray();
+      $reg_periksa = $this->db('reg_periksa')
+        ->join('poliklinik', 'poliklinik.kd_poli=reg_periksa.kd_poli')
+        ->join('dokter', 'dokter.kd_dokter=reg_periksa.kd_dokter')
+        ->where('no_rkm_medis', $no_rkm_medis)
+        ->toArray();
+      $no_rawat_array = [];
+      foreach($reg_periksa as $row) {
+        $no_rawat_array[] = $row['no_rawat'];
+      }
+      $berkas_digital_perawatan = $this->db('berkas_digital_perawatan')
+        ->join('master_berkas_digital', 'master_berkas_digital.kode = berkas_digital_perawatan.kode')
+        ->in('no_rawat', $no_rawat_array)
+        ->toArray();
+      if($no_rawat) {
+        $berkas_digital_perawatan = $this->db('berkas_digital_perawatan')
+        ->join('master_berkas_digital', 'master_berkas_digital.kode = berkas_digital_perawatan.kode')
+        ->where('no_rawat', revertNoRawat($no_rawat))
+        ->toArray();
+      }
+      $master_berkas_digital = $this->db('master_berkas_digital')->toArray();
+      return $this->draw('folder.html', ['pasien' => $pasien, 'reg_periksa' => $reg_periksa, 'berkas_digital_perawatan' => $berkas_digital_perawatan, 'master_berkas_digital' => $master_berkas_digital]);
+    }
+
+    public function postSaveBerkasDigital()
+    {
+
+      if(MULTI_APP) {
+
+        $curl = curl_init();
+        $filePath = $_FILES['file']['tmp_name'];
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => str_replace('webapps','',WEBAPPS_URL).'api/berkasdigital',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS => array('file'=> new \CURLFILE($filePath),'token' => $this->settings->get('api.berkasdigital_key'), 'no_rawat' => $_POST['no_rawat'], 'kode' => $_POST['kode']),
+          CURLOPT_HTTPHEADER => array(),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $json = json_decode($response, true);
+        if($json['status'] == 'Success') {
+          echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
+        } else {
+          echo 'Gagal menambahkan gambar';
+        }
+
+      } else {      
+        $dir    = $this->_uploads;
+        $cntr   = 0;
+
+        $id = convertNorawat($_POST['no_rawat']);
+        $temp = explode(".", $_FILES["file"]["name"]);
+        $imgName = time().$cntr++;
+        $lokasi_file = 'pages/upload/'.$id.'_'.$imgName.'.'.end($temp);
+        $FileName = $id.'_'.$imgName.'.'.end($temp);
+        $tmpFileName = $_FILES['file']['tmp_name'];
+        $uploaded = move_uploaded_file($tmpFileName, $dir.'/'.$FileName);
+        if($uploaded) {
+            $query = $this->db('berkas_digital_perawatan')->save(['no_rawat' => $_POST['no_rawat'], 'kode' => $_POST['kode'], 'lokasi_file' => $lokasi_file]);
+            if($query) {
+              echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$lokasi_file.'" width="150" />';
+            }          
+        } else {
+          echo 'Upload gagal';
+        }
+      }
+      exit();
+
+    }
+
+    public function postHapusBerkasDigital()
+    {
+      if (file_exists(UPLOADS.'/berkasrawat/'.$_POST['lokasi_file'])) {
+        $hapus = unlink(UPLOADS.'/berkasrawat/'.$_POST['lokasi_file']);
+        if($hapus) {
+          $this->db('berkas_digital_perawatan')->where('lokasi_file', $_POST['lokasi_file'])->delete();
+        }
+      }
+      exit();
+    }
+
+    public function getDownloadBerkasDigital()
+    {
+      $file = explode('/', $_GET['lokasi_file']);
+      $file_name = $file['2'];
+      $file_url = '{?=url()?}/uploads/berkasrawat/' . $_GET['lokasi_file'];
+      
+      // Configure.
+      header('Content-Type: application/octet-stream');
+      header("Content-Transfer-Encoding: Binary"); 
+      header("Content-disposition: attachment; filename=\"".$file_name."\"");
+      
+      // Actual download.
+      readfile($file_url);
+
       exit();
     }
 
@@ -503,6 +625,19 @@ class Admin extends AdminModule
     {
       $url = url([ADMIN, 'pcare', 'byjeniskartu', 'nik', $nik]);
       echo $this->draw('pcare.bynik.html', ['url' => $url]);
+      exit();
+    }
+
+    public function getRiwayatPerawatanXXX($no_rkm_medis)
+    {
+      $reg_periksa = $this->db('reg_periksa')
+        ->join('poliklinik', 'poliklinik.kd_poli=reg_periksa.kd_poli')
+        ->join('dokter', 'dokter.kd_dokter=reg_periksa.kd_dokter')
+        ->join('penjab', 'penjab.kd_pj=reg_periksa.kd_pj')
+        ->where('no_rkm_medis', $no_rkm_medis)
+        ->desc('tgl_registrasi')
+        ->toArray();
+      echo json_encode($reg_periksa, true);
       exit();
     }
 
@@ -547,12 +682,12 @@ class Admin extends AdminModule
           ->where('no_rawat', $row['no_rawat'])
           ->toArray();
         $row['rawat_jl_drpr'] = [];
-        foreach ($rows['rawat_jl_drpr'] as $row) {
-          $dokter = $this->db('dokter')->where('kd_dokter', $row['kd_dokter'])->oneArray();
-          $petugas = $this->db('petugas')->where('nip', $row['nip'])->oneArray();
-          $row['nm_dokter'] = $dokter['nm_dokter'];
-          $row['nama'] = $petugas['nama'];
-          $row['rawat_jl_drpr'][] = $row;
+        foreach ($rows['rawat_jl_drpr'] as $row2) {
+          $dokter = $this->db('dokter')->where('kd_dokter', $row2['kd_dokter'])->oneArray();
+          $petugas = $this->db('petugas')->where('nip', $row2['nip'])->oneArray();
+          $row2['nm_dokter'] = $dokter['nm_dokter'];
+          $row2['nama'] = $petugas['nama'];
+          $row['rawat_jl_drpr'][] = $row2;
         }
         $row['pemeriksaan_ranap'] = [];
         $row['rawat_inap_dr'] = [];
@@ -577,12 +712,12 @@ class Admin extends AdminModule
             ->join('jns_perawatan_inap', 'jns_perawatan_inap.kd_jenis_prw=rawat_inap_drpr.kd_jenis_prw')
             ->where('no_rawat', $row['no_rawat'])
             ->toArray();
-          foreach ($rows['rawat_inap_drpr'] as $row) {
-            $dokter = $this->db('dokter')->where('kd_dokter', $row['kd_dokter'])->oneArray();
-            $petugas = $this->db('petugas')->where('nip', $row['nip'])->oneArray();
-            $row['nm_dokter'] = $dokter['nm_dokter'];
-            $row['nama'] = $petugas['nama'];
-            $row['rawat_inap_drpr'][] = $row;
+          foreach ($rows['rawat_inap_drpr'] as $row3) {
+            $dokter = $this->db('dokter')->where('kd_dokter', $row3['kd_dokter'])->oneArray();
+            $petugas = $this->db('petugas')->where('nip', $row3['nip'])->oneArray();
+            $row3['nm_dokter'] = $dokter['nm_dokter'];
+            $row3['nama'] = $petugas['nama'];
+            $row['rawat_inap_drpr'][] = $row3;
           }
         }
 
@@ -737,7 +872,7 @@ class Admin extends AdminModule
           if(isset($_POST["query"])){
             $output = '';
             $key = "%".$_POST["query"]."%";
-            $rows = $this->data_wilayah('propinsi')->like('nm_prop', $key)->asc('kd_prop')->limit(10)->toArray();
+            $rows = $this->db('propinsi')->like('nm_prop', $key)->asc('kd_prop')->limit(10)->toArray();
             $output = '';
             if(count($rows)){
               foreach ($rows as $row) {
@@ -751,7 +886,7 @@ class Admin extends AdminModule
           if(isset($_POST["query"])){
             $output = '';
             $key = "%".$_POST["query"]."%";
-            $rows = $this->data_wilayah('kabupaten')->like('nm_kab', $key)->asc('kd_kab')->limit(10)->toArray();
+            $rows = $this->db('kabupaten')->like('nm_kab', $key)->asc('kd_kab')->limit(10)->toArray();
             $output = '';
             if(count($rows)){
               foreach ($rows as $row) {
@@ -765,7 +900,7 @@ class Admin extends AdminModule
           if(isset($_POST["query"])){
             $output = '';
             $key = "%".$_POST["query"]."%";
-            $rows = $this->data_wilayah('kecamatan')->like('nm_kec', $key)->asc('kd_kec')->limit(10)->toArray();
+            $rows = $this->db('kecamatan')->like('nm_kec', $key)->asc('kd_kec')->limit(10)->toArray();
             $output = '';
             if(count($rows)){
               foreach ($rows as $row) {
@@ -807,133 +942,59 @@ class Admin extends AdminModule
       	return $umur;
     }
 
-    public function getPasien()
+    public function getExportPDF()
     {
-        // CSS
-        $this->core->addCSS(url('assets/css/jquery-ui.css'));
-        $this->core->addCSS(url('assets/css/dataTables.bootstrap.min.css'));
-        $this->core->addCSS(url('assets/css/bootstrap-datetimepicker.css'));
-        // JS
-        $this->core->addJS(url('assets/jscripts/jquery-ui.js'));
-        $this->core->addJS(url('assets/jscripts/jquery.dataTables.min.js'));
-        $this->core->addJS(url('assets/jscripts/dataTables.bootstrap.min.js'));
-        $this->core->addJS(url('https://datatables.net/media/blog/2017-12-31/dataTables.scrollResize.js'));
-        $this->core->addJS(url('assets/jscripts/moment-with-locales.js'));
-        $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
+      $query = $_GET['query'];
+      $tgl_awal = $_GET['tgl_awal'];
+      $tgl_akhir = $_GET['tgl_akhir'];
+      $filter = $_GET['filter'];
 
-        $penjab = $this->db('penjab')->desc('kd_pj')->toArray();
-        return $this->draw('pasien.html', ['penjab' => $penjab]);
-    }
-    
-    public function postDataPasien()
-    {
-  
-        // $_POST['length'] = '';
-        // $_POST['start'] = '';
-        // $_POST['order'] = '';
-        // $_POST['search'] = '';
-        // $_POST['draw'] = '';
-
-        $columns = array( 
-          0 => 'no_rkm_medis',
-          1 => 'nm_pasien',
-          2 => 'tgl_lahir',
-          3 => 'jk', 
-          4 => 'gol_darah', 
-          5 => 'pekerjaan', 
-          6 => 'alamat', 
-          7 => 'no_tlp', 
-          8 => 'tgl_daftar', 
-          9 => 'email'
-      );
-  
-        // $start_date = date('Y-m-d');
-        $start_date = '1970-01-01';
-        $end_date = date('Y-m-d');
-        if(isset($_POST['searchByFromdate']) && $_POST['searchByFromdate'] !='') {
-          $start_date = $_POST['searchByFromdate'];
+      $sql = "SELECT * FROM pasien";
+        if(isset($_GET['tgl_awal']) && isset($_GET['tgl_akhir']) && $_GET['tgl_awal'] !='' && $_GET['tgl_akhir'] !='') {
+          $sql .=" WHERE tgl_daftar BETWEEN '$tgl_awal' AND '$tgl_akhir'";
         }
-        if(isset($_POST['searchByTodate']) && $_POST['searchByTodate'] !='') {
-          $end_date = $_POST['searchByTodate'];
-        }    
-        
-        $limit = $_POST['length'];
-        $start = $_POST['start'];
-        $order = $columns[$_POST['order']['0']['column']];
-        $dir = $_POST['order']['0']['dir'];
-              
-        $keyword = $_POST['search']['value']; 
-        $penjab = isset($_POST['sortByPenjab']) ? $_POST['sortByPenjab'] : '';
-  
-        $sql_query = "select * from pasien where ";
-        $sql_query .= "tgl_daftar between ? and ? and ";
-        $sql_query .= "(no_rkm_medis like ? or nm_pasien like ?) ";
-        if($penjab) {
-          $sql_query .= "and kd_pj = '$penjab' ";
+        if(isset($_GET['query']) && $_GET['query'] !='') {
+          $sql .=" AND nm_pasien LIKE '%$query%'";
         }
-
-        $total = $this->db()->pdo()->prepare($sql_query);
-        $total->execute([$start_date, $end_date, '%'.$keyword.'%', '%'.$keyword.'%']);
-        $total = $total->fetchAll(\PDO::FETCH_ASSOC);          
-
-        $totalData = count($total);
-              
-        $totalFiltered = $totalData; 
-
-        $sql_query .= "order by $order $dir LIMIT $start,$limit";    
-
-        $query = $this->db()->pdo()->prepare($sql_query);
-        $query->execute([$start_date, $end_date, '%'.$keyword.'%', '%'.$keyword.'%']);
-        $query = $query->fetchAll(\PDO::FETCH_ASSOC);
-  
-        $data = array();
-        if(!empty($query))
-        {
-            foreach($query as $row) {
-              $row['aksi'] = '
-              <div class="dropdown">
-              <button data-toggle="dropdown" class="btn btn-sm btn-default dropdown-toggle" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                                
-              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                      <li><a href="">Edit</a></li>
-                      <li><a href="">Delete</a></li>
-                      <li class="divider"></li>
-                      <li><a href="">Separated link</a></li>
-                      <li class="dropdown-submenu">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Surat-Surat</a>
-                      <ul class="dropdown-menu">
-                        <li><a href="#surat_kontrol" data-no_rawat="2023/12/03/000002" data-no_rkm_medis="000009" data-nm_pasien="Coba ajah" data-tgl_registrasi="2023-12-03">Surat Kontrol</a></li>
-                        <li><a href="http://mlite.loc/admin/rawat_jalan/suratrujukan/20231203000002?t=a3fb0aa946a3" target="_blank">Surat Rujukan</a></li>
-                        <li><a href="http://mlite.loc/admin/rawat_jalan/suratsehat/20231203000002?t=a3fb0aa946a3" target="_blank">Surat Keterangan Sehat</a></li>
-                        <li><a href="http://mlite.loc/admin/rawat_jalan/suratsakit/20231203000002?t=a3fb0aa946a3" target="_blank">Surat Keterangan Sakit</a></li>
-                      </ul>
-                    </li>
-                      
-              </ul>
-              </div>
-              ';
-              // $row['aksi'] = '<a href="#" data-toggle="modal" data-target="#statusModal" class="btn btn-sm btn-warning"><i class="fa fa-refresh"></i> '.$penjab.'</a>';
-              $data[] = $row;
-            }
+        if(isset($_GET['filter']) && $_GET['filter'] !='') {
+          $sql .=" AND kd_pj = '$filter'";
         }
+      $stmt = $this->db()->pdo()->prepare($sql);
+      $stmt->execute();
+      $rows = $stmt->fetchAll();        
+
+      echo $this->draw('pasien.export.pdf.html', ['pasien' => $rows]);
+
+      $mpdf = new \Mpdf\Mpdf([
+        'mode' => 'utf-8',
+        'orientation' => 'L'
+      ]);
+
+      $mpdf->SetHTMLHeader($this->core->setPrintHeader());
+      $mpdf->SetHTMLFooter($this->core->setPrintFooter());
             
-        
-        $json_data = array(
-            "draw"            => intval($_POST['draw']),  
-            "recordsTotal"    => intval($totalData),  
-            "recordsFiltered" => intval($totalFiltered), 
-            "data"            => $data 
-        );
-              
-        echo json_encode($json_data); 
-        exit();
-      
-    } 
+      $url = url(ADMIN.'/tmp/pasien.export.pdf.html');
+      $html = file_get_contents($url);
+      $mpdf->WriteHTML($this->core->setPrintCss(),\Mpdf\HTMLParserMode::HEADER_CSS);
+      $mpdf->WriteHTML($html,\Mpdf\HTMLParserMode::HTML_BODY);
+
+      // Output a PDF file directly to the browser
+      $mpdf->Output();
+      exit();
+    }
+
+    public function getExportXLS()
+    {
+      echo "Cetak XLS";
+      exit();
+    }
 
     public function getJavascript()
     {
         header('Content-type: text/javascript');
-        echo $this->draw(MODULES.'/pasien/js/admin/pasien.js');
+        $this->assign['websocket'] = $this->settings->get('settings.websocket');
+        $this->assign['websocket_proxy'] = $this->settings->get('settings.websocket_proxy');
+        echo $this->draw(MODULES.'/pasien/js/admin/pasien.js', ['mlite' => $this->assign]);
         exit();
     }
 
@@ -965,16 +1026,6 @@ class Admin extends AdminModule
         redirect(url([ADMIN, 'pasien', 'settings']));
     }
 
-    protected function data_wilayah($table)
-    {
-        return new DB_Wilayah($table);
-    }
-
-    protected function data_icd($table)
-    {
-        return new DB_ICD($table);
-    }
-
     public function getCetakMpdf()
     {
       $mpdf = new \Mpdf\Mpdf([
@@ -985,7 +1036,7 @@ class Admin extends AdminModule
       $mpdf->SetHTMLHeader($this->core->setPrintHeader());
       $mpdf->SetHTMLFooter($this->core->setPrintFooter());
             
-      $url = url('admin/tmp/cetak.pasien.html');
+      $url = url(ADMIN.'/tmp/cetak.pasien.html');
       $html = file_get_contents($url);
       $mpdf->WriteHTML($this->core->setPrintCss(),\Mpdf\HTMLParserMode::HEADER_CSS);
       $mpdf->WriteHTML($html,\Mpdf\HTMLParserMode::HTML_BODY);
@@ -1025,7 +1076,7 @@ class Admin extends AdminModule
       // $mpdf->SetHTMLHeader($this->core->setPrintHeader());
       // $mpdf->SetHTMLFooter($this->core->setPrintFooter());
             
-      $url = url('admin/tmp/riwayat.perawatan.html');
+      $url = url(ADMIN.'/tmp/riwayat.perawatan.html');
       $html = file_get_contents($url);
       $mpdf->WriteHTML($this->core->setPrintCss(),\Mpdf\HTMLParserMode::HEADER_CSS);
       $mpdf->WriteHTML($css);
@@ -1039,7 +1090,7 @@ class Admin extends AdminModule
     public function getExcel()
     {
       $file = "data.pasien.xls";
-      $html = file_get_contents(url('admin/tmp/cetak.pasien.html'));
+      $html = file_get_contents(url(ADMIN.'/tmp/cetak.pasien.html'));
       header("Content-type: application/vnd-ms-excel");
       header("Content-Disposition: attachment; filename=$file");
       echo "<!DOCTYPE html><html><head></head><body>";
