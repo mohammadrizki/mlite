@@ -237,6 +237,48 @@ $("#form_soap").on("click", "#simpan_soap", function(event){
 });
 
 // ketika tombol hapus ditekan
+$("#soap").on("click",".copy_soap", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var suhu_tubuh      = $(this).attr("data-suhu_tubuh");
+  var tensi           = $(this).attr("data-tensi");
+  var nadi            = $(this).attr("data-nadi");
+  var respirasi       = $(this).attr("data-respirasi");
+  var tinggi          = $(this).attr("data-tinggi");
+  var berat           = $(this).attr("data-berat");
+  var gcs             = $(this).attr("data-gcs");
+  var kesadaran       = $(this).attr("data-kesadaran");
+  var alergi          = $(this).attr("data-alergi");
+  var lingkar_perut   = $(this).attr("data-lingkar_perut");
+  var keluhan         = $(this).attr("data-keluhan");
+  var pemeriksaan     = $(this).attr("data-pemeriksaan");
+  var penilaian       = $(this).attr("data-penilaian");
+  var rtl             = $(this).attr("data-rtl");
+  var instruksi       = $(this).attr("data-instruksi");
+  var evaluasi        = $(this).attr("data-evaluasi");
+  var spo2            = $(this).attr("data-spo2");
+
+  $('input:text[name=suhu_tubuh]').val(suhu_tubuh);
+  $('input:text[name=tensi]').val(tensi);
+  $('input:text[name=nadi]').val(nadi);
+  $('input:text[name=respirasi]').val(respirasi);
+  $('input:text[name=tinggi]').val(tinggi);
+  $('input:text[name=berat]').val(berat);
+  $('input:text[name=gcs]').val(gcs);
+  $('input:text[name=kesadaran]').val(kesadaran);
+  $('input:text[name=alergi]').val(alergi);
+  $('input:text[name=lingkar_perut]').val(lingkar_perut);
+  $('textarea[name=keluhan]').val(keluhan);
+  $('textarea[name=pemeriksaan]').val(pemeriksaan);
+  $('textarea[name=penilaian]').val(penilaian);
+  $('textarea[name=rtl]').val(rtl);
+  $('textarea[name=instruksi]').val(instruksi);
+  $('textarea[name=evaluasi]').val(evaluasi);
+  $('input:text[name=spo2]').val(spo2);
+
+});
+
+// ketika tombol hapus ditekan
 $("#soap").on("click",".edit_soap", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
   event.preventDefault();
@@ -367,7 +409,7 @@ $("#form_kontrol").on("click", "#simpan_kontrol", function(event){
     $.post(url, {no_rkm_medis : no_rkm_medis,
     }, function(data) {
       // tampilkan data
-      $("#kontrol").html(data).show();
+      $("#surat_kontrol").html(data).show();
     });
     $('input:text[name=nm_perawatan]').val("");
     $('input:text[name=biaya]').val("");
@@ -398,7 +440,6 @@ $("#form_rincian").on("click", "#selesai", function(event){
   $('#daftar_racikan').hide();
   $("#info_tambahan").hide();
   $("#form_kontrol").hide();
-  $("#kontrol").hide();
   $("#surat_kontrol").hide();
 });
 
@@ -415,7 +456,6 @@ $("#form_soap").on("click", "#selesai_soap", function(event){
   $('#daftar_racikan').hide();
   $("#info_tambahan").hide();
   $("#form_kontrol").hide();
-  $("#kontrol").hide();
   $("#surat_kontrol").hide();
 });
 
@@ -432,7 +472,6 @@ $("#form_kontrol").on("click", "#selesai_kontrol", function(event){
   $('#daftar_racikan').hide();
   $("#info_tambahan").hide();
   $("#form_kontrol").hide();
-  $("#kontrol").hide();
   $("#surat_kontrol").hide();
 });
 
@@ -586,7 +625,7 @@ $("#obat").on("click", ".pilih_obat", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var stok = $(this).attr("data-stok");
   var stokminimal = $(this).attr("data-stokminimal");
   var kat = $(this).attr("data-kat");
@@ -642,10 +681,10 @@ $("#obat_racikan").on("click", ".pilih_obat_racikan", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var stok = $(this).attr("data-stok");
 
-  if(stok < 10) {
+  if(stok < 1) {
     alert('Stok obat ' + nama_brng + ' tidak mencukupi.');
     $('input:hidden[name=kode_brng]').val();
     $('input:text[name=nama_brng]').val();
@@ -775,6 +814,29 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
   diagnosa_klinis      : diagnosa_klinis
   }, function(data) {
     console.log(data);
+    if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
+      if(kat == 'obat' || kat == 'racikan') {
+        let payload = {
+            'action' : 'permintaan_resep',
+            'modul' : 'dokter_ralan'
+        }
+        ws.send(JSON.stringify(payload));
+      }
+      if(kat == 'laboratorium') {
+        let payload = {
+            'action' : 'permintaan_laboratorium',
+            'modul' : 'dokter_ralan'
+        }
+        ws.send(JSON.stringify(payload));
+      }
+      if(kat == 'radiologi') {
+        let payload = {
+            'action' : 'permintaan_radiologi',
+            'modul' : 'dokter_ralan'
+        }
+        ws.send(JSON.stringify(payload));
+      }
+    }
     // tampilkan data
     $("#display").hide();
     var url = baseURL + '/dokter_ralan/rincian?t=' + mlite.token;
@@ -1354,19 +1416,43 @@ $("#form_soap").on("click",".resume", function(event){
   return false;
 });
 
-$('a[href="#resume"]').click(function(event){
+{if: $mlite.websocket == 'ya'}
+
+  {if: $mlite.websocket_proxy != ''}
+    var URL_WEBSOCKET = "{$mlite.websocket_proxy}";
+  {else}
+    var URL_WEBSOCKET = "ws://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
+  {/if}
+
+  var ws = new WebSocket(URL_WEBSOCKET);
   var baseURL = mlite.url + '/' + mlite.admin;
-  event.preventDefault();
-  var no_rawat = $(this).attr("data-no_rawat").replace(/\//g, '');
+  
+  ws.onmessage = function(response){
+    try{
+      output = JSON.parse(response.data);
+      if(output['action'] == 'simpan'){
+        if(output['modul'] == 'rawat_jalan' || output['modul'] == 'igd'){
+          $("#dokter_ralan #display").show().load(baseURL + '/dokter_ralan/display?t=' + mlite.token);
+        }
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+  
+  
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
 
-  var loadURL =  baseURL + '/dokter_ralan/resume/' + no_rawat + '?t=' + mlite.token;
-
-  var modal = $('#eresepModal');
-  var modalContent = $('#eresepModal .modal-content');
-
-  modal.off('show.bs.modal');
-  modal.on('show.bs.modal', function () {
-      modalContent.load(loadURL);
-  }).modal();
-  return false;
-});
+{/if}

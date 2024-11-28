@@ -3,7 +3,6 @@
 namespace Plugins\Presensi;
 
 use Systems\AdminModule;
-use Systems\Lib\Fpdf\PDF_MC_Table;
 
 class Admin extends AdminModule
 {
@@ -68,7 +67,7 @@ class Admin extends AdminModule
             $status = $_GET['status'];
 
         // pagination
-        $totalRecords = $this->core->mysql('jam_jaga')
+        $totalRecords = $this->db('jam_jaga')
             ->like('shift', '%' . $phrase . '%')
             ->orLike('dep_id', '%' . $phrase . '%')
             ->toArray();
@@ -78,7 +77,7 @@ class Admin extends AdminModule
 
         // list
         $offset = $pagination->offset();
-        $rows = $this->core->mysql('jam_jaga')
+        $rows = $this->db('jam_jaga')
             ->like('shift', '%' . $phrase . '%')
             ->orLike('dep_id', '%' . $phrase . '%')
             ->offset($offset)
@@ -120,8 +119,8 @@ class Admin extends AdminModule
                 ];
         }
 
-        $this->assign['dep_id'] = $this->core->mysql('departemen')->toArray();
-        $this->assign['shift'] = $this->core->mysql('jam_masuk')->toArray();
+        $this->assign['dep_id'] = $this->db('departemen')->toArray();
+        $this->assign['shift'] = $this->db('jam_masuk')->toArray();
 
         return $this->draw('jagaadd.form.html', ['jagaadd' => $this->assign]);
     }
@@ -145,9 +144,9 @@ class Admin extends AdminModule
             unset($_POST['save']);
 
             if (!$id) {
-                $query = $this->core->mysql('jam_jaga')->save($_POST);
+                $query = $this->db('jam_jaga')->save($_POST);
             } else {
-                $query = $this->core->mysql('jam_jaga')->where('no_id', $id)->save($_POST);
+                $query = $this->db('jam_jaga')->where('no_id', $id)->save($_POST);
             }
 
             if ($query) {
@@ -185,14 +184,14 @@ class Admin extends AdminModule
 
         // pagination
         if ($this->core->getUserInfo('role') == 'admin') {
-            $totalRecords = $this->core->mysql('jadwal_pegawai')
+            $totalRecords = $this->db('jadwal_pegawai')
                 ->join('pegawai', 'pegawai.id=jadwal_pegawai.id')
                 ->where('jadwal_pegawai.tahun', $tahun)
                 ->like('jadwal_pegawai.bulan', $bulan . '%')
                 ->like('pegawai.nama', '%' . $phrase . '%')
                 ->toArray();
         } else {
-            $totalRecords = $this->core->mysql('jadwal_pegawai')
+            $totalRecords = $this->db('jadwal_pegawai')
                 ->join('pegawai', 'pegawai.id=jadwal_pegawai.id')
                 ->where('jadwal_pegawai.tahun', $tahun)
                 ->where('jadwal_pegawai.bulan', $bulan)
@@ -208,7 +207,7 @@ class Admin extends AdminModule
         // list
         $offset = $pagination->offset();
         if ($this->core->getUserInfo('role') == 'admin') {
-            $rows = $this->core->mysql('jadwal_pegawai')
+            $rows = $this->db('jadwal_pegawai')
                 ->join('pegawai', 'pegawai.id=jadwal_pegawai.id')
                 ->where('jadwal_pegawai.tahun', $tahun)
                 ->like('jadwal_pegawai.bulan', $bulan . '%')
@@ -217,7 +216,7 @@ class Admin extends AdminModule
                 ->limit($perpage)
                 ->toArray();
         } else {
-            $rows = $this->core->mysql('jadwal_pegawai')
+            $rows = $this->db('jadwal_pegawai')
                 ->join('pegawai', 'pegawai.id=jadwal_pegawai.id')
                 ->where('jadwal_pegawai.tahun', $tahun)
                 ->where('jadwal_pegawai.bulan', $bulan)
@@ -308,20 +307,20 @@ class Admin extends AdminModule
         }
         $username = $this->core->getUserInfo('username', null, true);
         if ($this->core->getUserInfo('role') == 'admin') {
-            $this->assign['id'] = $this->core->mysql('pegawai')
+            $this->assign['id'] = $this->db('pegawai')
                 ->where('stts_aktif', 'AKTIF')
                 ->toArray();
         } else {
-            $this->assign['id'] = $this->core->mysql('pegawai')
+            $this->assign['id'] = $this->db('pegawai')
                 ->where('departemen', $this->core->getPegawaiInfo('departemen', $username))
                 ->where('bidang', $this->core->getPegawaiInfo('bidang', $username))
                 ->where('stts_aktif', 'AKTIF')
                 ->toArray();
         }
         if ($this->core->getUserInfo('role') == 'admin') {
-            $this->assign['h1'] = $this->core->mysql('jam_masuk')->toArray();
+            $this->assign['h1'] = $this->db('jam_masuk')->toArray();
         } else {
-            $this->assign['h1'] = $this->core->mysql('jam_jaga')->where('dep_id', $this->core->getPegawaiInfo('departemen', $username))->toArray();
+            $this->assign['h1'] = $this->db('jam_jaga')->where('dep_id', $this->core->getPegawaiInfo('departemen', $username))->toArray();
         }
         $this->assign['tahun'] = array('', '2020', '2021', '2022', '2023', '2024', '2025');
         //$this->assign['tahun'] = date('Y');
@@ -337,25 +336,25 @@ class Admin extends AdminModule
             $bulan = date('m');
         }
 
-        $row = $this->core->mysql('jadwal_pegawai')->where('id', $id)->where('tahun', $tahun)->where('bulan', $bulan)->oneArray();
+        $row = $this->db('jadwal_pegawai')->where('id', $id)->where('tahun', $tahun)->where('bulan', $bulan)->oneArray();
         if (!empty($row)) {
             $username = $this->core->getUserInfo('username', null, true);
             $this->assign['form'] = $row;
             if ($this->core->getUserInfo('role') == 'admin') {
-                $this->assign['id'] = $this->core->mysql('pegawai')
+                $this->assign['id'] = $this->db('pegawai')
                     ->where('stts_aktif', 'AKTIF')
                     ->toArray();
             } else {
-                $this->assign['id'] = $this->core->mysql('pegawai')
+                $this->assign['id'] = $this->db('pegawai')
                     ->where('departemen', $this->core->getPegawaiInfo('departemen', $username))
                     ->where('bidang', $this->core->getPegawaiInfo('bidang', $username))
                     ->where('stts_aktif', 'AKTIF')
                     ->toArray();
             }
             if ($this->core->getUserInfo('role') == 'admin') {
-                $this->assign['h1'] = $this->core->mysql('jam_masuk')->toArray();
+                $this->assign['h1'] = $this->db('jam_masuk')->toArray();
             } else {
-                $this->assign['h1'] = $this->core->mysql('jam_jaga')->where('dep_id', $this->core->getPegawaiInfo('departemen', $username))->toArray();
+                $this->assign['h1'] = $this->db('jam_jaga')->where('dep_id', $this->core->getPegawaiInfo('departemen', $username))->toArray();
             }
             $this->assign['tahun'] = array('', '2020', '2021', '2022', '2023', '2024', '2025');
             //$this->assign['tahun'] = $tahun;
@@ -374,7 +373,7 @@ class Admin extends AdminModule
         if (!$id) {
             $location = url([ADMIN, 'presensi', 'jadwal']);
         } else {
-            $location = url([ADMIN, 'presensi', 'jadwaledit', $id]);
+            $location = url([ADMIN, 'presensi', 'jadwaledit', $id, $_POST['bulan'], $_POST['tahun']]);
         }
 
         //if (checkEmptyFields(['id'], $_POST)){
@@ -386,9 +385,9 @@ class Admin extends AdminModule
             unset($_POST['save']);
 
             if (!$id) {
-                $query = $this->core->mysql('jadwal_pegawai')->save($_POST);
+                $query = $this->db('jadwal_pegawai')->save($_POST);
             } else {
-                $query = $this->core->mysql('jadwal_pegawai')->where('id', $id)->where('tahun', $_POST['tahun'])->where('bulan', $_POST['bulan'])->save($_POST);
+                $query = $this->db('jadwal_pegawai')->where('id', $id)->where('tahun', $_POST['tahun'])->where('bulan', $_POST['bulan'])->save($_POST);
             }
 
             if ($query) {
@@ -587,9 +586,9 @@ class Admin extends AdminModule
                                     ->toArray();
             }
             if ($this->core->getUserInfo('role') == 'admin') {
-                $this->assign['h1'] = $this->core->mysql('jam_masuk')->toArray();
+                $this->assign['h1'] = $this->db('jam_masuk')->toArray();
             } else {
-                $this->assign['h1'] = $this->core->mysql('jam_jaga')->where('dep_id', $this->core->getPegawaiInfo('departemen', $username))->toArray();
+                $this->assign['h1'] = $this->db('jam_jaga')->where('dep_id', $this->core->getPegawaiInfo('departemen', $username))->toArray();
             }
             $this->assign['tahun'] = array('', '2020', '2021', '2022', '2023', '2024', '2025');
             $this->assign['bulan'] = array('','01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
@@ -610,11 +609,6 @@ class Admin extends AdminModule
         } else {
             $location = url([ADMIN, 'presensi', 'jadwaltambahedit', $id]);
         }
-
-        //if (checkEmptyFields(['id'], $_POST)){
-        //    $this->notify('failure', 'Isian kosong');
-        //    redirect($location, $_POST);
-       // }
 
         if (!$errors) {
             unset($_POST['save']);
@@ -665,7 +659,7 @@ class Admin extends AdminModule
         $username = $this->core->getUserInfo('username', null, true);
 
         if ($this->core->getUserInfo('role') == 'admin') {
-            $totalRecords = $this->core->mysql('rekap_presensi')
+            $totalRecords = $this->db('rekap_presensi')
                 ->join('pegawai', 'pegawai.id = rekap_presensi.id')
                 ->where('jam_datang', '>=', $tgl_kunjungan . ' 00:00:00')
                 ->where('jam_datang', '<=', $tgl_kunjungan_akhir . ' 23:59:59')
@@ -674,7 +668,7 @@ class Admin extends AdminModule
                 ->asc('jam_datang')
                 ->toArray();
         } else {
-            $totalRecords = $this->core->mysql('rekap_presensi')
+            $totalRecords = $this->db('rekap_presensi')
                 ->join('pegawai', 'pegawai.id = rekap_presensi.id')
                 ->where('jam_datang', '>=', $tgl_kunjungan . ' 00:00:00')
                 ->where('jam_datang', '<=', $tgl_kunjungan_akhir . ' 23:59:59')
@@ -692,7 +686,7 @@ class Admin extends AdminModule
         $offset = $pagination->offset();
 
         if ($this->core->getUserInfo('role') == 'admin') {
-            $rows = $this->core->mysql('rekap_presensi')
+            $rows = $this->db('rekap_presensi')
                 ->select([
                     'nama' => 'pegawai.nama',
                     'departemen' => 'pegawai.departemen',
@@ -716,7 +710,7 @@ class Admin extends AdminModule
                 ->limit($perpage)
                 ->toArray();
         } else {
-            $rows = $this->core->mysql('rekap_presensi')
+            $rows = $this->db('rekap_presensi')
                 ->select([
                     'nama' => 'pegawai.nama',
                     'departemen' => 'pegawai.departemen',
@@ -758,7 +752,7 @@ class Admin extends AdminModule
                     'Sat' => 'SABTU'
                 );
 
-                $jam_datang = $this->core->mysql('rekap_presensi')
+                $jam_datang = $this->db('rekap_presensi')
                     ->select([
                         'EXTRACT(MONTH FROM rekap_presensi.jam_datang) as month',
                         'EXTRACT(YEAR FROM rekap_presensi.jam_datang) as year',
@@ -1363,7 +1357,7 @@ class Admin extends AdminModule
                         break;
                 }
 
-                $row['efektif'] = $this->core->mysql('rekap_presensi')
+                $row['efektif'] = $this->db('rekap_presensi')
                     ->select([
                         'efektif' => 'CAST(rekap_presensi.durasi as TIME) - ' . $efektif,
                         'kurang' => 'CAST(rekap_presensi.durasi as TIME) - ' . $interval
@@ -1410,399 +1404,18 @@ class Admin extends AdminModule
 
         $this->assign['totalplus'] = $timesminus;
 
-        // $this->assign['stts1'] = $stts1;
-        // $this->assign['stts2'] = $stts2;
         $this->assign['getStatus'] = isset($_GET['status']);
         $this->assign['tahun'] = array('', '2020', '2021', '2022', '2023', '2024', '2025');
         $this->assign['bulan'] = array('', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
         $this->assign['tanggal'] = array('', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31');
-        $this->assign['bidang'] = $this->core->mysql('bidang')->toArray();
-        //$this->assign['printURL'] = url([ADMIN, 'presensi', 'cetakrekap','?b='.$bulan.'&y='.$tahun.'&s='.$phrase]);
+        $this->assign['bidang'] = $this->db('bidang')->toArray();
         return $this->draw('rekap_presensi.html', ['rekap' => $this->assign]);
-    }
-
-    public function getCetakRekap()
-    {
-        $phrase = '';
-        if (isset($_GET['s']))
-            $phrase = $_GET['s'];
-
-        $bulan = date('m');
-        if (isset($_GET['b'])) {
-            $bulan = $_GET['b'];
-        }
-
-        $total = [];
-        $count = 0;
-
-        $day = array(
-            'Sun' => 'AKHAD',
-            'Mon' => 'SENIN',
-            'Tue' => 'SELASA',
-            'Wed' => 'RABU',
-            'Thu' => 'KAMIS',
-            'Fri' => 'JUMAT',
-            'Sat' => 'SABTU'
-        );
-
-        $pasien = $this->core->mysql('rekap_presensi')
-            ->select([
-                'nama' => 'pegawai.nama',
-                'departemen' => 'pegawai.departemen',
-                'id' => 'rekap_presensi.id',
-                'shift' => 'rekap_presensi.shift',
-                'jam_datang' => 'rekap_presensi.jam_datang',
-                'jam_pulang' => 'rekap_presensi.jam_pulang',
-                'status' => 'rekap_presensi.status',
-                'durasi' => 'rekap_presensi.durasi',
-                'photo' => 'rekap_presensi.photo',
-                'EXTRACT(MONTH FROM rekap_presensi.jam_datang) as month',
-                'EXTRACT(YEAR FROM rekap_presensi.jam_datang) as year',
-                'EXTRACT(DAY FROM rekap_presensi.jam_datang) as day',
-            ])
-            ->join('pegawai', 'pegawai.id = rekap_presensi.id')
-            ->where('jam_datang', '>', date('Y-' . $bulan) . '-01')
-            ->where('jam_datang', '<', date('Y-' . $bulan) . '-31')
-            ->like('nama', '%' . $phrase . '%')
-            ->asc('jam_datang')
-            ->toArray();
-
-        $logo = 'data:image/png;base64,' . base64_encode($this->core->getSettings('logo'));
-
-        $pdf = new PDF_MC_Table();
-        $pdf->AddPage();
-        $pdf->SetAutoPageBreak(true, 10);
-        $pdf->SetTopMargin(10);
-        $pdf->SetLeftMargin(10);
-        $pdf->SetRightMargin(10);
-
-        $pdf->Image($logo, 10, 8, '18', '18', 'png');
-        $pdf->SetFont('Arial', '', 24);
-        $pdf->Text(30, 16, $this->core->getSettings('nama_instansi'));
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Text(30, 21, $this->core->getSettings('alamat_instansi') . ' - ' . $this->core->getSettings('kabupaten'));
-        $pdf->Text(30, 25, $this->core->getSettings('kontak') . ' - ' . $this->core->getSettings('email'));
-        $pdf->Line(10, 30, 200, 30);
-        $pdf->Line(10, 31, 200, 31);
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Text(10, 40, 'REKAP PRESENSI ');
-        $pdf->Ln(34);
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->SetWidths(array(50, 15, 35, 35, 18, 18, 18));
-        $pdf->Row(array('Nama Pegawai', 'Shift', 'Jam Datang', 'Jam Pulang', 'Durasi', 'Efektif', 'Selisih'));
-        $pdf->SetFont('Arial', '', 10);
-        foreach ($pasien as $hasil) {
-            $row['date'] = $day[date('D', strtotime(date($hasil['year'] . '-' . $hasil['month'] . '-' . $hasil['day'])))];
-            switch (true) {
-                case ($row['date'] == 'SENIN' and $hasil['shift'] == 'Pagi'):
-                    $interval = 'INTERVAL 6 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'SENIN' and $hasil['shift'] == 'Siang'):
-                    $interval = 'INTERVAL 5 HOUR';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'SENIN' and $hasil['shift'] == 'Siang - Gizi'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SENIN' and $hasil['shift'] == 'Malam'):
-                    $interval = 'INTERVAL 10 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 2 HOUR';
-                    break;
-                case ($row['date'] == 'SENIN' and $hasil['shift'] == 'Malam - Gizi (Masak)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SENIN' and $hasil['shift'] == 'Malam - Gizi (Saji)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SENIN' and $hasil['shift'] == 'Malam - Gizi (Cuci)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SELASA' and $hasil['shift'] == 'Pagi'):
-                    $interval = 'INTERVAL 6 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'SELASA' and $hasil['shift'] == 'Siang'):
-                    $interval = 'INTERVAL 5 HOUR';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'SELASA' and $hasil['shift'] == 'Siang - Gizi'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SELASA' and $hasil['shift'] == 'Malam'):
-                    $interval = 'INTERVAL 10 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 2 HOUR';
-                    break;
-                case ($row['date'] == 'SELASA' and $hasil['shift'] == 'Malam - Gizi (Masak)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SELASA' and $hasil['shift'] == 'Malam - Gizi (Saji)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SELASA' and $hasil['shift'] == 'Malam - Gizi (Cuci)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'RABU' and $hasil['shift'] == 'Pagi'):
-                    $interval = 'INTERVAL 6 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'RABU' and $hasil['shift'] == 'Siang'):
-                    $interval = 'INTERVAL 5 HOUR';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'RABU' and $hasil['shift'] == 'Siang - Gizi'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'RABU' and $hasil['shift'] == 'Malam'):
-                    $interval = 'INTERVAL 10 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 2 HOUR';
-                    break;
-                case ($row['date'] == 'RABU' and $hasil['shift'] == 'Malam - Gizi (Masak)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'RABU' and $hasil['shift'] == 'Malam - Gizi (Saji)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'RABU' and $hasil['shift'] == 'Malam - Gizi (Cuci)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'KAMIS' and $hasil['shift'] == 'Pagi'):
-                    $interval = 'INTERVAL 6 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'KAMIS' and $hasil['shift'] == 'Siang'):
-                    $interval = 'INTERVAL 5 HOUR';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'KAMIS' and $hasil['shift'] == 'Siang - Gizi'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'KAMIS' and $hasil['shift'] == 'Malam'):
-                    $interval = 'INTERVAL 10 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 2 HOUR';
-                    break;
-                case ($row['date'] == 'KAMIS' and $hasil['shift'] == 'Malam - Gizi (Masak)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'KAMIS' and $hasil['shift'] == 'Malam - Gizi (Saji)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'KAMIS' and $hasil['shift'] == 'Malam - Gizi (Cuci)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'JUMAT' and $hasil['shift'] == 'Pagi'):
-                    $interval = 'INTERVAL 3 HOUR';
-                    $efektif = 'INTERVAL 30 MINUTE';
-                    break;
-                case ($row['date'] == 'JUMAT' and $hasil['shift'] == 'Siang'):
-                    $interval = 'INTERVAL 5 HOUR';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'JUMAT' and $hasil['shift'] == 'Siang - Gizi'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'JUMAT' and $hasil['shift'] == 'Malam'):
-                    $interval = 'INTERVAL 10 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 2 HOUR';
-                    break;
-                case ($row['date'] == 'JUMAT' and $hasil['shift'] == 'Malam - Gizi (Masak)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'JUMAT' and $hasil['shift'] == 'Malam - Gizi (Saji)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'JUMAT' and $hasil['shift'] == 'Malam - Gizi (Cuci)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SABTU' and $hasil['shift'] == 'Pagi'):
-                    $interval = 'INTERVAL 5 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'SABTU' and $hasil['shift'] == 'Siang'):
-                    $interval = 'INTERVAL 5 HOUR';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'SABTU' and $hasil['shift'] == 'Siang - Gizi'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SABTU' and $hasil['shift'] == 'Malam'):
-                    $interval = 'INTERVAL 10 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 2 HOUR';
-                    break;
-                case ($row['date'] == 'SABTU' and $hasil['shift'] == 'Malam - Gizi (Masak)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SABTU' and $hasil['shift'] == 'Malam - Gizi (Saji)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'SABTU' and $hasil['shift'] == 'Malam - Gizi (Cuci)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'AKHAD' and $hasil['shift'] == 'Pagi'):
-                    $interval = 'INTERVAL 6 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'AKHAD' and $hasil['shift'] == 'Siang'):
-                    $interval = 'INTERVAL 5 HOUR';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-                case ($row['date'] == 'AKHAD' and $hasil['shift'] == 'Siang - Gizi'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'AKHAD' and $hasil['shift'] == 'Malam'):
-                    $interval = 'INTERVAL 10 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 2 HOUR';
-                    break;
-                case ($row['date'] == 'AKHAD' and $hasil['shift'] == 'Malam - Gizi (Masak)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'AKHAD' and $hasil['shift'] == 'Malam - Gizi (Saji)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                case ($row['date'] == 'AKHAD' and $hasil['shift'] == 'Malam - Gizi (Cuci)'):
-                    $interval = 'INTERVAL 0 HOUR';
-                    $efektif = 'INTERVAL 0 HOUR';
-                    break;
-                default:
-                    $interval = 'INTERVAL 5 * 60 + 30 MINUTE';
-                    $efektif = 'INTERVAL 1 HOUR';
-                    break;
-            }
-            $hasil['efektif'] = $this->core->mysql('rekap_presensi')
-                ->select([
-                    'efektif' => 'CAST(rekap_presensi.durasi as TIME) - ' . $efektif,
-                    'kurang' => 'CAST(rekap_presensi.durasi as TIME) - ' . $interval
-                ])
-                ->where('rekap_presensi.id', $hasil['id'])
-                ->where('rekap_presensi.jam_datang', $hasil['jam_datang'])
-                ->oneArray();
-            $total[] = $hasil;
-            $count++;
-            $pdf->Row(array($hasil['nama'], $hasil['shift'], $hasil['jam_datang'], $hasil['jam_pulang'], $hasil['durasi'], $hasil['efektif']['efektif'], $hasil['efektif']['kurang']));
-        }
-
-        $secondplus = 0;
-        $secondminus = 0;
-        foreach ($total as $time) {
-            list($hour, $minute, $second) = explode(':', $time['efektif']['kurang']);
-            if (strpos($hour, '-') !== false) {
-                $hour = 0 - $hour;
-                $secondplus += $hour * 3600;
-                $secondplus += $minute * 60;
-                $secondplus += $second;
-            } else {
-                $secondminus += $hour * 3600;
-                $secondminus += $minute * 60;
-                $secondminus += $second;
-            }
-        }
-        $hours = floor($secondplus / 3600);
-        $secondplus -= $hours * 3600;
-        $minutes = floor($secondplus / 60);
-        $secondplus -= $minutes * 60;
-        $timesplus = $hours . ':' . $minutes . ':' . $secondplus;
-
-        $hours = floor($secondminus / 3600);
-        $secondminus -= $hours * 3600;
-        $minutes = floor($secondminus / 60);
-        $secondminus -= $minutes * 60;
-        $timesminus = $hours . ':' . $minutes . ':' . $secondminus;
-
-        $pdf->Ln(34);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetAligns(array("C", "C", "C"));
-        $pdf->SetWidths(array(63, 63, 63));
-        $pdf->Row(array("Kelebihan Jam Kerja: " . $timesminus, "Kekurangan Jam Kerja: -" . $timesplus, "Jumlah Hari: " . $count), array("", "", ""), 1);
-
-        $pdf->Output('laporan_presensi_' . date('Y-m-d') . '.pdf', 'I');
-    }
-
-    public function getPrint($phrase = null, $tanggal = null)
-    {
-        $phrase = '';
-        if (isset($_GET['s']))
-            $phrase = $_GET['s'];
-        $tanggal = '';
-        if (isset($_GET['tanggal']))
-            $tanggal = $_GET['tanggal'];
-
-        $rekap_presensi = $this->core->mysql('rekap_presensi')
-            ->select([
-                'nama' => 'pegawai.nama',
-                'departemen' => 'pegawai.departemen',
-                'id' => 'rekap_presensi.id',
-                'shift' => 'rekap_presensi.shift',
-                'jam_datang' => 'rekap_presensi.jam_datang',
-                'jam_pulang' => 'rekap_presensi.jam_pulang',
-                'status' => 'rekap_presensi.status',
-                'durasi' => 'rekap_presensi.durasi',
-                'photo' => 'rekap_presensi.photo'
-            ])
-            ->join('pegawai', 'pegawai.id = rekap_presensi.id')
-            ->like('jam_datang', $tanggal . '%')
-            ->like('nama', '%' . $phrase . '%')
-            ->orLike('shift', '%' . $phrase . '%')
-            ->asc('jam_datang')
-            ->toArray();
-        $logo = 'data:image/png;base64,' . base64_encode($this->core->getSettings('logo'));
-
-        $pdf = new PDF_MC_Table('L', 'mm', 'Legal');
-        $pdf->AddPage();
-        $pdf->SetAutoPageBreak(true, 10);
-        $pdf->SetTopMargin(10);
-        $pdf->SetLeftMargin(10);
-        $pdf->SetRightMargin(10);
-
-        $pdf->Image($logo, 10, 8, '18', '18', 'png');
-        $pdf->SetFont('Arial', '', 24);
-        $pdf->Text(30, 16, $this->core->getSettings('nama_instansi'));
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->Text(30, 21, $this->core->getSettings('alamat_instansi') . ' - ' . $this->core->getSettings('kabupaten'));
-        $pdf->Text(30, 25, $this->core->getSettings('kontak') . ' - ' . $this->core->getSettings('email'));
-        $pdf->Line(10, 30, 350, 30);
-        $pdf->Line(10, 31, 350, 31);
-        $pdf->Text(10, 40, 'DATA REKAP PRESENSI PEGAWAI');
-        $pdf->Ln(34);
-        $pdf->SetFont('Arial', '', 10);
-        $pdf->SetWidths(array(110, 30, 40, 40, 40, 40, 40));
-        $pdf->Row(array('Nama Pegawai', 'Shift', 'Jam Datang', 'Jam Pulang', 'Durasi', 'Efektif', 'Kekurangan'));
-        foreach ($rekap_presensi as $hasil) {
-            $pdf->Row(array($hasil['nama'], $hasil['shift'], $hasil['jam_datang'], $hasil['jam_pulang'], $hasil['durasi'], '00:00:00', '00:00:00'));
-        }
-        $pdf->Output('laporan_pasien_' . date('Y-m-d') . '.pdf', 'I');
     }
 
     public function getGoogleMap($id, $tanggal)
     {
-        $geo = $this->core->mysql('mlite_geolocation_presensi')->where('id', $id)->where('tanggal', $tanggal)->oneArray();
-        $pegawai = $this->core->mysql('pegawai')->where('id', $id)->oneArray();
+        $geo = $this->db('mlite_geolocation_presensi')->where('id', $id)->where('tanggal', $tanggal)->oneArray();
+        $pegawai = $this->db('pegawai')->where('id', $id)->oneArray();
 
         $this->tpl->set('geo', $geo);
         $this->tpl->set('pegawai', $pegawai);
@@ -1833,7 +1446,7 @@ class Admin extends AdminModule
 
         // pagination
         if ($this->core->getUserInfo('role') == 'admin') {
-            $totalRecords = $this->core->mysql('temporary_presensi')
+            $totalRecords = $this->db('temporary_presensi')
                 ->join('pegawai', 'pegawai.id = temporary_presensi.id')
                 ->like('departemen', '%' . $dep . '%')
                 ->like('bidang', '%' . $ruang . '%')
@@ -1841,7 +1454,7 @@ class Admin extends AdminModule
                 ->asc('jam_datang')
                 ->toArray();
         } else {
-            $totalRecords = $this->core->mysql('temporary_presensi')
+            $totalRecords = $this->db('temporary_presensi')
                 ->join('pegawai', 'pegawai.id = temporary_presensi.id')
                 ->where('departemen', $this->core->getPegawaiInfo('departemen', $username))
                 ->where('bidang', $this->core->getPegawaiInfo('bidang', $username))
@@ -1857,7 +1470,7 @@ class Admin extends AdminModule
         // list
         $offset = $pagination->offset();
         if ($this->core->getUserInfo('role') == 'admin') {
-            $rows = $this->core->mysql('temporary_presensi')
+            $rows = $this->db('temporary_presensi')
                 ->select([
                     'nama' => 'pegawai.nama',
                     'jbtn' => 'pegawai.jbtn',
@@ -1877,7 +1490,7 @@ class Admin extends AdminModule
                 ->limit($perpage)
                 ->toArray();
         } else {
-            $rows = $this->core->mysql('temporary_presensi')
+            $rows = $this->db('temporary_presensi')
                 ->select([
                     'nama' => 'pegawai.nama',
                     'id' => 'temporary_presensi.id',
@@ -1904,16 +1517,16 @@ class Admin extends AdminModule
                 $this->assign['list'][] = $row;
             }
         }
-        $this->assign['bidang'] = $this->core->mysql('bidang')->toArray();
-        $this->assign['dep'] = $this->core->mysql('departemen')->toArray();
+        $this->assign['bidang'] = $this->db('bidang')->toArray();
+        $this->assign['dep'] = $this->db('departemen')->toArray();
 
         return $this->draw('presensi.html', ['presensi' => $this->assign]);
     }
 
     public function getPresensiPulang($id)
     {
-        $cek = $this->core->mysql('temporary_presensi')->where('id', $id)->oneArray();
-        $jam_jaga       = $this->core->mysql('jam_jaga')->join('pegawai', 'pegawai.departemen = jam_jaga.dep_id')->where('pegawai.id', $id)->where('jam_jaga.shift', $cek['shift'])->oneArray();
+        $cek = $this->db('temporary_presensi')->where('id', $id)->oneArray();
+        $jam_jaga       = $this->db('jam_jaga')->join('pegawai', 'pegawai.departemen = jam_jaga.dep_id')->where('pegawai.id', $id)->where('jam_jaga.shift', $cek['shift'])->oneArray();
         $location = url([ADMIN, 'presensi', 'presensi']);
         if ($cek) {
 
@@ -1927,7 +1540,7 @@ class Admin extends AdminModule
             $diff = $akhir->diff($awal, true); // to make the difference to be always positive.
             $durasi = $diff->format('%H:%I:%S');
 
-            $ubah = $this->core->mysql('temporary_presensi')
+            $ubah = $this->db('temporary_presensi')
                 ->where('id', $id)
                 ->save([
                     'jam_pulang' => date('Y-m-d H:i:s'),
@@ -1936,8 +1549,8 @@ class Admin extends AdminModule
                 ]);
 
             if ($ubah) {
-                $presensi = $this->core->mysql('temporary_presensi')->where('id', $id)->oneArray();
-                $insert = $this->core->mysql('rekap_presensi')
+                $presensi = $this->db('temporary_presensi')->where('id', $id)->oneArray();
+                $insert = $this->db('rekap_presensi')
                     ->save([
                         'id' => $presensi['id'],
                         'shift' => $presensi['shift'],
@@ -1951,7 +1564,7 @@ class Admin extends AdminModule
                     ]);
                 if ($insert) {
                     $this->notify('success', 'Presensi pulang telah disimpan');
-                    $this->core->mysql('temporary_presensi')->where('id', $cek['id'])->delete();
+                    $this->db('temporary_presensi')->where('id', $cek['id'])->delete();
                     redirect($location);
                 }
             }
@@ -1969,7 +1582,7 @@ class Admin extends AdminModule
             $phrase = $_GET['s'];
 
         // pagination
-        $totalRecords = $this->core->mysql('barcode')
+        $totalRecords = $this->db('barcode')
             ->select('id')
             ->like('barcode', '%' . $phrase . '%')
             ->toArray();
@@ -1979,7 +1592,7 @@ class Admin extends AdminModule
 
         // list
         $offset = $pagination->offset();
-        $rows = $this->core->mysql('barcode')
+        $rows = $this->db('barcode')
             ->join('pegawai', 'pegawai.id = barcode.id')
             ->like('barcode', '%' . $phrase . '%')
             ->orLike('nama', '%' . $phrase . '%')
@@ -2015,7 +1628,7 @@ class Admin extends AdminModule
         }
 
         $this->assign['title'] = 'Tambah Barcode';
-        $this->assign['pegawai'] = $this->core->mysql('pegawai')
+        $this->assign['pegawai'] = $this->db('pegawai')
             ->select([
                 'id' => 'id',
                 'nik' => 'nik',
@@ -2029,11 +1642,11 @@ class Admin extends AdminModule
     public function getBarcodeEdit($id)
     {
         $this->_addHeaderFiles();
-        $row = $this->core->mysql('barcode')->oneArray($id);
+        $row = $this->db('barcode')->oneArray($id);
         if (!empty($row)) {
             $this->assign['form'] = $row;
             $this->assign['title'] = 'Edit Barcode';
-            $this->assign['pegawai'] = $this->core->mysql('pegawai')
+            $this->assign['pegawai'] = $this->db('pegawai')
                 ->select([
                     'id' => 'id',
                     'nik' => 'nik',
@@ -2049,7 +1662,7 @@ class Admin extends AdminModule
 
     public function getBarcodeDelete($id)
     {
-        if ($this->core->mysql('barcode')->delete($id)) {
+        if ($this->db('barcode')->delete($id)) {
             $this->notify('success', 'Hapus sukses');
         } else {
             $this->notify('failure', 'Hapus gagal');
@@ -2076,9 +1689,9 @@ class Admin extends AdminModule
             unset($_POST['save']);
 
             if (!$id) {    // new
-                $query = $this->core->mysql('barcode')->save($_POST);
+                $query = $this->db('barcode')->save($_POST);
             } else {        // edit
-                $query = $this->core->mysql('barcode')->where('id', $id)->save($_POST);
+                $query = $this->db('barcode')->where('id', $id)->save($_POST);
             }
 
             if ($query) {

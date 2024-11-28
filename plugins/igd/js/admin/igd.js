@@ -11,7 +11,6 @@ $('#aturan_pakai').hide();
 // tombol buka form diklik
 $("#index").on('click', '#bukaform', function(){
   var baseURL = mlite.url + '/' + mlite.admin;
-  event.preventDefault();
   $("#form").show().load(baseURL + '/igd/form?t=' + mlite.token);
   $("#bukaform").val("Tutup Form");
   $("#bukaform").attr("id", "tutupform");
@@ -19,7 +18,6 @@ $("#index").on('click', '#bukaform', function(){
 
 // tombol tutup form diklik
 $("#index").on('click', '#tutupform', function(){
-  event.preventDefault();
   $("#form").hide();
   $("#tutupform").val("Buka Form");
   $("#tutupform").attr("id", "bukaform");
@@ -97,18 +95,33 @@ $("#form").on("click", "#simpan", function(event){
       kd_pj: kd_pj,
       stts_daftar: stts_daftar
     },function(data) {
-      $("#display").show().load(baseURL + '/igd/display?t=' + mlite.token);
-      bersih();
-      $("#status_pendaftaran").hide();
-      $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-      "Data pendaftaran rawat jalan telah disimpan!"+
-      "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-      "</div>").show();
-    }).error(function () {
-      $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-      "Gagal menyimpan data pendaftaran rawat jalan!"+
-      "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-      "</div>").show();
+      console.log(data);
+      data = JSON.parse(data);
+      if(data.status == 'success') {
+        if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
+          let payload = {
+              'action' : 'simpan',
+              'modul' : 'igd'
+          }
+          ws.send(JSON.stringify(payload));
+          console.log(payload);
+        } else {
+          $("#display").show().load(baseURL + '/igd/display?t=' + mlite.token);
+        }
+        bersih();
+        $("#status_pendaftaran").hide();
+        $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Data pendaftaran IGD telah disimpan!"+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      }
+      if(data.status == 'error') {
+        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Gagal menyimpan data pendaftaran IGD!<br>"+
+        data.msg+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      }
     });
   }
   event.preventDefault();
@@ -514,6 +527,47 @@ $("#soap").on("click",".edit_soap", function(event){
 
 });
 
+$("#soap").on("click",".copy_soap", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var suhu_tubuh      = $(this).attr("data-suhu_tubuh");
+  var tensi           = $(this).attr("data-tensi");
+  var nadi            = $(this).attr("data-nadi");
+  var respirasi       = $(this).attr("data-respirasi");
+  var tinggi          = $(this).attr("data-tinggi");
+  var berat           = $(this).attr("data-berat");
+  var gcs             = $(this).attr("data-gcs");
+  var kesadaran       = $(this).attr("data-kesadaran");
+  var alergi          = $(this).attr("data-alergi");
+  var lingkar_perut   = $(this).attr("data-lingkar_perut");
+  var keluhan         = $(this).attr("data-keluhan");
+  var pemeriksaan     = $(this).attr("data-pemeriksaan");
+  var penilaian       = $(this).attr("data-penilaian");
+  var rtl             = $(this).attr("data-rtl");
+  var instruksi       = $(this).attr("data-instruksi");
+  var evaluasi        = $(this).attr("data-evaluasi");
+  var spo2            = $(this).attr("data-spo2");
+
+  $('input:text[name=suhu_tubuh]').val(suhu_tubuh);
+  $('input:text[name=tensi]').val(tensi);
+  $('input:text[name=nadi]').val(nadi);
+  $('input:text[name=respirasi]').val(respirasi);
+  $('input:text[name=tinggi]').val(tinggi);
+  $('input:text[name=berat]').val(berat);
+  $('input:text[name=gcs]').val(gcs);
+  $('input:text[name=kesadaran]').val(kesadaran);
+  $('input:text[name=alergi]').val(alergi);
+  $('input:text[name=lingkar_perut]').val(lingkar_perut);
+  $('textarea[name=keluhan]').val(keluhan);
+  $('textarea[name=pemeriksaan]').val(pemeriksaan);
+  $('textarea[name=penilaian]').val(penilaian);
+  $('textarea[name=rtl]').val(rtl);
+  $('textarea[name=instruksi]').val(instruksi);
+  $('textarea[name=evaluasi]').val(evaluasi);
+  $('input:text[name=spo2]').val(spo2);
+
+});
+
 // ketika tombol hapus ditekan
 $("#soap").on("click",".hapus_soap", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
@@ -658,7 +712,7 @@ $("#obat").on("click", ".pilih_obat", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var kat = $(this).attr("data-kat");
 
   $('input:hidden[name=kd_jenis_prw]').val(kode_brng);
@@ -942,3 +996,44 @@ $("#form_soap").on("click","#jam_rawat", function(event){
       $("#jam_rawat").val(data);
     });
 });
+
+{if: $mlite.websocket == 'ya'}
+
+  {if: $mlite.websocket_proxy != ''}
+    var URL_WEBSOCKET = "{$mlite.websocket_proxy}";
+  {else}
+    var URL_WEBSOCKET = "ws://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
+  {/if}
+
+  var ws = new WebSocket(URL_WEBSOCKET);
+  var baseURL = mlite.url + '/' + mlite.admin;
+  
+  ws.onmessage = function(response){
+    try{
+      output = JSON.parse(response.data);
+      if(output['action'] == 'simpan'){
+        if(output['modul'] == 'igd'){
+          $("#igd #display").show().load(baseURL + '/igd/display?t=' + mlite.token);
+        }
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+  
+  
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
+
+{/if}

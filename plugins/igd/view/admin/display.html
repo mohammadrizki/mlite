@@ -28,13 +28,6 @@
                 <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor KTP</a></li>
               {/if}
               <li><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Elektronik Rekam Medis</a></li>
-              {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
-              <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">SOAP & Pemeriksaan</a></li>
-              <li><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Layanan & Obat</a></li>
-              <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
-              <li><a href="#status_rawat" data-no_rawat="{$value.no_rawat}" data-stts="{$value.stts}">Status Rawat</a></li>
-              <li><a href="#status_lanjut" data-no_rawat="{$value.no_rawat}">Status Lanjut</a></li>
-              {/if}
               <li class="dropdown-submenu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Surat-Surat</a>
                 <ul class="dropdown-menu">
@@ -43,6 +36,14 @@
                   <li><a href="{?=url([ADMIN,'igd','suratsakit',convertNorawat($value.no_rawat)])?}" target="_blank">Surat Keterangan Sakit</a></li>
                 </ul>
               </li>
+              {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
+              <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-umur="{$value.umurdaftar} {$value.sttsumur}">SOAP & Pemeriksaan</a></li>
+              <li><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Layanan & Obat</a></li>
+              <li><a href="#berkas_digital" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Berkas Digital</a></li>
+              <li><a href="#status_rawat" data-no_rawat="{$value.no_rawat}" data-stts="{$value.stts}">Status Rawat</a></li>
+              <li><a href="#status_lanjut" data-no_rawat="{$value.no_rawat}">Status Lanjut</a></li>
+              <li><a href="{?=url([ADMIN,'dokter_igd','lokalis'])?}"  data-toggle="modal" data-target="#lokalisModal">Status Lokalis</a></li>
+              {/if}
             </ul>
           </td>
           <td style="white-space: nowrap;"><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">{$value.nm_pasien}</a></td>
@@ -70,7 +71,7 @@
                 {/if}
               ><span class="fa fa-send"></span> BPJS</button>
               {if: $value.no_sep !=''}
-              <a href="{?=url([ADMIN, 'rawat_jalan', 'sepdetail', $value.no_sep])?}" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#sepModal"><span class="fa fa-eye"></span></a>
+              <a href="{?=url([ADMIN, 'igd', 'sepdetail', $value.no_sep])?}" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#sepModal"><span class="fa fa-eye"></span></a>
               {/if}
               </div>
             {/if}
@@ -110,6 +111,36 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="lokalisModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-full" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<script>
+  $("#btn_cetak").click(function() {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/igd/cetak?t=' + mlite.token;
+    var cari = $('input:text[name=cari]').val();
+    var tgl_awal = $('input:text[name=periode_rawat_jalan]').val();
+    var tgl_akhir = $('input:text[name=periode_rawat_jalan_akhir]').val();
+
+    $.post(url, {cari: cari, tgl_awal: tgl_awal, tgl_akhir: tgl_akhir} ,function(data) {
+      //window.open(baseURL + '/rawat_jalan/cetakpdf?t=' + mlite.token);
+      $("#printModal").modal('show').html('<div style="text-align:center;margin:20px auto;width:90%;height:95%;"><iframe src="' + baseURL + '/igd/cetakpdf?t=' + mlite.token + '" frameborder="no" width="100%" height="100%"></iframe></div>');
+    });
+
+		return false;
+  });
+</script>
 <script type="text/javascript">
   $('a[href="#soap"]').click(function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
@@ -118,11 +149,13 @@
     var no_rawat = $(this).attr("data-no_rawat");
     var no_rkm_medis = $(this).attr("data-no_rkm_medis");
     var nm_pasien = $(this).attr("data-nm_pasien");
+    var umur = $(this).attr("data-umur");
     var tgl_registrasi = $(this).attr("data-tgl_registrasi");
 
     $('input:text[name=no_rawat]').val(no_rawat);
     $('input:text[name=no_rkm_medis]').val(no_rkm_medis);
     $('input:text[name=nm_pasien]').val(nm_pasien);
+    $('input:text[name=umur]').val(umur);
     $('input:text[name=tgl_registrasi]').val(tgl_registrasi);
     $("#display").hide();
 
@@ -261,22 +294,61 @@
     var url = baseURL + '/igd/statuslanjut?t=' + mlite.token;
     var no_rawat = $(this).attr("data-no_rawat");
     // tampilkan dialog konfirmasi
-    bootbox.confirm("Apakah pasien dimasukkan dalam kamar inap?", function(result){
-      // ketika ditekan tombol ok
-      if (result){
-        // mengirimkan perintah penghapusan
-        $.post(url, {
-          no_rawat: no_rawat
-        } ,function(data) {
-          // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
-          $("#display").load(baseURL + '/igd/display?t=' + mlite.token);
-          $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-          "Status periksa pasien telah disimpan!"+
-          "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-          "</div>").show();
-        });
+
+    var set_status_lanjut = ''
+        + '<div class="form-group">'
+        + '<label for="status_keluar">Pilih Status Lanjut</label>'
+        + '<select name="status_lanjut" id="status_lanjut" class="form-control" data-use-dimmer="false">'
+        + '<option value="ralan">Rawat Jalan</option>'
+        + '<option value="ranap">Rawat Inap</option>'
+        + '</select>'
+        + '</div>'
+        + '';
+
+    // bootbox.confirm("Apakah pasien dimasukkan dalam kamar inap?", function(result){
+    //   // ketika ditekan tombol ok
+    //   if (result){
+    //     // mengirimkan perintah penghapusan
+    //     $.post(url, {
+    //       no_rawat: no_rawat
+    //     } ,function(data) {
+    //       // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
+    //       $("#display").load(baseURL + '/igd/display?t=' + mlite.token);
+    //       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+    //       "Status periksa pasien telah disimpan!"+
+    //       "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+    //       "</div>").show();
+    //     });
+    //   }
+    // });
+    bootbox.dialog({
+      message: set_status_lanjut,
+      title: 'Set Status Lanjut Pasien',
+      buttons: {
+        main: {
+          label: 'Simpan',
+          className: 'btn-primary',
+          callback() {
+            var status_lanjut = $('#status_lanjut').find(':selected').val();
+            //console.log(tgl_keluar);
+            $.post(url, {
+              no_rawat: no_rawat,
+              status_lanjut: status_lanjut
+            } ,function(data) {
+              // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
+              $("#display").load(baseURL + '/igd/display?t=' + mlite.token);
+              $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+              "Status lanjut pasien telah disimpan!"+
+              "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+              "</div>").show();
+            });
+          }
+        }
       }
     });
+    $('select').selectator();
+    event.stopPropagation();
+    return false;
   });
   $(".alert-dismissible").fadeTo(3000, 500).slideUp(500);
   $('.dataTables').DataTable({

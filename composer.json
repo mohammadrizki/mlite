@@ -1,9 +1,13 @@
 {
-    "name": "basoro/khanza-lite",
-    "description": "SIMKES Khanza versi Ringan. Jalan di sisi server sebagai aplikasi web dan bersifat mobile first (responsive).",
+    "name": "basoro/mlite",
+    "description": "SIM Kesehatan Aman, Ringan & Modular. Jalan di sisi server sebagai aplikasi web (PWA Ready) dan bersifat mobile first (responsive).",
     "type": "project",
     "require": {
-        "nullpunkt/lz-string-php": "1.3"
+        "nullpunkt/lz-string-php": "^1.3", 
+		"phpseclib/phpseclib": "~3.0.36", 
+        "phpmailer/phpmailer": "^6.9.1", 
+        "mpdf/mpdf": "^8.2.4", 
+        "workerman/workerman": "^4.0"
     },
     "license": "MIT",
     "authors": [

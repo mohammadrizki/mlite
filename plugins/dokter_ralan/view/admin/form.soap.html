@@ -22,6 +22,10 @@
             <label for="nama_pasien">Nama Pasien</label>
             <input type="text" name="nm_pasien" class="form-control" placeholder="Nama pasien" value="" readonly>
           </div>
+          <div class="form-group">
+            <label for="nama_pasien">Umur</label>
+            <input type="text" name="umur" class="form-control" placeholder="Umur pasien" value="" readonly>
+          </div>
       </div>
     </div>
   </div>
@@ -167,10 +171,10 @@
                       <li><a>9</a></li>
                     </ul>
                   </div>
-                  <div class="input-group">
+                  <div class="input-group" style="position: relative;">
                     <input type="text" name="icd10" id="icd10" class="form-control" />
                     <input type="hidden" name="status" class="form-control" value="Ralan" />
-                    <ul class="list-group" id="icd10List" style="z-index:1000;position:absolute;width:100%;"></ul>
+                    <ul class="list-group" id="icd10List" style="z-index:1000;position:absolute;width:100%;top: 100%; left: 0"></ul>
                     <span class="input-group-btn">
                       <button id="simpan_icd10" class="btn btn-primary btn-block">
                           <span class="glyphicon glyphicon-plus simpan_icd10"></span>
@@ -201,10 +205,10 @@
                           <li><a>9</a></li>
                       </ul>
                   </div>
-                  <div class="input-group">
+                  <div class="input-group" style="position: relative;">
                     <input type="text" name="icd9" id="icd9" class="form-control" />
                     <input type="hidden" name="status" class="form-control" value="Ralan" />
-                    <ul class="list-group" id="icd9List" style="z-index:1000;position:absolute;width:100%;"></ul>
+                    <ul class="list-group" id="icd9List" style="z-index:1000;position:absolute;width:100%;top: 100%; left: 0"></ul>
                     <span class="input-group-btn">
                         <button id="simpan_icd9" class="btn btn-primary btn-block">
                             <span class="glyphicon glyphicon-plus"></span>
@@ -284,7 +288,7 @@
        if(query != '')
        {
             $.ajax({
-                 url: "{?=url([ADMIN, 'icd', 'icd9'])?}",
+                 url: "{?=url([ADMIN, 'icd_9', 'icd9'])?}",
                  method:"POST",
                  data:{query:query},
                  success:function(data)
@@ -309,7 +313,7 @@
        if(query != '')
        {
             $.ajax({
-                 url: "{?=url([ADMIN, 'icd', 'icd10'])?}",
+                 url: "{?=url([ADMIN, 'icd_10', 'icd10'])?}",
                  method:"POST",
                  data:{query:query},
                  success:function(data)
@@ -339,7 +343,7 @@
     var kode = $('#kode_icd9').text();
     var status = $('input:hidden[name=status]').val();
 
-    var url = baseURL + '/icd/saveicd9?t=' + mlite.token;
+    var url = baseURL + '/icd_9/saveicd9?t=' + mlite.token;
 
     $.post(url,{
       no_rawat: no_rawat,
@@ -348,7 +352,7 @@
       status: status,
       kode: kode
     } ,function(data) {
-      $("#display_icd").show().load(baseURL + '/icd/display?no_rawat=' + no_rawat + '&t=' + mlite.token);
+      $("#display_icd").show().load(baseURL + '/icd_10/display?no_rawat=' + no_rawat + '&t=' + mlite.token);
       //bersih();
       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
       "Data ICD 9 (Prosedur) pasien telah disimpan!"+
@@ -368,7 +372,7 @@
     var kode = $('#kode_icd10').text();
     var status = $('input:hidden[name=status]').val();
 
-    var url = baseURL + '/icd/saveicd10?t=' + mlite.token;
+    var url = baseURL + '/icd_10/saveicd10?t=' + mlite.token;
 
     $.post(url,{
       no_rawat: no_rawat,
@@ -377,7 +381,7 @@
       status: status,
       kd_penyakit: kode
     } ,function(data) {
-      $("#display_icd").show().load(baseURL + '/icd/display?no_rawat=' + no_rawat + '&t=' + mlite.token);
+      $("#display_icd").show().load(baseURL + '/icd_10/display?no_rawat=' + no_rawat + '&t=' + mlite.token);
       //bersih();
       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
       "Data ICD 10 (Diagnosa) pasien telah disimpan!"+
@@ -413,7 +417,6 @@
 
   // tombol tutup form diklik
   $("#form_soap").on('click', '#tutup_icd10dan9', function(){
-    event.preventDefault();
     $("#icd10dan9").hide();
     $("#tutup_icd10dan9").val("Buka Form");
     $("#tutup_icd10dan9").attr("id", "buka_icd10dan9");

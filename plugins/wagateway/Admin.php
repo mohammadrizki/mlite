@@ -2,7 +2,7 @@
 namespace Plugins\Wagateway;
 
 use Systems\AdminModule;
-use Systems\MySQL;
+
 
 class Admin extends AdminModule
 {
@@ -77,9 +77,6 @@ class Admin extends AdminModule
         $waapiphonenumber = $this->settings->get('wagateway.phonenumber');
         $waapiserver = $this->settings->get('wagateway.server');
         $url = $waapiserver."/wagateway/kirimpesan";
-        if($waapiserver == 'https://waini.id') {
-          $url = $waapiserver."/send-message";
-        }
         $curlHandle = curl_init();
         curl_setopt($curlHandle, CURLOPT_URL, $url);
         curl_setopt($curlHandle, CURLOPT_POSTFIELDS,"type=text&sender=".$waapiphonenumber."&number=".$_POST['number']."&message=".$_POST['message']."&api_key=".$waapitoken);
@@ -91,7 +88,7 @@ class Admin extends AdminModule
         $response = curl_exec($curlHandle);
         curl_close($curlHandle);
         $response = json_decode($response, true);
-        if($response['status'] == 'false') {
+        if($response['status'] == 'true') {
           $this->notify('success', 'Sukses mengirim pesan');
         } else {
           $this->notify('failure', 'Gagal mengirim pesan');
@@ -107,9 +104,6 @@ class Admin extends AdminModule
         $waapiphonenumber = $this->settings->get('wagateway.phonenumber');
         $waapiserver = $this->settings->get('wagateway.server');
         $url = $waapiserver."/wagateway/kirimgambar";
-        if($waapiserver == 'https://waini.id') {
-          $url = $waapiserver."/send-media";
-        }
         $curlHandle = curl_init();
         curl_setopt($curlHandle, CURLOPT_URL, $url);
         curl_setopt($curlHandle, CURLOPT_POSTFIELDS,"type=image&sender=".$waapiphonenumber."&number=".$_POST['number']."&message=".$_POST['message']."&url=".$_POST['url']."&api_key=".$waapitoken);
@@ -137,9 +131,6 @@ class Admin extends AdminModule
         $waapiphonenumber = $this->settings->get('wagateway.phonenumber');
         $waapiserver = $this->settings->get('wagateway.server');
         $url = $waapiserver."/wagateway/kirimfile";
-        if($waapiserver == 'https://waini.id') {
-          $url = $waapiserver."/send-media";
-        }
         $curlHandle = curl_init();
         curl_setopt($curlHandle, CURLOPT_URL, $url);
         curl_setopt($curlHandle, CURLOPT_POSTFIELDS,"type=document&sender=".$waapiphonenumber."&number=".$_POST['number']."&message=".$_POST['message']."&url=".$_POST['url']."&api_key=".$waapitoken);
@@ -158,11 +149,6 @@ class Admin extends AdminModule
         }
       }
       return $this->draw('send.file.html');
-    }
-
-    protected function mysql($table = NULL)
-    {
-        return new MySQL($table);
     }
 
 }

@@ -42,7 +42,7 @@
     </div>
   </div>
 </div>
-<article class="row">
+<div class="row">
     <div class="col-md-12">
         <ul class="modules" style="padding:0;margin:0;">
             {loop: $sub_modules}
@@ -62,7 +62,7 @@
             {/loop}
         </ul>
     </div>
-</article>
+</div>
 <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
 <script>
 let socket;
@@ -82,7 +82,7 @@ socket.on('QrGenerated', (url) => {
                                             <span class="" role="status" aria-hidden="true"></span>
                                      Timed Out, Reload halaman untuk Generate qr ulang
                                         </button>`)
-        $('.imageee').html(' <img src="../assets/images/other/waiting.jpg" height="300px" alt="">');
+        $('.imageee').html(' <img src="{?=url()?}/plugins/wagateway/images/waiting.jpg" height="300px" alt="">');
 
     }, 30000);
 

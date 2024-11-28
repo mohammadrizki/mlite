@@ -1,42 +1,8 @@
--- phpMyAdmin SQL Dump
--- version 4.4.15
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: May 14, 2023 at 04:27 PM
--- Server version: 5.7.39-log
--- PHP Version: 7.3.33
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `opoiki`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_akun_kegiatan`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_akun_kegiatan` (
   `id` int(11) NOT NULL,
   `kegiatan` varchar(200) DEFAULT NULL,
   `kd_rek` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_antrian_loket`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_antrian_loket` (
   `kd` int(50) NOT NULL,
@@ -50,12 +16,6 @@ CREATE TABLE IF NOT EXISTS `mlite_antrian_loket` (
   `loket` varchar(10) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_antrian_referensi`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_antrian_referensi` (
   `tanggal_periksa` date NOT NULL,
   `no_rkm_medis` varchar(50) NOT NULL,
@@ -67,24 +27,12 @@ CREATE TABLE IF NOT EXISTS `mlite_antrian_referensi` (
   `keterangan` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_antrian_referensi_batal`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_antrian_referensi_batal` (
   `tanggal_batal` date NOT NULL,
   `nomor_referensi` varchar(50) NOT NULL,
   `kodebooking` varchar(100) NOT NULL,
   `keterangan` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_antrian_referensi_taskid`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_antrian_referensi_taskid` (
   `tanggal_periksa` date NOT NULL,
@@ -95,24 +43,12 @@ CREATE TABLE IF NOT EXISTS `mlite_antrian_referensi_taskid` (
   `keterangan` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_apamregister`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_apamregister` (
   `nama_lengkap` varchar(225) NOT NULL,
   `email` varchar(225) NOT NULL,
   `nomor_ktp` varchar(225) NOT NULL,
   `nomor_telepon` varchar(225) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_billing`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_billing` (
   `id_billing` int(11) NOT NULL,
@@ -128,11 +64,64 @@ CREATE TABLE IF NOT EXISTS `mlite_billing` (
   `keterangan` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_detailjurnal`
---
+CREATE TABLE IF NOT EXISTS `mlite_bridging_pcare` (
+  `id` int(11) NOT NULL,
+  `no_rawat` text NOT NULL,
+  `no_rkm_medis` text,
+  `tgl_daftar` text,
+  `nomor_kunjungan` text,
+  `kode_provider_peserta` text,
+  `nomor_jaminan` text,
+  `kode_poli` text,
+  `nama_poli` text,
+  `kunjungan_sakit` text,
+  `sistole` text,
+  `diastole` text,
+  `nadi` text,
+  `respirasi` text,
+  `tinggi` text,
+  `berat` text,
+  `lingkar_perut` text,
+  `rujuk_balik` text,
+  `subyektif` text,
+  `kode_tkp` text,
+  `nomor_urut` text,
+  `kode_kesadaran` text,
+  `nama_kesadaran` text,
+  `terapi` text,
+  `kode_status_pulang` text,
+  `nama_status_pulang` text,
+  `tgl_pulang` text,
+  `tgl_kunjungan` text,
+  `kode_dokter` text,
+  `nama_dokter` text,
+  `kode_diagnosa1` text,
+  `nama_diagnosa1` text,
+  `kode_diagnosa2` text,
+  `nama_diagnosa2` text,
+  `kode_diagnosa3` text,
+  `nama_diagnosa3` text,
+  `tgl_estimasi_rujuk` text,
+  `kode_ppk` text,
+  `nama_ppk` text,
+  `kode_spesialis` text,
+  `nama_spesialis` text,
+  `kode_subspesialis` text,
+  `nama_subspesialis` text,
+  `kode_sarana` text,
+  `nama_sarana` text,
+  `kode_referensikhusus` text,
+  `nama_referensikhusus` text,
+  `kode_faskeskhusus` text,
+  `nama_faskeskhusus` text,
+  `catatan` text,
+  `kode_tacc` text,
+  `nama_tacc` text,
+  `alasan_tacc` text,
+  `id_user` text NOT NULL,
+  `tgl_input` text NOT NULL,
+  `status_kirim` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE IF NOT EXISTS `mlite_detailjurnal` (
   `no_jurnal` varchar(20) DEFAULT NULL,
@@ -141,12 +130,6 @@ CREATE TABLE IF NOT EXISTS `mlite_detailjurnal` (
   `debet` double NOT NULL,
   `kredit` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_duitku`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_duitku` (
   `id` int(10) NOT NULL,
@@ -161,24 +144,12 @@ CREATE TABLE IF NOT EXISTS `mlite_duitku` (
   `statusMessage` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_geolocation_presensi`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_geolocation_presensi` (
   `id` int(11) NOT NULL,
   `tanggal` date DEFAULT NULL,
   `latitude` varchar(200) NOT NULL,
   `longitude` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_jurnal`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_jurnal` (
   `no_jurnal` varchar(20) NOT NULL,
@@ -189,33 +160,17 @@ CREATE TABLE IF NOT EXISTS `mlite_jurnal` (
   `keterangan` varchar(350) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_login_attempts`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_login_attempts` (
   `ip` text,
   `attempts` int(100) NOT NULL,
   `expires` int(100) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_modules`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_modules` (
   `id` int(11) NOT NULL,
   `dir` text,
   `sequence` text
 ) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `mlite_modules`
---
 
 INSERT INTO `mlite_modules` (`id`, `dir`, `sequence`) VALUES
 (1, 'settings', '9'),
@@ -235,7 +190,7 @@ INSERT INTO `mlite_modules` (`id`, `dir`, `sequence`) VALUES
 (15, 'dokter_igd', '14'),
 (16, 'laboratorium', '15'),
 (17, 'radiologi', '16'),
-(18, 'icd', '17'),
+(18, 'icd_10', '17'),
 (19, 'rawat_inap', '18'),
 (20, 'apotek_ranap', '19'),
 (21, 'dokter_ranap', '20'),
@@ -251,13 +206,8 @@ INSERT INTO `mlite_modules` (`id`, `dir`, `sequence`) VALUES
 (31, 'vedika', '30'),
 (32, 'profil', '31'),
 (33, 'orthanc', '32'),
-(34, 'veronisa', '33');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_notifications`
---
+(34, 'veronisa', '33'),
+(35, 'icd_9', '34');
 
 CREATE TABLE IF NOT EXISTS `mlite_notifications` (
   `id` int(11) NOT NULL,
@@ -267,12 +217,6 @@ CREATE TABLE IF NOT EXISTS `mlite_notifications` (
   `no_rkm_medis` varchar(255) NOT NULL,
   `status` varchar(250) NOT NULL DEFAULT 'unread'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_odontogram`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_odontogram` (
   `id` int(11) NOT NULL,
@@ -284,11 +228,28 @@ CREATE TABLE IF NOT EXISTS `mlite_odontogram` (
   `tgl_input` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_pengaduan`
---
+CREATE TABLE IF NOT EXISTS `mlite_ohis` (
+  `id` int(11) NOT NULL,
+  `no_rkm_medis` text NOT NULL,
+  `d_16` text,
+  `d_11` text,
+  `d_26` text,
+  `d_36` text,
+  `d_31` text,
+  `d_46` text,
+  `c_16` text,
+  `c_11` text,
+  `c_26` text,
+  `c_36` text,
+  `c_31` text,
+  `c_46` text,
+  `debris` text,
+  `calculus` text,
+  `nilai` text,
+  `kriteria` text,
+  `id_user` text NOT NULL,
+  `tgl_input` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `mlite_pengaduan` (
   `id` varchar(15) NOT NULL,
@@ -296,12 +257,6 @@ CREATE TABLE IF NOT EXISTS `mlite_pengaduan` (
   `no_rkm_medis` varchar(15) NOT NULL,
   `pesan` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_pengaduan_detail`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_pengaduan_detail` (
   `id` int(10) NOT NULL,
@@ -311,11 +266,50 @@ CREATE TABLE IF NOT EXISTS `mlite_pengaduan_detail` (
   `pesan` varchar(225) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 
--- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mlite_penjualan` (
+  `id` int(11) NOT NULL,
+  `nama_pembeli` varchar(100) DEFAULT NULL,
+  `alamat_pembeli` varchar(100) DEFAULT NULL,
+  `nomor_telepon` varchar(50) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `tanggal` date NOT NULL,
+  `jam` time NOT NULL,
+  `id_user` varchar(50) NOT NULL,
+  `keterangan` varchar(100) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
---
--- Table structure for table `mlite_rekening`
---
+CREATE TABLE IF NOT EXISTS `mlite_penjualan_barang` (
+  `id` int(11) NOT NULL,
+  `nama_barang` varchar(100) DEFAULT NULL,
+  `stok` varchar(100) DEFAULT NULL,
+  `harga` varchar(100) DEFAULT NULL,
+  `keterangan` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `mlite_penjualan_billing` (
+  `id` int(11) NOT NULL,
+  `id_penjualan` int(11) NOT NULL,
+  `jumlah_total` int(100) NOT NULL,
+  `potongan` int(100) DEFAULT NULL,
+  `jumlah_harus_bayar` int(100) NOT NULL,
+  `jumlah_bayar` int(100) NOT NULL,
+  `tanggal` date NOT NULL,
+  `jam` time NOT NULL,
+  `id_user` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `mlite_penjualan_detail` (
+  `id` int(11) NOT NULL,
+  `id_penjualan` int(11) NOT NULL,
+  `id_barang` int(11) NOT NULL,
+  `nama_barang` varchar(100) NOT NULL,
+  `harga` int(11) NOT NULL,
+  `jumlah` int(100) NOT NULL,
+  `harga_total` int(11) NOT NULL,
+  `tanggal` date NOT NULL,
+  `jam` time NOT NULL,
+  `id_user` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `mlite_rekening` (
   `kd_rek` varchar(15) NOT NULL DEFAULT '',
@@ -325,23 +319,11 @@ CREATE TABLE IF NOT EXISTS `mlite_rekening` (
   `level` enum('0','1') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_rekeningtahun`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_rekeningtahun` (
   `thn` year(4) NOT NULL,
   `kd_rek` varchar(15) NOT NULL DEFAULT '',
   `saldo_awal` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_remember_me`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_remember_me` (
   `id` int(11) NOT NULL,
@@ -350,22 +332,50 @@ CREATE TABLE IF NOT EXISTS `mlite_remember_me` (
   `expiry` int(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mlite_satu_sehat_departemen` (
+  `dep_id` char(4) NOT NULL,
+  `id_organisasi_satusehat` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `mlite_settings`
---
+CREATE TABLE IF NOT EXISTS `mlite_satu_sehat_lokasi` (
+  `kode` char(5) NOT NULL,
+  `lokasi` varchar(40) DEFAULT NULL,
+  `id_organisasi_satusehat` varchar(40) DEFAULT NULL,
+  `id_lokasi_satusehat` varchar(40) DEFAULT NULL,
+  `longitude` varchar(30) NOT NULL,
+  `latitude` varchar(30) NOT NULL,
+  `altitude` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `mlite_satu_sehat_mapping_praktisi` (
+  `practitioner_id` varchar(40) NOT NULL,
+  `kd_dokter` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `mlite_satu_sehat_response` (
+  `no_rawat` varchar(17) NOT NULL,
+  `id_encounter` varchar(50) DEFAULT NULL,
+  `id_condition` varchar(50) DEFAULT NULL,
+  `id_observation_ttvnadi` varchar(50) DEFAULT NULL,
+  `id_observation_ttvrespirasi` varchar(50) DEFAULT NULL,
+  `id_observation_ttvsuhu` varchar(50) DEFAULT NULL,
+  `id_observation_ttvspo2` varchar(50) DEFAULT NULL,
+  `id_observation_ttvgcs` varchar(50) DEFAULT NULL,
+  `id_observation_ttvtinggi` varchar(50) DEFAULT NULL,
+  `id_observation_ttvberat` varchar(50) DEFAULT NULL,
+  `id_observation_ttvperut` varchar(50) DEFAULT NULL,
+  `id_observation_ttvtensi` varchar(50) DEFAULT NULL,
+  `id_observation_ttvkesadaran` varchar(50) DEFAULT NULL, 
+  `id_procedure` varchar(50) DEFAULT NULL, 
+  `id_composition` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `mlite_settings` (
   `id` int(11) NOT NULL,
-  `module` text,
-  `field` text,
-  `value` text
-) ENGINE=MyISAM AUTO_INCREMENT=148 DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `mlite_settings`
---
+  `module` varchar(100) NOT NULL,
+  `field` varchar(100) NOT NULL,
+  `value` varchar(1000) NOT NULL
+) ENGINE=MyISAM AUTO_INCREMENT=151 DEFAULT CHARSET=utf8;
 
 INSERT INTO `mlite_settings` (`id`, `module`, `field`, `value`) VALUES
 (1, 'settings', 'logo', 'uploads/settings/logo.png'),
@@ -381,7 +391,7 @@ INSERT INTO `mlite_settings` (`id`, `module`, `field`, `value`) VALUES
 (11, 'settings', 'homepage', 'main'),
 (12, 'settings', 'wallpaper', 'uploads/settings/wallpaper.jpg'),
 (13, 'settings', 'text_color', '#44813e'),
-(14, 'settings', 'igd', '-'),
+(14, 'settings', 'igd', 'IGDK'),
 (15, 'settings', 'laboratorium', '-'),
 (16, 'settings', 'pj_laboratorium', 'DR001'),
 (17, 'settings', 'radiologi', '-'),
@@ -397,11 +407,11 @@ INSERT INTO `mlite_settings` (`id`, `module`, `field`, `value`) VALUES
 (27, 'settings', 'BpjsUserKey', '-'),
 (28, 'settings', 'timezone', 'Asia/Makassar'),
 (29, 'settings', 'theme', 'default'),
-(30, 'settings', 'theme_admin', 'ataaka'),
-(31, 'settings', 'admin_mode', 'simple'),
+(30, 'settings', 'theme_admin', 'mlite'),
+(31, 'settings', 'admin_mode', 'complex'),
 (32, 'settings', 'input_kasir', 'tidak'),
 (33, 'settings', 'editor', 'wysiwyg'),
-(34, 'settings', 'version', '2023-01-01 00:00:01'),
+(34, 'settings', 'version', '4.1.7'),
 (35, 'settings', 'update_check', '0'),
 (36, 'settings', 'update_changelog', ''),
 (37, 'settings', 'update_version', '0'),
@@ -517,24 +527,18 @@ INSERT INTO `mlite_settings` (`id`, `module`, `field`, `value`) VALUES
 (147, 'veronisa', 'obat_kronis', ''),
 (148, 'jkn_mobile', 'kirimantrian', 'tidak'),
 (149, 'settings', 'keamanan', 'ya'),
-(150, 'settings', 'dokter_ralan', 'tidak');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_subrekening`
---
+(150, 'dokter_ralan', 'set_sudah', 'tidak'),
+(151, 'settings', 'websocket', 'tidak'),
+(152, 'settings', 'websocket_proxy', ''),
+(153, 'settings', 'username_fp', ''),
+(154, 'settings', 'password_fp', ''),
+(155, 'settings', 'username_frista', ''),
+(156, 'settings', 'password_frista', '');
 
 CREATE TABLE IF NOT EXISTS `mlite_subrekening` (
   `kd_rek` varchar(15) NOT NULL,
   `kd_rek2` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_temporary`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_temporary` (
   `temp1` text,
@@ -639,12 +643,6 @@ CREATE TABLE IF NOT EXISTS `mlite_temporary` (
   `temp100` text
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_users`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_users` (
   `id` int(11) NOT NULL,
   `username` text,
@@ -658,19 +656,8 @@ CREATE TABLE IF NOT EXISTS `mlite_users` (
   `access` varchar(500) NOT NULL DEFAULT 'dashboard'
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `mlite_users`
---
-
 INSERT INTO `mlite_users` (`id`, `username`, `fullname`, `description`, `password`, `avatar`, `email`, `role`, `cap`, `access`) VALUES
-(1, 'admin', 'Administrator', 'Admin ganteng baik hati, suka menabung dan tidak sombong.', '$2y$10$pgRnDiukCbiYVqsamMM3ROWViSRqbyCCL33N8.ykBKZx0dlplXe9i', 'avatar6422cb573b50c.png', 'info@mlite.id', 'admin', '', 'all'),
-(2, 'DR001', 'dr. Ataaka Muhammad', '-', '$2y$10$kuf2BxvViduBpUTn.6Nxsug3AskH/PGvXTSlfCfJqK8Ayb9a0.vqC', 'avatar643a104444515.png', 'info@mlite.id', 'admin', '', 'all');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_users_vedika`
---
+(1, 'admin', 'Administrator', 'Admin ganteng baik hati, suka menabung dan tidak sombong.', '$2y$10$pgRnDiukCbiYVqsamMM3ROWViSRqbyCCL33N8.ykBKZx0dlplXe9i', 'avatar6422cb573b50c.png', 'info@mlite.id', 'admin', '', 'all');
 
 CREATE TABLE IF NOT EXISTS `mlite_users_vedika` (
   `id` int(11) NOT NULL,
@@ -678,12 +665,6 @@ CREATE TABLE IF NOT EXISTS `mlite_users_vedika` (
   `password` text,
   `fullname` text
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_vedika`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_vedika` (
   `id` int(11) NOT NULL,
@@ -697,12 +678,6 @@ CREATE TABLE IF NOT EXISTS `mlite_vedika` (
   `username` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_vedika_feedback`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_vedika_feedback` (
   `id` int(11) NOT NULL,
   `nosep` varchar(100) NOT NULL,
@@ -710,12 +685,6 @@ CREATE TABLE IF NOT EXISTS `mlite_vedika_feedback` (
   `catatan` text,
   `username` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_veronisa`
---
 
 CREATE TABLE IF NOT EXISTS `mlite_veronisa` (
   `id` int(11) NOT NULL,
@@ -728,12 +697,6 @@ CREATE TABLE IF NOT EXISTS `mlite_veronisa` (
   `username` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `mlite_veronisa_feedback`
---
-
 CREATE TABLE IF NOT EXISTS `mlite_veronisa_feedback` (
   `id` int(11) NOT NULL,
   `nosep` varchar(100) NOT NULL,
@@ -742,54 +705,32 @@ CREATE TABLE IF NOT EXISTS `mlite_veronisa_feedback` (
   `username` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `mlite_akun_kegiatan`
---
 ALTER TABLE `mlite_akun_kegiatan`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_antrian_loket`
---
 ALTER TABLE `mlite_antrian_loket`
   ADD PRIMARY KEY (`kd`);
 
---
--- Indexes for table `mlite_billing`
---
 ALTER TABLE `mlite_billing`
   ADD PRIMARY KEY (`id_billing`);
 
---
--- Indexes for table `mlite_detailjurnal`
---
+ALTER TABLE `mlite_bridging_pcare`
+  ADD PRIMARY KEY (`id`) USING BTREE;
+
 ALTER TABLE `mlite_detailjurnal`
   ADD KEY `no_jurnal` (`no_jurnal`),
   ADD KEY `kd_rek` (`kd_rek`),
   ADD KEY `debet` (`debet`),
   ADD KEY `kredit` (`kredit`);
 
---
--- Indexes for table `mlite_duitku`
---
 ALTER TABLE `mlite_duitku`
   ADD PRIMARY KEY (`id`),
   ADD KEY `reference` (`reference`),
   ADD KEY `mlite_duitku_ibfk_1` (`no_rkm_medis`);
 
---
--- Indexes for table `mlite_geolocation_presensi`
---
 ALTER TABLE `mlite_geolocation_presensi`
   ADD KEY `mlite_geolocation_presensi_ibfk_1` (`id`);
 
---
--- Indexes for table `mlite_jurnal`
---
 ALTER TABLE `mlite_jurnal`
   ADD PRIMARY KEY (`no_jurnal`),
   ADD KEY `no_bukti` (`no_bukti`),
@@ -797,243 +738,270 @@ ALTER TABLE `mlite_jurnal`
   ADD KEY `jenis` (`jenis`),
   ADD KEY `keterangan` (`keterangan`);
 
---
--- Indexes for table `mlite_modules`
---
 ALTER TABLE `mlite_modules`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_notifications`
---
 ALTER TABLE `mlite_notifications`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_odontogram`
---
 ALTER TABLE `mlite_odontogram`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_pengaduan`
---
+ALTER TABLE `mlite_ohis`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `mlite_pengaduan`
   ADD PRIMARY KEY (`id`),
   ADD KEY `no_rkm_medis` (`no_rkm_medis`);
 
---
--- Indexes for table `mlite_pengaduan_detail`
---
 ALTER TABLE `mlite_pengaduan_detail`
   ADD PRIMARY KEY (`id`) USING BTREE,
   ADD KEY `pengaduan_detail_ibfk_1` (`pengaduan_id`);
 
---
--- Indexes for table `mlite_rekening`
---
+ALTER TABLE `mlite_penjualan`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_penjualan_barang`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_penjualan_billing`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_penjualan_detail`
+  ADD PRIMARY KEY (`id`);
+
 ALTER TABLE `mlite_rekening`
   ADD PRIMARY KEY (`kd_rek`),
   ADD KEY `nm_rek` (`nm_rek`),
   ADD KEY `tipe` (`tipe`),
   ADD KEY `balance` (`balance`);
 
---
--- Indexes for table `mlite_rekeningtahun`
---
 ALTER TABLE `mlite_rekeningtahun`
   ADD PRIMARY KEY (`thn`,`kd_rek`),
   ADD KEY `kd_rek` (`kd_rek`),
   ADD KEY `saldo_awal` (`saldo_awal`);
 
---
--- Indexes for table `mlite_remember_me`
---
 ALTER TABLE `mlite_remember_me`
   ADD PRIMARY KEY (`id`),
   ADD KEY `mlite_remember_me_ibfk_1` (`user_id`);
 
---
--- Indexes for table `mlite_settings`
---
-ALTER TABLE `mlite_settings`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `mlite_satu_sehat_departemen`
+  ADD PRIMARY KEY (`dep_id`),
+  ADD UNIQUE KEY `id_organisasi_satusehat` (`id_organisasi_satusehat`);
 
---
--- Indexes for table `mlite_subrekening`
---
+ALTER TABLE `mlite_satu_sehat_lokasi`
+  ADD PRIMARY KEY (`kode`),
+  ADD UNIQUE KEY `id_lokasi_satusehat` (`id_lokasi_satusehat`),
+  ADD KEY `id_organisasi_satusehat` (`id_organisasi_satusehat`);
+
+ALTER TABLE `mlite_satu_sehat_mapping_praktisi`
+  ADD PRIMARY KEY (`practitioner_id`),
+  ADD KEY `kd_dokter` (`kd_dokter`);
+
+ALTER TABLE `mlite_satu_sehat_response`
+  ADD PRIMARY KEY (`no_rawat`);
+
+ALTER TABLE `mlite_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `module` (`module`,`field`);
+
 ALTER TABLE `mlite_subrekening`
   ADD PRIMARY KEY (`kd_rek2`),
   ADD KEY `kd_rek` (`kd_rek`);
 
---
--- Indexes for table `mlite_users`
---
 ALTER TABLE `mlite_users`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_users_vedika`
---
 ALTER TABLE `mlite_users_vedika`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_vedika`
---
 ALTER TABLE `mlite_vedika`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_vedika_feedback`
---
 ALTER TABLE `mlite_vedika_feedback`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_veronisa`
---
 ALTER TABLE `mlite_veronisa`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `mlite_veronisa_feedback`
---
 ALTER TABLE `mlite_veronisa_feedback`
   ADD PRIMARY KEY (`id`);
 
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `mlite_akun_kegiatan`
---
 ALTER TABLE `mlite_akun_kegiatan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_antrian_loket`
---
+
 ALTER TABLE `mlite_antrian_loket`
   MODIFY `kd` int(50) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_billing`
---
+
 ALTER TABLE `mlite_billing`
   MODIFY `id_billing` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_duitku`
---
+
+ALTER TABLE `mlite_bridging_pcare`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `mlite_duitku`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_modules`
---
+
 ALTER TABLE `mlite_modules`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
---
--- AUTO_INCREMENT for table `mlite_notifications`
---
+
 ALTER TABLE `mlite_notifications`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_odontogram`
---
+
 ALTER TABLE `mlite_odontogram`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_pengaduan_detail`
---
+
+ALTER TABLE `mlite_ohis`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `mlite_pengaduan_detail`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_remember_me`
---
+
+ALTER TABLE `mlite_penjualan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mlite_penjualan_barang`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mlite_penjualan_billing`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mlite_penjualan_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 ALTER TABLE `mlite_remember_me`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_settings`
---
+
 ALTER TABLE `mlite_settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=148;
---
--- AUTO_INCREMENT for table `mlite_users`
---
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=151;
+
 ALTER TABLE `mlite_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
---
--- AUTO_INCREMENT for table `mlite_users_vedika`
---
+
 ALTER TABLE `mlite_users_vedika`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_vedika`
---
+
 ALTER TABLE `mlite_vedika`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_vedika_feedback`
---
+
 ALTER TABLE `mlite_vedika_feedback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_veronisa`
---
+
 ALTER TABLE `mlite_veronisa`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `mlite_veronisa_feedback`
---
+
 ALTER TABLE `mlite_veronisa_feedback`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- Constraints for dumped tables
---
 
---
--- Constraints for table `mlite_detailjurnal`
---
 ALTER TABLE `mlite_detailjurnal`
   ADD CONSTRAINT `mlite_detailjurnal_ibfk_1` FOREIGN KEY (`no_jurnal`) REFERENCES `mlite_jurnal` (`no_jurnal`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mlite_detailjurnal_ibfk_2` FOREIGN KEY (`kd_rek`) REFERENCES `mlite_rekening` (`kd_rek`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `mlite_duitku`
---
 ALTER TABLE `mlite_duitku`
   ADD CONSTRAINT `mlite_duitku_ibfk_1` FOREIGN KEY (`no_rkm_medis`) REFERENCES `pasien` (`no_rkm_medis`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `mlite_geolocation_presensi`
---
 ALTER TABLE `mlite_geolocation_presensi`
   ADD CONSTRAINT `mlite_geolocation_presensi_ibfk_1` FOREIGN KEY (`id`) REFERENCES `pegawai` (`id`) ON UPDATE CASCADE;
 
---
--- Constraints for table `mlite_pengaduan`
---
 ALTER TABLE `mlite_pengaduan`
   ADD CONSTRAINT `mlite_pengaduan_ibfk_1` FOREIGN KEY (`no_rkm_medis`) REFERENCES `pasien` (`no_rkm_medis`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `mlite_pengaduan_detail`
---
 ALTER TABLE `mlite_pengaduan_detail`
   ADD CONSTRAINT `mlite_pengaduan_detail_ibfk_1` FOREIGN KEY (`pengaduan_id`) REFERENCES `mlite_pengaduan` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
---
--- Constraints for table `mlite_rekeningtahun`
---
 ALTER TABLE `mlite_rekeningtahun`
   ADD CONSTRAINT `mlite_rekeningtahun_ibfk_1` FOREIGN KEY (`kd_rek`) REFERENCES `mlite_rekening` (`kd_rek`) ON UPDATE CASCADE;
 
---
--- Constraints for table `mlite_subrekening`
---
+ALTER TABLE `mlite_satu_sehat_lokasi`
+  ADD CONSTRAINT `mlite_satu_sehat_lokasi_ibfk_2` FOREIGN KEY (`id_organisasi_satusehat`) REFERENCES `mlite_satu_sehat_departemen` (`id_organisasi_satusehat`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `mlite_satu_sehat_mapping_praktisi`
+  ADD CONSTRAINT `mlite_satu_sehat_mapping_praktisi_ibfk_1` FOREIGN KEY (`kd_dokter`) REFERENCES `dokter` (`kd_dokter`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `mlite_satu_sehat_response`
+  ADD CONSTRAINT `mlite_satu_sehat_response_ibfk_1` FOREIGN KEY (`no_rawat`) REFERENCES `reg_periksa` (`no_rawat`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE `mlite_subrekening`
   ADD CONSTRAINT `mlite_subrekening_ibfk_1` FOREIGN KEY (`kd_rek`) REFERENCES `mlite_rekening` (`kd_rek`) ON UPDATE CASCADE,
   ADD CONSTRAINT `mlite_subrekening_ibfk_2` FOREIGN KEY (`kd_rek2`) REFERENCES `mlite_rekening` (`kd_rek`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+CREATE TABLE `mlite_surat_rujukan` (
+  `id` int(11) NOT NULL,
+  `nomor_surat` varchar(100) DEFAULT NULL,
+  `no_rawat` varchar(100) DEFAULT NULL,
+  `no_rkm_medis` varchar(100) DEFAULT NULL,
+  `nm_pasien` varchar(100) DEFAULT NULL,
+  `tgl_lahir` varchar(100) DEFAULT NULL,
+  `umur` varchar(100) DEFAULT NULL,
+  `jk` varchar(100) DEFAULT NULL,
+  `alamat` varchar(1000) DEFAULT NULL,
+  `kepada` varchar(250) DEFAULT NULL,
+  `di` varchar(250) DEFAULT NULL,
+  `anamnesa` varchar(100) DEFAULT NULL,
+  `pemeriksaan_fisik` varchar(100) DEFAULT NULL,
+  `pemeriksaan_penunjang` varchar(100) DEFAULT NULL,
+  `diagnosa` varchar(100) DEFAULT NULL,
+  `terapi` varchar(100) DEFAULT NULL,
+  `alasan_dirujuk` varchar(250) DEFAULT NULL,
+  `dokter` varchar(100) DEFAULT NULL,
+  `petugas` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `mlite_surat_sakit` (
+  `id` int(11) NOT NULL,
+  `nomor_surat` varchar(100) DEFAULT NULL,
+  `no_rawat` varchar(100) DEFAULT NULL,
+  `no_rkm_medis` varchar(100) DEFAULT NULL,
+  `nm_pasien` varchar(100) DEFAULT NULL,
+  `tgl_lahir` varchar(100) DEFAULT NULL,
+  `umur` varchar(100) DEFAULT NULL,
+  `jk` varchar(100) DEFAULT NULL,
+  `alamat` varchar(1000) DEFAULT NULL,
+  `keadaan` varchar(100) DEFAULT NULL,
+  `diagnosa` varchar(100) DEFAULT NULL,
+  `lama_angka` varchar(100) DEFAULT NULL,
+  `lama_huruf` varchar(100) DEFAULT NULL,
+  `tanggal_mulai` varchar(100) DEFAULT NULL,
+  `tanggal_selesai` varchar(100) DEFAULT NULL,
+  `dokter` varchar(100) DEFAULT NULL,
+  `petugas` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `mlite_surat_sehat` (
+  `id` int(11) NOT NULL,
+  `nomor_surat` varchar(100) DEFAULT NULL,
+  `no_rawat` varchar(100) DEFAULT NULL,
+  `no_rkm_medis` varchar(100) DEFAULT NULL,
+  `nm_pasien` varchar(100) DEFAULT NULL,
+  `tgl_lahir` varchar(100) DEFAULT NULL,
+  `umur` varchar(100) DEFAULT NULL,
+  `jk` varchar(100) DEFAULT NULL,
+  `alamat` varchar(1000) DEFAULT NULL,
+  `tanggal` varchar(100) DEFAULT NULL,
+  `berat_badan` varchar(100) DEFAULT NULL,
+  `tinggi_badan` varchar(100) DEFAULT NULL,
+  `tensi` varchar(100) DEFAULT NULL,
+  `gol_darah` varchar(100) DEFAULT NULL,
+  `riwayat_penyakit` varchar(100) DEFAULT NULL,
+  `keperluan` varchar(100) DEFAULT NULL,
+  `dokter` varchar(100) DEFAULT NULL,
+  `petugas` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `mlite_surat_rujukan`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_surat_sakit`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_surat_sehat`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `mlite_surat_rujukan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mlite_surat_sakit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `mlite_surat_sehat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

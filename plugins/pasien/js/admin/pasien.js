@@ -2,7 +2,7 @@
 $("#notif").hide();
 
 // tombol buka form diklik
-$("#index").on('click', '#bukaform', function(){
+$("#index").on('click', '#bukaform', function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
   event.preventDefault();
   $("#form").show().load(baseURL + '/pasien/form?t=' + mlite.token);
@@ -11,7 +11,7 @@ $("#index").on('click', '#bukaform', function(){
 });
 
 // tombol tutup form diklik
-$("#index").on('click', '#tutupform', function(){
+$("#index").on('click', '#tutupform', function(event){
   event.preventDefault();
   $("#form").hide();
   $("#tutupform").val("Buka Form");
@@ -20,8 +20,13 @@ $("#index").on('click', '#tutupform', function(){
 
 // ketika inputbox no_rm_medis diklik
 $("#form").on("click","#no_rkm_medis", function(event){
-  var no_rkm_medis_baru = $("#no_rkm_medis_baru").val();
-  $("#no_rkm_medis").val(no_rkm_medis_baru);
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var url = baseURL + '/pasien/maxid?t=' + mlite.token;
+  $.post(url, {
+  } ,function(data) {
+    $("#no_rkm_medis").val(data);
+  });
 });
 
 // tombol batal diklik
@@ -60,6 +65,7 @@ $("#form").on("click", "#simpan", function(event){
   var nm_kel = $('#nm_kel').val();
   var kd_pj = $('select[name=kd_pj]').val();
   var no_peserta = $('input:text[name=no_peserta]').val();
+  var manual = $('#norm_manual').prop("checked") ? 1 : 0 ;
 
   var url = baseURL + '/pasien/save?t=' + mlite.token;
 
@@ -111,26 +117,38 @@ $("#form").on("click", "#simpan", function(event){
       nm_kec:nm_kec,
       nm_kel:nm_kel,
       kd_pj: kd_pj,
-      no_peserta: no_peserta
+      no_peserta: no_peserta,
+      manual: manual 
     } ,function(data) {
-      //alert(data);
-      var data = JSON.parse(data);
-      if(data.status == 'success')
-      {
-        $("#form").hide();
-        $("#tutupform").val("Buka Form");
-        $("#tutupform").attr("id", "bukaform");
+      console.log(data);
+      data = JSON.parse(data);
+      var audio = new Audio('{?=url()?}/assets/sound/' + data.status + '.mp3');
+      audio.play();
+      if(data.status == 'success') {
+        if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
+          let payload = {
+              'action' : 'simpan',
+              'modul' : 'pasien'
+          }
+          ws.send(JSON.stringify(payload));
+          console.log(payload);
+        } else {
+          $("#display").show().load(baseURL + '/pasien/display?t=' + mlite.token);
+        }
+        bersih();
+        $("#status_pendaftaran").hide();
         $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "Data pasien telah disimpan!"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
-      } else {
-        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "Gagal menyimpan data pasien!"+
+        "Data pendaftaran pasien telah disimpan!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
         "</div>").show();
       }
-      $("#display").show().load(baseURL + '/pasien/display?t=' + mlite.token);
+      if(data.status == 'error') {
+        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Gagal menyimpan data pendaftaran pasien!<br>"+
+        data.msg+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      }
     });
   }
 
@@ -238,7 +256,8 @@ $("#form").on("click","#kartu", function(event){
   var baseURL = mlite.url + '/' + mlite.admin;
   event.preventDefault();
   var no_rkm_medis = $(this).attr("data-no_rkm_medis");
-  window.open(baseURL + '/pasien/kartu?no_rkm_medis=' + no_rkm_medis + '&t=' + mlite.token);
+  // window.open(baseURL + '/pasien/kartu?no_rkm_medis=' + no_rkm_medis + '&t=' + mlite.token);
+  $("#printModal").modal('show').html('<div style="text-align:center;margin:20px auto;width:50%;height:50%;"><iframe src="' + baseURL + '/pasien/cetakkartu/' + no_rkm_medis + '?t=' + mlite.token + '" frameborder="no" width="100%" height="100%"></iframe></div>');
 });
 
 // ketika tombol cetak ditekan
@@ -312,7 +331,7 @@ $('body').on('hidden.bs.modal', '.modal', function () {
     $(this).removeData('bs.modal');
 });
 
-$(function () {
+$(function (event) {
     if (window.location.href.indexOf("nama") > -1) {
         var baseURL = mlite.url + '/' + mlite.admin;
         event.preventDefault();
@@ -321,3 +340,44 @@ $(function () {
         $("#bukaform").attr("id", "tutupform");
     }
 });
+
+{if: $mlite.websocket == 'ya'}
+
+  {if: $mlite.websocket_proxy != ''}
+    var URL_WEBSOCKET = "{$mlite.websocket_proxy}";
+  {else}
+    var URL_WEBSOCKET = "ws://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
+  {/if}
+
+  var ws = new WebSocket(URL_WEBSOCKET);
+  var baseURL = mlite.url + '/' + mlite.admin;
+  
+  ws.onmessage = function(response){
+    try{
+      output = JSON.parse(response.data);
+      if(output['action'] == 'simpan'){
+        if(output['modul'] == 'pasien'){
+          $("#pasien #display").show().load(baseURL + '/pasien/display?t=' + mlite.token);
+        }
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
+  
+  
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
+
+{/if}

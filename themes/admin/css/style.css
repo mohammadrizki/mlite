@@ -131,11 +131,11 @@ input:focus {
     width: 100%;
     height: 100%;
     position: absolute;
-    padding: 60px 0px 0px 0px;
+    padding: 120px 0px 0px 0px;
     margin-bottom: 0px;
 }
 .content-title {
-    margin: 11px 0 30px 0;
+    margin: 20px 0 30px 0;
 }
 h3.panel-title {
     font-weight: 400;
@@ -173,7 +173,7 @@ h3.panel-title {
     padding: 12px 30px;
     box-sizing: border-box;
     margin: 0;
-    top: 75px;
+    top: 125px;
     border-radius: 0;
 }
     #notify.alert-danger:before {
@@ -661,10 +661,10 @@ select[multiple].form-control {
 }
 .modal-full {
   margin: auto;
-  width: 90%;
+  width: 100%;
 }
 .modal-full .modal-content {
-  min-height: 100vh;
+  min-height: 90vh;
 }
 
 .modal.left .modal-dialog,
@@ -762,7 +762,7 @@ select[multiple].form-control {
 
     #notify {
         position: relative;
-        top: 55px;
+        top: 125px;
     }
 
     .panel-heading .tinynav {
@@ -775,7 +775,7 @@ select[multiple].form-control {
 @media(max-width: 1279px) {
   #content-wrapper {
       padding: 0;
-      top: 50px;
+      top: 120px;
       margin-bottom: 80px;
   }
   .profile-card {
@@ -884,7 +884,7 @@ select[multiple].form-control {
       text-overflow: ellipsis;
     }
     #content-wrapper {
-      top:70px;
+      top:80px;
       margin-bottom: 80px;
     }
 }
@@ -1025,3 +1025,29 @@ select[multiple].form-control {
   color: white;
   font-size: 24px;
 }
+
+.fa-Tanggal:before {
+    content: "\f00d";
+}
+.fa-Tambalan:before {
+    content: "\f111";
+}
+.fa-Akar:before {
+    content: "\f00c";
+}
+.fa-Karies:before {
+    content: "\f10c";
+}
+.fa-Goyang:before {
+    content: "\f153";
+}
+.fa-Erupsi:before {
+    content: "\f07e";
+}
+
+@media (min-width: 768px) {
+    .modal-xl {
+      width: 90%;
+     max-width:1200px;
+    }
+  }

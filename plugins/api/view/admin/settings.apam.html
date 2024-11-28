@@ -1,4 +1,4 @@
-<article class="row">
+<div class="row">
     <form action="{?=url(ADMIN.'/api/saveSettingsApam')?}" method="POST">
         <div class="col-md-6">
             <div class="panel panel-default">
@@ -127,10 +127,9 @@
           <input type="submit" name="save" class="btn btn-primary" value="Simpan" />
         </div>
     </form>
-</article>
+</div>
 <script>
   $('#kd_prop').keyup(function(){
-     event.preventDefault();
      var query = $(this).val();
      if(query != '')
      {
@@ -152,7 +151,6 @@
      $('#propinsiList').fadeOut();
   });
   $('#kd_kab').keyup(function(){
-     event.preventDefault();
      var query = $(this).val();
      if(query != '')
      {
@@ -174,7 +172,6 @@
        $('#kabupatenList').fadeOut();
   });
   $('#kd_kec').keyup(function(){
-       event.preventDefault();
        var query = $(this).val();
        if(query != '')
        {

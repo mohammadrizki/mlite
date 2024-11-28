@@ -6,8 +6,10 @@
           <div class="form-group">
             <label for="no_rkm_medis" class="col-sm-3 control-label">Nomor RM</label>
             <div class="col-sm-4">
-              <input type="text" id="no_rkm_medis" name="no_rkm_medis" class="form-control" value="{$pasien.no_rkm_medis}" {if: !empty($pasien.no_rkm_medis)}disabled{/if}>
-              <input name="no_rkm_medis_baru" class="form-control" type="hidden" value="{$no_rkm_medis_baru}" id="no_rkm_medis_baru" >
+              <div class="input-group" style="width: 100%">
+                <input type="text" id="no_rkm_medis" name="no_rkm_medis" class="form-control" value="{$pasien.no_rkm_medis}" {if: !empty($pasien.no_rkm_medis)}disabled{/if}>
+                <span class="input-group-addon"><input type="checkbox" name="manual" id="norm_manual"></span>
+              </div>
             </div>
             <label for="tgl_daftar" class="col-sm-2 control-label">Tgl. Daftar</label>
             <div class="col-sm-3">
@@ -234,7 +236,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 <script type="text/javascript">
-  $('select').selectator();
+  $('#form select').selectator();
 </script>
 <script type="text/javascript">
    $(function () {
@@ -250,7 +252,6 @@
 </script>
 <script>
   $('#nm_prop').keyup(function(){
-     event.preventDefault();
      var query = $(this).val();
      if(query != '')
      {
@@ -272,7 +273,6 @@
      $('#propinsiList').fadeOut();
   });
   $('#nm_kab').keyup(function(){
-     event.preventDefault();
      var query = $(this).val();
      if(query != '')
      {
@@ -294,7 +294,6 @@
        $('#kabupatenList').fadeOut();
   });
   $('#nm_kec').keyup(function(){
-       event.preventDefault();
        var query = $(this).val();
        if(query != '')
        {
@@ -316,7 +315,6 @@
        $('#kecamatanList').fadeOut();
   });
   $('#nm_kel').keyup(function(){
-       event.preventDefault();
        var query = $(this).val();
        if(query != '')
        {
@@ -360,7 +358,7 @@
           $('.sex').val(data.response.sex);
           $('.tgl_lahir').val(moment(data.response.tglLahir).format('YYYY-MM-DD'));
           $('.noTelepon').val(data.response.noHP);
-          if(data.response.kdProviderPst.kdProvider !== '{$usernamePcare}'){
+          if(data.response.kdProviderPst.kdProvider !== '{$usernamePcare}' || data.response.kdProviderPst.kdProviderGigi !== '{$usernamePcare}'){
             alert('Pasien tidak terdaftar sebagai peserta.');
           }
         } else {
@@ -368,7 +366,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {else}
   $("#no_ktp").on('keyup', function (event) {
@@ -395,7 +392,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {/if}
   {if: $cek_pcare}
@@ -408,7 +404,6 @@
     if (event.key === 'Enter' || event.keyCode === 13) {
 
       $.get(url, function(data){
-        //console.log(data);
         var data = JSON.parse(data);
         var json_obj = [data];
         if(!json_obj[0]) {
@@ -417,9 +412,9 @@
           $('.nama').val(data.response.nama);
           $('.no_ktp').val(data.response.noKTP);
           $('.sex').val(data.response.sex);
-          $('.tgl_lahir').val(moment(data.response.tglLahir).format('YYYY-MM-DD'));
+          $('.tgl_lahir').val(moment(data.response.tglLahir, 'DD-MM-YYYY').format('YYYY-MM-DD'));
           $('.noTelepon').val(data.response.noHP);
-          if(data.response.kdProviderPst.kdProvider !== '{$usernamePcare}'){
+          if(data.response.kdProviderPst.kdProvider == '{$usernamePcare}' || data.response.kdProviderPst.kdProviderGigi == '{$usernamePcare}'){
             alert('Pasien tidak terdaftar sebagai peserta.');
           }
         } else {
@@ -427,7 +422,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {else}
   $("#no_peserta").on('keyup', function (event) {
@@ -455,7 +449,6 @@
         }
       });
     }
-    event.preventDefault();
   });
   {/if}
 </script>
@@ -516,15 +509,20 @@
   	var message = document.getElementById("message").value;
   	//console.log(api_key + " - " + number + " - " + message);
   	xhttp.onreadystatechange = function() {
-  		if (this.readyState == 4 && this.status == 200) {
-  			var data=xhttp.responseText;
-  			var jsonResponse = JSON.parse(data);
-  			if(jsonResponse["status"] == true) {
-  				alert('Sukses mengirim pesan.');
-  			} else {
-  				alert('Gagal mengirim pesan.\n' + jsonResponse["msg"]);
-  			}
-  		}
+      if (this.readyState == 4 && this.status == 200) {
+        var data=xhttp.responseText;
+        var timeout = '504 Gateway Time-out';
+        if(data.indexOf(timeout) != -1) {
+            alert('Timeout!!! Gagal mengirim pesan.');
+        } else {
+            var jsonResponse = JSON.parse(data);
+            if(jsonResponse["status"] == true) {
+              alert('Sukses mengirim pesan.');
+            } else {
+            alert('Gagal mengirim pesan.\n' + jsonResponse["msg"]);
+            }
+        }
+      }
   	};
   	xhttp.open("POST", "{?=url([ADMIN,'api','kirimwa'])?}", true);
   	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -544,7 +542,6 @@
                 }
             }
             var baseURL = mlite.url + '/' + mlite.admin;
-            event.preventDefault();
         }
         if (queryString["nama"] != null && queryString["no_telp"] != null) {
             $('input:text[name=nm_pasien]').val(queryString["nama"]);

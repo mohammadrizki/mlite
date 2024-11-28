@@ -36,14 +36,22 @@ class Site extends SiteModule
           $assign['poliklinik'] = $this->_getPoliklinik($this->settings->get('anjungan.display_poli'));
         }
         $assign['presensi'] = $this->db('mlite_modules')->where('dir', 'presensi')->oneArray();
-        echo $this->draw('main.html', ['mlite' => $assign]);
+        if(MULTI_APP) {
+            if(!empty(MULTI_APP_REDIRECT)) {
+                redirect(url([ADMIN]));
+            } else {
+                redirect(url([ADMIN, 'dashboard', 'main']));
+            }
+        } else {
+            echo $this->draw('main.html', ['mlite' => $assign]);
+        }
         exit();
     }
 
     private function _getPoliklinik($kd_poli = null)
     {
         $result = [];
-        $rows = $this->core->mysql('poliklinik')->toArray();
+        $rows = $this->db('poliklinik')->toArray();
 
         if (!$kd_poli) {
             $kd_poliArray = [];

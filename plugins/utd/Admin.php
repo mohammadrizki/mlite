@@ -3,10 +3,6 @@
 namespace Plugins\Utd;
 
 use Systems\AdminModule;
-use Plugins\Utd\DB_Wilayah;
-use Systems\Lib\Fpdf\FPDF;
-use Systems\Lib\Fpdf\PDF_MC_Table;
-use Systems\Lib\Fpdf\PDF_Code128;
 
 class Admin extends AdminModule
 {
@@ -36,7 +32,7 @@ class Admin extends AdminModule
   public function getPendonor()
   {
     $this->_addHeaderFiles();
-    $pendonor = $this->core->mysql('utd_pendonor')
+    $pendonor = $this->db('utd_pendonor')
       ->join('propinsi', 'propinsi.kd_prop=utd_pendonor.kd_prop')
       ->join('kabupaten', 'kabupaten.kd_kab=utd_pendonor.kd_kab')
       ->join('kecamatan', 'kecamatan.kd_kec=utd_pendonor.kd_kec')
@@ -54,49 +50,49 @@ class Admin extends AdminModule
   {
     if($_POST['simpan']) {
       unset($_POST['simpan']);
-      if(!$this->core->mysql('propinsi')->where('kd_prop', $_POST['kd_prop'])->oneArray()){
-        $this->core->mysql('propinsi')->save(['kd_prop' => $_POST['kd_prop'], 'nm_prop' => $_POST['nm_prop']]);
+      if(!$this->db('propinsi')->where('kd_prop', $_POST['kd_prop'])->oneArray()){
+        $this->db('propinsi')->save(['kd_prop' => $_POST['kd_prop'], 'nm_prop' => $_POST['nm_prop']]);
       }
-      if(!$this->core->mysql('kabupaten')->where('kd_kab', $_POST['kd_kab'])->oneArray()){
-        $this->core->mysql('kabupaten')->save(['kd_kab' => $_POST['kd_kab'], 'nm_kab' => $_POST['nm_kab']]);
+      if(!$this->db('kabupaten')->where('kd_kab', $_POST['kd_kab'])->oneArray()){
+        $this->db('kabupaten')->save(['kd_kab' => $_POST['kd_kab'], 'nm_kab' => $_POST['nm_kab']]);
       }
-      if(!$this->core->mysql('kecamatan')->where('kd_kec', $_POST['kd_kec'])->oneArray()){
-        $this->core->mysql('kecamatan')->save(['kd_kec' => $_POST['kd_kec'], 'nm_kec' => $_POST['nm_kec']]);
+      if(!$this->db('kecamatan')->where('kd_kec', $_POST['kd_kec'])->oneArray()){
+        $this->db('kecamatan')->save(['kd_kec' => $_POST['kd_kec'], 'nm_kec' => $_POST['nm_kec']]);
       }
-      if(!$this->core->mysql('kelurahan')->where('nm_kel', $_POST['nm_kel'])->oneArray()){
-        $result = $this->core->mysql('kelurahan')->select('kd_kel')->desc('kd_kel')->limit(1)->oneArray();
+      if(!$this->db('kelurahan')->where('nm_kel', $_POST['nm_kel'])->oneArray()){
+        $result = $this->db('kelurahan')->select('kd_kel')->desc('kd_kel')->limit(1)->oneArray();
         $_POST['kd_kel'] = $result['kd_kel'] + 1;
-        $this->core->mysql('kelurahan')->save(['kd_kel' => $_POST['kd_kel'], 'nm_kel' => $_POST['nm_kel']]);
+        $this->db('kelurahan')->save(['kd_kel' => $_POST['kd_kel'], 'nm_kel' => $_POST['nm_kel']]);
       }
       unset($_POST['nm_prop']);
       unset($_POST['nm_kab']);
       unset($_POST['nm_kec']);
       unset($_POST['nm_kel']);
-      $this->core->mysql('utd_pendonor')->save($_POST);
+      $this->db('utd_pendonor')->save($_POST);
       $this->notify('success', 'Data pendonor telah disimpan');
     } else if ($_POST['update']) {
       $no_pendonor = $_POST['no_pendonor'];
       unset($_POST['update']);
       unset($_POST['no_pendonor']);
-      if(!$this->core->mysql('propinsi')->where('kd_prop', $_POST['kd_prop'])->oneArray()){
-        $this->core->mysql('propinsi')->save(['kd_prop' => $_POST['kd_prop'], 'nm_prop' => $_POST['nm_prop']]);
+      if(!$this->db('propinsi')->where('kd_prop', $_POST['kd_prop'])->oneArray()){
+        $this->db('propinsi')->save(['kd_prop' => $_POST['kd_prop'], 'nm_prop' => $_POST['nm_prop']]);
       }
-      if(!$this->core->mysql('kabupaten')->where('kd_kab', $_POST['kd_kab'])->oneArray()){
-        $this->core->mysql('kabupaten')->save(['kd_kab' => $_POST['kd_kab'], 'nm_kab' => $_POST['nm_kab']]);
+      if(!$this->db('kabupaten')->where('kd_kab', $_POST['kd_kab'])->oneArray()){
+        $this->db('kabupaten')->save(['kd_kab' => $_POST['kd_kab'], 'nm_kab' => $_POST['nm_kab']]);
       }
-      if(!$this->core->mysql('kecamatan')->where('kd_kec', $_POST['kd_kec'])->oneArray()){
-        $this->core->mysql('kecamatan')->save(['kd_kec' => $_POST['kd_kec'], 'nm_kec' => $_POST['nm_kec']]);
+      if(!$this->db('kecamatan')->where('kd_kec', $_POST['kd_kec'])->oneArray()){
+        $this->db('kecamatan')->save(['kd_kec' => $_POST['kd_kec'], 'nm_kec' => $_POST['nm_kec']]);
       }
-      if(!$this->core->mysql('kelurahan')->where('nm_kel', $_POST['nm_kel'])->oneArray()){
-        $result = $this->core->mysql('kelurahan')->select('kd_kel')->desc('kd_kel')->limit(1)->oneArray();
+      if(!$this->db('kelurahan')->where('nm_kel', $_POST['nm_kel'])->oneArray()){
+        $result = $this->db('kelurahan')->select('kd_kel')->desc('kd_kel')->limit(1)->oneArray();
         $_POST['kd_kel'] = $result['kd_kel'] + 1;
-        $this->core->mysql('kelurahan')->save(['kd_kel' => $_POST['kd_kel'], 'nm_kel' => $_POST['nm_kel']]);
+        $this->db('kelurahan')->save(['kd_kel' => $_POST['kd_kel'], 'nm_kel' => $_POST['nm_kel']]);
       }
       unset($_POST['nm_prop']);
       unset($_POST['nm_kab']);
       unset($_POST['nm_kec']);
       unset($_POST['nm_kel']);
-      $this->core->mysql('utd_pendonor')
+      $this->db('utd_pendonor')
         ->where('no_pendonor', $no_pendonor)
         ->save($_POST);
       $this->notify('failure', 'Data pendonor telah diubah');
@@ -106,7 +102,7 @@ class Admin extends AdminModule
 
   public function getHapusPendonor($no_pendonor)
   {
-    $this->core->mysql('utd_pendonor')
+    $this->db('utd_pendonor')
       ->where('no_pendonor', $no_pendonor)
       ->delete();
     redirect(url([ADMIN, 'utd', 'pendonor']));
@@ -114,9 +110,9 @@ class Admin extends AdminModule
 
   public function postCetak()
   {
-    $this->core->mysql()->pdo()->exec("DELETE FROM `mlite_temporary`");
+    $this->db()->pdo()->exec("DELETE FROM `mlite_temporary`");
     $cari = $_POST['cari'];
-    $this->core->mysql()->pdo()->exec("INSERT INTO `mlite_temporary` (
+    $this->db()->pdo()->exec("INSERT INTO `mlite_temporary` (
       `temp1`,
       `temp2`,
       `temp3`,
@@ -136,58 +132,45 @@ class Admin extends AdminModule
     FROM `utd_pendonor`
     WHERE (`no_pendonor` LIKE '%$cari%' OR `nama` LIKE '%$cari%' OR `alamat` LIKE '%$cari%')
     ");
+
+    $cetak = $this->db('mlite_temporary')->toArray();
+    return $this->draw('cetak.utd.html', ['cetak' => $cetak]);
     exit();
   }
 
   public function getCetakPendonor()
   {
-    $tmp = $this->core->mysql('mlite_temporary')->toArray();
-    $logo = $this->settings->get('settings.logo');
+    $mpdf = new \Mpdf\Mpdf([
+      'mode' => 'utf-8',
+      'orientation' => 'L'
+    ]);
 
-    $pdf = new PDF_MC_Table('L','mm','Legal');
-    $pdf->AddPage();
-    $pdf->SetAutoPageBreak(true, 10);
-    $pdf->SetTopMargin(10);
-    $pdf->SetLeftMargin(10);
-    $pdf->SetRightMargin(10);
+    $mpdf->SetHTMLHeader($this->core->setPrintHeader());
+    $mpdf->SetHTMLFooter($this->core->setPrintFooter());
+          
+    $url = url(ADMIN.'/tmp/cetak.utd.html');
+    $html = file_get_contents($url);
+    $mpdf->WriteHTML($this->core->setPrintCss(),\Mpdf\HTMLParserMode::HEADER_CSS);
+    $mpdf->WriteHTML($html,\Mpdf\HTMLParserMode::HTML_BODY);
 
-    $pdf->Image('../'.$logo, 10, 8, '18', '18', 'png');
-    $pdf->SetFont('Arial', '', 24);
-    $pdf->Text(30, 16, $this->settings->get('settings.nama_instansi'));
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Text(30, 21, $this->settings->get('settings.alamat').' - '.$this->settings->get('settings.kota'));
-    $pdf->Text(30, 25, $this->settings->get('settings.nomor_telepon').' - '.$this->settings->get('settings.email'));
-    $pdf->Line(10, 30, 345, 30);
-    $pdf->Line(10, 31, 345, 31);
-    $pdf->SetFont('Arial', 'B', 13);
-    $pdf->Text(10, 40, 'DATA PENDONOR');
-    $pdf->Ln(34);
-    $pdf->SetFont('Arial', 'B', 11);
-    $pdf->SetWidths(array(30,65,35,25,25,90,35,30));
-    $pdf->Row(array('No. Pendonor','Nama Pasien','No. KTP','J. Kelamin','Tgl. Lahir','Alamat','G.Darah/Resus','No. Telp'));
-    $pdf->SetFont('Arial', '', 10);
-    foreach ($tmp as $hasil) {
-      $j_kelamin = 'Laki-Laki';
-      if($hasil['temp4'] == 'P') {
-        $j_kelamin = 'Perempuan';
-      }
-      $pdf->Row(array($hasil['temp1'],$hasil['temp2'],$hasil['temp3'],$j_kelamin,$hasil['temp6'],$hasil['temp7'],$hasil['temp12'].' / '.$hasil['temp13'],$hasil['temp14']));
-    }
-    $pdf->Output('cetak'.date('Y-m-d').'.pdf','I');
+    // Output a PDF file directly to the browser
+    $mpdf->Output();
+    exit();      
+
   }
 
   public function getDonor()
   {
     $this->_addHeaderFiles();
-    $donor = $this->core->mysql('utd_donor')
+    $donor = $this->db('utd_donor')
       ->join('utd_pendonor', 'utd_pendonor.no_pendonor=utd_donor.no_pendonor')
       ->join('kelurahan', 'kelurahan.kd_kel=utd_pendonor.kd_kel')
       ->join('kecamatan', 'kecamatan.kd_kec=utd_pendonor.kd_kec')
       ->join('kabupaten', 'kabupaten.kd_kab=utd_pendonor.kd_kab')
       ->join('propinsi', 'propinsi.kd_prop=utd_pendonor.kd_prop')
       ->toArray();
-    $pendonor = $this->core->mysql('utd_pendonor')->toArray();
-    $petugas = $this->core->mysql('petugas')->toArray();
+    $pendonor = $this->db('utd_pendonor')->toArray();
+    $petugas = $this->db('petugas')->toArray();
     return $this->draw('data.donor.html', ['donor' => $donor, 'pendonor' => $pendonor, 'petugas' => $petugas]);
   }
 
@@ -195,13 +178,13 @@ class Admin extends AdminModule
   {
     if($_POST['simpan']) {
       unset($_POST['simpan']);
-      $this->core->mysql('utd_donor')->save($_POST);
+      $this->db('utd_donor')->save($_POST);
       $this->notify('success', 'Data donor telah disimpan');
     } else if ($_POST['update']) {
       $no_donor = $_POST['no_donor'];
       unset($_POST['update']);
       unset($_POST['no_donor']);
-      $this->core->mysql('utd_donor')
+      $this->db('utd_donor')
         ->where('no_donor', $no_donor)
         ->save($_POST);
       $this->notify('failure', 'Data donor telah diubah');
@@ -211,7 +194,7 @@ class Admin extends AdminModule
 
   public function getHapusDonor($no_donor)
   {
-    $this->core->mysql('utd_donor')
+    $this->db('utd_donor')
       ->where('no_donor', $no_donor)
       ->delete();
     redirect(url([ADMIN, 'utd', 'donor']));
@@ -220,10 +203,10 @@ class Admin extends AdminModule
   public function getStokDarah()
   {
     $this->_addHeaderFiles();
-    $stokdarah = $this->core->mysql('utd_stok_darah')
+    $stokdarah = $this->db('utd_stok_darah')
       ->join('utd_komponen_darah', 'utd_komponen_darah.kode=utd_stok_darah.kode_komponen')
       ->toArray();
-    $komponendarah = $this->core->mysql('utd_komponen_darah')->toArray();
+    $komponendarah = $this->db('utd_komponen_darah')->toArray();
     return $this->draw('stok.darah.html', ['stokdarah' => $stokdarah, 'komponendarah' => $komponendarah]);
   }
 
@@ -231,13 +214,13 @@ class Admin extends AdminModule
   {
     if($_POST['simpan']) {
       unset($_POST['simpan']);
-      $this->core->mysql('utd_stok_darah')->save($_POST);
+      $this->db('utd_stok_darah')->save($_POST);
       $this->notify('success', 'Data stok darah telah disimpan');
     } else if ($_POST['update']) {
       $no_kantong = $_POST['no_kantong'];
       unset($_POST['update']);
       unset($_POST['no_kantong']);
-      $this->core->mysql('utd_stok_darah')
+      $this->db('utd_stok_darah')
         ->where('no_kantong', $no_kantong)
         ->save($_POST);
       $this->notify('failure', 'Data stok darah telah diubah');
@@ -247,7 +230,7 @@ class Admin extends AdminModule
 
   public function getHapusStokDarah($no_kantong)
   {
-    $this->core->mysql('utd_stok_darah')
+    $this->db('utd_stok_darah')
       ->where('no_kantong', $no_kantong)
       ->delete();
     redirect(url([ADMIN, 'utd', 'stokdarah']));
@@ -256,7 +239,7 @@ class Admin extends AdminModule
   public function getKomponenDarah()
   {
     $this->_addHeaderFiles();
-    $komponendarah = $this->core->mysql('utd_komponen_darah')
+    $komponendarah = $this->db('utd_komponen_darah')
       ->toArray();
     return $this->draw('komponen.darah.html', ['komponendarah' => $komponendarah]);
   }
@@ -265,13 +248,13 @@ class Admin extends AdminModule
   {
     if($_POST['simpan']) {
       unset($_POST['simpan']);
-      $this->core->mysql('utd_komponen_darah')->save($_POST);
+      $this->db('utd_komponen_darah')->save($_POST);
       $this->notify('success', 'Data komponen darah telah disimpan');
     } else if ($_POST['update']) {
       $kode = $_POST['kode'];
       unset($_POST['update']);
       unset($_POST['kode']);
-      $this->core->mysql('utd_komponen_darah')
+      $this->db('utd_komponen_darah')
         ->where('kode', $kode)
         ->save($_POST);
       $this->notify('failure', 'Data komponen darah telah diubah');
@@ -281,7 +264,7 @@ class Admin extends AdminModule
 
   public function getHapusKomponenDarah($kode)
   {
-    $this->core->mysql('utd_komponen_darah')
+    $this->db('utd_komponen_darah')
       ->where('kode', $kode)
       ->delete();
     redirect(url([ADMIN, 'utd', 'komponendarah']));
@@ -297,7 +280,7 @@ class Admin extends AdminModule
         if(isset($_POST["query"])){
           $output = '';
           $key = "%".$_POST["query"]."%";
-          $rows = $this->data_wilayah('propinsi')->like('nm_prop', $key)->asc('kd_prop')->limit(10)->toArray();
+          $rows = $this->db('propinsi')->like('nm_prop', $key)->asc('kd_prop')->limit(10)->toArray();
           $output = '';
           if(count($rows)){
             foreach ($rows as $row) {
@@ -311,7 +294,7 @@ class Admin extends AdminModule
         if(isset($_POST["query"])){
           $output = '';
           $key = "%".$_POST["query"]."%";
-          $rows = $this->data_wilayah('kabupaten')->like('nm_kab', $key)->asc('kd_kab')->limit(10)->toArray();
+          $rows = $this->db('kabupaten')->like('nm_kab', $key)->asc('kd_kab')->limit(10)->toArray();
           $output = '';
           if(count($rows)){
             foreach ($rows as $row) {
@@ -325,7 +308,7 @@ class Admin extends AdminModule
         if(isset($_POST["query"])){
           $output = '';
           $key = "%".$_POST["query"]."%";
-          $rows = $this->data_wilayah('kecamatan')->like('nm_kec', $key)->asc('kd_kec')->limit(10)->toArray();
+          $rows = $this->db('kecamatan')->like('nm_kec', $key)->asc('kd_kec')->limit(10)->toArray();
           $output = '';
           if(count($rows)){
             foreach ($rows as $row) {
@@ -339,7 +322,7 @@ class Admin extends AdminModule
         if(isset($_POST["query"])){
           $output = '';
           $key = "%".$_POST["query"]."%";
-          $rows = $this->core->mysql('kelurahan')->like('nm_kel', $key)->asc('kd_kel')->limit(10)->toArray();
+          $rows = $this->db('kelurahan')->like('nm_kel', $key)->asc('kd_kel')->limit(10)->toArray();
           $output = '';
           if(count($rows)){
             foreach ($rows as $row) {
@@ -368,7 +351,7 @@ class Admin extends AdminModule
   public function setNoPendonor()
   {
       $date = date('Y-m-d');
-      $last_no = $this->core->mysql()->pdo()->prepare("SELECT ifnull(MAX(CONVERT(RIGHT(no_pendonor,6),signed)),0) FROM utd_pendonor");
+      $last_no = $this->db()->pdo()->prepare("SELECT ifnull(MAX(CONVERT(RIGHT(no_pendonor,6),signed)),0) FROM utd_pendonor");
       $last_no->execute();
       $last_no = $last_no->fetch();
       if(empty($last_no[0])) {
@@ -405,11 +388,6 @@ class Admin extends AdminModule
       $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
       $this->core->addJS(url('assets/jscripts/jquery.confirm.js'));
       $this->core->addJS(url([ADMIN, 'utd', 'javascript']), 'footer');
-  }
-
-  protected function data_wilayah($table)
-  {
-      return new DB_Wilayah($table);
   }
 
 }

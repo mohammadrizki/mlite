@@ -502,9 +502,28 @@
           </div>
           <div class="panel-footer">
             <input type="submit" id="simpan" class="btn btn-primary" name="" value="Simpan">
+            <!-- <button type="button" name="button" class="btn btn-success" id="finger">Cek Finger</button> -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Biometrik <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#" class="" id="finger">Finger Print</a></li>
+                <li><a href="#" class="" id="frista">Face Recognition</a></li>
+              </ul>
+            </div>
             <!--<button type="button" name="button" class="btn btn-warning" id="sync_sep">Sync SEP</button>-->
+            <div class="btn-group">
+              <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Antrian <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="1">Rujukan FKTP</a></li>
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="2">Rujukan Internal</a></li>
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="3">Kontrol</a></li>
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="4">Rujukan Antar RS</a></li>
+              </ul>
+            </div>
             <button type="button" name="button" class="btn btn-warning" id="kontrol">Kontrol</button>
             <button type="button" name="button" class="btn btn-warning" id="spri">SPRI</button>
+            <button type="button" name="button" class="btn btn-warning" id="rujukkeluar">Rujuk Keluar</button>
+            <button type="button" name="button" class="btn btn-warning" id="prb">PRB</button>
             <input type="submit" id="selesai" class="btn btn-danger pull-right" name="" value="Selesai">
           </div>
         </div>
@@ -526,12 +545,33 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="add_antrianModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="kontrolModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             ...
         </div>
     </div>
+</div>
+<div class="modal fade" id="rujukkeluarModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="prbModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
 </div>
 <script type="text/javascript">
   $("#form_sep").on("click","#sync_sep", function(event){
@@ -544,6 +584,36 @@
 
     var modal = $('#syncsepModal');
     var modalContent = $('#syncsepModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click",".add_antrian", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rkm_medis = $('input:text[name=no_rkm_medis]').val();
+    var no_rujukan = $('input:text[name=sep_nomor_rujukan]').val();
+    var no_skpd = $('input:text[name=sep_nomor_skdp]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var jenis_kunjungan = $(this).attr("data-jenis_kunjungan");
+    var nomor_rujukan = '';
+    if (jenis_kunjungan == '1') {
+      nomor_rujukan = no_rujukan
+    } else {
+      nomor_rujukan = no_skpd
+    }
+
+    var loadURL =  baseURL + '/vclaim/addantrian/' + no_rkm_medis + '/' + no_rawat + '/' + nomor_rujukan + '/' + jenis_kunjungan + '?t=' + mlite.token;
+    // alert(loadURL);
+
+    var modal = $('#add_antrianModal');
+    var modalContent = $('#add_antrianModal .modal-content');
 
     modal.off('show.bs.modal');
     modal.on('show.bs.modal', function () {
@@ -589,6 +659,41 @@
   });
 </script>
 <script type="text/javascript">
+  $("#form_sep").on("click","#rujukkeluar", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var loadURL =  baseURL + '/vclaim/rujukkeluar/' + no_peserta + '?t=' + mlite.token;
+
+    var modal = $('#rujukkeluarModal');
+    var modalContent = $('#rujukkeluarModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+
+  $("#form_sep").on("click","#prb", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var loadURL =  baseURL + '/vclaim/srb/' + no_peserta + '/'+no_rawat+'?t=' + mlite.token;
+
+    var modal = $('#prbModal');
+    var modalContent = $('#prbModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
    $(function () {
        $('.tanggal').datetimepicker({
          format: 'YYYY-MM-DD',
@@ -613,8 +718,94 @@
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
     var no_sep = $(this).attr("data-no_sep");
-    window.open(baseURL + '/vclaim/cetaksep/' + no_sep + '?t=' + mlite.token);
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    window.open(baseURL + '/vclaim/cetaksep/' + no_sep + '/' + no_rawat + '?t=' + mlite.token);
   });
+  $("#form_sep").on("click",".print_sep_internal", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_sep = $(this).attr("data-no_sep");
+    window.open(baseURL + '/vclaim/cetaksepinternal/' + no_sep + '?t=' + mlite.token);
+  });
+  $("#form_sep").on("click","#finger", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_kartu = $('#sep_no_kartu').val();
+    var url = baseURL + '/vclaim/finger/' + no_kartu + '?t=' + mlite.token
+    $.get(url,function (data) {
+      var data = JSON.parse(data);
+      if(data.response.status == 'Peserta belum melakukan validasi finger print') {
+        openFingerprint(no_kartu);
+      } else {
+        alert(data.response.status)
+      }
+    })
+  });
+  $("#form_sep").on("click","#frista", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_kartu = $('#sep_no_kartu').val();
+    var url = baseURL + '/vclaim/frista/' + no_kartu + '?t=' + mlite.token
+    $.get(url,function (data) {
+      var data = JSON.parse(data);
+      if(data.response.status == 'Peserta belum melakukan validasi frista') {
+        openFrista(no_kartu);
+      } else {
+        alert(data.response.status)
+      }
+    })
+  });
+  $("#form_sep").on("click","#approvefinger", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_kartu = $('#sep_no_kartu').val();
+    var url = baseURL + '/vclaim/approvefinger/' + no_kartu + '?t=' + mlite.token
+    $.get(url,function (data) {
+      // var data = JSON.parse(data);
+      alert(data)
+    })
+  });
+</script>
+<script>
+async function openFingerprint(noka) {
+	const response = await fetch(`http://localhost:3000`, {
+		method: 'POST',
+		body: new URLSearchParams({
+			username: "{?=isset_or($username_fp, '')?}",
+			password: "{?=isset_or($password_fp, '')?}",
+			card_number: noka,
+			exit: true, // wait window for exit (optional, default false)
+			wait: 2_000 // wait for login to completed (optional, default 3_593)
+		})
+	});
+
+	if (response.ok) {
+		// Response OK setelah jendela aplikasi sidik jari ditutup
+	} else {
+		const result = await response.json();
+		alert(result.message);
+	}
+} 
+async function openFrista(noka) {
+	const response = await fetch(`http://localhost:3001`, {
+		method: 'POST',
+		body: new URLSearchParams({
+			username: "{?=isset_or($username_frista, '')?}",
+			password: "{?=isset_or($password_frista, '')?}",
+			card_number: noka,
+			exit: true, // wait window for exit (optional, default false)
+			wait: 2_000 // wait for login to completed (optional, default 3_593)
+		})
+	});
+
+	if (response.ok) {
+		// Response OK setelah jendela aplikasi sidik jari ditutup
+	} else {
+		const result = await response.json();
+		alert(result.message);
+	}
+} 
 </script>
 <script type="text/javascript">
   // ketika tombol hapus ditekan

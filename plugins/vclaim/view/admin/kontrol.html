@@ -12,7 +12,7 @@
               <div class="col-md-12">
                   <div class="form-group">
                       <label>Nomor SEP</label>
-                      <input type="text" name="no_sep" id="no_sep" class="form-control" />
+                      <input type="text" name="no_sep" id="no_sep" class="form-control" value="{$no_sep}"/>
                       <input type="text" style="display: none;" name="no_surkon" id="no_surkon" class="form-control" />
                   </div>
               </div>
@@ -94,7 +94,6 @@
 
   $(document).ready(function() {
     var baseURL = mlite.url + '/' + mlite.admin;
-    event.preventDefault();
     $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
   });
 
@@ -117,6 +116,25 @@
       tanggal_periksa : tanggal_periksa,
       dokter : dokter,
       poli : poli
+    } ,function(data) {
+        alert(data);
+        $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+        $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Data Kontrol VClaim telah disimpan!"+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+    });
+  });
+
+  $("#form_skontrol").on("click","#hapus_kontrol", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_surkon       = $('#no_surkon').val();
+
+    var url = baseURL + '/vclaim/deletesuratkontrol?t=' + mlite.token;
+
+    $.post(url,{
+      no_surkon: no_surkon
     } ,function(data) {
         alert(data);
         $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);

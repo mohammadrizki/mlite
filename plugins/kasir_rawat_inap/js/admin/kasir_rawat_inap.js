@@ -104,6 +104,7 @@ $('#manage').on('click', '#lunas_periode_rawat_inap', function(event){
   var periode_rawat_inap  = $('input:text[name=periode_rawat_inap]').val();
   var periode_rawat_inap_akhir  = $('input:text[name=periode_rawat_inap_akhir]').val();
   var status_periksa = 'lunas';
+  var status_pulang = '-';
 
   if(periode_rawat_inap == '') {
     alert('Tanggal awal masih kosong!')
@@ -112,7 +113,7 @@ $('#manage').on('click', '#lunas_periode_rawat_inap', function(event){
     alert('Tanggal akhir masih kosong!')
   }
 
-  $.post(url, {periode_rawat_inap: periode_rawat_inap, periode_rawat_inap_akhir: periode_rawat_inap_akhir, status_pulang: status_periksa} ,function(data) {
+  $.post(url, {periode_rawat_inap: periode_rawat_inap, periode_rawat_inap_akhir: periode_rawat_inap_akhir, status_periksa: status_periksa, status_pulang: status_pulang} ,function(data) {
   // tampilkan data
     $("#form").show();
     $("#display").html(data).show();
@@ -315,7 +316,7 @@ $("#obat").on("click", ".pilih_obat", function(event){
 
   var kode_brng = $(this).attr("data-kode_brng");
   var nama_brng = $(this).attr("data-nama_brng");
-  var biaya = $(this).attr("data-ralan");
+  var biaya = $(this).attr("data-dasar");
   var kat = $(this).attr("data-kat");
 
   $('input:hidden[name=kd_jenis_prw]').val(kode_brng);
@@ -395,6 +396,7 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
   var aturan_pakai    = $('input:text[name=aturan_pakai]').val();
   var kat             = $('input:hidden[name=kat]').val();
   var jml             = $('input:text[name=jml]').val();
+  var jml_tindakan    = $('input:text[name=jml_tindakan]').val();
 
   var url = baseURL + '/kasir_rawat_inap/savedetail?t=' + mlite.token;
   $.post(url, {no_rawat : no_rawat,
@@ -408,15 +410,17 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
   biaya          : biaya,
   aturan_pakai   : aturan_pakai,
   kat            : kat,
-  jml            : jml
+  jml            : jml,
+  jml_tindakan   : jml_tindakan
   }, function(data) {
+    console.log(data);
     // tampilkan data
     $("#display").hide();
     var url = baseURL + '/kasir_rawat_inap/rincian?t=' + mlite.token;
     $.post(url, {no_rawat : no_rawat,
     }, function(data) {
       // tampilkan data
-      console.log(data);
+      // console.log(data);
       $("#rincian").html(data).show();
     });
     $("#rawat_inap_dr").hide();
@@ -431,6 +435,7 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
     $('input:text[name=nama_provider2]').val("");
     $('input:text[name=kode_provider]').val("");
     $('input:text[name=kode_provider2]').val("");
+    $('input:text[name=jml_tindakan]').val(1);
     $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
     "Data pasien telah disimpan!"+
     "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
@@ -968,3 +973,12 @@ function terbilang(a){
 	}
 	return full.join(' ');
 }
+
+$("#form_rincian").on("click","#jam_billing", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url = baseURL + '/kasir_rawat_inap/cekwaktu?t=' + mlite.token;
+    $.post(url, {
+    } ,function(data) {
+      $("#form_rincian #jam_billing").val(data);
+    });
+});

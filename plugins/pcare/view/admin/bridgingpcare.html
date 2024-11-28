@@ -21,7 +21,7 @@
     <div class="col col-md-3">
       <div class="form-group">
         <label for="poli">Nomor Pendaftaran</label>
-        <input type="text" id="id_pendaftaran" name="id_pendaftaran_bridging" class="form-control" value="{$pemeriksaan.no_rawat}">
+        <input type="text" id="id_pendaftaran" name="id_pendaftaran_bridging" class="form-control" value="{?=isset_or($pemeriksaan.no_rawat)?}">
       </div>
     </div>
     <div class="col col-md-3">
@@ -71,55 +71,55 @@
     <div class="col col-md-12">
       <div class="form-group">
         <label for="poli">Keluhan</label>
-        <textarea name="keluhan" id="keluhan" class="form-control" rows="2" cols="80">{$pemeriksaan.keluhan}</textarea>
+        <textarea name="keluhan" id="keluhan" class="form-control" rows="2" cols="80">{?=isset_or($pemeriksaan.keluhan)?}</textarea>
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">Sistole</label>
-        <input type="text" name="sistole_bridging" class="form-control" placeholder="" value="{?=strtok($pemeriksaan.tensi, '/')?}">
+        <input type="text" name="sistole_bridging" class="form-control" placeholder="" value="{?=strtok(isset_or($pemeriksaan.tensi, '0/0'), '/')?}">
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">Diastole</label>
-        <input type="text" name="diastole_bridging" class="form-control" placeholder="" value="{?=substr($pemeriksaan.tensi, strpos($pemeriksaan.tensi, '/') + 1)?}">
+        <input type="text" name="diastole_bridging" class="form-control" placeholder="" value="{?=substr(isset_or($pemeriksaan.tensi, '0/0'), strpos(isset_or($pemeriksaan.tensi, '0/0'), '/') + 1)?}">
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">Nadi(/menit)</label>
-        <input type="text" name="nadi_bridging" class="form-control" placeholder="" value="{$pemeriksaan.nadi}">
+        <input type="text" name="nadi_bridging" class="form-control" placeholder="" value="{?=isset_or($pemeriksaan.nadi, '0')?}">
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">RR(/menit)</label>
-        <input type="text" name="respirasi_bridging" class="form-control" placeholder="" value="{$pemeriksaan.respirasi}">
+        <input type="text" name="respirasi_bridging" class="form-control" placeholder="" value="{?=isset_or($pemeriksaan.respirasi, '0')?}">
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">Suhu(C)</label>
-        <input type="text" name="suhu_tubuh_bridging" class="form-control" placeholder="" value="{$pemeriksaan.suhu_tubuh}">
+        <input type="text" name="suhu_tubuh_bridging" class="form-control" placeholder="" value="{?=isset_or($pemeriksaan.suhu_tubuh, '0')?}">
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">Tinggi(cm)</label>
-        <input type="text" name="tinggi_bridging" class="form-control" placeholder="" value="{$pemeriksaan.tinggi}">
+        <input type="text" name="tinggi_bridging" class="form-control" placeholder="" value="{?=isset_or($pemeriksaan.tinggi, '0')?}">
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">Berat(Kg)</label>
-        <input type="text" name="berat_bridging" class="form-control" placeholder="" value="{$pemeriksaan.berat}">
+        <input type="text" name="berat_bridging" class="form-control" placeholder="" value="{?=isset_or($pemeriksaan.berat, '0')?}">
       </div>
     </div>
     <div class="col col-sm-3">
       <div class="form-group">
         <label for="nama_pasien">Lingkar Perut</label>
-        <input type="text" name="lingkar_perut_bridging" class="form-control" placeholder="" value="">
+        <input type="text" name="lingkar_perut_bridging" class="form-control" placeholder="" value="{?=isset_or($pemeriksaan.lingkar_perut, '0')?}">
       </div>
     </div>
     <div class="col col-md-12">
@@ -159,21 +159,34 @@
                       <div class="col col-md-12">
                         <div class="form-group">
                           <label for="poli">Terapi</label>
-                          <textarea name="terapi_bridging" id="terapi_bridging" class="form-control" rows="2" cols="80">{$pemeriksaan.pemeriksaan}</textarea>
+                          <textarea name="terapi_bridging" id="terapi_bridging" class="form-control" rows="2" cols="80">{?=isset_or($pemeriksaan.pemeriksaan)?}</textarea>
                         </div>
                       </div>
-                      <div class="col col-md-6">
+                      <div class="col col-md-12">
+                        <div class="form-group">
+                          <label for="poli">Anamnesa</label>
+                          <textarea name="anamnesa" id="anamnesa" class="form-control" rows="2" cols="80">{?=isset_or($pemeriksaan.evaluasi)?}</textarea>
+                        </div>
+                      </div>
+                      <div class="col col-md-4">
                         <div class="form-group">
                           <label for="poli">Status Pulang</label>
                           <input type="text" name="getStatusPulang" id="getStatusPulang" class="form-control" value="">
                           <ul class="list-group" id="statuspulangList" style="z-index:1000;position:absolute;width:100%;"></ul>
                         </div>
                       </div>
-                      <div class="col col-md-6">
+                      <div class="col col-md-4">
                         <div class="form-group">
                           <label for="poli">Kesadaran</label>
                           <input type="text" name="getKesadaran" id="getKesadaran" class="form-control" value="">
                           <ul class="list-group" id="kesadaranList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                        </div>
+                      </div>
+                      <div class="col col-md-4">
+                        <div class="form-group">
+                          <label for="poli">Prognosa</label>
+                          <input type="text" name="getPrognosa" id="getPrognosa" class="form-control" value="">
+                          <ul class="list-group" id="prognosaList" style="z-index:1000;position:absolute;width:100%;"></ul>
                         </div>
                       </div>
                       <div class="col col-md-4">
@@ -195,6 +208,27 @@
                           <label for="poli">Diagnosa 3</label>
                           <input type="text" name="getDiagnosa3" id="getDiagnosa3" class="form-control" value="">
                           <ul class="list-group" id="diagnosaList3" style="z-index:1000;position:absolute;width:100%;"></ul>
+                        </div>
+                      </div>
+                      <div class="col col-md-4">
+                        <div class="form-group">
+                          <label for="poli">Alergi Makan</label>
+                          <input type="text" name="getAlergi1" id="getAlergi1" class="form-control" value="">
+                          <ul class="list-group" id="alergiList1" style="z-index:1000;position:absolute;width:100%;"></ul>
+                        </div>
+                      </div>
+                      <div class="col col-md-4">
+                        <div class="form-group">
+                          <label for="poli">Alergi Udara</label>
+                          <input type="text" name="getAlergi2" id="getAlergi2" class="form-control" value="">
+                          <ul class="list-group" id="alergiList2" style="z-index:1000;position:absolute;width:100%;"></ul>
+                        </div>
+                      </div>
+                      <div class="col col-md-4">
+                        <div class="form-group">
+                          <label for="poli">Alergi Obat</label>
+                          <input type="text" name="getAlergi3" id="getAlergi3" class="form-control" value="">
+                          <ul class="list-group" id="alergiList3" style="z-index:1000;position:absolute;width:100%;"></ul>
                         </div>
                       </div>
                     </div>
@@ -497,6 +531,7 @@ $(document).ready(function(){
     var tglKunjungan = $('input:text[name=tglKunjungan]').val();
     var getDokter = $('input:text[name=getDokter]').val();
     var terapi = $('textarea[name=terapi_bridging]').val();
+    var anamnesa = $('textarea[name=anamnesa]').val();
     var getStatusPulang = $('input:text[name=getStatusPulang]').val();
     var getKesadaran = $('input:text[name=getKesadaran]').val();
     var getDiagnosa1 = $('input:text[name=getDiagnosa1]').val();
@@ -549,6 +584,7 @@ $(document).ready(function(){
       tglKunjungan: tglKunjungan,
       getDokter: getDokter,
       terapi: terapi,
+      anamnesa: anamnesa,
       getStatusPulang: getStatusPulang,
       getKesadaran: getKesadaran,
       getDiagnosa1: getDiagnosa1,
@@ -567,7 +603,9 @@ $(document).ready(function(){
       getTACC: getTACC,
       alasanTacc: alasanTacc
     } ,function(data) {
-      //console.log(data);
+      console.log(data);
+      // data = JSON.parse(data);
+      alert(data);
       $('.tampildatapendaftaran').load(baseURL + '/pcare/bridgingpcarependaftarantampil/' + id_pasien + '?t=' + mlite.token);
     });
   });
@@ -689,6 +727,149 @@ $(document).ready(function(){
        $('#getKesadaran').val($(this).text());
        var getKesadaran = $('#getKesadaran').val();
        $('#kesadaranList').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $('#getAlergi1').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/{?=ADMIN?}/pcare/alergi/01?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     if(json_obj[0].metaData.code == 200) {
+                       var response = json_obj[0].response.list;
+                       for (var i in response) {
+                         output+='<li class=\"list-group-item link-class\">' + response[i].kdAlergi + ': ' + response[i].nmAlergi + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+                     }
+                     output+='';
+                     //console.log(output);
+                     $('#alergiList1').fadeIn();
+                     $('#alergiList1').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#alergiList1').on('click', 'li', function(){
+       $('#getAlergi1').val($(this).text());
+       var getAlergi1 = $('#getAlergi1').val();
+       $('#alergiList1').fadeOut();
+  });
+
+  $('#getAlergi2').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/{?=ADMIN?}/pcare/alergi/02?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     if(json_obj[0].metaData.code == 200) {
+                       var response = json_obj[0].response.list;
+                       for (var i in response) {
+                         output+='<li class=\"list-group-item link-class\">' + response[i].kdAlergi + ': ' + response[i].nmAlergi + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+                     }
+                     output+='';
+                     //console.log(output);
+                     $('#alergiList2').fadeIn();
+                     $('#alergiList2').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#alergiList2').on('click', 'li', function(){
+       $('#getAlergi2').val($(this).text());
+       var getAlergi2 = $('#getAlergi2').val();
+       $('#alergiList2').fadeOut();
+  });
+
+  $('#getAlergi3').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/{?=ADMIN?}/pcare/alergi/03?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     if(json_obj[0].metaData.code == 200) {
+                       var response = json_obj[0].response.list;
+                       for (var i in response) {
+                         output+='<li class=\"list-group-item link-class\">' + response[i].kdAlergi + ': ' + response[i].nmAlergi + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+                     }
+                     output+='';
+                     //console.log(output);
+                     $('#alergiList3').fadeIn();
+                     $('#alergiList3').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#alergiList3').on('click', 'li', function(){
+       $('#getAlergi3').val($(this).text());
+       var getAlergi3 = $('#getAlergi3').val();
+       $('#alergiList3').fadeOut();
+  });
+
+</script>
+<script type="text/javascript">
+  $('#getPrognosa').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: '{?=url()?}/{?=ADMIN?}/pcare/prognosa?t={?=$_SESSION['token']?}',
+                 method:"GET",
+                 data:{},
+                 success:function(data)
+                 {
+                     var data = JSON.parse(data);
+                     var json_obj = [data];
+                     var output='';
+                     if(json_obj[0].metaData.code == 200) {
+                       var response = json_obj[0].response.list;
+                       for (var i in response) {
+                         output+='<li class=\"list-group-item link-class\">' + response[i].kdPrognosa + ': ' + response[i].nmPrognosa + '</li>';
+                       }
+                     } else {
+                       output+='<li class=\"list-group-item link-class\">' + json_obj[0].metaData.message + '</li>';
+                     }
+                     output+='';
+                     //console.log(output);
+                     $('#prognosaList').fadeIn();
+                     $('#prognosaList').html(output).show();
+                 }
+            });
+       }
+  });
+  $('#prognosaList').on('click', 'li', function(){
+       $('#getPrognosa').val($(this).text());
+       var getPrognosa = $('#getPrognosa').val();
+       $('#prognosaList').fadeOut();
   });
 </script>
 <script type="text/javascript">

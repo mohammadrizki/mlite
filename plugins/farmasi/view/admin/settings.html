@@ -1,4 +1,4 @@
-<article class="row">
+<div class="row">
     <form action="{?=url(ADMIN.'/farmasi/saveSettings')?}" method="POST">
         <div class="col-md-6">
             <div class="panel panel-default">
@@ -38,9 +38,13 @@
                           {/loop}
                         </select>
                     </div>
-                    <input type="submit" name="save" class="btn btn-primary" value="Simpan" />
+                    <div class="form-group">
+                      <label>Keterangan Etiket</label>
+                      <input type="text" class="form-control" name="farmasi[keterangan_etiket]" value="{$settings.farmasi.keterangan_etiket}">
+                  </div>
+                  <input type="submit" name="save" class="btn btn-primary" value="Simpan" />
                 </div>
             </div>
         </div>
     </form>
-</article>
+</div>
