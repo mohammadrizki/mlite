@@ -1,0 +1,15 @@
+<h2>Migration Center</h2>
+<button onclick="start()">Start</button>
+<button onclick="runNext()">Run Next</button>
+<pre id="out"></pre>
+<script>
+function start(){
+ fetch('/migration/start',{method:'POST'}).then(r=>r.json()).then(j=>out(j));
+}
+function runNext(){
+ fetch('/migration/run-next',{method:'POST'}).then(r=>r.json()).then(j=>out(j));
+}
+function out(j){
+ document.getElementById('out').textContent=JSON.stringify(j,null,2);
+}
+</script>

@@ -399,12 +399,17 @@ class Admin extends AdminModule
 
         } elseif (isset($_POST['update'])) {
             if (!class_exists("ZipArchive")) {
-                $this->tpl->set('error', "ZipArchive is required to update mLITE.");
+              $this->tpl->set('error', "ZipArchive is required to update mLITE.");
+              return $this->draw('update.html')
             }
 
             $version = $this->settings->get('settings.update_version');
             $zipFile = BASE_DIR . '/tmp/latest.zip';
 
+            /* =========================
+             * 1. DOWNLOAD UPDATE
+             * ========================= */
+            
             if (!isset($_GET['manual'])) {
 
                 $url = "https://github.com/basoro/mlite/archive/refs/tags/{$version}.zip";
@@ -436,15 +441,16 @@ class Admin extends AdminModule
                 $package = glob(BASE_DIR.'/mlite-*.zip');
                 if (!empty($package)) {
                     $package = array_shift($package);
-                    $this->rcopy($package, BASE_DIR.'/tmp/latest.zip');
+                    $this->rcopy($package, $zipFile);
                 }
             }
 
             define("UPGRADABLE", true);
 
-            // Making backup
+            /* =========================
+             * 2. BACKUP FILE
+             * ========================= */
             $backup_date = date('YmdHis');
-            //$this->rcopy(BASE_DIR, BASE_DIR.'/backup/'.$backup_date.'/', 0755, [BASE_DIR.'/backup', BASE_DIR.'/tmp/latest.zip', (isset($package) ? BASE_DIR.'/'.basename($package) : '')]);
             $this->rcopy(BASE_DIR.'/systems', BASE_DIR.'/backup/'.$backup_date.'/systems');
             $this->rcopy(BASE_DIR.'/plugins', BASE_DIR.'/backup/'.$backup_date.'/plugins');
             $this->rcopy(BASE_DIR.'/assets', BASE_DIR.'/backup/'.$backup_date.'/assets');
@@ -452,9 +458,11 @@ class Admin extends AdminModule
             $this->rcopy(BASE_DIR.'/config.php', BASE_DIR.'/backup/'.$backup_date.'/config.php');
             $this->rcopy(BASE_DIR.'/manifest.json', BASE_DIR.'/backup/'.$backup_date.'/manifest.json');
 
-            // Unzip latest update
+            /* =========================
+             * 3. EXTRACT UPDATE
+             * ========================= */
             $zip = new \ZipArchive;
-            $zip->open(BASE_DIR.'/tmp/latest.zip');
+            $zip->open($zipFile);
             // Extract to base tmp/update
             $zip->extractTo(BASE_DIR.'/tmp/update');
 
@@ -481,35 +489,32 @@ class Admin extends AdminModule
                 return $this->draw('update.html');
             }
 
-            // Copy files using detected root
+            /* =========================
+             * 4. COPY FILES (NO DB MIGRATION)
+             * ========================= */
             $this->rcopy($extractedRoot.'/systems', BASE_DIR.'/systems');
             $this->rcopy($extractedRoot.'/plugins', BASE_DIR.'/plugins');
             $this->rcopy($extractedRoot.'/assets', BASE_DIR.'/assets');
             $this->rcopy($extractedRoot.'/themes', BASE_DIR.'/themes');
 
-            // Restore defines
+            // Restore config and manifest
             $this->rcopy(BASE_DIR.'/backup/'.$backup_date.'/config.php', BASE_DIR.'/config.php');
             $this->rcopy(BASE_DIR.'/backup/'.$backup_date.'/manifest.json', BASE_DIR.'/manifest.json');
 
-            // Run upgrade script
-            $version = $settings['version'];
-            $upgradeFile = $extractedRoot.'/systems/upgrade.php';
-            $new_version = $version;
-            if (is_file($upgradeFile)) {
-                $new_version = include($upgradeFile);
-            }
-
-            // Close archive and delete all unnecessary files
+            /* =========================
+             * 5. CLEANUP
+             * ========================= */
             $zip->close();
-            unlink(BASE_DIR.'/tmp/latest.zip');
+            unlink($zipFile);
             $this->rrmdir(BASE_DIR.'/tmp/update');
 
-            $this->settings('settings', 'version', $new_version);
-            $this->settings('settings', 'update_version', 0);
-            $this->settings('settings', 'update_changelog', '');
+            /* ==========================
+             * 6. MARK UPDATE READY (DB MIGRATION SEPARATE)
+             * ========================== */
+            $this->settings('settings', 'update_ready', 1);
             $this->settings('settings', 'update_check', time());
 
-            sleep(2);
+            sleep(1);
             redirect(url([ADMIN, 'settings', 'updates']));
         } elseif (isset($_GET['reset'])) {
             $this->settings('settings', 'update_version', 0);

@@ -1,4 +1,11 @@
 <?php
+/**
+ * LEGACY FILE - DO NOT USE
+ * Database migration is now handled by Migration Center
+ */
+throw new Exception(
+  "Legacy upgrade.php disabled. Use Migration Center!"
+);
 
 if (!defined("UPGRADABLE")) {
     exit();
