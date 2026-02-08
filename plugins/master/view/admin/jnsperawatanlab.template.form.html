@@ -22,7 +22,7 @@
       <div class="form-group">
         <label for="" class="col-sm-3 control-label">Pemeriksaan</label>
         <div class="col-sm-9">
-          <input type="text" name="Pemeriksaan" class="form-control" value="{$template.Pemeriksaan}">
+          <input type="text" name="Pemeriksaan" class="form-control" value="{if: !empty($template.Pemeriksaan)}{$template.Pemeriksaan}{/if}">
         </div>
       </div>
       <div class="form-group">
