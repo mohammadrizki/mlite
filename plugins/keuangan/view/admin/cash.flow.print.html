@@ -1,137 +1,154 @@
 <!doctype html>
 <html lang="id">
-	<head>
-		<title>Laporan</title>
-		<meta charset="UTF-8">
-    <link href="{?=url()?}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-	<style>
-	body { max-width:1600px; margin-left: 20px; margin-right: 20px; }
-	table, tr, td, th { border-collapse:collapse; border:1px solid black;}
-	th,td {padding:0px 10px 0px 10px;}
-  table th {white-space: nowrap;font-size:12px;}
-  table td {font-size:11px;}
-	.float{
-		position:fixed;
-		width:120px;
-		height:40px;
-		top:20px;
-		right:40px;
-		background-color:#4C9A2A;
-		color:#FFF;
-		text-align:center;
-		box-shadow: 2px 2px 3px #999;
-	}
-	</style>
+<head>
+  <meta charset="UTF-8">
+  <title>Laporan Arus Kas</title>
 
-	<script>
-	function printContent(el){
-	var restorepage = document.body.innerHTML;
-	var printcontent = document.getElementById(el).innerHTML;
-	document.body.innerHTML = printcontent;
-	window.print();
-	document.body.innerHTML = restorepage; window.close();
-	}
-	</script>
-	</head>
+  <style>
+    body { font-size:11px; font-family: sans-serif; }
+    h3, h4 { margin:0; padding:0; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    table, th, td { border:1px solid #000; }
+    th, td { padding:5px; }
+    th { background:#f0f0f0; }
+    .text-right { text-align:right; }
+    .text-center { text-align:center; }
+    .section { background:#eaeaea; font-weight:bold; }
+    .subtotal { background:#f9f9f9; font-weight:bold; }
+    .total { background:#dff0d8; font-weight:bold; }
+    .indent { padding-left:20px; }
+  </style>
+</head>
 
-	<body>
-    <button onclick="printContent('laporan')" type="button" class="btn btn-danger center-block float"><span class="glyphicon glyphicon-print"></span> Cetak</button>
-		<div id="laporan">
-			<center>
-				<header>
-					<h3>{$settings.nama_instansi}</h3>
-					<p style="margin-top:-10px;">{$settings.alamat}</p>
-					<hr style="margin-top:0;">
-					<p>
-            <b>Laporan Arus Kas</b><br>
-            Tahun Anggaran {?=date('Y')?}
-          </p>
-				</header>
-				<div class="">
-          <table class="table table-striped table-condensed no-padding">
-            <thead>
-              <tr>
-                <th width="50px">No.</th>
-                <th>Uraian Arus Kas</th>
-                <th width="160px"><span class="pull-right">{?=date('Y')?}</span></th>
-                <th width="160px"><span class="pull-right">{?=date('Y')-1?}</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {loop: $aruskas}
-              <tr>
-                <td><b>{$value.nomor}</b></td>
-                <td colspan="3"><b>
-                  {?=strtoupper($value.arus_kas)?}
-                </b></td>
-              </tr>
-              <tr>
-                <td></td>
-                <td colspan="3">Arus Masuk Kas</td>
-              </tr>
-                {loop: $value.jurnal_masuk as $data}
-                <tr>
-                  <td></td>
-                  <td>&nbsp;&nbsp;&nbsp;&nbsp;{$data.nm_rek}</td>
-                  <td><span class="pull-right">{?= number_format($data.kredit_all,2,',','.')?}</span></td>
-                  <td><span class="pull-right">{?= number_format($data.saldo_awal,2,',','.')?}</span></td>
-                </tr>
-                {/loop}
-                <tr>
-                  <td></td>
-                  <td align="right">Jumlah Arus Masuk Kas</td>
-                  <td><span class="pull-right">{?= number_format($value.total_masuk,2,',','.')?}</span></td>
-                  <td><span class="pull-right">{?= number_format($value.total_saldo_awal_masuk,2,',','.')?}</span></td>
-                </tr>
-              <tr>
-                <td></td>
-                <td colspan="3">Arus Keluar Kas</td>
-              </tr>
-                {loop: $value.jurnal_keluar as $data}
-                <tr>
-                  <td></td>
-                  <td>&nbsp;&nbsp;&nbsp;&nbsp;{$data.nm_rek}</td>
-                  <td><span class="pull-right">{?= number_format($data.debet_all,2,',','.')?}</span></td>
-                  <td><span class="pull-right">{?= number_format($data.saldo_awal,2,',','.')?}</span></td>
-                </tr>
-                {/loop}
-                <tr>
-                  <td></td>
-                  <td align="right">Jumlah Arus Keluar Kas</td>
-                  <td><span class="pull-right">{?= number_format($value.total_keluar,2,',','.')?}</span></td>
-                  <td><span class="pull-right">{?= number_format($value.total_saldo_awal_keluar,2,',','.')?}</span></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td align="right"><b>Netto {$value.arus_kas} ({$value.nomor})</b></td>
-                  <td><span class="pull-right">{?= number_format($value.total_masuk - $value.total_keluar,2,',','.')?}</span></td>
-                  <td><span class="pull-right">{?= number_format($value.total_saldo_awal_masuk - $value.total_saldo_awal_keluar,2,',','.')?}</span></td>
-                </tr>
-              {/loop}
-            </tbody>
-            <tfoot>
-              <tr>
-                <th></th>
-                <th style="text-align:right">Jumlah Arus Kas Bersih (1+2+3)</th>
-                <th><span class="pull-right">{?= number_format($masuk_all - $keluar_all,2,',','.')?}</span></th>
-                <th><span class="pull-right">{?= number_format($saldo_masuk - $saldo_keluar,2,',','.')?}</span></th>
-              </tr>
-              <tr>
-                <th></th>
-                <th style="text-align:right">Saldo Awal Kas dan Setara Kas</th>
-                <th><span class="pull-right">{?= number_format($jumlah_total_saldo + $saldo_keluar,2,',','.')?}</span></th>
-                <th><span class="pull-right">{?= number_format($jumlah_total_saldo,2,',','.')?}</span></th>
-              </tr>
-              <tr>
-                <th></th>
-                <th style="text-align:right">Saldo Akhir Kas dan Setara Kas</th>
-                <th><span class="pull-right">{?= number_format(($masuk_all - $keluar_all) + ($jumlah_total_saldo + $saldo_keluar),2,',','.')?}</span></th>
-                <th><span class="pull-right">{?= number_format($jumlah_total_saldo + $saldo_keluar,2,',','.')?}</span></th>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </center>
-    </div>
-  </body>
+<body>
+
+<h3 class="text-center"><?=$settings['nama_instansi']?></h3>
+<p class="text-center"><?=$settings['alamat']?></p>
+<hr>
+
+<p class="text-center">
+  <b>LAPORAN ARUS KAS</b><br>
+  Tahun <?=date('Y')?>
+</p>
+
+<table>
+  <tbody>
+
+    <tr class="section">
+      <td>Saldo Awal Kas dan Setara Kas</td>
+      <td class="text-right"><?=number_format($saldo_awal,2,',','.')?></td>
+    </tr>
+
+    <!-- OPERASIONAL -->
+    <tr class="section"><td colspan="2">ARUS KAS DARI KEGIATAN OPERASIONAL</td></tr>
+
+    <tr>
+      <td>Kas Masuk Operasional</td>
+      <td class="text-right"><?=number_format($arus['operasional']['masuk'],2,',','.')?></td>
+    </tr>
+
+    <?php foreach($detail['operasional']['masuk'] as $d): ?>
+      <tr>
+        <td class="indent"><?=$d['nm_rek']?></td>
+        <td class="text-right"><?=number_format($d['jumlah'],2,',','.')?></td>
+      </tr>
+    <?php endforeach; ?>
+
+    <tr>
+      <td>Kas Keluar Operasional</td>
+      <td class="text-right"><?=number_format($arus['operasional']['keluar'],2,',','.')?></td>
+    </tr>
+
+    <?php foreach($detail['operasional']['keluar'] as $d): ?>
+      <tr>
+        <td class="indent"><?=$d['nm_rek']?></td>
+        <td class="text-right"><?=number_format($d['jumlah'],2,',','.')?></td>
+      </tr>
+    <?php endforeach; ?>
+
+    <tr class="subtotal">
+      <td>Kas Bersih Operasional</td>
+      <td class="text-right"><?=number_format($net_operasional,2,',','.')?></td>
+    </tr>
+
+    <!-- INVESTASI -->
+    <tr class="section"><td colspan="2">ARUS KAS DARI KEGIATAN INVESTASI</td></tr>
+
+    <tr>
+      <td>Kas Masuk Investasi</td>
+      <td class="text-right"><?=number_format($arus['investasi']['masuk'],2,',','.')?></td>
+    </tr>
+
+    <?php foreach($detail['investasi']['masuk'] as $d): ?>
+      <tr>
+        <td class="indent"><?=$d['nm_rek']?></td>
+        <td class="text-right"><?=number_format($d['jumlah'],2,',','.')?></td>
+      </tr>
+    <?php endforeach; ?>
+
+    <tr>
+      <td>Kas Keluar Investasi</td>
+      <td class="text-right"><?=number_format($arus['investasi']['keluar'],2,',','.')?></td>
+    </tr>
+
+    <?php foreach($detail['investasi']['keluar'] as $d): ?>
+      <tr>
+        <td class="indent"><?=$d['nm_rek']?></td>
+        <td class="text-right"><?=number_format($d['jumlah'],2,',','.')?></td>
+      </tr>
+    <?php endforeach; ?>
+
+    <tr class="subtotal">
+      <td>Kas Bersih Investasi</td>
+      <td class="text-right"><?=number_format($net_investasi,2,',','.')?></td>
+    </tr>
+
+    <!-- PENDANAAN -->
+    <tr class="section"><td colspan="2">ARUS KAS DARI KEGIATAN PENDANAAN</td></tr>
+
+    <tr>
+      <td>Kas Masuk Pendanaan</td>
+      <td class="text-right"><?=number_format($arus['pendanaan']['masuk'],2,',','.')?></td>
+    </tr>
+
+    <?php foreach($detail['pendanaan']['masuk'] as $d): ?>
+      <tr>
+        <td class="indent"><?=$d['nm_rek']?></td>
+        <td class="text-right"><?=number_format($d['jumlah'],2,',','.')?></td>
+      </tr>
+    <?php endforeach; ?>
+
+    <tr>
+      <td>Kas Keluar Pendanaan</td>
+      <td class="text-right"><?=number_format($arus['pendanaan']['keluar'],2,',','.')?></td>
+    </tr>
+
+    <?php foreach($detail['pendanaan']['keluar'] as $d): ?>
+      <tr>
+        <td class="indent"><?=$d['nm_rek']?></td>
+        <td class="text-right"><?=number_format($d['jumlah'],2,',','.')?></td>
+      </tr>
+    <?php endforeach; ?>
+
+    <tr class="subtotal">
+      <td>Kas Bersih Pendanaan</td>
+      <td class="text-right"><?=number_format($net_pendanaan,2,',','.')?></td>
+    </tr>
+
+    <!-- TOTAL -->
+    <tr class="total">
+      <td>Kenaikan / (Penurunan) Kas</td>
+      <td class="text-right"><?=number_format($kenaikan_kas,2,',','.')?></td>
+    </tr>
+
+    <tr class="total">
+      <td>Saldo Akhir Kas dan Setara Kas</td>
+      <td class="text-right"><?=number_format($saldo_akhir,2,',','.')?></td>
+    </tr>
+
+  </tbody>
+</table>
+
+</body>
 </html>
+

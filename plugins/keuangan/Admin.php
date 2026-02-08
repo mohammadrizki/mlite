@@ -228,9 +228,44 @@ class Admin extends AdminModule
     public function getCashFlow()
     {
       $this->_addHeaderFiles();
+      
       $settings = $this->settings('settings');
-      $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
+      $this->tpl->set(
+        'settings',
+        $this->tpl->noParse_array(htmlspecialchars_array($settings))
+      );
+      
+      $data = $this->_getCashFlowData();
+      
+      return $this->draw('cash.flow.html', $data);
+    }
 
+    public function getCashFlowPdf()
+    {
+      $settings = $this->settings('settings');
+      
+      $data = $this->_getCashFlowData();
+      $data['settings'] = $settings;
+      
+      $html = $this->draw('cash.flow.print.html', $data, true);
+      
+      $mpdf = new \Mpdf\Mpdf([
+        'mode'   => 'utf-8',
+        'format' => 'A4',
+        'margin_top' => 10,
+        'margin_bottom' => 10
+      ]);
+      
+      $mpdf->WriteHTML($html);
+      $mpdf->Output(
+        'Laporan_Arus_Kas_' . date('Y') . '.pdf',
+        'I'
+      );
+      exit();
+    }
+
+    private function _getCashFlowData()
+    {
       $tahun = date('Y');
       $tgl_awal = $tahun . '-01-01';
       $tgl_akhir = date('Y-m-d');
@@ -250,13 +285,13 @@ class Admin extends AdminModule
         AND kd_rek IN ('1101','1102','1103','1104')
       ");
       $stmt->execute([$tahun]);
-      $saldo_awal_kas = (float) $stmt->fetchColumn();
+      $saldo_awal = (float) $stmt->fetchColumn();
 
       // =============================
       // 3. Ambil jurnal yang menyentuh kas
       // =============================
       $stmt = $this->db()->pdo()->prepare("
-        SELECT j.no_jurnal, dj.kd_rek, dj.debet, dj.kredit
+        SELECT j.no_jurnal, dj.debet, dj.kredit
         FROM mlite_jurnal j
         JOIN mlite_detailjurnal dj ON dj.no_jurnal = j.no_jurnal
         WHERE j.tgl_jurnal BETWEEN ? AND ?
@@ -287,17 +322,20 @@ class Admin extends AdminModule
 
         // ambil akun lawan
         $stmt2 = $this->db()->pdo()->prepare("
-            SELECT kd_rek FROM mlite_detailjurnal
-            WHERE no_jurnal = ?
-            AND kd_rek NOT IN ('1101','1102','1103','1104')
+          SELECT r.kd_rek, r.nm_rek
+          FROM mlite_detailjurnal dj
+          JOIN mlite_rekening r ON r.kd_rek = dj.kd_rek
+          WHERE dj.no_jurnal = ?
+            AND dj.kd_rek NOT IN ('1101','1102','1103','1104')
             LIMIT 1
         ");
         $stmt2->execute([$no_jurnal]);
-        $lawan = $stmt2->fetchColumn();
+        $lawan = $stmt2->fetch(\PDO::FETCH_ASSOC);
 
         if(!$lawan) continue;
 
-        $prefix = substr($lawan,0,1);
+        // klasifiksi 7 akun induk
+        $prefix = substr($lawan['kd_rek'],0,1);
 
         if(in_array($prefix, ['4','5','6','7'])) {
             $kategori = 'operasional';
@@ -307,43 +345,18 @@ class Admin extends AdminModule
             $kategori = 'pendanaan';
         }
 
-        // ambil info lawan akun (kode + nama)
-        $stmt3 = $this->db()->pdo()->prepare("
-            SELECT r.kd_rek, r.nm_rek
-            FROM mlite_detailjurnal dj
-            JOIN mlite_rekening r ON r.kd_rek = dj.kd_rek
-            WHERE dj.no_jurnal = ?
-            AND dj.kd_rek NOT IN ('1101','1102','1103','1104')
-            LIMIT 1
-            ");
-        $stmt3->execute([$no_jurnal]);
-        $lawanData = $stmt3->fetch(\PDO::FETCH_ASSOC);
-
-        if(!$lawanData) continue;
-
-        $kd_lawan = $lawanData['kd_rek'];
-        $nm_lawan = $lawanData['nm_rek'];
-
-        if($kas_masuk > 0) {
-          if(!isset($detail[$kategori]['masuk'][$kd_lawan])) {
-            $detail[$kategori]['masuk'][$kd_lawan] = [
-              'kd_rek' => $kd_lawan,
-              'nm_rek' => $nm_lawan,
-              'jumlah' => 0
-            ];
-          }
-          $detail[$kategori]['masuk'][$kd_lawan]['jumlah'] += $kas_masuk;
+        if($masuk > 0) {
+          $arus[$kategori]['masuk'] += $masuk;
+          $detail[$kategori]['masuk'][$lawan['kd_rek']]['nm_rek'] = $lawan['nm_rek'];
+          $detail[$kategori]['masuk'][$lawan['kd_rek']]['jumlah'] =
+            ($detail[$kategori]['masuk'][$lawan['kd_rek']]['jumlah'] ?? 0) + $masuk;
         }
         
-        if($kas_keluar > 0) {
-          if(!isset($detail[$kategori]['keluar'][$kd_lawan])) {
-            $detail[$kategori]['keluar'][$kd_lawan] = [
-              'kd_rek' => $kd_lawan,
-              'nm_rek' => $nm_lawan,
-              'jumlah' => 0
-            ];
-          }
-          $detail[$kategori]['keluar'][$kd_lawan]['jumlah'] += $kas_keluar;
+        if($keluar > 0) {
+            $arus[$kategori]['keluar'] += $keluar;
+            $detail[$kategori]['keluar'][$lawan['kd_rek']]['nm_rek'] = $lawan['nm_rek'];
+            $detail[$kategori]['keluar'][$lawan['kd_rek']]['jumlah'] =
+                ($detail[$kategori]['keluar'][$lawan['kd_rek']]['jumlah'] ?? 0) + $keluar;
         }
       }
 
@@ -355,19 +368,19 @@ class Admin extends AdminModule
       $net_pendanaan   = $arus['pendanaan']['masuk']   - $arus['pendanaan']['keluar'];
 
       $kenaikan_kas = $net_operasional + $net_investasi + $net_pendanaan;
-      $saldo_akhir_kas = $saldo_awal_kas + $kenaikan_kas;
+      $saldo_akhir = $saldo_awal + $kenaikan_kas;
 
-      return $this->draw('cash.flow.html', [
-        'saldo_awal' => $saldo_awal_kas,
-        'arus' => $arus,
-        'net_operasional' => $net_operasional,
-        'net_investasi' => $net_investasi,
-        'net_pendanaan' => $net_pendanaan,
-        'kenaikan_kas' => $kenaikan_kas,
-        'saldo_akhir' => $saldo_akhir_kas
-      ]);
+      return compact(
+        'saldo_awal',
+        'arus',
+        'detail',
+        'net_operasional',
+        'net_investasi',
+        'net_pendanaan',
+        'kenaikan_kas',
+        'saldo_akhir'
+      );
     }
-
 
     public function getNeraca()
     {
