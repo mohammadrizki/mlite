@@ -227,168 +227,147 @@ class Admin extends AdminModule
 
     public function getCashFlow()
     {
+      $this->_addHeaderFiles();
       $settings = $this->settings('settings');
       $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
-      $curr_year = date('Y');
-      $aruskas = [];
 
-      // Definisi kategori arus kas
-      $rows_aruskas = array(
-          array(
-              "tipe" => "N",
-              "arus_kas" => "Kegiatan Operasional",
-          ),
-          array(
-              "tipe" => "R",
-              "arus_kas" => "Kegiatan Pendanaan",
-          ),
-          array(
-              "tipe" => "M",
-              "arus_kas" => "Kegiatan Investasi",
-          )
-      );
-      
-      // Hitung saldo awal kas dari akun kas (1101-1105)
-      $saldo_awal_kas = 0;
-      $query_saldo_awal = "
-          SELECT COALESCE(SUM(
-              CASE 
-                  WHEN r.balance = 'D' THEN COALESCE(jd.debet, 0) - COALESCE(jd.kredit, 0)
-                  ELSE COALESCE(jd.kredit, 0) - COALESCE(jd.debet, 0)
-              END
-          ), 0) as saldo_kas
-          FROM mlite_rekening r
-          LEFT JOIN mlite_detailjurnal jd ON r.kd_rek = jd.kd_rek
-          WHERE r.kd_rek IN ('1101', '1102', '1103', '1104', '1105')
-          AND r.tipe = 'Y'
-      ";
-      
-      $stmt_saldo = $this->db()->pdo()->prepare($query_saldo_awal);
-      $stmt_saldo->execute();
-      $result_saldo = $stmt_saldo->fetch();
-      $saldo_awal_kas = $result_saldo['saldo_kas'] ?? 0;
-      
-      $total_kredit = 0;
-      $total_debet = 0;
-      $total_saldo_kredit = 0;
-      $total_saldo_debet = 0;
-      $n = 1;
-      
-      foreach ($rows_aruskas as $row) {
-        $row['nomor'] = $n++;
-        $row['total_masuk'] = 0;
-        $row['total_keluar'] = 0;
-        $row['total_saldo_awal_masuk'] = 0;
-        $row['total_saldo_awal_keluar'] = 0;
-        
-        // Arus kas masuk (transaksi yang menambah kas)
-        $query_masuk = "
-            SELECT 
-                jd.kd_rek,
-                r.nm_rek,
-                r.tipe,
-                r.balance,
-                SUM(CASE 
-                    WHEN jd.kd_rek IN ('1101', '1102', '1103', '1104', '1105') THEN jd.debet
-                    ELSE jd.kredit
-                END) as total_masuk
-            FROM mlite_detailjurnal jd
-            JOIN mlite_rekening r ON r.kd_rek = jd.kd_rek
-            WHERE r.tipe = ? 
-            AND ((jd.kd_rek IN ('1101', '1102', '1103', '1104', '1105') AND jd.debet > 0)
-                 OR (jd.kd_rek NOT IN ('1101', '1102', '1103', '1104', '1105') AND jd.kredit > 0))
-            GROUP BY jd.kd_rek, r.nm_rek, r.tipe, r.balance
-            HAVING total_masuk > 0
-        ";
-        
-        $stmt_masuk = $this->db()->pdo()->prepare($query_masuk);
-        $stmt_masuk->execute([$row['tipe']]);
-        $rows_masuk = $stmt_masuk->fetchAll();
-        
-        $row['jurnal_masuk'] = [];
-        foreach ($rows_masuk as $row_masuk) {
-          $row_masuk['kredit_all'] = $row_masuk['total_masuk'];
-          $row_masuk['saldo_awal'] = 0; // Untuk kompatibilitas template
-          $row['total_masuk'] += $row_masuk['total_masuk'];
-          $row['jurnal_masuk'][] = $row_masuk;
-          $total_kredit += $row_masuk['total_masuk'];
+      $tahun = date('Y');
+      $tgl_awal = $tahun . '-01-01';
+      $tgl_akhir = date('Y-m-d');
+
+      // =============================
+      // 1. Definisi akun kas
+      // =============================
+      $akun_kas = ['1101','1102','1103','1104'];
+
+      // =============================
+      // 2. Saldo awal kas (Rekening Tahun)
+      // =============================
+      $stmt = $this->db()->pdo()->prepare("
+        SELECT COALESCE(SUM(saldo_awal),0)
+        FROM mlite_rekeningtahun
+        WHERE thn = ?
+        AND kd_rek IN ('1101','1102','1103','1104')
+      ");
+      $stmt->execute([$tahun]);
+      $saldo_awal_kas = (float) $stmt->fetchColumn();
+
+      // =============================
+      // 3. Ambil jurnal yang menyentuh kas
+      // =============================
+      $stmt = $this->db()->pdo()->prepare("
+        SELECT j.no_jurnal, dj.kd_rek, dj.debet, dj.kredit
+        FROM mlite_jurnal j
+        JOIN mlite_detailjurnal dj ON dj.no_jurnal = j.no_jurnal
+        WHERE j.tgl_jurnal BETWEEN ? AND ?
+        AND dj.kd_rek IN ('1101','1102','1103','1104')
+      ");
+      $stmt->execute([$tgl_awal, $tgl_akhir]);
+      $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+      $arus = [
+        'operasional' => ['masuk'=>0, 'keluar'=>0],
+        'investasi'   => ['masuk'=>0, 'keluar'=>0],
+        'pendanaan'   => ['masuk'=>0, 'keluar'=>0],
+      ];
+
+      $detail = [
+        'operasional' => ['masuk'=>[], 'keluar'=>[]],
+        'investasi'   => ['masuk'=>[], 'keluar'=>[]],
+        'pendanaan'   => ['masuk'=>[], 'keluar'=>[]],
+      ];
+
+      // =============================
+      // 4. Proses setiap jurnal kas
+      // =============================
+      foreach ($rows as $row) {
+        $no_jurnal = $row['no_jurnal'];
+        $kas_masuk = (float)$row['debet'];
+        $kas_keluar = (float)$row['kredit'];
+
+        // ambil akun lawan
+        $stmt2 = $this->db()->pdo()->prepare("
+            SELECT kd_rek FROM mlite_detailjurnal
+            WHERE no_jurnal = ?
+            AND kd_rek NOT IN ('1101','1102','1103','1104')
+            LIMIT 1
+        ");
+        $stmt2->execute([$no_jurnal]);
+        $lawan = $stmt2->fetchColumn();
+
+        if(!$lawan) continue;
+
+        $prefix = substr($lawan,0,1);
+
+        if(in_array($prefix, ['4','5','6','7'])) {
+            $kategori = 'operasional';
+        } elseif($prefix == '1') {
+            $kategori = 'investasi';
+        } else {
+            $kategori = 'pendanaan';
+        }
+
+        // ambil info lawan akun (kode + nama)
+        $stmt3 = $this->db()->pdo()->prepare("
+            SELECT r.kd_rek, r.nm_rek
+            FROM mlite_detailjurnal dj
+            JOIN mlite_rekening r ON r.kd_rek = dj.kd_rek
+            WHERE dj.no_jurnal = ?
+            AND dj.kd_rek NOT IN ('1101','1102','1103','1104')
+            LIMIT 1
+            ");
+        $stmt3->execute([$no_jurnal]);
+        $lawanData = $stmt3->fetch(\PDO::FETCH_ASSOC);
+
+        if(!$lawanData) continue;
+
+        $kd_lawan = $lawanData['kd_rek'];
+        $nm_lawan = $lawanData['nm_rek'];
+
+        if($kas_masuk > 0) {
+          if(!isset($detail[$kategori]['masuk'][$kd_lawan])) {
+            $detail[$kategori]['masuk'][$kd_lawan] = [
+              'kd_rek' => $kd_lawan,
+              'nm_rek' => $nm_lawan,
+              'jumlah' => 0
+            ];
+          }
+          $detail[$kategori]['masuk'][$kd_lawan]['jumlah'] += $kas_masuk;
         }
         
-        // Arus kas keluar (transaksi yang mengurangi kas)
-        $query_keluar = "
-            SELECT 
-                jd.kd_rek,
-                r.nm_rek,
-                r.tipe,
-                r.balance,
-                SUM(CASE 
-                    WHEN jd.kd_rek IN ('1101', '1102', '1103', '1104', '1105') THEN jd.kredit
-                    ELSE jd.debet
-                END) as total_keluar
-            FROM mlite_detailjurnal jd
-            JOIN mlite_rekening r ON r.kd_rek = jd.kd_rek
-            WHERE r.tipe = ? 
-            AND ((jd.kd_rek IN ('1101', '1102', '1103', '1104', '1105') AND jd.kredit > 0)
-                 OR (jd.kd_rek NOT IN ('1101', '1102', '1103', '1104', '1105') AND jd.debet > 0))
-            GROUP BY jd.kd_rek, r.nm_rek, r.tipe, r.balance
-            HAVING total_keluar > 0
-        ";
-        
-        $stmt_keluar = $this->db()->pdo()->prepare($query_keluar);
-        $stmt_keluar->execute([$row['tipe']]);
-        $rows_keluar = $stmt_keluar->fetchAll();
-        
-        $row['jurnal_keluar'] = [];
-        foreach ($rows_keluar as $row_keluar) {
-          $row_keluar['debet_all'] = $row_keluar['total_keluar'];
-          $row_keluar['saldo_awal'] = 0; // Untuk kompatibilitas template
-          $row['total_keluar'] += $row_keluar['total_keluar'];
-          $row['jurnal_keluar'][] = $row_keluar;
-          $total_debet += $row_keluar['total_keluar'];
+        if($kas_keluar > 0) {
+          if(!isset($detail[$kategori]['keluar'][$kd_lawan])) {
+            $detail[$kategori]['keluar'][$kd_lawan] = [
+              'kd_rek' => $kd_lawan,
+              'nm_rek' => $nm_lawan,
+              'jumlah' => 0
+            ];
+          }
+          $detail[$kategori]['keluar'][$kd_lawan]['jumlah'] += $kas_keluar;
         }
-        
-        $aruskas[] = $row;
       }
-      
-      // Hitung saldo akhir kas: saldo_awal + arus_masuk - arus_keluar
-      $arus_kas_bersih = $total_kredit - $total_debet;
-      $saldo_akhir_kas = $saldo_awal_kas + $arus_kas_bersih;
-      
-      // Pastikan saldo akhir kas adalah 25.000.000 sesuai perbaikan
-      $target_saldo_akhir = 25000000;
-      $adjustment_needed = $target_saldo_akhir - $saldo_akhir_kas;
-      
-      // Jika perlu penyesuaian, tambahkan ke saldo awal
-      if($adjustment_needed != 0) {
-        $saldo_awal_kas += $adjustment_needed;
-        $saldo_akhir_kas = $target_saldo_akhir;
-      }
-      
-      $akunrekening = $this->db('mlite_rekening')->toArray();
-      
-      if(isset($_GET['action']) && $_GET['action'] == 'print') {
-        echo $this->draw('cash.flow.print.html', [
-          'aruskas' => $aruskas, 
-          'akunrekening' => $akunrekening, 
-          'masuk_all' => $total_kredit, 
-          'keluar_all' => $total_debet, 
-          'saldo_masuk' => $total_saldo_kredit, 
-          'saldo_keluar' => $total_saldo_debet, 
-          'jumlah_total_saldo' => $saldo_awal_kas
-        ]);
-        exit();
-      } else {
-        return $this->draw('cash.flow.html', [
-          'aruskas' => $aruskas, 
-          'akunrekening' => $akunrekening, 
-          'masuk_all' => $total_kredit, 
-          'keluar_all' => $total_debet, 
-          'saldo_masuk' => $total_saldo_kredit, 
-          'saldo_keluar' => $total_saldo_debet, 
-          'jumlah_total_saldo' => $saldo_awal_kas
-        ]);
-      }
+
+      // =============================
+      // 5. Hitung ringkasan
+      // =============================
+      $net_operasional = $arus['operasional']['masuk'] - $arus['operasional']['keluar'];
+      $net_investasi   = $arus['investasi']['masuk']   - $arus['investasi']['keluar'];
+      $net_pendanaan   = $arus['pendanaan']['masuk']   - $arus['pendanaan']['keluar'];
+
+      $kenaikan_kas = $net_operasional + $net_investasi + $net_pendanaan;
+      $saldo_akhir_kas = $saldo_awal_kas + $kenaikan_kas;
+
+      return $this->draw('cash.flow.html', [
+        'saldo_awal' => $saldo_awal_kas,
+        'arus' => $arus,
+        'net_operasional' => $net_operasional,
+        'net_investasi' => $net_investasi,
+        'net_pendanaan' => $net_pendanaan,
+        'kenaikan_kas' => $kenaikan_kas,
+        'saldo_akhir' => $saldo_akhir_kas
+      ]);
     }
+
 
     public function getNeraca()
     {
