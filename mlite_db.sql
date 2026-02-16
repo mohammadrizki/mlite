@@ -1633,7 +1633,7 @@ CREATE TABLE `mlite_bridging_pcare` (
   `terapi_obat` text,
   `terapi_non_obat` text,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `mlite_detailjurnal` (
@@ -1884,7 +1884,7 @@ CREATE TABLE `mlite_odontogram` (
   `id_user` text NOT NULL,
   `tgl_input` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `mlite_ohis` (
@@ -1909,7 +1909,7 @@ CREATE TABLE `mlite_ohis` (
   `id_user` text NOT NULL,
   `tgl_input` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 CREATE TABLE `mlite_pendaftaran_oral_diagnostic` (
