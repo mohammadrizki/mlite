@@ -14,12 +14,12 @@
     <tbody>
       {loop: $detail_pemberian_obat}
       <tr>
-        <td>{$value.nama_brng}</td>
-        <td>{$value.jml}</td>
-        <td>{$value.aturan_pakai} <button type="button" class="btn btn-danger btn-xs cetak_etiket" data-kode_brng="{$value.kode_brng}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-tipe="nonracikan"><i class="fa fa-print"></i></button></td>
+        <td>{?=isset_or($value.nama_brng)?}</td>
+        <td>{?=isset_or($value.jml)?}</td>
+        <td>{?=isset_or($value.aturan_pakai)?} <button type="button" class="btn btn-danger btn-xs cetak_etiket" data-kode_brng="{?=isset_or($value.kode_brng)?}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-tipe="nonracikan"><i class="fa fa-print"></i></button></td>
         <td>Rp. <span class="pull-right">{?= number_format(($value.ralan * $value.jml),2,',','.')?}</span></td>
         <td colspan="2">
-          <button type="button" class="btn btn-danger btn-xs hapus_obat" data-no_rawat="{$value.no_rawat}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-kode_brng="{$value.kode_brng}" data-jml="{$value.jml}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
+          <button type="button" class="btn btn-danger btn-xs hapus_obat" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-kode_brng="{?=isset_or($value.kode_brng)?}" data-jml="{?=isset_or($value.jml)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
         </td>
       </tr>
       {/loop}
@@ -48,18 +48,18 @@
     <tbody>
       {loop: $detail_pemberian_obat_racikan}
       <tr>
-        <td>{$value.nama_racik}</td>
-        <td>{$value.jml_dr}</td>
-        <td>{$value.aturan_pakai} <button type="button" class="btn btn-danger btn-xs cetak_etiket" data-kode_brng="{$value.kd_racik}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-tipe="racikan"><i class="fa fa-print"></i></button></td>
+        <td>{?=isset_or($value.nama_racik)?}</td>
+        <td>{?=isset_or($value.jml_dr)?}</td>
+        <td>{?=isset_or($value.aturan_pakai)?} <button type="button" class="btn btn-danger btn-xs cetak_etiket" data-kode_brng="{?=isset_or($value.kd_racik)?}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-tipe="racikan"><i class="fa fa-print"></i></button></td>
         <td></td>
         <td colspan="2">
-          <button type="button" class="btn btn-danger btn-xs hapus_obat_racikan" data-no_rawat="{$value.no_rawat}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-jml="{$value.jml_dr}" data-no_racik="{$value.no_racik}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus Resep</span></button>
+          <button type="button" class="btn btn-danger btn-xs hapus_obat_racikan" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-jml="{?=isset_or($value.jml_dr)?}" data-no_racik="{?=isset_or($value.no_racik)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus Resep</span></button>
         </td>
       </tr>
         {loop: $value.detail_pemberian_obat as $data}
         <tr>
-          <td style="padding-left: 20px;">- {$data.nama_brng}</td>
-          <td>{$data.jml}</td>
+          <td style="padding-left: 20px;">- {?=isset_or($data.nama_brng)?}</td>
+          <td>{?=isset_or($data.jml)?}</td>
           <td></td>
           <td>Rp. <span class="pull-right">{?= number_format(($data.total),2,',','.')?}</span></td>
           <td></td>
@@ -94,15 +94,15 @@
       {loop: $resep}
       <tbody class="resep-group">
       <tr>
-        <td>{$value.nm_dokter}</td>
-        <td>{$value.no_resep}</td>
-        <td>{$value.tgl_peresepan} {$value.jam_peresepan}</td>
+        <td>{?=isset_or($value.nm_dokter)?}</td>
+        <td>{?=isset_or($value.no_resep)?}</td>
+        <td>{?=isset_or($value.tgl_peresepan)?} {?=isset_or($value.jam_peresepan)?}</td>
         <td colspan="3">
-          <button type="button" class="btn btn-danger btn-xs {if: $value.tgl_perawatan !== '0000-00-00' || $this->core->getUserInfo('role') != 'admin'}disabled{else}hapus_resep_obat{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_peresepan="{$value.tgl_peresepan}" data-jam_peresepan="{$value.jam_peresepan}" data-no_resep="{$value.no_resep}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
-          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan !== '0000-00-00'}disabled{else}validasi_resep_obat{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_peresepan="{$value.tgl_peresepan}" data-jam_peresepan="{$value.jam_peresepan}" data-no_resep="{$value.no_resep}" data-penyerahan="{if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}penyerahan{/if}"><i class="fa fa-check"></i><span class="hidden-xs"> {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}Penyerahan{else}Validasi{/if}</span></button>
-          <button type="button" class="btn btn-danger btn-xs cetak_eresep" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-tipe="nonracikan"><i class="fa fa-print"></i><span class="hidden-xs"> e-Resep</span></button>
+          <button type="button" class="btn btn-danger btn-xs {if: $value.tgl_perawatan !== '0000-00-00' || $this->core->getUserInfo('role') != 'admin'}disabled{else}hapus_resep_obat{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_peresepan)?}" data-jam_peresepan="{?=isset_or($value.jam_peresepan)?}" data-no_resep="{?=isset_or($value.no_resep)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
+          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan !== '0000-00-00'}disabled{else}validasi_resep_obat{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_peresepan)?}" data-jam_peresepan="{?=isset_or($value.jam_peresepan)?}" data-no_resep="{?=isset_or($value.no_resep)?}" data-penyerahan="{if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}penyerahan{/if}"><i class="fa fa-check"></i><span class="hidden-xs"> {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}Penyerahan{else}Validasi{/if}</span></button>
+          <button type="button" class="btn btn-danger btn-xs cetak_eresep" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-tipe="nonracikan"><i class="fa fa-print"></i><span class="hidden-xs"> e-Resep</span></button>
           {if: $value.tgl_perawatan !== '0000-00-00'}
-          <button type="button" class="btn btn-primary btn-xs tambah_item_barang" data-no_resep="{$value.no_resep}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-tipe="nonracikan"><i class="fa fa-plus"></i></button>
+          <button type="button" class="btn btn-primary btn-xs tambah_item_barang" data-no_resep="{?=isset_or($value.no_resep)?}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-tipe="nonracikan"><i class="fa fa-plus"></i></button>
           {/if}
         </td>
       </tr>
@@ -115,30 +115,30 @@
         <th>Harga</th>
       </tr>
       {loop: $value.resep_dokter as $data}
-        <tr class="item-row" data-nama_brng="{$data.nama_brng}" data-stok="{$data.stok}" data-jml="{$data.jml}">
-          <td>{$data.nama_brng}</td>
-          <td><input type="number" class="form-control input-sm jumlah_obat" data-kode_brng="{$data.kode_brng}" value="{$data.jml}" style="width: 100px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
+        <tr class="item-row" data-nama_brng="{?=isset_or($data.nama_brng)?}" data-stok="{?=isset_or($data.stok)?}" data-jml="{?=isset_or($data.jml)?}">
+          <td>{?=isset_or($data.nama_brng)?}</td>
+          <td><input type="number" class="form-control input-sm jumlah_obat" data-kode_brng="{?=isset_or($data.kode_brng)?}" value="{?=isset_or($data.jml)?}" style="width: 100px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
           <td style="white-space: nowrap;">
             <input type="text"
                   class="form-control input-sm aturan_pakai"
                   style="width:200px; display:inline-block; vertical-align: middle;"
-                  data-kode_brng="{$data.kode_brng}"
-                  value="{$data.aturan_pakai}"
+                  data-kode_brng="{?=isset_or($data.kode_brng)?}"
+                  value="{?=isset_or($data.aturan_pakai)?}"
                   {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}>
 
             <button type="button"
                     class="btn btn-danger btn-xs cetak_etiket"
                     style="display:inline-block; vertical-align: middle;"
-                    data-kode_brng="{$data.kode_brng}"
+                    data-kode_brng="{?=isset_or($data.kode_brng)?}"
                     data-no_rawat="{?=convertNoRawat($value.no_rawat)?}"
-                    data-tgl_peresepan="{$value.tgl_perawatan}"
-                    data-jam_peresepan="{$value.jam}"
+                    data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}"
+                    data-jam_peresepan="{?=isset_or($value.jam)?}"
                     data-tipe="nonracikan">
               <i class="fa fa-print"></i>
             </button>
           </td>
-          <td><input type="text" class="form-control input-sm embalase" data-kode_brng="{$data.kode_brng}" value="{?= $this->core->settings->get('farmasi.embalase')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
-          <td><input type="text" class="form-control input-sm tuslah" data-kode_brng="{$data.kode_brng}" value="{?= $this->core->settings->get('farmasi.tuslah')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
+          <td><input type="text" class="form-control input-sm embalase" data-kode_brng="{?=isset_or($data.kode_brng)?}" value="{?= $this->core->settings->get('farmasi.embalase')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
+          <td><input type="text" class="form-control input-sm tuslah" data-kode_brng="{?=isset_or($data.kode_brng)?}" value="{?= $this->core->settings->get('farmasi.tuslah')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
           <td>Rp. <span class="pull-right">{?= number_format(($data.ralan * $data.jml),2,',','.')?}</span></td>
         </tr>
       {/loop}
@@ -167,16 +167,16 @@
     {loop: $resep_racikan}
     <tbody class="resep-group">
       <tr>
-        <td>{$value.nm_dokter}</td>
-        <td>{$value.no_resep}</td>
-        <td>{$value.tgl_peresepan} {$value.jam_peresepan}</td>
+        <td>{?=isset_or($value.nm_dokter)?}</td>
+        <td>{?=isset_or($value.no_resep)?}</td>
+        <td>{?=isset_or($value.tgl_peresepan)?} {?=isset_or($value.jam_peresepan)?}</td>
         <td colspan="3">
-          {if: $this->core->checkPermission($this->core->getUserInfo('username'), 'can_delete', 'apotek_ralan') == true}<button type="button" class="btn btn-danger btn-xs {if: $value.tgl_perawatan !== '0000-00-00'}disabled{else}hapus_resep_obat{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_peresepan="{$value.tgl_peresepan}" data-jam_peresepan="{$value.jam_peresepan}" data-no_resep="{$value.no_resep}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>{/if}
-          {if: $this->core->checkPermission($this->core->getUserInfo('username'), 'can_update', 'apotek_ralan') == true}<button type="button" class="btn btn-success btn-xs {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan !== '0000-00-00'}disabled{else}validasi_resep_obat{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_peresepan="{$value.tgl_peresepan}" data-jam_peresepan="{$value.jam_peresepan}" data-no_resep="{$value.no_resep}" data-penyerahan="{if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}penyerahan{/if}"><i class="fa fa-check"></i><span class="hidden-xs"> {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}Penyerahan{else}Validasi{/if}</span></button>{/if}
-          <button type="button" class="btn btn-danger btn-xs cetak_eresep" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-tipe="racikan"><i class="fa fa-print"></i><span class="hidden-xs"> e-Resep</span></button>
+          {if: $this->core->checkPermission($this->core->getUserInfo('username'), 'can_delete', 'apotek_ralan') == true}<button type="button" class="btn btn-danger btn-xs {if: $value.tgl_perawatan !== '0000-00-00'}disabled{else}hapus_resep_obat{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_peresepan)?}" data-jam_peresepan="{?=isset_or($value.jam_peresepan)?}" data-no_resep="{?=isset_or($value.no_resep)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>{/if}
+          {if: $this->core->checkPermission($this->core->getUserInfo('username'), 'can_update', 'apotek_ralan') == true}<button type="button" class="btn btn-success btn-xs {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan !== '0000-00-00'}disabled{else}validasi_resep_obat{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_peresepan)?}" data-jam_peresepan="{?=isset_or($value.jam_peresepan)?}" data-no_resep="{?=isset_or($value.no_resep)?}" data-penyerahan="{if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}penyerahan{/if}"><i class="fa fa-check"></i><span class="hidden-xs"> {if: $value.tgl_perawatan !== '0000-00-00' && $value.tgl_penyerahan == '0000-00-00'}Penyerahan{else}Validasi{/if}</span></button>{/if}
+          <button type="button" class="btn btn-danger btn-xs cetak_eresep" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-tipe="racikan"><i class="fa fa-print"></i><span class="hidden-xs"> e-Resep</span></button>
           {if: $this->core->checkPermission($this->core->getUserInfo('username'), 'can_create', 'apotek_ralan') == true}
           {if: $value.tgl_perawatan !== '0000-00-00'}
-          <button type="button" class="btn btn-primary btn-xs tambah_item_barang" data-no_resep="{$value.no_resep}" data-no_racik="{$value.no_racik}" data-jml_dr="{$value.jml_dr}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-tipe="racikan"><i class="fa fa-plus"></i></button>
+          <button type="button" class="btn btn-primary btn-xs tambah_item_barang" data-no_resep="{?=isset_or($value.no_resep)?}" data-no_racik="{?=isset_or($value.no_racik)?}" data-jml_dr="{?=isset_or($value.jml_dr)?}" data-no_rawat="{?=convertNoRawat($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-tipe="racikan"><i class="fa fa-plus"></i></button>
           {/if}
           {/if}
         </td>
@@ -188,14 +188,14 @@
         <th colspan="3">Keterangan</th>
       </tr>
       <tr>
-        <td>{$value.nama_racik}</td>
-        <td><input type="number" class="form-control input-sm jumlah_obat" data-kode_brng="{$value.kd_racik}" value="{$value.jml_dr}" style="width: 100px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
+        <td>{?=isset_or($value.nama_racik)?}</td>
+        <td><input type="number" class="form-control input-sm jumlah_obat" data-kode_brng="{?=isset_or($value.kd_racik)?}" value="{?=isset_or($value.jml_dr)?}" style="width: 100px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
         <td style="white-space: nowrap;">
           <input
             type="text"
             class="form-control input-sm aturan_pakai"
-            data-kode_brng="{$value.kd_racik}"
-            value="{$value.aturan_pakai}"
+            data-kode_brng="{?=isset_or($value.kd_racik)?}"
+            value="{?=isset_or($value.aturan_pakai)?}"
             style="width:200px; display:inline-block; vertical-align:middle;"
             {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}
           >
@@ -203,10 +203,10 @@
           <button
             type="button"
             class="btn btn-danger btn-xs cetak_etiket"
-            data-kode_brng="{$value.kd_racik}"
+            data-kode_brng="{?=isset_or($value.kd_racik)?}"
             data-no_rawat="{?=convertNoRawat($value.no_rawat)?}"
-            data-tgl_peresepan="{$value.tgl_perawatan}"
-            data-jam_peresepan="{$value.jam}"
+            data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}"
+            data-jam_peresepan="{?=isset_or($value.jam)?}"
             data-tipe="racikan"
             style="vertical-align:middle;"
             title="Cetak Etiket Racikan"
@@ -214,7 +214,7 @@
             <i class="fa fa-print"></i>
           </button>
         </td>
-        <td colspan="3">{$value.keterangan}</td>
+        <td colspan="3">{?=isset_or($value.keterangan)?}</td>
       </tr>
       <tr>
         <th>Nama Obat</th>
@@ -225,12 +225,12 @@
         <th>Harga</th>
       </tr>
       {loop: $value.resep_dokter_racikan_detail as $data}
-        <tr class="item-row" data-nama_brng="{$data.nama_brng}" data-stok="{$data.stok}" data-jml="{$data.jml}" data-kandungan="{$data.kandungan}" data-kapasitas="{$data.kapasitas}" data-ralan="{$data.ralan}">
-          <td>{$data.nama_brng}</td>
-          <td><input type="number" class="form-control input-sm kandungan_obat" data-kode_brng="{$data.kode_brng}" value="{$data.kandungan}" style="width: 100px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
-          <td><span class="jml_obat_display">{$data.jml}</span></td>
-          <td><input type="text" class="form-control input-sm embalase" data-kode_brng="{$data.kode_brng}" value="{?= $this->core->settings->get('farmasi.embalase')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
-          <td><input type="text" class="form-control input-sm tuslah" data-kode_brng="{$data.kode_brng}" value="{?= $this->core->settings->get('farmasi.tuslah')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
+        <tr class="item-row" data-nama_brng="{?=isset_or($data.nama_brng)?}" data-stok="{?=isset_or($data.stok)?}" data-jml="{?=isset_or($data.jml)?}" data-kandungan="{?=isset_or($data.kandungan)?}" data-kapasitas="{?=isset_or($data.kapasitas)?}" data-ralan="{?=isset_or($data.ralan)?}">
+          <td>{?=isset_or($data.nama_brng)?}</td>
+          <td><input type="number" class="form-control input-sm kandungan_obat" data-kode_brng="{?=isset_or($data.kode_brng)?}" value="{?=isset_or($data.kandungan)?}" style="width: 100px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
+          <td><span class="jml_obat_display">{?=isset_or($data.jml)?}</span></td>
+          <td><input type="text" class="form-control input-sm embalase" data-kode_brng="{?=isset_or($data.kode_brng)?}" value="{?= $this->core->settings->get('farmasi.embalase')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
+          <td><input type="text" class="form-control input-sm tuslah" data-kode_brng="{?=isset_or($data.kode_brng)?}" value="{?= $this->core->settings->get('farmasi.tuslah')?}" style="width: 80px;" {if: $value.tgl_perawatan !== '0000-00-00'}disabled{/if}></td>
           <td>Rp. <span class="pull-right total_harga_display">{?= number_format($data.ralan,2,',','.')?}</span></td>
         </tr>
       {/loop}

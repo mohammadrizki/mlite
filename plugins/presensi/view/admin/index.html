@@ -11,10 +11,10 @@
                         <a href="{?=url(ADMIN.'/master/petugas?status=0')?}" role="tab">Tidak Aktif</a>
                     </li> -->
                     <!-- <li>
-                        <a href="{$jamjaga.printURL}" target="_blank" role="tab">Cetak</a>
+                        <a href="{?=isset_or($jamjaga.printURL)?}" target="_blank" role="tab">Cetak</a>
                     </li> -->
                     <li class="{if: !empty($jamjaga.addUrl)}active{/if}">
-                        <a href="{$jamjaga.addURL}" role="tab">Tambah</a>
+                        <a href="{?=isset_or($jamjaga.addURL)?}" role="tab">Tambah</a>
                     </li>
                 </ul>
             </div>
@@ -50,20 +50,20 @@
         						{if: !empty($jamjaga.list)}
 								{loop: $jamjaga.list}
     								<tr>
-    									<td>{$value.dep_id}</td>
-    									<td>{$value.shift}</td>
-                                        <td>{$value.jam_masuk}</td>
-                                        <td>{$value.jam_pulang}</td>
+    									<td>{?=isset_or($value.dep_id)?}</td>
+    									<td>{?=isset_or($value.shift)?}</td>
+                                        <td>{?=isset_or($value.jam_masuk)?}</td>
+                                        <td>{?=isset_or($value.jam_pulang)?}</td>
     									<!-- <td class="text-right">
-    										<a href="{$value.editURL}" class="btn btn-success btn-xs">
+    										<a href="{?=isset_or($value.editURL)?}" class="btn btn-success btn-xs">
     											<i class="fa fa-pencil"></i> <span class="hidden-xs">Ganti</span>
     										</a>
                                         {if: $value.status == '1'}
-                                            <a href="{$value.delURL}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
+                                            <a href="{?=isset_or($value.delURL)?}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
       											<i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>
       										</a>
                                         {else}
-                                            <a href="{$value.restoreURL}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin merestore?">
+                                            <a href="{?=isset_or($value.restoreURL)?}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin merestore?">
       											<i class="fa fa-trash-o"></i> <span class="hidden-xs">Restrore</span>
       										</a>
                                         {/if}
@@ -78,7 +78,7 @@
     							</tbody>
     						</table>
     					</div>
-					{$jamjaga.pagination}
+					{?=isset_or($jamjaga.pagination)?}
             </div>
         </div>
     </div>

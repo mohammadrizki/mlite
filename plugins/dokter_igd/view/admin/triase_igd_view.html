@@ -155,19 +155,19 @@
     <table class="table table-bordered">
       <tr>
         <td width="15%"><strong>No. Rawat</strong></td>
-        <td width="35%">{$triase_igd.no_rawat}</td>
+        <td width="35%">{?=isset_or($triase_igd.no_rawat)?}</td>
         <td width="15%"><strong>No. RM</strong></td>
-        <td width="35%">{$triase_igd.no_rkm_medis}</td>
+        <td width="35%">{?=isset_or($triase_igd.no_rkm_medis)?}</td>
       </tr>
       <tr>
         <td><strong>Nama Pasien</strong></td>
-        <td>{$triase_igd.nm_pasien}</td>
+        <td>{?=isset_or($triase_igd.nm_pasien)?}</td>
         <td><strong>Tgl. Triase</strong></td>
-        <td>{$triase_igd.tgl_triase}</td>
+        <td>{?=isset_or($triase_igd.tgl_triase)?}</td>
       </tr>
       <tr>
         <td><strong>Petugas</strong></td>
-        <td colspan="3">{$triase_igd.nama_petugas} ({$triase_igd.petugas_id})</td>
+        <td colspan="3">{?=isset_or($triase_igd.nama_petugas)?} ({?=isset_or($triase_igd.petugas_id)?})</td>
       </tr>
     </table>
 
@@ -178,19 +178,19 @@
         <table class="table table-striped">
           <tr>
             <td><strong>Kesadaran</strong></td>
-            <td>{$triase_igd.kesadaran}</td>
+            <td>{?=isset_or($triase_igd.kesadaran)?}</td>
           </tr>
           <tr>
             <td><strong>Airway</strong></td>
-            <td>{$triase_igd.airway}</td>
+            <td>{?=isset_or($triase_igd.airway)?}</td>
           </tr>
           <tr>
             <td><strong>Breathing</strong></td>
-            <td>{$triase_igd.breathing}</td>
+            <td>{?=isset_or($triase_igd.breathing)?}</td>
           </tr>
           <tr>
             <td><strong>Circulation</strong></td>
-            <td>{$triase_igd.circulation}</td>
+            <td>{?=isset_or($triase_igd.circulation)?}</td>
           </tr>
         </table>
       </div>
@@ -241,7 +241,7 @@
           </tr>
           <tr class="info">
             <td><strong>Total GCS</strong></td>
-            <td><strong>{$triase_igd.total_gcs}</strong></td>
+            <td><strong>{?=isset_or($triase_igd.total_gcs)?}</strong></td>
           </tr>
         </table>
       </div>
@@ -253,7 +253,7 @@
             <td><strong>Kategori</strong></td>
             <td>
               <span class="label {if: $triase_igd.kategori == 'Merah'}label-danger{elseif: $triase_igd.kategori == 'Kuning'}label-warning{elseif: $triase_igd.kategori == 'Hijau'}label-success{else}label-default{/if}">
-                {$triase_igd.kategori}
+                {?=isset_or($triase_igd.kategori)?}
               </span>
             </td>
           </tr>
@@ -271,14 +271,14 @@
       {if: $triase_igd.keluhan_utama}
       <div class="col-md-6">
         <h5>Keluhan Utama</h5>
-        <p class="well">{$triase_igd.keluhan_utama}</p>
+        <p class="well">{?=isset_or($triase_igd.keluhan_utama)?}</p>
       </div>
       {/if}
       
       {if: $triase_igd.diagnosa_awal}
       <div class="col-md-6">
         <h5>Diagnosa Awal</h5>
-        <p class="well">{$triase_igd.diagnosa_awal}</p>
+        <p class="well">{?=isset_or($triase_igd.diagnosa_awal)?}</p>
       </div>
       {/if}
     </div>
@@ -288,10 +288,10 @@
     <hr>
     <div class="row">
       <div class="col-md-6">
-        <small class="text-muted">Dibuat: {$triase_igd.created_at}</small>
+        <small class="text-muted">Dibuat: {?=isset_or($triase_igd.created_at)?}</small>
       </div>
       <div class="col-md-6">
-        <small class="text-muted">Diupdate: {$triase_igd.updated_at}</small>
+        <small class="text-muted">Diupdate: {?=isset_or($triase_igd.updated_at)?}</small>
       </div>
     </div>
     

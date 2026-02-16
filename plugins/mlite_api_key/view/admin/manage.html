@@ -103,7 +103,7 @@
       <select class="form-control" name="username" id="username" data-use-search="true">
         <option value="">Select</option>
         {loop: $mlite_users}
-          <option value="{$value.username}">{$value.fullname}</option>
+          <option value="{?=isset_or($value.username)?}">{?=isset_or($value.fullname)?}</option>
         {/loop}
       </select>
     <div class='error'></div>

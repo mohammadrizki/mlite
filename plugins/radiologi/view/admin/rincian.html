@@ -11,23 +11,23 @@
     <tbody>
       {loop: $periksa_radiologi}
       <tr>
-        <td>{$value.nomor}</td>
+        <td>{?=isset_or($value.nomor)?}</td>
         <td colspan="2">
-          Dokter perujuk: {$value.nm_dokter}<br>
-          Petugas: {$value.nama_petugas}<br>
-          Cara bayar: {$value.png_jawab}<br>
-          Tanggal: {$value.tgl_periksa} - {$value.jam}<br>
-          <button type="button" class="btn btn-primary btn-xs hasil_radiologi" data-no_rawat="{$value.no_rawat}" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}" data-status="{$value.status_periksa}"><i class="fa fa-edit"></i><span class="hidden-xs"> Hasil</span></button>
-          <button type="button" name="button" class="btn btn-primary btn-xs cetak_hasil" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}" data-status="{$value.status_periksa}"><i class="fa fa-print"></i><span class="hidden-xs"> Cetak</span></button>
+          Dokter perujuk: {?=isset_or($value.nm_dokter)?}<br>
+          Petugas: {?=isset_or($value.nama_petugas)?}<br>
+          Cara bayar: {?=isset_or($value.png_jawab)?}<br>
+          Tanggal: {?=isset_or($value.tgl_periksa)?} - {?=isset_or($value.jam)?}<br>
+          <button type="button" class="btn btn-primary btn-xs hasil_radiologi" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}" data-status="{?=isset_or($value.status_periksa)?}"><i class="fa fa-edit"></i><span class="hidden-xs"> Hasil</span></button>
+          <button type="button" name="button" class="btn btn-primary btn-xs cetak_hasil" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}" data-status="{?=isset_or($value.status_periksa)?}"><i class="fa fa-print"></i><span class="hidden-xs"> Cetak</span></button>
           <a href="{?=url([ADMIN,'orthanc','bridgingorthanc',convertNorawat($value.no_rawat), strtolower($value.status_periksa), $value.tgl_periksa, $value.jam])?}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#orthancModal"><i class="fa fa-edit"></i><span class="hidden-xs"> PACS</span></a>
-          <button type="button" class="btn btn-danger btn-xs {if: $_SESSION['mlite_user'] !='1'}disabled{else}hapus_radiologi{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}" data-kd_jenis_prw="{$value.kd_jenis_prw}" data-status="{$value.status_periksa}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>
+          <button type="button" class="btn btn-danger btn-xs {if: $_SESSION['mlite_user'] !='1'}disabled{else}hapus_radiologi{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}" data-kd_jenis_prw="{?=isset_or($value.kd_jenis_prw)?}" data-status="{?=isset_or($value.status_periksa)?}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>
         </td>
       </tr>
       {if: $value.periksa_radiologi}
         {loop: $value.periksa_radiologi as $data0}
         <tr>
           <td></td>
-          <td>{$data0.nm_perawatan}</td>
+          <td>{?=isset_or($data0.nm_perawatan)?}</td>
           <td>
             Rp. <span class="pull-right">{?= number_format($data0.biaya,2,',','.')?}</span>
           </td>
@@ -38,9 +38,9 @@
         {loop: $value.hasil_radiologi as $data1}
         <tr>
           <td></td>
-          <td>{$data1.hasil}</td>
+          <td>{?=isset_or($data1.hasil)?}</td>
           <td colspan="2">
-            <button type="button" class="btn btn-danger btn-xs {if: $_SESSION['mlite_user'] !='1'}disabled{else}hapus_hasil_radiologi{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>
+            <button type="button" class="btn btn-danger btn-xs {if: $_SESSION['mlite_user'] !='1'}disabled{else}hapus_hasil_radiologi{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>
           </td>
         </tr>
         {/loop}
@@ -76,16 +76,16 @@
     <tbody>
       {loop: $radiologi}
       <tr>
-        <td>{$value.nm_dokter}</td>
-        <td>{$value.noorder}</td>
-        <td>{$value.tgl_permintaan} {$value.jam_permintaan}</td>
+        <td>{?=isset_or($value.nm_dokter)?}</td>
+        <td>{?=isset_or($value.noorder)?}</td>
+        <td>{?=isset_or($value.tgl_permintaan)?} {?=isset_or($value.jam_permintaan)?}</td>
         <td>
-          <!--<button type="button" class="btn btn-danger btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}hapus_permintaan_lab{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_permintaan="{$value.tgl_permintaan}" data-jam_permintaan="{$value.jam_permintaan}" data-noorder="{$value.noorder}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>-->
+          <!--<button type="button" class="btn btn-danger btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}hapus_permintaan_lab{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_permintaan="{?=isset_or($value.tgl_permintaan)?}" data-jam_permintaan="{?=isset_or($value.jam_permintaan)?}" data-noorder="{?=isset_or($value.noorder)?}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>-->
           <button type="button" name="button" class="btn btn-xs btn-warning cetak_permintaan"><i class="fa fa-print"></i><span class="hidden-xs"> Cetak</span></button>
           <!-- <button type="button" name="button" class="btn btn-xs btn-info nota_rad"><i class="fa fa-money"></i><span class="hidden-xs"> Nota</span></button> -->
           {if: $this->core->checkPermission($this->core->getUserInfo('username'), 'can_update', 'radiologi') == true}
-          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}validasi_permintaan_radiologi{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_permintaan="{$value.tgl_permintaan}" data-jam_permintaan="{$value.jam_permintaan}" data-noorder="{$value.noorder}"><i class="fa fa-check"></i><span class="hidden-xs"> Validasi</span></button>
-          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_hasil !== '0000-00-00' || $value.jam_hasil !== '00:00:00'}disabled{else}validasi_hasil_radiologi{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_permintaan="{$value.tgl_permintaan}" data-jam_permintaan="{$value.jam_permintaan}" data-noorder="{$value.noorder}"><i class="fa fa-check"></i><span class="hidden-xs"> Selesai</span></button>
+          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}validasi_permintaan_radiologi{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_permintaan="{?=isset_or($value.tgl_permintaan)?}" data-jam_permintaan="{?=isset_or($value.jam_permintaan)?}" data-noorder="{?=isset_or($value.noorder)?}"><i class="fa fa-check"></i><span class="hidden-xs"> Validasi</span></button>
+          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_hasil !== '0000-00-00' || $value.jam_hasil !== '00:00:00'}disabled{else}validasi_hasil_radiologi{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_permintaan="{?=isset_or($value.tgl_permintaan)?}" data-jam_permintaan="{?=isset_or($value.jam_permintaan)?}" data-noorder="{?=isset_or($value.noorder)?}"><i class="fa fa-check"></i><span class="hidden-xs"> Selesai</span></button>
           {/if}
         </td>
       </tr>
@@ -95,8 +95,8 @@
       </tr>
         {loop: $value.permintaan_pemeriksaan_radiologi as $data}
         <tr>
-          <td colspan="3">{$data.nm_perawatan}</td>
-          <td>{$data.stts_bayar}</td>
+          <td colspan="3">{?=isset_or($data.nm_perawatan)?}</td>
+          <td>{?=isset_or($data.stts_bayar)?}</td>
         </tr>
         {/loop}
       {/loop}

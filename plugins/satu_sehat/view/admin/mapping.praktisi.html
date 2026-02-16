@@ -14,7 +14,7 @@
                         <select name="dokter" id="dokter" class="form-control" data-use-search="true">
                             <option value="">Pilih Dokter</option>
                             {loop: $dokter}
-                            <option value="{$value.kd_dokter}">{$value.nm_dokter}</option>
+                            <option value="{?=isset_or($value.kd_dokter)?}">{?=isset_or($value.nm_dokter)?}</option>
                             {/loop}
                         </select>
                     </div>
@@ -25,7 +25,7 @@
                         <select name="medis" id="medis" class="form-control" data-use-search="true">
                             <option value="">Pilih Praktisi</option>
                             {loop: $apoteker}
-                            <option value="{$value.nik}">{$value.nama}</option>
+                            <option value="{?=isset_or($value.nik)?}">{?=isset_or($value.nama)?}</option>
                             {/loop}
                         </select>
                     </div>
@@ -52,11 +52,11 @@
         <tbody>
         {loop: $mapping_praktisi}
         <tr class="mapping_praktisi"
-        data-kd_dokter="{$value.kd_dokter}"
+        data-kd_dokter="{?=isset_or($value.kd_dokter)?}"
         >
-            <td>{$value.kd_dokter}</td>
-            <td>{$value.nm_dokter}</td>
-            <td>{$value.practitioner_id}</td>
+            <td>{?=isset_or($value.kd_dokter)?}</td>
+            <td>{?=isset_or($value.nm_dokter)?}</td>
+            <td>{?=isset_or($value.practitioner_id)?}</td>
         </tr>
         {/loop}
         </tbody>

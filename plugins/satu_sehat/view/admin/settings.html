@@ -9,37 +9,37 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Organization ID</label> <span class="pull-right"></span>
-                            <input type="text" name="satu_sehat[organizationid]" class="form-control" value="{$satu_sehat.organizationid}" />
+                            <input type="text" name="satu_sehat[organizationid]" class="form-control" value="{?=isset_or($satu_sehat.organizationid)?}" />
                         </div>
                         <div class="form-group">
                             <label>Client ID</label> <span class="pull-right"></span>
-                            <input type="text" name="satu_sehat[clientid]" class="form-control" value="{$satu_sehat.clientid}" />
+                            <input type="text" name="satu_sehat[clientid]" class="form-control" value="{?=isset_or($satu_sehat.clientid)?}" />
                         </div>
                         <div class="form-group">
                             <label>Secret Key</label>
-                            <input type="text" name="satu_sehat[secretkey]" class="form-control" value="{$satu_sehat.secretkey}" />
+                            <input type="text" name="satu_sehat[secretkey]" class="form-control" value="{?=isset_or($satu_sehat.secretkey)?}" />
                         </div>
                         <div class="form-group">
                             <label>Auth URL</label>
-                            <input type="text" name="satu_sehat[authurl]" class="form-control" value="{$satu_sehat.authurl}" />
+                            <input type="text" name="satu_sehat[authurl]" class="form-control" value="{?=isset_or($satu_sehat.authurl)?}" />
                         </div>
                         <div class="form-group">
                             <label>FHIR URL</label>
-                            <input type="text" name="satu_sehat[fhirurl]" class="form-control" value="{$satu_sehat.fhirurl}" />
+                            <input type="text" name="satu_sehat[fhirurl]" class="form-control" value="{?=isset_or($satu_sehat.fhirurl)?}" />
                         </div>
                         <div class="form-group">
                             <label>Latitude</label><span class="pull-right"><a href="#koordinat-modal" data-toggle="modal" class="small">[Generate Koordinat Latitude & Longitude]</a></span>
-                            <input type="text" name="satu_sehat[latitude]" id="latitude" class="form-control" value="{$satu_sehat.latitude}" />
+                            <input type="text" name="satu_sehat[latitude]" id="latitude" class="form-control" value="{?=isset_or($satu_sehat.latitude)?}" />
                         </div>
                         <div class="form-group">
                             <label>Longitude</label>
-                            <input type="text" name="satu_sehat[longitude]" id="longitude" class="form-control" value="{$satu_sehat.longitude}" />
+                            <input type="text" name="satu_sehat[longitude]" id="longitude" class="form-control" value="{?=isset_or($satu_sehat.longitude)?}" />
                         </div>
                         <div class="form-group">
                             <label>Mapping Instalasi Praktisi Apoteker</label>
                             <select name="satu_sehat[praktisiapotek]" class="form-control">
                                 {loop: $bidang} 
-                                    <option value="{$value.nama}" {if: $value.nama == $satu_sehat.praktisiapotek}selected{/if} >{$value.nama}</option>
+                                    <option value="{?=isset_or($value.nama)?}" {if: $value.nama == $satu_sehat.praktisiapotek}selected{/if} >{?=isset_or($value.nama)?}</option>
                                 {/loop}
                             </select>
                         </div>
@@ -47,7 +47,7 @@
                             <label>Mapping Instalasi Praktisi Laboratorium</label>
                             <select name="satu_sehat[praktisilab]" class="form-control">
                                 {loop: $bidang} 
-                                    <option value="{$value.nama}" {if: $value.nama == $satu_sehat.praktisilab}selected{/if} >{$value.nama}</option>
+                                    <option value="{?=isset_or($value.nama)?}" {if: $value.nama == $satu_sehat.praktisilab}selected{/if} >{?=isset_or($value.nama)?}</option>
                                 {/loop}
                             </select>
                         </div>
@@ -55,7 +55,7 @@
                             <label>Mapping Instalasi Praktisi Radiologi</label>
                             <select name="satu_sehat[praktisirad]" class="form-control">
                                 {loop: $bidang} 
-                                    <option value="{$value.nama}" {if: $value.nama == $satu_sehat.praktisirad}selected{/if} >{$value.nama}</option>
+                                    <option value="{?=isset_or($value.nama)?}" {if: $value.nama == $satu_sehat.praktisirad}selected{/if} >{?=isset_or($value.nama)?}</option>
                                 {/loop}
                             </select>
                         </div>                        
@@ -63,27 +63,27 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Kode Kelurahan</label>
-                            <input type="text" name="satu_sehat[kelurahan]" id="kd_kel" class="form-control" value="{$satu_sehat.kelurahan}" />
+                            <input type="text" name="satu_sehat[kelurahan]" id="kd_kel" class="form-control" value="{?=isset_or($satu_sehat.kelurahan)?}" />
                             <ul class="list-group" id="kelurahanList" style="z-index:1000;position:absolute;width:100%;"></ul>
                         </div>
                         <div class="form-group">
                             <label>Kode Kecamatan</label>
-                            <input type="text" name="satu_sehat[kecamatan]" id="kd_kec" class="form-control" value="{$satu_sehat.kecamatan}" />
+                            <input type="text" name="satu_sehat[kecamatan]" id="kd_kec" class="form-control" value="{?=isset_or($satu_sehat.kecamatan)?}" />
                             <ul class="list-group" id="kecamatanList" style="z-index:1000;position:absolute;width:100%;"></ul>
                         </div>
                         <div class="form-group">
                             <label>Kode Kabupaten</label>
-                            <input type="text" name="satu_sehat[kabupaten]" id="kd_kab" class="form-control" value="{$satu_sehat.kabupaten}" />
+                            <input type="text" name="satu_sehat[kabupaten]" id="kd_kab" class="form-control" value="{?=isset_or($satu_sehat.kabupaten)?}" />
                             <ul class="list-group" id="kabupatenList" style="z-index:1000;position:absolute;width:100%;"></ul>
                         </div>
                         <div class="form-group">
                             <label>Kode Propinsi</label>
-                            <input type="text" name="satu_sehat[propinsi]" id="kd_prop" class="form-control" value="{$satu_sehat.propinsi}" />
+                            <input type="text" name="satu_sehat[propinsi]" id="kd_prop" class="form-control" value="{?=isset_or($satu_sehat.propinsi)?}" />
                             <ul class="list-group" id="propinsiList" style="z-index:1000;position:absolute;width:100%;"></ul>
                         </div>
                         <div class="form-group">
                             <label>Kodepos</label>
-                            <input type="text" name="satu_sehat[kodepos]" class="form-control" value="{$satu_sehat.kodepos}" />
+                            <input type="text" name="satu_sehat[kodepos]" class="form-control" value="{?=isset_or($satu_sehat.kodepos)?}" />
                         </div>
                         <div class="form-group">
                             <label>Zona Waktu</label>
@@ -97,7 +97,7 @@
                             <label>Departemen Farmasi</label>
                             <select name="satu_sehat[farmasi]" class="form-control">
                                 {loop: $mapping_lokasi} 
-                                    <option value="{$value.kode}" {if: $value.kode == $satu_sehat.farmasi}selected{/if} >{$value.lokasi}</option>
+                                    <option value="{?=isset_or($value.kode)?}" {if: $value.kode == $satu_sehat.farmasi}selected{/if} >{?=isset_or($value.lokasi)?}</option>
                                 {/loop}
                             </select>
                         </div>
@@ -105,7 +105,7 @@
                             <label>Departemen Laboratorium</label>
                             <select name="satu_sehat[laboratorium]" class="form-control">
                                 {loop: $mapping_lokasi} 
-                                    <option value="{$value.kode}" {if: $value.kode == $satu_sehat.laboratorium}selected{/if} >{$value.lokasi}</option> 
+                                    <option value="{?=isset_or($value.kode)?}" {if: $value.kode == $satu_sehat.laboratorium}selected{/if} >{?=isset_or($value.lokasi)?}</option> 
                                 {/loop}
                             </select>
                         </div>
@@ -113,13 +113,13 @@
                             <label>Departemen Radiologi</label>
                             <select name="satu_sehat[radiologi]" class="form-control">
                                 {loop: $mapping_lokasi} 
-                                    <option value="{$value.kode}" {if: $value.kode == $satu_sehat.radiologi}selected{/if} >{$value.lokasi}</option> 
+                                    <option value="{?=isset_or($value.kode)?}" {if: $value.kode == $satu_sehat.radiologi}selected{/if} >{?=isset_or($value.lokasi)?}</option> 
                                 {/loop}
                             </select>
                         </div>
                         <div class="form-group">
                             <label>API Key Open AI</label>
-                            <input type="text" name="satu_sehat[api_openai]" class="form-control" value="{$satu_sehat.api_openai}" />
+                            <input type="text" name="satu_sehat[api_openai]" class="form-control" value="{?=isset_or($satu_sehat.api_openai)?}" />
                         </div>
                     </div>
                     <div class="col-md-12">

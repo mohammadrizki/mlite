@@ -20,57 +20,57 @@
       <tr class="isi">
         <td valign="top" width="20%">No.RM</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%"><span id="no_rkm_medis">{$riwayat.pasien.no_rkm_medis}</span></td>
+        <td valign="top" width="79%"><span id="no_rkm_medis">{?=isset_or($riwayat.pasien.no_rkm_medis)?}</span></td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Nama Pasien</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.nm_pasien}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.nm_pasien)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Alamat</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.alamat}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.alamat)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Umur</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.umur} Tahun ({if: $riwayat.pasien.jk == 'L'}Laki-Laki{else}Perempuan{/if})</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.umur)?} Tahun ({if: $riwayat.pasien.jk == 'L'}Laki-Laki{else}Perempuan{/if})</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Tanggal Lahir</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.tgl_lahir}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.tgl_lahir)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Ibu Kandung</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.nm_ibu}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.nm_ibu)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Golongan Darah</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.gol_darah}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.gol_darah)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Status Nikah</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.stts_nikah}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.stts_nikah)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Agama</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.agama}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.agama)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Pendidikan Terakhir</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.pnd}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.pnd)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Pertama Daftar</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$riwayat.pasien.tgl_daftar}</td>
+        <td valign="top" width="79%">{?=isset_or($riwayat.pasien.tgl_daftar)?}</td>
       </tr>
     </table>
 
@@ -81,37 +81,37 @@
       <tr class="isi">
         <td valign="top" width="20%">No.Rawat</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$value.no_rawat}</td>
+        <td valign="top" width="79%">{?=isset_or($value.no_rawat)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">No.Registrasi</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$value.no_reg}</td>
+        <td valign="top" width="79%">{?=isset_or($value.no_reg)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Tanggal Registrasi</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$value.tgl_registrasi}</td>
+        <td valign="top" width="79%">{?=isset_or($value.tgl_registrasi)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Unit/Poliklinik</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$value.nm_poli}</td>
+        <td valign="top" width="79%">{?=isset_or($value.nm_poli)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Dokter</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$value.nm_dokter}</td>
+        <td valign="top" width="79%">{?=isset_or($value.nm_dokter)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Penjamin</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$value.png_jawab}</td>
+        <td valign="top" width="79%">{?=isset_or($value.png_jawab)?}</td>
       </tr>
       <tr class="isi">
         <td valign="top" width="20%">Status</td>
         <td valign="top" width="1%" align="center">:</td>
-        <td valign="top" width="79%">{$value.status_lanjut}</td>
+        <td valign="top" width="79%">{?=isset_or($value.status_lanjut)?}</td>
       </tr>
       {if: $value.diagnosa_pasien}
       <tr class="isi">
@@ -126,9 +126,9 @@
              </tr>
              {loop: $value.diagnosa_pasien as $data}
              <tr>
-               <td valign="top" width="100px">{$data.kd_penyakit}</td>
-               <td valign="top">{$data.nm_penyakit}</td>
-               <td valign="top" width="100px">{$data.prioritas}</td>
+               <td valign="top" width="100px">{?=isset_or($data.kd_penyakit)?}</td>
+               <td valign="top">{?=isset_or($data.nm_penyakit)?}</td>
+               <td valign="top" width="100px">{?=isset_or($data.prioritas)?}</td>
              </tr>
              {/loop}
           </table>
@@ -148,9 +148,9 @@
              </tr>
              {loop: $value.prosedur_pasien as $data}
              <tr>
-               <td valign="top" width="100px">{$data.kode}</td>
-               <td valign="top">{$data.deskripsi_panjang}</td>
-               <td valign="top" width="100px">{$data.prioritas}</td>
+               <td valign="top" width="100px">{?=isset_or($data.kode)?}</td>
+               <td valign="top">{?=isset_or($data.deskripsi_panjang)?}</td>
+               <td valign="top" width="100px">{?=isset_or($data.prioritas)?}</td>
              </tr>
              {/loop}
           </table>
@@ -173,9 +173,9 @@
              {loop: $value.penilaian_medis_ralan as $data}
               <tr>
                   <td valign="top" colspan="2">Rawat Jalan</td>
-                  <td valign="top" colspan="2">{$data.tanggal}</td>
-                  <td valign="top" colspan="5">{$data.nm_dokter}</td>
-                  <td valign="top" colspan="3">{$data.anamnesis},{$data.hubungan}</td>
+                  <td valign="top" colspan="2">{?=isset_or($data.tanggal)?}</td>
+                  <td valign="top" colspan="5">{?=isset_or($data.nm_dokter)?}</td>
+                  <td valign="top" colspan="3">{?=isset_or($data.anamnesis)?},{?=isset_or($data.hubungan)?}</td>
                </tr>
                 <tr>
                   <td valign="top" colspan="12" bgcolor="#eee">
@@ -184,27 +184,27 @@
                   </tr>
                      <tr>
                         <td valign="top" colspan="4">Riwayat Keluhan Utama</td>
-                        <td valign="top" colspan="8"> : {$data.keluhan_utama}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.keluhan_utama)?}</td>
                      </tr>
                      <tr>
                         <td valign="top" colspan="4">Riwayat Penyakit Sekarang</td>
-                        <td valign="top" colspan="8"> : {$data.rps}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.rps)?}</td>
                      </tr>
                      <tr>
                         <td valign="top" colspan="4">Riwayat Penyakit Dahulu</td>
-                        <td valign="top" colspan="8"> : {$data.rpd}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.rpd)?}</td>
                      </tr>
                      <tr>
                         <td valign="top" colspan="4">Riwayat Penyakit Keluarga</td>
-                        <td valign="top" colspan="8"> : {$data.rpk}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.rpk)?}</td>
                      </tr>
                      <tr>
                         <td valign="top" colspan="4">Riwayat Alergi</td>
-                        <td valign="top" colspan="8"> : {$data.rpk}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.rpk)?}</td>
                      </tr>
                      <tr>
                         <td valign="top" colspan="4">Riwayat Penggunaan Obat</td>
-                        <td valign="top" colspan="8"> : {$data.rpk}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.rpk)?}</td>
                      </tr>
                      <tr>
                       <td valign="top" colspan="12" bgcolor="#eee">
@@ -226,18 +226,18 @@
                       <td valign="top" bgcolor="#eee">Gigi & Mulut</td>
                    </tr>
                    <tr>
-                      <td valign="top">{$data.keadaan}</td>
-                      <td valign="top">{$data.kesadaran}</td>
-                      <td valign="top">{$data.gcs}</td>
-                      <td valign="top">{$data.tb}</td>
-                      <td valign="top">{$data.bb}</td>
-                      <td valign="top">{$data.td}</td>
-                      <td valign="top">{$data.nadi}</td>
-                      <td valign="top">{$data.rr}</td>
-                      <td valign="top">{$data.suhu}</td>
-                      <td valign="top">{$data.spo}</td>
-                      <td valign="top">{$data.kepala}</td>
-                      <td valign="top">{$data.gigi}</td>
+                      <td valign="top">{?=isset_or($data.keadaan)?}</td>
+                      <td valign="top">{?=isset_or($data.kesadaran)?}</td>
+                      <td valign="top">{?=isset_or($data.gcs)?}</td>
+                      <td valign="top">{?=isset_or($data.tb)?}</td>
+                      <td valign="top">{?=isset_or($data.bb)?}</td>
+                      <td valign="top">{?=isset_or($data.td)?}</td>
+                      <td valign="top">{?=isset_or($data.nadi)?}</td>
+                      <td valign="top">{?=isset_or($data.rr)?}</td>
+                      <td valign="top">{?=isset_or($data.suhu)?}</td>
+                      <td valign="top">{?=isset_or($data.spo)?}</td>
+                      <td valign="top">{?=isset_or($data.kepala)?}</td>
+                      <td valign="top">{?=isset_or($data.gigi)?}</td>
                    </tr>
 
                    <tr align="center">
@@ -250,13 +250,13 @@
                       <td valign="top" bgcolor="#eee" colspan="6">Keterangan Fisik</td>
                    </tr>
                    <tr>
-                      <td valign="top">{$data.tht}</td>
-                      <td valign="top">{$data.thoraks}</td>
-                      <td valign="top">{$data.abdomen}</td>
-                      <td valign="top">{$data.genital}</td>
-                      <td valign="top">{$data.ekstremitas}</td>
-                      <td valign="top">{$data.kulit}</td>
-                      <td valign="top" colspan="6">{$data.ket_fisik}</td>
+                      <td valign="top">{?=isset_or($data.tht)?}</td>
+                      <td valign="top">{?=isset_or($data.thoraks)?}</td>
+                      <td valign="top">{?=isset_or($data.abdomen)?}</td>
+                      <td valign="top">{?=isset_or($data.genital)?}</td>
+                      <td valign="top">{?=isset_or($data.ekstremitas)?}</td>
+                      <td valign="top">{?=isset_or($data.kulit)?}</td>
+                      <td valign="top" colspan="6">{?=isset_or($data.ket_fisik)?}</td>
                    </tr>
                    <tr>
                     <td valign="top" colspan="12" bgcolor="#eee">
@@ -266,7 +266,7 @@
                   </tr>
                      <tr>
                         <td valign="top" colspan="4">Keterangan</td>
-                        <td valign="top" colspan="8"> : {$data.ket_lokalis}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.ket_lokalis)?}</td>
                      </tr>
                      <tr>
                       <td valign="top" colspan="12" bgcolor="#eee">
@@ -276,7 +276,7 @@
                   </tr>
                      <tr>
                         <td valign="top" colspan="4">PENUNJANG</td>
-                        <td valign="top" colspan="8"> : {$data.penunjang}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.penunjang)?}</td>
                      </tr>
                      <tr>
                       <td valign="top" colspan="12" bgcolor="#eee">
@@ -286,7 +286,7 @@
                   </tr>
                      <tr>
                         <td valign="top" colspan="4">Diagnosis</td>
-                        <td valign="top" colspan="8"> : {$data.diagnosis}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.diagnosis)?}</td>
                      </tr>
                      <tr>
                       <td valign="top" colspan="12" bgcolor="#eee">
@@ -296,7 +296,7 @@
                   </tr>
                      <tr>
                         <td valign="top" colspan="4">Tatalaksana</td>
-                        <td valign="top" colspan="8"> : {$data.tata}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.tata)?}</td>
                      </tr>
                      <tr>
                       <td valign="top" colspan="12" bgcolor="#eee">
@@ -306,7 +306,7 @@
                   </tr>
                      <tr>
                         <td valign="top" colspan="4">Konsul/Rujuk</td>
-                        <td valign="top" colspan="8"> : {$data.konsulrujuk}</td>
+                        <td valign="top" colspan="8"> : {?=isset_or($data.konsulrujuk)?}</td>
                      </tr>
                 </tr>
 
@@ -342,34 +342,34 @@
                  <td valign="top" rowspan="6">Rawat Jalan</td>
                </tr>
                <tr>
-                  <td valign="top">{$data.tgl_perawatan}</td>
-                  <td valign="top">{$data.jam_rawat}</td>
-                  <td valign="top">{$data.suhu_tubuh}</td>
-                  <td valign="top">{$data.tensi}</td>
-                  <td valign="top">{$data.nadi}</td>
-                  <td valign="top">{$data.respirasi}</td>
-                  <td valign="top">{$data.tinggi}</td>
-                  <td valign="top">{$data.berat}</td>
-                  <td valign="top">{$data.gcs}</td>
-                  <td valign="top">{$data.spo2}</td>
-                  <td valign="top">{$data.alergi}</td>
-                  <td valign="top">{$data.kesadaran}</td>
+                  <td valign="top">{?=isset_or($data.tgl_perawatan)?}</td>
+                  <td valign="top">{?=isset_or($data.jam_rawat)?}</td>
+                  <td valign="top">{?=isset_or($data.suhu_tubuh)?}</td>
+                  <td valign="top">{?=isset_or($data.tensi)?}</td>
+                  <td valign="top">{?=isset_or($data.nadi)?}</td>
+                  <td valign="top">{?=isset_or($data.respirasi)?}</td>
+                  <td valign="top">{?=isset_or($data.tinggi)?}</td>
+                  <td valign="top">{?=isset_or($data.berat)?}</td>
+                  <td valign="top">{?=isset_or($data.gcs)?}</td>
+                  <td valign="top">{?=isset_or($data.spo2)?}</td>
+                  <td valign="top">{?=isset_or($data.alergi)?}</td>
+                  <td valign="top">{?=isset_or($data.kesadaran)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Subjek</td>
-                  <td valign="top" colspan="10"> : {$data.keluhan}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.keluhan)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Objek</td>
-                  <td valign="top" colspan="10"> : {$data.pemeriksaan}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.pemeriksaan)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Asesment</td>
-                  <td valign="top" colspan="10"> : {$data.penilaian}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.penilaian)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Plan</td>
-                  <td valign="top" colspan="10"> : {$data.rtl}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.rtl)?}</td>
                </tr>
              {/loop}
              {/if}
@@ -394,34 +394,34 @@
                  <td valign="top" rowspan="6">Rawat Inap</td>
                </tr>
                <tr>
-                  <td valign="top">{$data.tgl_perawatan}</td>
-                  <td valign="top">{$data.jam_rawat}</td>
-                  <td valign="top">{$data.suhu_tubuh}</td>
-                  <td valign="top">{$data.tensi}</td>
-                  <td valign="top">{$data.nadi}</td>
-                  <td valign="top">{$data.respirasi}</td>
-                  <td valign="top">{$data.tinggi}</td>
-                  <td valign="top">{$data.berat}</td>
-                  <td valign="top">{$data.gcs}</td>
-                  <td valign="top">{$data.spo2}</td>
-                  <td valign="top">{$data.alergi}</td>
-                  <td valign="top">{$data.kesadaran}</td>
+                  <td valign="top">{?=isset_or($data.tgl_perawatan)?}</td>
+                  <td valign="top">{?=isset_or($data.jam_rawat)?}</td>
+                  <td valign="top">{?=isset_or($data.suhu_tubuh)?}</td>
+                  <td valign="top">{?=isset_or($data.tensi)?}</td>
+                  <td valign="top">{?=isset_or($data.nadi)?}</td>
+                  <td valign="top">{?=isset_or($data.respirasi)?}</td>
+                  <td valign="top">{?=isset_or($data.tinggi)?}</td>
+                  <td valign="top">{?=isset_or($data.berat)?}</td>
+                  <td valign="top">{?=isset_or($data.gcs)?}</td>
+                  <td valign="top">{?=isset_or($data.spo2)?}</td>
+                  <td valign="top">{?=isset_or($data.alergi)?}</td>
+                  <td valign="top">{?=isset_or($data.kesadaran)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Subjek</td>
-                  <td valign="top" colspan="10"> : {$data.keluhan}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.keluhan)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Objek</td>
-                  <td valign="top" colspan="10"> : {$data.pemeriksaan}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.pemeriksaan)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Asesment</td>
-                  <td valign="top" colspan="10"> : {$data.penilaian}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.penilaian)?}</td>
                </tr>
                <tr>
                   <td valign="top" colspan="2">Plan</td>
-                  <td valign="top" colspan="10"> : {$data.rtl}</td>
+                  <td valign="top" colspan="10"> : {?=isset_or($data.rtl)?}</td>
                </tr>
              {/loop}
              {/if}
@@ -461,16 +461,16 @@
             {loop: $value.rawat_jl_dr as $data}
             <tr>
               <td valign="top">
-                {$data.tgl_perawatan} {$data.jam_rawat}
+                {?=isset_or($data.tgl_perawatan)?} {?=isset_or($data.jam_rawat)?}
               </td>
               <td valign="top">
-                {$data.kd_jenis_prw}
+                {?=isset_or($data.kd_jenis_prw)?}
               </td>
               <td valign="top">
-                {$data.nm_perawatan}
+                {?=isset_or($data.nm_perawatan)?}
               </td>
               <td valign="top">
-                {$data.nm_dokter}
+                {?=isset_or($data.nm_dokter)?}
               </td>
             </tr>
             {/loop}
@@ -500,16 +500,16 @@
             {loop: $value.rawat_jl_pr as $data}
             <tr>
               <td valign="top">
-                {$data.tgl_perawatan} {$data.jam_rawat}
+                {?=isset_or($data.tgl_perawatan)?} {?=isset_or($data.jam_rawat)?}
               </td>
               <td valign="top">
-                {$data.kd_jenis_prw}
+                {?=isset_or($data.kd_jenis_prw)?}
               </td>
               <td valign="top">
-                {$data.nm_perawatan}
+                {?=isset_or($data.nm_perawatan)?}
               </td>
               <td valign="top">
-                {$data.nama}
+                {?=isset_or($data.nama)?}
               </td>
             </tr>
             {/loop}
@@ -542,19 +542,19 @@
             {loop: $value.rawat_jl_drpr as $data}
             <tr>
               <td valign="top">
-                {$data.tgl_perawatan} {$data.jam_rawat}
+                {?=isset_or($data.tgl_perawatan)?} {?=isset_or($data.jam_rawat)?}
               </td>
               <td valign="top">
-                {$data.kd_jenis_prw}
+                {?=isset_or($data.kd_jenis_prw)?}
               </td>
               <td valign="top">
-                {$data.nm_perawatan}
+                {?=isset_or($data.nm_perawatan)?}
               </td>
               <td valign="top">
-                {$data.nm_dokter}
+                {?=isset_or($data.nm_dokter)?}
               </td>
               <td valign="top">
-                {$data.nama}
+                {?=isset_or($data.nama)?}
               </td>
             </tr>
             {/loop}
@@ -597,16 +597,16 @@
             {loop: $value.rawat_inap_dr as $data}
             <tr>
               <td valign="top">
-                {$data.tgl_perawatan} {$data.jam_rawat}
+                {?=isset_or($data.tgl_perawatan)?} {?=isset_or($data.jam_rawat)?}
               </td>
               <td valign="top">
-                {$data.kd_jenis_prw}
+                {?=isset_or($data.kd_jenis_prw)?}
               </td>
               <td valign="top">
-                {$data.nm_perawatan}
+                {?=isset_or($data.nm_perawatan)?}
               </td>
               <td valign="top">
-                {$data.nm_dokter}
+                {?=isset_or($data.nm_dokter)?}
               </td>
             </tr>
             {/loop}
@@ -636,16 +636,16 @@
             {loop: $value.rawat_inap_pr as $data}
             <tr>
               <td valign="top">
-                {$data.tgl_perawatan} {$data.jam_rawat}
+                {?=isset_or($data.tgl_perawatan)?} {?=isset_or($data.jam_rawat)?}
               </td>
               <td valign="top">
-                {$data.kd_jenis_prw}
+                {?=isset_or($data.kd_jenis_prw)?}
               </td>
               <td valign="top">
-                {$data.nm_perawatan}
+                {?=isset_or($data.nm_perawatan)?}
               </td>
               <td valign="top">
-                {$data.nama}
+                {?=isset_or($data.nama)?}
               </td>
             </tr>
             {/loop}
@@ -678,19 +678,19 @@
             {loop: $value.rawat_inap_drpr as $data}
             <tr>
               <td valign="top">
-                {$data.tgl_perawatan} {$data.jam_rawat}
+                {?=isset_or($data.tgl_perawatan)?} {?=isset_or($data.jam_rawat)?}
               </td>
               <td valign="top">
-                {$data.kd_jenis_prw}
+                {?=isset_or($data.kd_jenis_prw)?}
               </td>
               <td valign="top">
-                {$data.nm_perawatan}
+                {?=isset_or($data.nm_perawatan)?}
               </td>
               <td valign="top">
-                {$data.nm_dokter}
+                {?=isset_or($data.nm_dokter)?}
               </td>
               <td valign="top">
-                {$data.nama}
+                {?=isset_or($data.nama)?}
               </td>
             </tr>
             {/loop}
@@ -712,7 +712,7 @@
            </tr>
            {loop: $value.pemberian_obat as $data1}
            <tr>
-             <td valign="top" width="25%">{$data1.tgl_perawatan} {$data1.jam}<br>{$value.status_lanjut}</td>
+             <td valign="top" width="25%">{?=isset_or($data1.tgl_perawatan)?} {?=isset_or($data1.jam)?}<br>{?=isset_or($value.status_lanjut)?}</td>
              <td valign="top" width="75%">
                <table width="100%" border="0" align="center" cellpadding="3px" cellspacing="0">
                  <tr>
@@ -721,8 +721,8 @@
                  </tr>
                  {loop: $data1.data_pemberian_obat as $data2}
                  <tr>
-                   <td>{$data2.nama_brng}</td>
-                   <td>{$data2.jml}</td>
+                   <td>{?=isset_or($data2.nama_brng)?}</td>
+                   <td>{?=isset_or($data2.jml)?}</td>
                  </tr>
                  {/loop}
                </table>
@@ -750,20 +750,20 @@
            </tr>
            {loop: $value.periksa_lab as $data1}
            <tr>
-             <td valign="top" width="20%">{$data1.tgl_periksa}</td>
-             <td colspan="4" valign="top" width="80%">{$data1.nm_perawatan}</td>
+             <td valign="top" width="20%">{?=isset_or($data1.tgl_periksa)?}</td>
+             <td colspan="4" valign="top" width="80%">{?=isset_or($data1.nm_perawatan)?}</td>
            </tr>
              {loop: $data1.detail_periksa_lab as $data2}
              <tr>
                <td></td>
-               <td>{$data2.Pemeriksaan}</td>
-               <td>{$data2.nilai} {$data2.satuan}</td>
+               <td>{?=isset_or($data2.Pemeriksaan)?}</td>
+               <td>{?=isset_or($data2.nilai)?} {?=isset_or($data2.satuan)?}</td>
                <td>
-                {if: $riwayat.pasien.jk == 'L' && $value.umurdaftar < '16'}{$data2.nilai_rujukan_la}{/if}
-                {if: $riwayat.pasien.jk == 'L' && $value.umurdaftar >= '16'}{$data2.nilai_rujukan_ld}{/if}
-                {if: $riwayat.pasien.jk == 'P' && $value.umurdaftar < '16'}{$data2.nilai_rujukan_pa}{/if}
-                {if: $riwayat.pasien.jk == 'P' && $value.umurdaftar >= '16'}{$data2.nilai_rujukan_pd}{/if}	
-                {$data2.satuan}	  
+                {if: $riwayat.pasien.jk == 'L' && $value.umurdaftar < '16'}{?=isset_or($data2.nilai_rujukan_la)?}{/if}
+                {if: $riwayat.pasien.jk == 'L' && $value.umurdaftar >= '16'}{?=isset_or($data2.nilai_rujukan_ld)?}{/if}
+                {if: $riwayat.pasien.jk == 'P' && $value.umurdaftar < '16'}{?=isset_or($data2.nilai_rujukan_pa)?}{/if}
+                {if: $riwayat.pasien.jk == 'P' && $value.umurdaftar >= '16'}{?=isset_or($data2.nilai_rujukan_pd)?}{/if}	
+                {?=isset_or($data2.satuan)?}	  
               </td>
                <td>{?=nl2br($data2.keterangan)?}</td>
              </tr>
@@ -785,7 +785,7 @@
             </tr>
             {loop: $value.periksa_radiologi as $data}
             <tr>
-              <td colspan="2">{$data.tgl_periksa} {$data.jam}</td>
+              <td colspan="2">{?=isset_or($data.tgl_periksa)?} {?=isset_or($data.jam)?}</td>
             </tr>
             <tr>
               <td valign="top" width="30%">Pemeriksaan</td>
@@ -845,8 +845,8 @@
             </tr>
             {loop: $value.operasi as $data}
             <tr>
-              <td valign="top" width="20%">{$data.tgl_operasi}</td>
-              <td valign="top" width="30%">{$data.nm_perawatan}</td>
+              <td valign="top" width="20%">{?=isset_or($data.tgl_operasi)?}</td>
+              <td valign="top" width="30%">{?=isset_or($data.nm_perawatan)?}</td>
             </tr>
             {/loop}
           </table>
@@ -866,9 +866,9 @@
             </tr>
             {loop: $value.obat_operasi as $data}
             <tr>
-              <td valign="top" width="20%">{$data.tanggal}</td>
-              <td valign="top" width="30%">{$data.nm_obat}</td>
-              <td valign="top" width="50%">{$data.jumlah}</td>
+              <td valign="top" width="20%">{?=isset_or($data.tanggal)?}</td>
+              <td valign="top" width="30%">{?=isset_or($data.nm_obat)?}</td>
+              <td valign="top" width="50%">{?=isset_or($data.jumlah)?}</td>
             </tr>
             {/loop}
           </table>
@@ -893,7 +893,7 @@
                                 </a>
                             </div>
                             <div class="caption">
-                              {$data.nama}
+                              {?=isset_or($data.nama)?}
                             </div>
                         </div>
                     {/loop}
@@ -918,15 +918,15 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal/Jam Triase</td>
-              <td valign="top" width="25%">{$data.tgl_triase}</td>
+              <td valign="top" width="25%">{?=isset_or($data.tgl_triase)?}</td>
               <td valign="top" width="25%" bgcolor="#eee">Petugas</td>
-              <td valign="top" width="25%">{$data.petugas_id}</td>
+              <td valign="top" width="25%">{?=isset_or($data.petugas_id)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">No. Rawat</td>
-              <td valign="top">{$data.no_rawat}</td>
+              <td valign="top">{?=isset_or($data.no_rawat)?}</td>
               <td valign="top" bgcolor="#eee">No. RM</td>
-              <td valign="top">{$data.no_rkm_medis}</td>
+              <td valign="top">{?=isset_or($data.no_rkm_medis)?}</td>
             </tr>
             
             <!-- Keluhan dan Diagnosa -->
@@ -935,11 +935,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keluhan Utama</td>
-              <td valign="top" colspan="3">{$data.keluhan_utama}</td>
+              <td valign="top" colspan="3">{?=isset_or($data.keluhan_utama)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Awal</td>
-              <td valign="top" colspan="3">{$data.diagnosa_awal}</td>
+              <td valign="top" colspan="3">{?=isset_or($data.diagnosa_awal)?}</td>
             </tr>
             
             <!-- Kesadaran dan GCS -->
@@ -948,11 +948,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Kesadaran</td>
-              <td valign="top">{$data.kesadaran}</td>
+              <td valign="top">{?=isset_or($data.kesadaran)?}</td>
               <td valign="top" bgcolor="#eee">GCS</td>
               <td valign="top">
                 {if: $data.gcs_e || $data.gcs_v || $data.gcs_m}
-                E: {$data.gcs_e} | V: {$data.gcs_v} | M: {$data.gcs_m}
+                E: {?=isset_or($data.gcs_e)?} | V: {?=isset_or($data.gcs_v)?} | M: {?=isset_or($data.gcs_m)?}
                 <br><strong>Total: {$data.gcs_e + $data.gcs_v + $data.gcs_m}</strong>
                 {else}
                 -
@@ -966,19 +966,19 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tekanan Darah</td>
-              <td valign="top">{$data.tekanan_darah} mmHg</td>
+              <td valign="top">{?=isset_or($data.tekanan_darah)?} mmHg</td>
               <td valign="top" bgcolor="#eee">Nadi</td>
-              <td valign="top">{$data.nadi} x/menit</td>
+              <td valign="top">{?=isset_or($data.nadi)?} x/menit</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Respirasi</td>
-              <td valign="top">{$data.respirasi} x/menit</td>
+              <td valign="top">{?=isset_or($data.respirasi)?} x/menit</td>
               <td valign="top" bgcolor="#eee">Suhu</td>
-              <td valign="top">{$data.suhu} °C</td>
+              <td valign="top">{?=isset_or($data.suhu)?} °C</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">SpO2</td>
-              <td valign="top" colspan="3">{$data.spo2}%</td>
+              <td valign="top" colspan="3">{?=isset_or($data.spo2)?}%</td>
             </tr>
             
             <!-- Primary Survey (ABC) -->
@@ -989,13 +989,13 @@
               <td valign="top" bgcolor="#eee">Airway</td>
               <td valign="top">
                 <span style="color: {if: $data.airway == 'Sumbatan Total'}red{elseif: $data.airway == 'Sumbatan Parsial'}orange{else}green{/if}; font-weight: bold;">
-                  {$data.airway}
+                  {?=isset_or($data.airway)?}
                 </span>
               </td>
               <td valign="top" bgcolor="#eee">Breathing</td>
               <td valign="top">
                 <span style="color: {if: $data.breathing == 'Tak Spontan'}red{elseif: $data.breathing == 'Distres Nafas'}orange{else}green{/if}; font-weight: bold;">
-                  {$data.breathing}
+                  {?=isset_or($data.breathing)?}
                 </span>
               </td>
             </tr>
@@ -1003,7 +1003,7 @@
               <td valign="top" bgcolor="#eee">Circulation</td>
               <td valign="top" colspan="3">
                 <span style="color: {if: $data.circulation == 'Syok' || $data.circulation == 'Perdarahan'}red{else}green{/if}; font-weight: bold;">
-                  {$data.circulation}
+                  {?=isset_or($data.circulation)?}
                 </span>
               </td>
             </tr>
@@ -1016,13 +1016,13 @@
               <td valign="top" bgcolor="#eee">Kategori</td>
               <td valign="top">
                 <span style="color: {if: $data.kategori == 'Merah'}red{elseif: $data.kategori == 'Kuning'}orange{elseif: $data.kategori == 'Hijau'}green{elseif: $data.kategori == 'Hitam'}black{else}blue{/if}; font-weight: bold; font-size: 14px;">
-                  {$data.kategori}
+                  {?=isset_or($data.kategori)?}
                 </span>
               </td>
               <td valign="top" bgcolor="#eee">Skala Triase</td>
               <td valign="top">
                 <span style="font-weight: bold;">
-                  {$data.skala_triase}
+                  {?=isset_or($data.skala_triase)?}
                 </span>
               </td>
             </tr>
@@ -1033,9 +1033,9 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Dibuat</td>
-              <td valign="top">{$data.created_at}</td>
+              <td valign="top">{?=isset_or($data.created_at)?}</td>
               <td valign="top" bgcolor="#eee">Diperbarui</td>
-              <td valign="top">{$data.updated_at}</td>
+              <td valign="top">{?=isset_or($data.updated_at)?}</td>
             </tr>
           </table>
           {/loop}
@@ -1055,19 +1055,19 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal/Jam</td>
-              <td valign="top" width="25%">{$data.tanggal}</td>
+              <td valign="top" width="25%">{?=isset_or($data.tanggal)?}</td>
               <td valign="top" width="25%" bgcolor="#eee">Petugas</td>
-              <td valign="top" width="25%">{$data.nama}</td>
+              <td valign="top" width="25%">{?=isset_or($data.nama)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Informasi</td>
-              <td valign="top">{$data.informasi}</td>
+              <td valign="top">{?=isset_or($data.informasi)?}</td>
               <td valign="top" bgcolor="#eee">Status Kehamilan</td>
               <td valign="top">
-                {$data.status_kehamilan}
+                {?=isset_or($data.status_kehamilan)?}
                 {if: $data.status_kehamilan == 'Hamil'}
-                <br>G: {$data.gravida} P: {$data.para} A: {$data.abortus}
-                <br>HPHT: {$data.hpht}
+                <br>G: {?=isset_or($data.gravida)?} P: {?=isset_or($data.para)?} A: {?=isset_or($data.abortus)?}
+                <br>HPHT: {?=isset_or($data.hpht)?}
                 {/if}
               </td>
             </tr>
@@ -1078,15 +1078,15 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keluhan Utama</td>
-              <td valign="top" colspan="3">{$data.keluhan_utama}</td>
+              <td valign="top" colspan="3">{?=isset_or($data.keluhan_utama)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Dahulu</td>
-              <td valign="top" colspan="3">{$data.rpd}</td>
+              <td valign="top" colspan="3">{?=isset_or($data.rpd)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Obat</td>
-              <td valign="top" colspan="3">{$data.rpo}</td>
+              <td valign="top" colspan="3">{?=isset_or($data.rpo)?}</td>
             </tr>
             
             <!-- Pemeriksaan Fisik -->
@@ -1095,37 +1095,37 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tekanan Darah</td>
-              <td valign="top">{$data.tekanan}</td>
+              <td valign="top">{?=isset_or($data.tekanan)?}</td>
               <td valign="top" bgcolor="#eee">Pupil</td>
-              <td valign="top">{$data.pupil}</td>
+              <td valign="top">{?=isset_or($data.pupil)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Neurosensorik</td>
-              <td valign="top">{$data.neurosensorik}</td>
+              <td valign="top">{?=isset_or($data.neurosensorik)?}</td>
               <td valign="top" bgcolor="#eee">Integumen</td>
-              <td valign="top">{$data.integumen}</td>
+              <td valign="top">{?=isset_or($data.integumen)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Turgor</td>
-              <td valign="top">{$data.turgor}</td>
+              <td valign="top">{?=isset_or($data.turgor)?}</td>
               <td valign="top" bgcolor="#eee">Edema</td>
-              <td valign="top">{$data.edema}</td>
+              <td valign="top">{?=isset_or($data.edema)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Mukosa</td>
-              <td valign="top">{$data.mukosa}</td>
+              <td valign="top">{?=isset_or($data.mukosa)?}</td>
               <td valign="top" bgcolor="#eee">Perdarahan</td>
               <td valign="top">
-                {$data.perdarahan}
+                {?=isset_or($data.perdarahan)?}
                 {if: $data.perdarahan == 'Ada'}
-                <br>Jumlah: {$data.jumlah_perdarahan}
-                <br>Warna: {$data.warna_perdarahan}
+                <br>Jumlah: {?=isset_or($data.jumlah_perdarahan)?}
+                <br>Warna: {?=isset_or($data.warna_perdarahan)?}
                 {/if}
               </td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Intoksikasi</td>
-              <td valign="top" colspan="3">{$data.intoksikasi}</td>
+              <td valign="top" colspan="3">{?=isset_or($data.intoksikasi)?}</td>
             </tr>
             
             <!-- Eliminasi -->
@@ -1135,15 +1135,15 @@
             <tr>
               <td valign="top" bgcolor="#eee">BAB</td>
               <td valign="top">
-                {if: $data.bab}Frekuensi: {$data.bab}x/{$data.xbab}<br>{/if}
-                {if: $data.kbab}Konsistensi: {$data.kbab}<br>{/if}
-                {if: $data.wbab}Warna: {$data.wbab}{/if}
+                {if: $data.bab}Frekuensi: {?=isset_or($data.bab)?}x/{?=isset_or($data.xbab)?}<br>{/if}
+                {if: $data.kbab}Konsistensi: {?=isset_or($data.kbab)?}<br>{/if}
+                {if: $data.wbab}Warna: {?=isset_or($data.wbab)?}{/if}
               </td>
               <td valign="top" bgcolor="#eee">BAK</td>
               <td valign="top">
-                {if: $data.bak}Frekuensi: {$data.bak}x/{$data.xbak}<br>{/if}
-                {if: $data.wbak}Warna: {$data.wbak}<br>{/if}
-                {if: $data.lbak}Lain-lain: {$data.lbak}{/if}
+                {if: $data.bak}Frekuensi: {?=isset_or($data.bak)?}x/{?=isset_or($data.xbak)?}<br>{/if}
+                {if: $data.wbak}Warna: {?=isset_or($data.wbak)?}<br>{/if}
+                {if: $data.lbak}Lain-lain: {?=isset_or($data.lbak)?}{/if}
               </td>
             </tr>
             
@@ -1153,44 +1153,44 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Kondisi Psikologis</td>
-              <td valign="top">{$data.psikologis}</td>
+              <td valign="top">{?=isset_or($data.psikologis)?}</td>
               <td valign="top" bgcolor="#eee">Gangguan Jiwa</td>
-              <td valign="top">{$data.jiwa}</td>
+              <td valign="top">{?=isset_or($data.jiwa)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Perilaku</td>
               <td valign="top">
-                {$data.perilaku}
+                {?=isset_or($data.perilaku)?}
                 {if: $data.perilaku != '-'}
-                <br>Dilaporkan: {$data.dilaporkan}
-                <br>Sebutkan: {$data.sebutkan}
+                <br>Dilaporkan: {?=isset_or($data.dilaporkan)?}
+                <br>Sebutkan: {?=isset_or($data.sebutkan)?}
                 {/if}
               </td>
               <td valign="top" bgcolor="#eee">Hubungan Keluarga</td>
-              <td valign="top">{$data.hubungan}</td>
+              <td valign="top">{?=isset_or($data.hubungan)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tinggal Dengan</td>
               <td valign="top">
-                {$data.tinggal_dengan}
-                {if: $data.ket_tinggal}<br>Ket: {$data.ket_tinggal}{/if}
+                {?=isset_or($data.tinggal_dengan)?}
+                {if: $data.ket_tinggal}<br>Ket: {?=isset_or($data.ket_tinggal)?}{/if}
               </td>
               <td valign="top" bgcolor="#eee">Budaya</td>
               <td valign="top">
-                {$data.budaya}
-                {if: $data.budaya == 'Ada'}<br>Ket: {$data.ket_budaya}{/if}
+                {?=isset_or($data.budaya)?}
+                {if: $data.budaya == 'Ada'}<br>Ket: {?=isset_or($data.ket_budaya)?}{/if}
               </td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Pendidikan PJ</td>
               <td valign="top">
-                {$data.pendidikan_pj}
-                {if: $data.ket_pendidikan_pj}<br>Ket: {$data.ket_pendidikan_pj}{/if}
+                {?=isset_or($data.pendidikan_pj)?}
+                {if: $data.ket_pendidikan_pj}<br>Ket: {?=isset_or($data.ket_pendidikan_pj)?}{/if}
               </td>
               <td valign="top" bgcolor="#eee">Edukasi</td>
               <td valign="top">
-                {$data.edukasi}
-                {if: $data.ket_edukasi}<br>Ket: {$data.ket_edukasi}{/if}
+                {?=isset_or($data.edukasi)?}
+                {if: $data.ket_edukasi}<br>Ket: {?=isset_or($data.ket_edukasi)?}{/if}
               </td>
             </tr>
             
@@ -1200,21 +1200,21 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Kemampuan</td>
-              <td valign="top">{$data.kemampuan}</td>
+              <td valign="top">{?=isset_or($data.kemampuan)?}</td>
               <td valign="top" bgcolor="#eee">Aktivitas</td>
-              <td valign="top">{$data.aktifitas}</td>
+              <td valign="top">{?=isset_or($data.aktifitas)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Alat Bantu</td>
               <td valign="top">
-                {$data.alat_bantu}
-                {if: $data.alat_bantu == 'Ya'}<br>Ket: {$data.ket_bantu}{/if}
+                {?=isset_or($data.alat_bantu)?}
+                {if: $data.alat_bantu == 'Ya'}<br>Ket: {?=isset_or($data.ket_bantu)?}{/if}
               </td>
               <td valign="top" bgcolor="#eee">Risiko Jatuh</td>
               <td valign="top">
-                A: {$data.berjalan_a} | B: {$data.berjalan_b} | C: {$data.berjalan_c}<br>
-                <strong>{$data.hasil}</strong>
-                {if: $data.lapor == 'Ya'}<br>Dilaporkan: {$data.ket_lapor}{/if}
+                A: {?=isset_or($data.berjalan_a)?} | B: {?=isset_or($data.berjalan_b)?} | C: {?=isset_or($data.berjalan_c)?}<br>
+                <strong>{?=isset_or($data.hasil)?}</strong>
+                {if: $data.lapor == 'Ya'}<br>Dilaporkan: {?=isset_or($data.ket_lapor)?}{/if}
               </td>
             </tr>
             
@@ -1225,16 +1225,16 @@
             <tr>
               <td valign="top" bgcolor="#eee">Status Nyeri</td>
               <td valign="top" colspan="3">
-                <strong>{$data.nyeri}</strong>
+                <strong>{?=isset_or($data.nyeri)?}</strong>
                 {if: $data.nyeri != 'Tidak Ada Nyeri'}
-                <br><strong>Skala:</strong> {$data.skala_nyeri}/10
-                <br><strong>Lokasi:</strong> {$data.lokasi}
-                <br><strong>Durasi:</strong> {$data.durasi}
-                <br><strong>Menyebar:</strong> {$data.menyebar}
-                <br><strong>Provokes:</strong> {$data.provokes} ({$data.ket_provokes})
-                <br><strong>Quality:</strong> {$data.quality} ({$data.ket_quality})
-                <br><strong>Nyeri Hilang:</strong> {$data.nyeri_hilang} ({$data.ket_nyeri})
-                <br><strong>Dilaporkan ke Dokter:</strong> {$data.pada_dokter} ({$data.ket_dokter})
+                <br><strong>Skala:</strong> {?=isset_or($data.skala_nyeri)?}/10
+                <br><strong>Lokasi:</strong> {?=isset_or($data.lokasi)?}
+                <br><strong>Durasi:</strong> {?=isset_or($data.durasi)?}
+                <br><strong>Menyebar:</strong> {?=isset_or($data.menyebar)?}
+                <br><strong>Provokes:</strong> {?=isset_or($data.provokes)?} ({?=isset_or($data.ket_provokes)?})
+                <br><strong>Quality:</strong> {?=isset_or($data.quality)?} ({?=isset_or($data.ket_quality)?})
+                <br><strong>Nyeri Hilang:</strong> {?=isset_or($data.nyeri_hilang)?} ({?=isset_or($data.ket_nyeri)?})
+                <br><strong>Dilaporkan ke Dokter:</strong> {?=isset_or($data.pada_dokter)?} ({?=isset_or($data.ket_dokter)?})
                 {/if}
               </td>
             </tr>
@@ -1245,7 +1245,7 @@
               <td colspan="4" bgcolor="#d9edf7" style="font-weight: bold; text-align: center;">RENCANA KEPERAWATAN</td>
             </tr>
             <tr>
-              <td valign="top" colspan="4">{$data.rencana}</td>
+              <td valign="top" colspan="4">{?=isset_or($data.rencana)?}</td>
             </tr>
             {/if}
           </table>
@@ -1266,15 +1266,15 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="25%">{$data.tanggal}</td>
+              <td valign="top" width="25%">{?=isset_or($data.tanggal)?}</td>
               <td valign="top" width="25%" bgcolor="#eee">Petugas</td>
-              <td valign="top" width="25%">{$data.nama}</td>
+              <td valign="top" width="25%">{?=isset_or($data.nama)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Informasi</td>
-              <td valign="top">{$data.informasi}</td>
+              <td valign="top">{?=isset_or($data.informasi)?}</td>
               <td valign="top" bgcolor="#eee">Keluhan Utama</td>
-              <td valign="top">{$data.keluhan_utama}</td>
+              <td valign="top">{?=isset_or($data.keluhan_utama)?}</td>
             </tr>
             
             <!-- Riwayat Kesehatan -->
@@ -1283,19 +1283,19 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Dahulu</td>
-              <td valign="top" colspan="3">{if: $data.rpd}{$data.rpd}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rpd}{?=isset_or($data.rpd)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Keluarga</td>
-              <td valign="top" colspan="3">{if: $data.rpk}{$data.rpk}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rpk}{?=isset_or($data.rpk)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Operasi</td>
-              <td valign="top" colspan="3">{if: $data.rpo}{$data.rpo}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rpo}{?=isset_or($data.rpo)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Alergi</td>
-              <td valign="top" colspan="3">{if: $data.alergi}{$data.alergi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.alergi}{?=isset_or($data.alergi)?}{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Fisik -->
@@ -1304,33 +1304,33 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">GCS</td>
-              <td valign="top">{if: $data.gcs}{$data.gcs}{else}-{/if}</td>
+              <td valign="top">{if: $data.gcs}{?=isset_or($data.gcs)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">BMI</td>
-              <td valign="top">{if: $data.bmi}{$data.bmi}{else}-{/if}</td>
+              <td valign="top">{if: $data.bmi}{?=isset_or($data.bmi)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tekanan Darah</td>
-              <td valign="top">{if: $data.td}{$data.td} mmHg{else}-{/if}</td>
+              <td valign="top">{if: $data.td}{?=isset_or($data.td)?} mmHg{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Nadi</td>
-              <td valign="top">{if: $data.nadi}{$data.nadi} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.nadi}{?=isset_or($data.nadi)?} x/menit{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Respirasi</td>
-              <td valign="top">{if: $data.rr}{$data.rr} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.rr}{?=isset_or($data.rr)?} x/menit{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Suhu</td>
-              <td valign="top">{if: $data.suhu}{$data.suhu} °C{else}-{/if}</td>
+              <td valign="top">{if: $data.suhu}{?=isset_or($data.suhu)?} °C{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tinggi Badan</td>
-              <td valign="top">{if: $data.tb}{$data.tb} cm{else}-{/if}</td>
+              <td valign="top">{if: $data.tb}{?=isset_or($data.tb)?} cm{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Berat Badan</td>
-              <td valign="top">{if: $data.bb}{$data.bb} kg{else}-{/if}</td>
+              <td valign="top">{if: $data.bb}{?=isset_or($data.bb)?} kg{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Status Psikologis</td>
-              <td valign="top">{if: $data.status_psiko}{$data.status_psiko}{else}-{/if}</td>
+              <td valign="top">{if: $data.status_psiko}{?=isset_or($data.status_psiko)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Keterangan</td>
-              <td valign="top">{if: $data.ket_psiko}{$data.ket_psiko}{else}-{/if}</td>
+              <td valign="top">{if: $data.ket_psiko}{?=isset_or($data.ket_psiko)?}{else}-{/if}</td>
             </tr>
             
             <!-- Penilaian Nyeri -->
@@ -1339,15 +1339,15 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Status Nyeri</td>
-              <td valign="top">{if: $data.nyeri}{$data.nyeri}{else}-{/if}</td>
+              <td valign="top">{if: $data.nyeri}{?=isset_or($data.nyeri)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Skala Nyeri</td>
-              <td valign="top">{if: $data.skala_nyeri}{$data.skala_nyeri}/10{else}-{/if}</td>
+              <td valign="top">{if: $data.skala_nyeri}{?=isset_or($data.skala_nyeri)?}/10{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Lokasi</td>
-              <td valign="top">{if: $data.lokasi}{$data.lokasi}{else}-{/if}</td>
+              <td valign="top">{if: $data.lokasi}{?=isset_or($data.lokasi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Durasi</td>
-              <td valign="top">{if: $data.durasi}{$data.durasi}{else}-{/if}</td>
+              <td valign="top">{if: $data.durasi}{?=isset_or($data.durasi)?}{else}-{/if}</td>
             </tr>
             
             <!-- Rencana Keperawatan -->
@@ -1356,7 +1356,7 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Rencana Keperawatan</td>
-              <td valign="top" colspan="3">{if: $data.rencana}{$data.rencana}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rencana}{?=isset_or($data.rencana)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -1376,15 +1376,15 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="25%">{$data.tanggal}</td>
+              <td valign="top" width="25%">{?=isset_or($data.tanggal)?}</td>
               <td valign="top" width="25%" bgcolor="#eee">Petugas</td>
-              <td valign="top" width="25%">{$data.nama}</td>
+              <td valign="top" width="25%">{?=isset_or($data.nama)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Informasi</td>
-              <td valign="top">{if: $data.informasi}{$data.informasi}{else}-{/if}</td>
+              <td valign="top">{if: $data.informasi}{?=isset_or($data.informasi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Cara Masuk</td>
-              <td valign="top">{if: $data.cara_masuk}{$data.cara_masuk}{else}-{/if}</td>
+              <td valign="top">{if: $data.cara_masuk}{?=isset_or($data.cara_masuk)?}{else}-{/if}</td>
             </tr>
             
             <!-- Riwayat Kesehatan -->
@@ -1393,19 +1393,19 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Sekarang</td>
-              <td valign="top" colspan="3">{if: $data.rps}{$data.rps}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rps}{?=isset_or($data.rps)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Dahulu</td>
-              <td valign="top" colspan="3">{if: $data.rpd}{$data.rpd}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rpd}{?=isset_or($data.rpd)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Penyakit Keluarga</td>
-              <td valign="top" colspan="3">{if: $data.rpk}{$data.rpk}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rpk}{?=isset_or($data.rpk)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Riwayat Alergi</td>
-              <td valign="top" colspan="3">{if: $data.riwayat_alergi}{$data.riwayat_alergi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.riwayat_alergi}{?=isset_or($data.riwayat_alergi)?}{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Fisik -->
@@ -1414,33 +1414,33 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keadaan Umum</td>
-              <td valign="top">{if: $data.pemeriksaan_keadaan_umum}{$data.pemeriksaan_keadaan_umum}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_keadaan_umum}{?=isset_or($data.pemeriksaan_keadaan_umum)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">GCS</td>
-              <td valign="top">{if: $data.pemeriksaan_gcs}{$data.pemeriksaan_gcs}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_gcs}{?=isset_or($data.pemeriksaan_gcs)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tekanan Darah</td>
-              <td valign="top">{if: $data.pemeriksaan_td}{$data.pemeriksaan_td} mmHg{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_td}{?=isset_or($data.pemeriksaan_td)?} mmHg{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Nadi</td>
-              <td valign="top">{if: $data.pemeriksaan_nadi}{$data.pemeriksaan_nadi} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_nadi}{?=isset_or($data.pemeriksaan_nadi)?} x/menit{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Respirasi</td>
-              <td valign="top">{if: $data.pemeriksaan_rr}{$data.pemeriksaan_rr} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_rr}{?=isset_or($data.pemeriksaan_rr)?} x/menit{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Suhu</td>
-              <td valign="top">{if: $data.pemeriksaan_suhu}{$data.pemeriksaan_suhu} °C{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_suhu}{?=isset_or($data.pemeriksaan_suhu)?} °C{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">SpO2</td>
-              <td valign="top">{if: $data.pemeriksaan_spo2}{$data.pemeriksaan_spo2}%{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_spo2}{?=isset_or($data.pemeriksaan_spo2)?}%{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Berat Badan</td>
-              <td valign="top">{if: $data.pemeriksaan_bb}{$data.pemeriksaan_bb} kg{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_bb}{?=isset_or($data.pemeriksaan_bb)?} kg{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tinggi Badan</td>
-              <td valign="top">{if: $data.pemeriksaan_tb}{$data.pemeriksaan_tb} cm{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_tb}{?=isset_or($data.pemeriksaan_tb)?} cm{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Mental</td>
-              <td valign="top">{if: $data.pemeriksaan_mental}{$data.pemeriksaan_mental}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_mental}{?=isset_or($data.pemeriksaan_mental)?}{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Sistem -->
@@ -1449,21 +1449,21 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Susunan Kepala</td>
-              <td valign="top">{if: $data.pemeriksaan_susunan_kepala}{$data.pemeriksaan_susunan_kepala}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_susunan_kepala}{?=isset_or($data.pemeriksaan_susunan_kepala)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Susunan Wajah</td>
-              <td valign="top">{if: $data.pemeriksaan_susunan_wajah}{$data.pemeriksaan_susunan_wajah}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_susunan_wajah}{?=isset_or($data.pemeriksaan_susunan_wajah)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Kardiovaskular - Denyut Nadi</td>
-              <td valign="top">{if: $data.pemeriksaan_kardiovaskuler_denyut_nadi}{$data.pemeriksaan_kardiovaskuler_denyut_nadi}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_kardiovaskuler_denyut_nadi}{?=isset_or($data.pemeriksaan_kardiovaskuler_denyut_nadi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kardiovaskular - Sirkulasi</td>
-              <td valign="top">{if: $data.pemeriksaan_kardiovaskuler_sirkulasi}{$data.pemeriksaan_kardiovaskuler_sirkulasi}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_kardiovaskuler_sirkulasi}{?=isset_or($data.pemeriksaan_kardiovaskuler_sirkulasi)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Respirasi - Pola Nafas</td>
-              <td valign="top">{if: $data.pemeriksaan_respirasi_pola_nafas}{$data.pemeriksaan_respirasi_pola_nafas}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_respirasi_pola_nafas}{?=isset_or($data.pemeriksaan_respirasi_pola_nafas)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Respirasi - Suara Nafas</td>
-              <td valign="top">{if: $data.pemeriksaan_respirasi_suara_nafas}{$data.pemeriksaan_respirasi_suara_nafas}{else}-{/if}</td>
+              <td valign="top">{if: $data.pemeriksaan_respirasi_suara_nafas}{?=isset_or($data.pemeriksaan_respirasi_suara_nafas)?}{else}-{/if}</td>
             </tr>
             
             <!-- Penilaian Nyeri -->
@@ -1472,15 +1472,15 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Status Nyeri</td>
-              <td valign="top">{if: $data.penilaian_nyeri}{$data.penilaian_nyeri}{else}-{/if}</td>
+              <td valign="top">{if: $data.penilaian_nyeri}{?=isset_or($data.penilaian_nyeri)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Skala Nyeri</td>
-              <td valign="top">{if: $data.penilaian_nyeri_skala}{$data.penilaian_nyeri_skala}/10{else}-{/if}</td>
+              <td valign="top">{if: $data.penilaian_nyeri_skala}{?=isset_or($data.penilaian_nyeri_skala)?}/10{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Lokasi Nyeri</td>
-              <td valign="top">{if: $data.penilaian_nyeri_lokasi}{$data.penilaian_nyeri_lokasi}{else}-{/if}</td>
+              <td valign="top">{if: $data.penilaian_nyeri_lokasi}{?=isset_or($data.penilaian_nyeri_lokasi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Waktu Nyeri</td>
-              <td valign="top">{if: $data.penilaian_nyeri_waktu}{$data.penilaian_nyeri_waktu}{else}-{/if}</td>
+              <td valign="top">{if: $data.penilaian_nyeri_waktu}{?=isset_or($data.penilaian_nyeri_waktu)?}{else}-{/if}</td>
             </tr>
             
             <!-- Skrining Gizi -->
@@ -1489,15 +1489,15 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Penurunan BB</td>
-              <td valign="top">{if: $data.skrining_gizi1}{$data.skrining_gizi1}{else}-{/if}</td>
+              <td valign="top">{if: $data.skrining_gizi1}{?=isset_or($data.skrining_gizi1)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Asupan Makan</td>
-              <td valign="top">{if: $data.skrining_gizi2}{$data.skrining_gizi2}{else}-{/if}</td>
+              <td valign="top">{if: $data.skrining_gizi2}{?=isset_or($data.skrining_gizi2)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Total Skor</td>
-              <td valign="top">{if: $data.nilai_total_gizi}{$data.nilai_total_gizi}{else}-{/if}</td>
+              <td valign="top">{if: $data.nilai_total_gizi}{?=isset_or($data.nilai_total_gizi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Diagnosa Khusus</td>
-              <td valign="top">{if: $data.skrining_gizi_diagnosa_khusus}{$data.skrining_gizi_diagnosa_khusus}{else}-{/if}</td>
+              <td valign="top">{if: $data.skrining_gizi_diagnosa_khusus}{?=isset_or($data.skrining_gizi_diagnosa_khusus)?}{else}-{/if}</td>
             </tr>
             
             <!-- Rencana Keperawatan -->
@@ -1506,7 +1506,7 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Rencana Keperawatan</td>
-              <td valign="top" colspan="3">{if: $data.rencana}{$data.rencana}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rencana}{?=isset_or($data.rencana)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -1526,33 +1526,33 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal Catatan</td>
-              <td valign="top" width="25%">{$data.tanggal}</td>
+              <td valign="top" width="25%">{?=isset_or($data.tanggal)?}</td>
               <td valign="top" width="25%" bgcolor="#eee">Petugas</td>
-              <td valign="top" width="25%">{$data.nama}</td>
+              <td valign="top" width="25%">{?=isset_or($data.nama)?}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Asesmen</td>
-              <td valign="top" colspan="3">{if: $data.asesmen}{$data.asesmen}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.asesmen}{?=isset_or($data.asesmen)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosis</td>
-              <td valign="top" colspan="3">{if: $data.diagnosis}{$data.diagnosis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.diagnosis}{?=isset_or($data.diagnosis)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Intervensi</td>
-              <td valign="top" colspan="3">{if: $data.intervensi}{$data.intervensi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.intervensi}{?=isset_or($data.intervensi)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Monitoring</td>
-              <td valign="top" colspan="3">{if: $data.monitoring}{$data.monitoring}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.monitoring}{?=isset_or($data.monitoring)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Evaluasi</td>
-              <td valign="top" colspan="3">{if: $data.evaluasi}{$data.evaluasi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.evaluasi}{?=isset_or($data.evaluasi)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Instruksi</td>
-              <td valign="top" colspan="3">{if: $data.instruksi}{$data.instruksi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.instruksi}{?=isset_or($data.instruksi)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -1572,9 +1572,9 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal Penilaian</td>
-              <td valign="top" width="25%">{$data.tanggal}</td>
+              <td valign="top" width="25%">{?=isset_or($data.tanggal)?}</td>
               <td valign="top" width="25%" bgcolor="#eee">Petugas</td>
-              <td valign="top" width="25%">{$data.nama}</td>
+              <td valign="top" width="25%">{?=isset_or($data.nama)?}</td>
             </tr>
             
             <!-- Penilaian PQRST -->
@@ -1583,37 +1583,37 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Status Nyeri</td>
-              <td valign="top">{if: $data.nyeri}{$data.nyeri}{else}-{/if}</td>
+              <td valign="top">{if: $data.nyeri}{?=isset_or($data.nyeri)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Skala Nyeri</td>
-              <td valign="top">{if: $data.skala_nyeri}{$data.skala_nyeri}/10{else}-{/if}</td>
+              <td valign="top">{if: $data.skala_nyeri}{?=isset_or($data.skala_nyeri)?}/10{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Provokes (P) - Pencetus</td>
-              <td valign="top">{if: $data.provokes}{$data.provokes}{else}-{/if}</td>
+              <td valign="top">{if: $data.provokes}{?=isset_or($data.provokes)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Keterangan Provokes</td>
-              <td valign="top">{if: $data.ket_provokes}{$data.ket_provokes}{else}-{/if}</td>
+              <td valign="top">{if: $data.ket_provokes}{?=isset_or($data.ket_provokes)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Quality (Q) - Kualitas</td>
-              <td valign="top">{if: $data.quality}{$data.quality}{else}-{/if}</td>
+              <td valign="top">{if: $data.quality}{?=isset_or($data.quality)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Keterangan Quality</td>
-              <td valign="top">{if: $data.ket_quality}{$data.ket_quality}{else}-{/if}</td>
+              <td valign="top">{if: $data.ket_quality}{?=isset_or($data.ket_quality)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Region (R) - Lokasi</td>
-              <td valign="top">{if: $data.lokasi}{$data.lokasi}{else}-{/if}</td>
+              <td valign="top">{if: $data.lokasi}{?=isset_or($data.lokasi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Menyebar</td>
-              <td valign="top">{if: $data.menyebar}{$data.menyebar}{else}-{/if}</td>
+              <td valign="top">{if: $data.menyebar}{?=isset_or($data.menyebar)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Timing (T) - Durasi</td>
-              <td valign="top">{if: $data.durasi}{$data.durasi}{else}-{/if}</td>
+              <td valign="top">{if: $data.durasi}{?=isset_or($data.durasi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Nyeri Hilang Dengan</td>
-              <td valign="top">{if: $data.nyeri_hilang}{$data.nyeri_hilang}{else}-{/if}</td>
+              <td valign="top">{if: $data.nyeri_hilang}{?=isset_or($data.nyeri_hilang)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keterangan Tambahan</td>
-              <td valign="top" colspan="3">{if: $data.ket_nyeri}{$data.ket_nyeri}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.ket_nyeri}{?=isset_or($data.ket_nyeri)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -1633,9 +1633,9 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Dokter</td>
-              <td valign="top" width="25%">{if: $data.nm_dokter}{$data.nm_dokter}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.nm_dokter}{?=isset_or($data.nm_dokter)?}{else}-{/if}</td>
               <td valign="top" width="25%" bgcolor="#eee">Kondisi Pulang</td>
-              <td valign="top" width="25%">{if: $data.kondisi_pulang}{$data.kondisi_pulang}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.kondisi_pulang}{?=isset_or($data.kondisi_pulang)?}{else}-{/if}</td>
             </tr>
             
             <!-- Keluhan dan Riwayat -->
@@ -1644,11 +1644,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keluhan Utama</td>
-              <td valign="top" colspan="3">{if: $data.keluhan_utama}{$data.keluhan_utama}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.keluhan_utama}{?=isset_or($data.keluhan_utama)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Jalannya Penyakit</td>
-              <td valign="top" colspan="3">{if: $data.jalannya_penyakit}{$data.jalannya_penyakit}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.jalannya_penyakit}{?=isset_or($data.jalannya_penyakit)?}{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan -->
@@ -1657,11 +1657,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Pemeriksaan Penunjang</td>
-              <td valign="top" colspan="3">{if: $data.pemeriksaan_penunjang}{$data.pemeriksaan_penunjang}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.pemeriksaan_penunjang}{?=isset_or($data.pemeriksaan_penunjang)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Hasil Laboratorium</td>
-              <td valign="top" colspan="3">{if: $data.hasil_laborat}{$data.hasil_laborat}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.hasil_laborat}{?=isset_or($data.hasil_laborat)?}{else}-{/if}</td>
             </tr>
             
             <!-- Diagnosa -->
@@ -1670,38 +1670,38 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Utama</td>
-              <td valign="top">{if: $data.diagnosa_utama}{$data.diagnosa_utama}{else}-{/if}</td>
+              <td valign="top">{if: $data.diagnosa_utama}{?=isset_or($data.diagnosa_utama)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-10</td>
-              <td valign="top">{if: $data.kd_diagnosa_utama}{$data.kd_diagnosa_utama}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_diagnosa_utama}{?=isset_or($data.kd_diagnosa_utama)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Sekunder</td>
-              <td valign="top">{if: $data.diagnosa_sekunder}{$data.diagnosa_sekunder}{else}-{/if}</td>
+              <td valign="top">{if: $data.diagnosa_sekunder}{?=isset_or($data.diagnosa_sekunder)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-10</td>
-              <td valign="top">{if: $data.kd_diagnosa_sekunder}{$data.kd_diagnosa_sekunder}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_diagnosa_sekunder}{?=isset_or($data.kd_diagnosa_sekunder)?}{else}-{/if}</td>
             </tr>
             {if: $data.diagnosa_sekunder2}
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Sekunder 2</td>
-              <td valign="top">{$data.diagnosa_sekunder2}</td>
+              <td valign="top">{?=isset_or($data.diagnosa_sekunder2)?}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-10</td>
-              <td valign="top">{if: $data.kd_diagnosa_sekunder2}{$data.kd_diagnosa_sekunder2}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_diagnosa_sekunder2}{?=isset_or($data.kd_diagnosa_sekunder2)?}{else}-{/if}</td>
             </tr>
             {/if}
             {if: $data.diagnosa_sekunder3}
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Sekunder 3</td>
-              <td valign="top">{$data.diagnosa_sekunder3}</td>
+              <td valign="top">{?=isset_or($data.diagnosa_sekunder3)?}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-10</td>
-              <td valign="top">{if: $data.kd_diagnosa_sekunder3}{$data.kd_diagnosa_sekunder3}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_diagnosa_sekunder3}{?=isset_or($data.kd_diagnosa_sekunder3)?}{else}-{/if}</td>
             </tr>
             {/if}
             {if: $data.diagnosa_sekunder4}
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Sekunder 4</td>
-              <td valign="top">{$data.diagnosa_sekunder4}</td>
+              <td valign="top">{?=isset_or($data.diagnosa_sekunder4)?}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-10</td>
-              <td valign="top">{if: $data.kd_diagnosa_sekunder4}{$data.kd_diagnosa_sekunder4}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_diagnosa_sekunder4}{?=isset_or($data.kd_diagnosa_sekunder4)?}{else}-{/if}</td>
             </tr>
             {/if}
             
@@ -1711,30 +1711,30 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Prosedur Utama</td>
-              <td valign="top">{if: $data.prosedur_utama}{$data.prosedur_utama}{else}-{/if}</td>
+              <td valign="top">{if: $data.prosedur_utama}{?=isset_or($data.prosedur_utama)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-9</td>
-              <td valign="top">{if: $data.kd_prosedur_utama}{$data.kd_prosedur_utama}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_prosedur_utama}{?=isset_or($data.kd_prosedur_utama)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Prosedur Sekunder</td>
-              <td valign="top">{if: $data.prosedur_sekunder}{$data.prosedur_sekunder}{else}-{/if}</td>
+              <td valign="top">{if: $data.prosedur_sekunder}{?=isset_or($data.prosedur_sekunder)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-9</td>
-              <td valign="top">{if: $data.kd_prosedur_sekunder}{$data.kd_prosedur_sekunder}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_prosedur_sekunder}{?=isset_or($data.kd_prosedur_sekunder)?}{else}-{/if}</td>
             </tr>
             {if: $data.prosedur_sekunder2}
             <tr>
               <td valign="top" bgcolor="#eee">Prosedur Sekunder 2</td>
-              <td valign="top">{$data.prosedur_sekunder2}</td>
+              <td valign="top">{?=isset_or($data.prosedur_sekunder2)?}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-9</td>
-              <td valign="top">{if: $data.kd_prosedur_sekunder2}{$data.kd_prosedur_sekunder2}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_prosedur_sekunder2}{?=isset_or($data.kd_prosedur_sekunder2)?}{else}-{/if}</td>
             </tr>
             {/if}
             {if: $data.prosedur_sekunder3}
             <tr>
               <td valign="top" bgcolor="#eee">Prosedur Sekunder 3</td>
-              <td valign="top">{$data.prosedur_sekunder3}</td>
+              <td valign="top">{?=isset_or($data.prosedur_sekunder3)?}</td>
               <td valign="top" bgcolor="#eee">Kode ICD-9</td>
-              <td valign="top">{if: $data.kd_prosedur_sekunder3}{$data.kd_prosedur_sekunder3}{else}-{/if}</td>
+              <td valign="top">{if: $data.kd_prosedur_sekunder3}{?=isset_or($data.kd_prosedur_sekunder3)?}{else}-{/if}</td>
             </tr>
             {/if}
             
@@ -1744,7 +1744,7 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Obat Pulang</td>
-              <td valign="top" colspan="3">{if: $data.obat_pulang}{$data.obat_pulang}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.obat_pulang}{?=isset_or($data.obat_pulang)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -1764,15 +1764,15 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="25%">{if: $data.tanggal}{$data.tanggal}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.tanggal}{?=isset_or($data.tanggal)?}{else}-{/if}</td>
               <td valign="top" width="25%" bgcolor="#eee">Dokter</td>
-              <td valign="top" width="25%">{if: $data.nm_dokter}{$data.nm_dokter}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.nm_dokter}{?=isset_or($data.nm_dokter)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Anamnesis</td>
-              <td valign="top">{if: $data.anamnesis}{$data.anamnesis}{else}-{/if}</td>
+              <td valign="top">{if: $data.anamnesis}{?=isset_or($data.anamnesis)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Hubungan</td>
-              <td valign="top">{if: $data.hubungan}{$data.hubungan}{else}-{/if}</td>
+              <td valign="top">{if: $data.hubungan}{?=isset_or($data.hubungan)?}{else}-{/if}</td>
             </tr>
             
             <!-- Keluhan dan Riwayat -->
@@ -1781,23 +1781,23 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keluhan Utama</td>
-              <td valign="top" colspan="3">{if: $data.keluhan_utama}{$data.keluhan_utama}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.keluhan_utama}{?=isset_or($data.keluhan_utama)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPS (Riwayat Penyakit Sekarang)</td>
-              <td valign="top" colspan="3">{if: $data.rps}{$data.rps}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rps}{?=isset_or($data.rps)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPD (Riwayat Penyakit Dahulu)</td>
-              <td valign="top">{if: $data.rpd}{$data.rpd}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpd}{?=isset_or($data.rpd)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">RPK (Riwayat Penyakit Keluarga)</td>
-              <td valign="top">{if: $data.rpk}{$data.rpk}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpk}{?=isset_or($data.rpk)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPO (Riwayat Pengobatan)</td>
-              <td valign="top">{if: $data.rpo}{$data.rpo}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpo}{?=isset_or($data.rpo)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Alergi</td>
-              <td valign="top">{if: $data.alergi}{$data.alergi}{else}-{/if}</td>
+              <td valign="top">{if: $data.alergi}{?=isset_or($data.alergi)?}{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Fisik -->
@@ -1806,33 +1806,33 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keadaan Umum</td>
-              <td valign="top">{if: $data.keadaan}{$data.keadaan}{else}-{/if}</td>
+              <td valign="top">{if: $data.keadaan}{?=isset_or($data.keadaan)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kesadaran</td>
-              <td valign="top">{if: $data.kesadaran}{$data.kesadaran}{else}-{/if}</td>
+              <td valign="top">{if: $data.kesadaran}{?=isset_or($data.kesadaran)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">GCS</td>
-              <td valign="top">{if: $data.gcs}{$data.gcs}{else}-{/if}</td>
+              <td valign="top">{if: $data.gcs}{?=isset_or($data.gcs)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">TD</td>
-              <td valign="top">{if: $data.td}{$data.td} mmHg{else}-{/if}</td>
+              <td valign="top">{if: $data.td}{?=isset_or($data.td)?} mmHg{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Nadi</td>
-              <td valign="top">{if: $data.nadi}{$data.nadi} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.nadi}{?=isset_or($data.nadi)?} x/menit{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">RR</td>
-              <td valign="top">{if: $data.rr}{$data.rr} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.rr}{?=isset_or($data.rr)?} x/menit{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Suhu</td>
-              <td valign="top">{if: $data.suhu}{$data.suhu} °C{else}-{/if}</td>
+              <td valign="top">{if: $data.suhu}{?=isset_or($data.suhu)?} °C{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">SpO2</td>
-              <td valign="top">{if: $data.spo}{$data.spo}%{else}-{/if}</td>
+              <td valign="top">{if: $data.spo}{?=isset_or($data.spo)?}%{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">BB</td>
-              <td valign="top">{if: $data.bb}{$data.bb} kg{else}-{/if}</td>
+              <td valign="top">{if: $data.bb}{?=isset_or($data.bb)?} kg{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">TB</td>
-              <td valign="top">{if: $data.tb}{$data.tb} cm{else}-{/if}</td>
+              <td valign="top">{if: $data.tb}{?=isset_or($data.tb)?} cm{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Sistem -->
@@ -1841,27 +1841,27 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Kepala</td>
-              <td valign="top">{if: $data.kepala}{$data.kepala}{else}-{/if}</td>
+              <td valign="top">{if: $data.kepala}{?=isset_or($data.kepala)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Gigi</td>
-              <td valign="top">{if: $data.gigi}{$data.gigi}{else}-{/if}</td>
+              <td valign="top">{if: $data.gigi}{?=isset_or($data.gigi)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">THT</td>
-              <td valign="top">{if: $data.tht}{$data.tht}{else}-{/if}</td>
+              <td valign="top">{if: $data.tht}{?=isset_or($data.tht)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Thoraks</td>
-              <td valign="top">{if: $data.thoraks}{$data.thoraks}{else}-{/if}</td>
+              <td valign="top">{if: $data.thoraks}{?=isset_or($data.thoraks)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Abdomen</td>
-              <td valign="top">{if: $data.abdomen}{$data.abdomen}{else}-{/if}</td>
+              <td valign="top">{if: $data.abdomen}{?=isset_or($data.abdomen)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Genital</td>
-              <td valign="top">{if: $data.genital}{$data.genital}{else}-{/if}</td>
+              <td valign="top">{if: $data.genital}{?=isset_or($data.genital)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Ekstremitas</td>
-              <td valign="top">{if: $data.ekstremitas}{$data.ekstremitas}{else}-{/if}</td>
+              <td valign="top">{if: $data.ekstremitas}{?=isset_or($data.ekstremitas)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kulit</td>
-              <td valign="top">{if: $data.kulit}{$data.kulit}{else}-{/if}</td>
+              <td valign="top">{if: $data.kulit}{?=isset_or($data.kulit)?}{else}-{/if}</td>
             </tr>
             
             <!-- Keterangan dan Diagnosis -->
@@ -1870,19 +1870,19 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keterangan Fisik</td>
-              <td valign="top" colspan="3">{if: $data.ket_fisik}{$data.ket_fisik}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.ket_fisik}{?=isset_or($data.ket_fisik)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keterangan Lokalis</td>
-              <td valign="top" colspan="3">{if: $data.ket_lokalis}{$data.ket_lokalis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.ket_lokalis}{?=isset_or($data.ket_lokalis)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Pemeriksaan Penunjang</td>
-              <td valign="top" colspan="3">{if: $data.penunjang}{$data.penunjang}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.penunjang}{?=isset_or($data.penunjang)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosis</td>
-              <td valign="top" colspan="3">{if: $data.diagnosis}{$data.diagnosis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.diagnosis}{?=isset_or($data.diagnosis)?}{else}-{/if}</td>
             </tr>
             
             <!-- Rencana Tindak Lanjut -->
@@ -1891,11 +1891,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tatalaksana</td>
-              <td valign="top" colspan="3">{if: $data.tata}{$data.tata}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.tata}{?=isset_or($data.tata)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Konsul/Rujuk</td>
-              <td valign="top" colspan="3">{if: $data.konsulrujuk}{$data.konsulrujuk}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.konsulrujuk}{?=isset_or($data.konsulrujuk)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -1915,15 +1915,15 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="25%">{if: $data.tanggal}{$data.tanggal}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.tanggal}{?=isset_or($data.tanggal)?}{else}-{/if}</td>
               <td valign="top" width="25%" bgcolor="#eee">Dokter</td>
-              <td valign="top" width="25%">{if: $data.nm_dokter}{$data.nm_dokter}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.nm_dokter}{?=isset_or($data.nm_dokter)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Anamnesis</td>
-              <td valign="top">{if: $data.anamnesis}{$data.anamnesis}{else}-{/if}</td>
+              <td valign="top">{if: $data.anamnesis}{?=isset_or($data.anamnesis)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Hubungan</td>
-              <td valign="top">{if: $data.hubungan}{$data.hubungan}{else}-{/if}</td>
+              <td valign="top">{if: $data.hubungan}{?=isset_or($data.hubungan)?}{else}-{/if}</td>
             </tr>
             
             <!-- Keluhan dan Riwayat -->
@@ -1932,23 +1932,23 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keluhan Utama</td>
-              <td valign="top" colspan="3">{if: $data.keluhan_utama}{$data.keluhan_utama}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.keluhan_utama}{?=isset_or($data.keluhan_utama)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPS (Riwayat Penyakit Sekarang)</td>
-              <td valign="top" colspan="3">{if: $data.rps}{$data.rps}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rps}{?=isset_or($data.rps)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPD (Riwayat Penyakit Dahulu)</td>
-              <td valign="top">{if: $data.rpd}{$data.rpd}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpd}{?=isset_or($data.rpd)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">RPK (Riwayat Penyakit Keluarga)</td>
-              <td valign="top">{if: $data.rpk}{$data.rpk}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpk}{?=isset_or($data.rpk)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPO (Riwayat Pengobatan)</td>
-              <td valign="top">{if: $data.rpo}{$data.rpo}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpo}{?=isset_or($data.rpo)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Alergi</td>
-              <td valign="top">{if: $data.alergi}{$data.alergi}{else}-{/if}</td>
+              <td valign="top">{if: $data.alergi}{?=isset_or($data.alergi)?}{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Fisik -->
@@ -1957,33 +1957,33 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keadaan Umum</td>
-              <td valign="top">{if: $data.keadaan}{$data.keadaan}{else}-{/if}</td>
+              <td valign="top">{if: $data.keadaan}{?=isset_or($data.keadaan)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kesadaran</td>
-              <td valign="top">{if: $data.kesadaran}{$data.kesadaran}{else}-{/if}</td>
+              <td valign="top">{if: $data.kesadaran}{?=isset_or($data.kesadaran)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">GCS</td>
-              <td valign="top">{if: $data.gcs}{$data.gcs}{else}-{/if}</td>
+              <td valign="top">{if: $data.gcs}{?=isset_or($data.gcs)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">TD</td>
-              <td valign="top">{if: $data.td}{$data.td} mmHg{else}-{/if}</td>
+              <td valign="top">{if: $data.td}{?=isset_or($data.td)?} mmHg{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Nadi</td>
-              <td valign="top">{if: $data.nadi}{$data.nadi} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.nadi}{?=isset_or($data.nadi)?} x/menit{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">RR</td>
-              <td valign="top">{if: $data.rr}{$data.rr} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.rr}{?=isset_or($data.rr)?} x/menit{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Suhu</td>
-              <td valign="top">{if: $data.suhu}{$data.suhu} °C{else}-{/if}</td>
+              <td valign="top">{if: $data.suhu}{?=isset_or($data.suhu)?} °C{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">SpO2</td>
-              <td valign="top">{if: $data.spo}{$data.spo}%{else}-{/if}</td>
+              <td valign="top">{if: $data.spo}{?=isset_or($data.spo)?}%{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">BB</td>
-              <td valign="top">{if: $data.bb}{$data.bb} kg{else}-{/if}</td>
+              <td valign="top">{if: $data.bb}{?=isset_or($data.bb)?} kg{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">TB</td>
-              <td valign="top">{if: $data.tb}{$data.tb} cm{else}-{/if}</td>
+              <td valign="top">{if: $data.tb}{?=isset_or($data.tb)?} cm{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Sistem -->
@@ -1992,27 +1992,27 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Kepala</td>
-              <td valign="top">{if: $data.kepala}{$data.kepala}{else}-{/if}</td>
+              <td valign="top">{if: $data.kepala}{?=isset_or($data.kepala)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Mata</td>
-              <td valign="top">{if: $data.mata}{$data.mata}{else}-{/if}</td>
+              <td valign="top">{if: $data.mata}{?=isset_or($data.mata)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Gigi</td>
-              <td valign="top">{if: $data.gigi}{$data.gigi}{else}-{/if}</td>
+              <td valign="top">{if: $data.gigi}{?=isset_or($data.gigi)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Leher</td>
-              <td valign="top">{if: $data.leher}{$data.leher}{else}-{/if}</td>
+              <td valign="top">{if: $data.leher}{?=isset_or($data.leher)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Thoraks</td>
-              <td valign="top">{if: $data.thoraks}{$data.thoraks}{else}-{/if}</td>
+              <td valign="top">{if: $data.thoraks}{?=isset_or($data.thoraks)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Abdomen</td>
-              <td valign="top">{if: $data.abdomen}{$data.abdomen}{else}-{/if}</td>
+              <td valign="top">{if: $data.abdomen}{?=isset_or($data.abdomen)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Genital</td>
-              <td valign="top">{if: $data.genital}{$data.genital}{else}-{/if}</td>
+              <td valign="top">{if: $data.genital}{?=isset_or($data.genital)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Ekstremitas</td>
-              <td valign="top">{if: $data.ekstremitas}{$data.ekstremitas}{else}-{/if}</td>
+              <td valign="top">{if: $data.ekstremitas}{?=isset_or($data.ekstremitas)?}{else}-{/if}</td>
             </tr>
             
             <!-- Keterangan dan Diagnosis -->
@@ -2021,25 +2021,25 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keterangan Fisik</td>
-              <td valign="top" colspan="3">{if: $data.ket_fisik}{$data.ket_fisik}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.ket_fisik}{?=isset_or($data.ket_fisik)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keterangan Lokalis</td>
-              <td valign="top" colspan="3">{if: $data.ket_lokalis}{$data.ket_lokalis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.ket_lokalis}{?=isset_or($data.ket_lokalis)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">EKG</td>
-              <td valign="top">{if: $data.ekg}{$data.ekg}{else}-{/if}</td>
+              <td valign="top">{if: $data.ekg}{?=isset_or($data.ekg)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Radiologi</td>
-              <td valign="top">{if: $data.rad}{$data.rad}{else}-{/if}</td>
+              <td valign="top">{if: $data.rad}{?=isset_or($data.rad)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Laboratorium</td>
-              <td valign="top" colspan="3">{if: $data.lab}{$data.lab}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.lab}{?=isset_or($data.lab)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosis</td>
-              <td valign="top" colspan="3">{if: $data.diagnosis}{$data.diagnosis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.diagnosis}{?=isset_or($data.diagnosis)?}{else}-{/if}</td>
             </tr>
             
             <!-- Rencana Tindak Lanjut -->
@@ -2048,7 +2048,7 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tatalaksana</td>
-              <td valign="top" colspan="3">{if: $data.tata}{$data.tata}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.tata}{?=isset_or($data.tata)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -2068,13 +2068,13 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal</td>
-              <td valign="top" width="25%">{if: $data.tanggal}{$data.tanggal}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.tanggal}{?=isset_or($data.tanggal)?}{else}-{/if}</td>
               <td valign="top" width="25%" bgcolor="#eee">Dokter</td>
-              <td valign="top" width="25%">{if: $data.nm_dokter}{$data.nm_dokter}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.nm_dokter}{?=isset_or($data.nm_dokter)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Anamnesis</td>
-              <td valign="top" colspan="3">{if: $data.anamnesis}{$data.anamnesis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.anamnesis}{?=isset_or($data.anamnesis)?}{else}-{/if}</td>
             </tr>
             
             <!-- Keluhan dan Riwayat -->
@@ -2083,23 +2083,23 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keluhan Utama</td>
-              <td valign="top" colspan="3">{if: $data.keluhan_utama}{$data.keluhan_utama}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.keluhan_utama}{?=isset_or($data.keluhan_utama)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPS (Riwayat Penyakit Sekarang)</td>
-              <td valign="top" colspan="3">{if: $data.rps}{$data.rps}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.rps}{?=isset_or($data.rps)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPD (Riwayat Penyakit Dahulu)</td>
-              <td valign="top">{if: $data.rpd}{$data.rpd}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpd}{?=isset_or($data.rpd)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">RPK (Riwayat Penyakit Keluarga)</td>
-              <td valign="top">{if: $data.rpk}{$data.rpk}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpk}{?=isset_or($data.rpk)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">RPO (Riwayat Pengobatan)</td>
-              <td valign="top">{if: $data.rpo}{$data.rpo}{else}-{/if}</td>
+              <td valign="top">{if: $data.rpo}{?=isset_or($data.rpo)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Alergi</td>
-              <td valign="top">{if: $data.alergi}{$data.alergi}{else}-{/if}</td>
+              <td valign="top">{if: $data.alergi}{?=isset_or($data.alergi)?}{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Fisik -->
@@ -2108,33 +2108,33 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keadaan Umum</td>
-              <td valign="top">{if: $data.keadaan}{$data.keadaan}{else}-{/if}</td>
+              <td valign="top">{if: $data.keadaan}{?=isset_or($data.keadaan)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kesadaran</td>
-              <td valign="top">{if: $data.kesadaran}{$data.kesadaran}{else}-{/if}</td>
+              <td valign="top">{if: $data.kesadaran}{?=isset_or($data.kesadaran)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">GCS</td>
-              <td valign="top">{if: $data.gcs}{$data.gcs}{else}-{/if}</td>
+              <td valign="top">{if: $data.gcs}{?=isset_or($data.gcs)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">TD</td>
-              <td valign="top">{if: $data.td}{$data.td} mmHg{else}-{/if}</td>
+              <td valign="top">{if: $data.td}{?=isset_or($data.td)?} mmHg{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Nadi</td>
-              <td valign="top">{if: $data.nadi}{$data.nadi} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.nadi}{?=isset_or($data.nadi)?} x/menit{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">RR</td>
-              <td valign="top">{if: $data.rr}{$data.rr} x/menit{else}-{/if}</td>
+              <td valign="top">{if: $data.rr}{?=isset_or($data.rr)?} x/menit{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Suhu</td>
-              <td valign="top">{if: $data.suhu}{$data.suhu} °C{else}-{/if}</td>
+              <td valign="top">{if: $data.suhu}{?=isset_or($data.suhu)?} °C{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">SpO2</td>
-              <td valign="top">{if: $data.spo}{$data.spo}%{else}-{/if}</td>
+              <td valign="top">{if: $data.spo}{?=isset_or($data.spo)?}%{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">BB</td>
-              <td valign="top">{if: $data.bb}{$data.bb} kg{else}-{/if}</td>
+              <td valign="top">{if: $data.bb}{?=isset_or($data.bb)?} kg{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">TB</td>
-              <td valign="top">{if: $data.tb}{$data.tb} cm{else}-{/if}</td>
+              <td valign="top">{if: $data.tb}{?=isset_or($data.tb)?} cm{else}-{/if}</td>
             </tr>
             
             <!-- Pemeriksaan Sistem -->
@@ -2143,33 +2143,33 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Mata</td>
-              <td valign="top">{if: $data.mata}{$data.mata}{else}-{/if}</td>
+              <td valign="top">{if: $data.mata}{?=isset_or($data.mata)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Gigi</td>
-              <td valign="top">{if: $data.gigi}{$data.gigi}{else}-{/if}</td>
+              <td valign="top">{if: $data.gigi}{?=isset_or($data.gigi)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">THT</td>
-              <td valign="top">{if: $data.tht}{$data.tht}{else}-{/if}</td>
+              <td valign="top">{if: $data.tht}{?=isset_or($data.tht)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Thoraks</td>
-              <td valign="top">{if: $data.thoraks}{$data.thoraks}{else}-{/if}</td>
+              <td valign="top">{if: $data.thoraks}{?=isset_or($data.thoraks)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Jantung</td>
-              <td valign="top">{if: $data.jantung}{$data.jantung}{else}-{/if}</td>
+              <td valign="top">{if: $data.jantung}{?=isset_or($data.jantung)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Paru</td>
-              <td valign="top">{if: $data.paru}{$data.paru}{else}-{/if}</td>
+              <td valign="top">{if: $data.paru}{?=isset_or($data.paru)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Abdomen</td>
-              <td valign="top">{if: $data.abdomen}{$data.abdomen}{else}-{/if}</td>
+              <td valign="top">{if: $data.abdomen}{?=isset_or($data.abdomen)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Genital</td>
-              <td valign="top">{if: $data.genital}{$data.genital}{else}-{/if}</td>
+              <td valign="top">{if: $data.genital}{?=isset_or($data.genital)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Ekstremitas</td>
-              <td valign="top">{if: $data.ekstremitas}{$data.ekstremitas}{else}-{/if}</td>
+              <td valign="top">{if: $data.ekstremitas}{?=isset_or($data.ekstremitas)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Kulit</td>
-              <td valign="top">{if: $data.kulit}{$data.kulit}{else}-{/if}</td>
+              <td valign="top">{if: $data.kulit}{?=isset_or($data.kulit)?}{else}-{/if}</td>
             </tr>
             
             <!-- Keterangan dan Diagnosis -->
@@ -2178,25 +2178,25 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keterangan Fisik</td>
-              <td valign="top" colspan="3">{if: $data.ket_fisik}{$data.ket_fisik}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.ket_fisik}{?=isset_or($data.ket_fisik)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Keterangan Lokalis</td>
-              <td valign="top" colspan="3">{if: $data.ket_lokalis}{$data.ket_lokalis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.ket_lokalis}{?=isset_or($data.ket_lokalis)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Laboratorium</td>
-              <td valign="top">{if: $data.lab}{$data.lab}{else}-{/if}</td>
+              <td valign="top">{if: $data.lab}{?=isset_or($data.lab)?}{else}-{/if}</td>
               <td valign="top" bgcolor="#eee">Radiologi</td>
-              <td valign="top">{if: $data.rad}{$data.rad}{else}-{/if}</td>
+              <td valign="top">{if: $data.rad}{?=isset_or($data.rad)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Penunjang</td>
-              <td valign="top" colspan="3">{if: $data.penunjang}{$data.penunjang}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.penunjang}{?=isset_or($data.penunjang)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosis</td>
-              <td valign="top" colspan="3">{if: $data.diagnosis}{$data.diagnosis}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.diagnosis}{?=isset_or($data.diagnosis)?}{else}-{/if}</td>
             </tr>
             
             <!-- Rencana Tindak Lanjut -->
@@ -2205,11 +2205,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Tatalaksana</td>
-              <td valign="top" colspan="3">{if: $data.tata}{$data.tata}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.tata}{?=isset_or($data.tata)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Edukasi</td>
-              <td valign="top" colspan="3">{if: $data.edukasi}{$data.edukasi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.edukasi}{?=isset_or($data.edukasi)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -2229,9 +2229,9 @@
             </tr>
             <tr>
               <td valign="top" width="25%" bgcolor="#eee">Tanggal Operasi</td>
-              <td valign="top" width="25%">{if: $data.tanggal}{$data.tanggal}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.tanggal}{?=isset_or($data.tanggal)?}{else}-{/if}</td>
               <td valign="top" width="25%" bgcolor="#eee">Selesai Operasi</td>
-              <td valign="top" width="25%">{if: $data.selesaioperasi}{$data.selesaioperasi}{else}-{/if}</td>
+              <td valign="top" width="25%">{if: $data.selesaioperasi}{?=isset_or($data.selesaioperasi)?}{else}-{/if}</td>
             </tr>
             
             <!-- Diagnosa -->
@@ -2240,11 +2240,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Pre-Operasi</td>
-              <td valign="top" colspan="3">{if: $data.diagnosa_preop}{$data.diagnosa_preop}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.diagnosa_preop}{?=isset_or($data.diagnosa_preop)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Diagnosa Post-Operasi</td>
-              <td valign="top" colspan="3">{if: $data.diagnosa_postop}{$data.diagnosa_postop}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.diagnosa_postop}{?=isset_or($data.diagnosa_postop)?}{else}-{/if}</td>
             </tr>
             
             <!-- Detail Operasi -->
@@ -2253,11 +2253,11 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Jaringan yang Dieksekusi</td>
-              <td valign="top" colspan="3">{if: $data.jaringan_dieksekusi}{$data.jaringan_dieksekusi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.jaringan_dieksekusi}{?=isset_or($data.jaringan_dieksekusi)?}{else}-{/if}</td>
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Permintaan PA</td>
-              <td valign="top" colspan="3">{if: $data.permintaan_pa}{$data.permintaan_pa}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.permintaan_pa}{?=isset_or($data.permintaan_pa)?}{else}-{/if}</td>
             </tr>
             
             <!-- Laporan Operasi -->
@@ -2266,7 +2266,7 @@
             </tr>
             <tr>
               <td valign="top" bgcolor="#eee">Laporan Operasi</td>
-              <td valign="top" colspan="3">{if: $data.laporan_operasi}{$data.laporan_operasi}{else}-{/if}</td>
+              <td valign="top" colspan="3">{if: $data.laporan_operasi}{?=isset_or($data.laporan_operasi)?}{else}-{/if}</td>
             </tr>
           </table>
           {/loop}
@@ -2290,10 +2290,10 @@
             <tbody>
               {loop: $value.mlite_odontogram as $data}
               <tr>
-                <td valign="top" align="center">{if: $data.tgl_input}{$data.tgl_input}{else}-{/if}</td>
-                <td valign="top" align="center">{if: $data.pemeriksaan}{$data.pemeriksaan}{else}-{/if}</td>
-                <td valign="top">{if: $data.kondisi}{$data.kondisi}{else}-{/if}</td>
-                <td valign="top">{if: $data.catatan}{$data.catatan}{else}-{/if}</td>
+                <td valign="top" align="center">{if: $data.tgl_input}{?=isset_or($data.tgl_input)?}{else}-{/if}</td>
+                <td valign="top" align="center">{if: $data.pemeriksaan}{?=isset_or($data.pemeriksaan)?}{else}-{/if}</td>
+                <td valign="top">{if: $data.kondisi}{?=isset_or($data.kondisi)?}{else}-{/if}</td>
+                <td valign="top">{if: $data.catatan}{?=isset_or($data.catatan)?}{else}-{/if}</td>
               </tr>
               {/loop}
             </tbody>
@@ -2314,7 +2314,7 @@
                 {loop: $row_data}
                 <tr>
                     <td width="30%" valign="top" style="border-bottom: 1px solid #eee;"><strong>{?=ucwords(str_replace('_', ' ', $key))?}</strong></td>
-                    <td width="70%" valign="top" style="border-bottom: 1px solid #eee;">{$value}</td>
+                    <td width="70%" valign="top" style="border-bottom: 1px solid #eee;">{?=isset_or($value)?}</td>
                 </tr>
                 {/loop}
             </table>

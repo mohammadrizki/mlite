@@ -11,7 +11,7 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label>Nomor Jurnal</label>
-                                <input type="text" name="no_jurnal" class="form-control" value="{$no_jurnal}" required />
+                                <input type="text" name="no_jurnal" class="form-control" value="{?=isset_or($no_jurnal)?}" required />
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -43,7 +43,7 @@
                                 <label>Kegiatan</label>
                                 <select name="kegiatan" class="form-control" data-use-search="true">
                                     {loop: $kegiatan}
-                                        <option value="{$value.kegiatan}">{$value.kegiatan}</option>
+                                        <option value="{?=isset_or($value.kegiatan)?}">{?=isset_or($value.kegiatan)?}</option>
                                     {/loop}
                                 </select>
                             </div>
@@ -77,7 +77,7 @@
                                                 <select name="entries[0][kd_rek]" class="form-control rekening-select" data-use-search="true" required>
                                                     <option value="">Pilih Rekening</option>
                                                     {loop: $akunrekening}
-                                                        <option value="{$value.kd_rek}">{$value.kd_rek} - {$value.nm_rek}</option>
+                                                        <option value="{?=isset_or($value.kd_rek)?}">{?=isset_or($value.kd_rek)?} - {?=isset_or($value.nm_rek)?}</option>
                                                     {/loop}
                                                 </select>
                                             </td>
@@ -101,7 +101,7 @@
                                                 <select name="entries[1][kd_rek]" class="form-control rekening-select" data-use-search="true" required>
                                                     <option value="">Pilih Rekening</option>
                                                     {loop: $akunrekening}
-                                                        <option value="{$value.kd_rek}">{$value.kd_rek} - {$value.nm_rek}</option>
+                                                        <option value="{?=isset_or($value.kd_rek)?}">{?=isset_or($value.kd_rek)?} - {?=isset_or($value.nm_rek)?}</option>
                                                     {/loop}
                                                 </select>
                                             </td>
@@ -252,7 +252,7 @@ $(document).ready(function() {
                     <select name="entries[${entryCount}][kd_rek]" class="form-control rekening-select" data-use-search="true" required>
                         <option value="">Pilih Rekening</option>
                         {loop: $akunrekening}
-                            <option value="{$value.kd_rek}">{$value.kd_rek} - {$value.nm_rek}</option>
+                            <option value="{?=isset_or($value.kd_rek)?}">{?=isset_or($value.kd_rek)?} - {?=isset_or($value.nm_rek)?}</option>
                         {/loop}
                     </select>
                 </td>

@@ -19,17 +19,17 @@
                 <tbody>
                     {loop: $signatures}
                     <tr>
-                        <td>{$value.id}</td>
-                        <td>{$value.ref_type} #{$value.ref_id}</td>
+                        <td>{?=isset_or($value.id)?}</td>
+                        <td>{?=isset_or($value.ref_type)?} #{?=isset_or($value.ref_id)?}</td>
                         <td>
-                            <b>{$value.signer_name}</b><br>
-                            <small>{$value.signer_role}</small>
+                            <b>{?=isset_or($value.signer_name)?}</b><br>
+                            <small>{?=isset_or($value.signer_role)?}</small>
                         </td>
-                        <td>{$value.signed_at}</td>
+                        <td>{?=isset_or($value.signed_at)?}</td>
                         <td>
                             <small style="font-family:monospace;">{?=substr($value.signature_hash, 0, 10)?}...</small>
                         </td>
-                        <td>{$value.ip_address}</td>
+                        <td>{?=isset_or($value.ip_address)?}</td>
                         <td>
                             <a href="{?=url(['esignature', 'verify', $value.signature_hash])?}" target="_blank" class="btn btn-xs btn-info">Verifikasi</a>
                             <a href="{?=url([ADMIN, 'esignature', 'generatepdf', $value.ref_type, $value.ref_id])?}" target="_blank" class="btn btn-xs btn-default"><i class="fa fa-file-pdf-o"></i> PDF</a>

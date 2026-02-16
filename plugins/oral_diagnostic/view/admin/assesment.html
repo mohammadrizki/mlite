@@ -5,19 +5,19 @@
 <div class="modal-body">
   <div class="row">
     <!-- Hidden field untuk no_rawat -->
-    <input type="hidden" name="no_rawat" value="{$reg_periksa.no_rawat}" />
+    <input type="hidden" name="no_rawat" value="{?=isset_or($reg_periksa.no_rawat)?}" />
     
     <!-- Informasi Dasar -->
     <div class="col-md-6">
       <div class="form-group">
           <label>Nomor Rawat</label>
-          <input type="text" name="no_rawat_assessment" class="form-control" placeholder="Nomor Rawat" required value="{$reg_periksa.no_rawat}" readonly />
+          <input type="text" name="no_rawat_assessment" class="form-control" placeholder="Nomor Rawat" required value="{?=isset_or($reg_periksa.no_rawat)?}" readonly />
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
           <label>Tanggal</label>
-          <input type="datetime-local" name="tanggal" class="form-control" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.tanggal}{else}{?=date('Y-m-d\TH:i')?}{/if}" required />
+          <input type="datetime-local" name="tanggal" class="form-control" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.tanggal)?}{else}{?=date('Y-m-d\TH:i')?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
@@ -35,49 +35,49 @@
     <div class="col-md-3">
       <div class="form-group">
           <label>Tekanan Darah</label>
-          <input type="text" name="td" class="form-control" placeholder="mmHg" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.td}{/if}" />
+          <input type="text" name="td" class="form-control" placeholder="mmHg" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.td)?}{/if}" />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
           <label>Nadi</label>
-          <input type="text" name="nadi" class="form-control" placeholder="x/menit" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.nadi}{/if}" />
+          <input type="text" name="nadi" class="form-control" placeholder="x/menit" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.nadi)?}{/if}" />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
           <label>Respirasi</label>
-          <input type="text" name="rr" class="form-control" placeholder="x/menit" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.rr}{/if}" required />
+          <input type="text" name="rr" class="form-control" placeholder="x/menit" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.rr)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
           <label>Suhu</label>
-          <input type="text" name="suhu" class="form-control" placeholder="°C" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.suhu}{/if}" />
+          <input type="text" name="suhu" class="form-control" placeholder="°C" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.suhu)?}{/if}" />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
           <label>GCS</label>
-          <input type="text" name="gcs" class="form-control" placeholder="E-V-M" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.gcs}{/if}" required />
+          <input type="text" name="gcs" class="form-control" placeholder="E-V-M" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.gcs)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
           <label>Berat Badan (kg)</label>
-          <input type="text" name="bb" class="form-control" placeholder="kg" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.bb}{/if}" />
+          <input type="text" name="bb" class="form-control" placeholder="kg" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.bb)?}{/if}" />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
           <label>Tinggi Badan (cm)</label>
-          <input type="text" name="tb" class="form-control" placeholder="cm" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.tb}{/if}" />
+          <input type="text" name="tb" class="form-control" placeholder="cm" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.tb)?}{/if}" />
       </div>
     </div>
     <div class="col-md-3">
       <div class="form-group">
           <label>BMI</label>
-          <input type="text" name="bmi" class="form-control" placeholder="BMI" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.bmi}{/if}" required />
+          <input type="text" name="bmi" class="form-control" placeholder="BMI" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.bmi)?}{/if}" required />
       </div>
     </div>
     
@@ -86,31 +86,31 @@
     <div class="col-md-12">
       <div class="form-group">
           <label>Keluhan Utama</label>
-          <textarea name="keluhan_utama" class="form-control" rows="3" placeholder="Keluhan utama pasien">{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.keluhan_utama}{/if}</textarea>
+          <textarea name="keluhan_utama" class="form-control" rows="3" placeholder="Keluhan utama pasien">{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.keluhan_utama)?}{/if}</textarea>
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>Riwayat Penyakit Dahulu</label>
-          <textarea name="rpd" class="form-control" rows="2" placeholder="RPD">{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.rpd}{/if}</textarea>
+          <textarea name="rpd" class="form-control" rows="2" placeholder="RPD">{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.rpd)?}{/if}</textarea>
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>Riwayat Penyakit Keluarga</label>
-          <textarea name="rpk" class="form-control" rows="2" placeholder="RPK" required>{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.rpk}{/if}</textarea>
+          <textarea name="rpk" class="form-control" rows="2" placeholder="RPK" required>{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.rpk)?}{/if}</textarea>
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>Riwayat Pengobatan</label>
-          <textarea name="rpo" class="form-control" rows="2" placeholder="RPO" required>{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.rpo}{/if}</textarea>
+          <textarea name="rpo" class="form-control" rows="2" placeholder="RPO" required>{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.rpo)?}{/if}</textarea>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
           <label>Alergi</label>
-          <input type="text" name="alergi" class="form-control" placeholder="Alergi" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.alergi}{/if}" />
+          <input type="text" name="alergi" class="form-control" placeholder="Alergi" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.alergi)?}{/if}" />
       </div>
     </div>
     
@@ -128,7 +128,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>Keterangan Alat Bantu</label>
-          <input type="text" name="ket_bantu" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_bantu}{/if}" />
+          <input type="text" name="ket_bantu" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_bantu)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
@@ -143,7 +143,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan Prothesa</label>
-          <input type="text" name="ket_pro" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_pro}{/if}" required />
+          <input type="text" name="ket_pro" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_pro)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
@@ -173,7 +173,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan Psikologi</label>
-          <input type="text" name="ket_psiko" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_psiko}{/if}" required />
+          <input type="text" name="ket_psiko" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_psiko)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
@@ -199,7 +199,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan Tinggal</label>
-          <input type="text" name="ket_tinggal" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_tinggal}{/if}" required />
+          <input type="text" name="ket_tinggal" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_tinggal)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
@@ -224,7 +224,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan Budaya</label>
-          <input type="text" name="ket_budaya" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_budaya}{/if}" required />
+          <input type="text" name="ket_budaya" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_budaya)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
@@ -239,7 +239,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan Edukasi</label>
-          <input type="text" name="ket_edukasi" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_edukasi}{/if}" required />
+          <input type="text" name="ket_edukasi" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_edukasi)?}{/if}" required />
       </div>
     </div>
     
@@ -294,7 +294,7 @@
     <div class="col-md-2">
       <div class="form-group">
           <label>Ket. Lapor</label>
-          <input type="text" name="ket_lapor" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_lapor}{/if}" required />
+          <input type="text" name="ket_lapor" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_lapor)?}{/if}" required />
       </div>
     </div>
     
@@ -346,7 +346,7 @@
     <div class="col-md-12">
       <div class="form-group">
           <label>Total Hasil</label>
-          <input type="number" name="total_hasil" class="form-control" placeholder="Total" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.total_hasil}{/if}" required />
+          <input type="number" name="total_hasil" class="form-control" placeholder="Total" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.total_hasil)?}{/if}" required />
       </div>
     </div>
     
@@ -375,7 +375,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>Keterangan Provokes</label>
-          <input type="text" name="ket_provokes" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_provokes}{/if}" required />
+          <input type="text" name="ket_provokes" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_provokes)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
@@ -394,13 +394,13 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan Quality</label>
-          <input type="text" name="ket_quality" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_quality}{/if}" required />
+          <input type="text" name="ket_quality" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_quality)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
           <label>Lokasi</label>
-          <input type="text" name="lokasi" class="form-control" placeholder="Lokasi nyeri" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.lokasi}{/if}" required />
+          <input type="text" name="lokasi" class="form-control" placeholder="Lokasi nyeri" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.lokasi)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-3">
@@ -433,7 +433,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Durasi</label>
-          <input type="text" name="durasi" class="form-control" placeholder="Durasi nyeri" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.durasi}{/if}" required />
+          <input type="text" name="durasi" class="form-control" placeholder="Durasi nyeri" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.durasi)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
@@ -449,7 +449,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan Nyeri</label>
-          <input type="text" name="ket_nyeri" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_nyeri}{/if}" required />
+          <input type="text" name="ket_nyeri" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_nyeri)?}{/if}" required />
       </div>
     </div>
     
@@ -467,19 +467,19 @@
     <div class="col-md-3">
       <div class="form-group">
           <label>Keterangan Dokter</label>
-          <input type="text" name="ket_dokter" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.ket_dokter}{/if}" required />
+          <input type="text" name="ket_dokter" class="form-control" placeholder="Keterangan" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.ket_dokter)?}{/if}" required />
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
           <label>NIP Petugas</label>
-          <input type="text" name="nip" class="form-control" placeholder="NIP Petugas" value="{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.nip}{else}{?=$this->core->getUserInfo('username')?}{/if}" required />
+          <input type="text" name="nip" class="form-control" placeholder="NIP Petugas" value="{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.nip)?}{else}{?=$this->core->getUserInfo('username')?}{/if}" required />
       </div>
     </div>
     <div class="col-md-12">
       <div class="form-group">
           <label>Rencana</label>
-          <textarea name="rencana" class="form-control" rows="3" placeholder="Rencana keperawatan" required>{if: $penilaian_awal_keperawatan_ralan}{$penilaian_awal_keperawatan_ralan.rencana}{/if}</textarea>
+          <textarea name="rencana" class="form-control" rows="3" placeholder="Rencana keperawatan" required>{if: $penilaian_awal_keperawatan_ralan}{?=isset_or($penilaian_awal_keperawatan_ralan.rencana)?}{/if}</textarea>
       </div>
     </div>
     

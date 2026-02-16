@@ -8,15 +8,15 @@
             	  <div class="panel-body">
                     <div class="form-group">
                         <label>URL iCare FKTP</label>
-                        <input type="text" name="icare[urlPCare]" class="form-control" value="{$icare.urlPCare}" />
+                        <input type="text" name="icare[urlPCare]" class="form-control" value="{?=isset_or($icare.urlPCare)?}" />
                     </div>
                     <div class="form-group">
                         <label>Username ICare</label> <span class="pull-right"></span>
-                        <input type="text" name="icare[usernameICare]" class="form-control" value="{$icare.usernameICare}" />
+                        <input type="text" name="icare[usernameICare]" class="form-control" value="{?=isset_or($icare.usernameICare)?}" />
                     </div>
                     <div class="form-group">
                         <label>Password ICare</label>
-                        <input type="text" name="icare[passwordICare]" class="form-control" value="{$icare.passwordICare}" />
+                        <input type="text" name="icare[passwordICare]" class="form-control" value="{?=isset_or($icare.passwordICare)?}" />
                     </div>
                 </div>
             </div>            
@@ -27,19 +27,19 @@
             	  <div class="panel-body">
                     <div class="form-group">
                         <label>URL iCare FKTL</label>
-                        <input type="text" name="icare[url]" class="form-control" value="{$icare.url}" />
+                        <input type="text" name="icare[url]" class="form-control" value="{?=isset_or($icare.url)?}" />
                     </div>
                     <div class="form-group">
                         <label>Cons ID</label> <span class="pull-right"></span>
-                        <input type="text" name="icare[consid]" class="form-control" value="{$icare.consid}" />
+                        <input type="text" name="icare[consid]" class="form-control" value="{?=isset_or($icare.consid)?}" />
                     </div>
                     <div class="form-group">
                         <label>Secret Key</label>
-                        <input type="text" name="icare[secretkey]" class="form-control" value="{$icare.secretkey}" />
+                        <input type="text" name="icare[secretkey]" class="form-control" value="{?=isset_or($icare.secretkey)?}" />
                     </div>
                     <div class="form-group">
                         <label>User Key</label>
-                        <input type="text" name="icare[userkey]" class="form-control" value="{$icare.userkey}" />
+                        <input type="text" name="icare[userkey]" class="form-control" value="{?=isset_or($icare.userkey)?}" />
                     </div>
                     <input type="submit" name="save" class="btn btn-primary" value="Simpan" />
                 </div>

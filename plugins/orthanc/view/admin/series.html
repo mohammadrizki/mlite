@@ -31,7 +31,7 @@
             {if: $error}
             <div class="alert alert-danger error-message" role="alert">
                 <i class="fa fa-exclamation-triangle me-2"></i>
-                <strong>Error:</strong> {$error}
+                <strong>Error:</strong> {?=isset_or($error)?}
             </div>
             {/if}
 
@@ -112,18 +112,18 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <a onclick="window.open('{$baseUrl}/viewer?series={$s.ID}&t={?=$_SESSION['token']?}', '_blank', 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=800')" 
+                                            <a onclick="window.open('{?=isset_or($baseUrl)?}/viewer?series={?=isset_or($s.ID)?}&t={?=$_SESSION['token']?}', '_blank', 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,width=1200,height=800')" 
                                             class="btn btn-view btn-sm" 
                                             title="View Series">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                             <button type="button" 
                                                     class="btn btn-outline-info btn-sm" 
-                                                    onclick="showSeriesDetails('{$s.ID}')" 
+                                                    onclick="showSeriesDetails('{?=isset_or($s.ID)?}')" 
                                                     title="Series Details">
                                                 <i class="fa fa-info-circle"></i>
                                             </button>
-                                            <button onclick="downloadSeries('{$s.ID}')" 
+                                            <button onclick="downloadSeries('{?=isset_or($s.ID)?}')" 
                                             class="btn btn-outline-success btn-sm" 
                                             title="Download Series">
                                                 <i class="fa fa-download"></i>
@@ -144,7 +144,7 @@
                 <i class="fa fa-images fa-4x mb-3"></i>
                 <h3>No Series Found</h3>
                 <p class="text-muted">This study doesn't contain any series or they couldn't be loaded.</p>
-                <a href="{$baseUrl}/admin/orthanc/studies" class="btn btn-primary">
+                <a href="{?=isset_or($baseUrl)?}/admin/orthanc/studies" class="btn btn-primary">
                     <i class="fa fa-arrow-left me-2"></i>Back to Studies
                 </a>
             </div>
@@ -177,7 +177,7 @@
 
     <script>
         // Base URL for API calls - set from template variable
-        const BASE_URL = '{$baseUrl}';
+        const BASE_URL = '{?=isset_or($baseUrl)?}';
         
         // Show loading spinner on page load
         document.addEventListener('DOMContentLoaded', function() {

@@ -10,13 +10,13 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label>Tanggal Awal</label>
-                <input type="date" name="tgl_awal" class="form-control" value="{$tgl_awal}" required>
+                <input type="date" name="tgl_awal" class="form-control" value="{?=isset_or($tgl_awal)?}" required>
               </div>
             </div>
             <div class="col-md-3">
               <div class="form-group">
                 <label>Tanggal Akhir</label>
-                <input type="date" name="tgl_akhir" class="form-control" value="{$tgl_akhir}" required>
+                <input type="date" name="tgl_akhir" class="form-control" value="{?=isset_or($tgl_akhir)?}" required>
               </div>
             </div>
             <div class="col-md-6">
@@ -52,15 +52,15 @@
               {loop: $laporan}
               <tr>
                 <td>{?=$key+1?}</td>
-                <td>{$value.no_rawat}</td>
-                <td>{$value.no_rkm_medis}</td>
-                <td>{$value.nm_pasien}</td>
-                <td>{$value.tgl_registrasi}</td>
-                <td>{$value.jam_reg}</td>
-                <td>{$value.nm_poli}</td>
-                <td>{$value.nm_dokter}</td>
-                <td>{$value.status_bayar}</td>
-                <td>{$value.stts}</td>
+                <td>{?=isset_or($value.no_rawat)?}</td>
+                <td>{?=isset_or($value.no_rkm_medis)?}</td>
+                <td>{?=isset_or($value.nm_pasien)?}</td>
+                <td>{?=isset_or($value.tgl_registrasi)?}</td>
+                <td>{?=isset_or($value.jam_reg)?}</td>
+                <td>{?=isset_or($value.nm_poli)?}</td>
+                <td>{?=isset_or($value.nm_dokter)?}</td>
+                <td>{?=isset_or($value.status_bayar)?}</td>
+                <td>{?=isset_or($value.stts)?}</td>
               </tr>
               {/loop}
             </tbody>

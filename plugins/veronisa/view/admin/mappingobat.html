@@ -32,7 +32,7 @@
                 <label>Nama Obat RS</label>
                 <select name="kode_obat_rs" class="form-control" data-use-search="true">
                   {loop: $obat}
-                  <option value="{$value.kode_brng}">{$value.nama_brng}</option>
+                  <option value="{?=isset_or($value.kode_brng)?}">{?=isset_or($value.nama_brng)?}</option>
                   {/loop}
                 </select>
               </div>
@@ -68,9 +68,9 @@
             <tbody>
               {loop: $row}
               <tr>
-                <td>{$value.kode_brng}</td>
-                <td>{$value.kd_obat_bpjs}</td>
-                <td>{$value.nama_obat_bpjs}</td>
+                <td>{?=isset_or($value.kode_brng)?}</td>
+                <td>{?=isset_or($value.kd_obat_bpjs)?}</td>
+                <td>{?=isset_or($value.nama_obat_bpjs)?}</td>
                 <td class="text-right">
                   <a href="{?=url([ADMIN, 'veronisa', 'obatdelete', $value.kode_brng])?}" class="btn btn-xs btn-danger" data-confirm="Anda yakin akan menghapus mapping ini?">
                     <i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>

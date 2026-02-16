@@ -78,22 +78,22 @@
             {loop: $rawat_jalan.list}
             <tr{if: $value.stts == 'Sudah'} style="background-color: #dff0d8 !important;"{/if}>
               <td style="white-space: nowrap;">
-                <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{$value.no_rkm_medis} <span class="caret"></span></button></span>
+                <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{?=isset_or($value.no_rkm_medis)?} <span class="caret"></span></button></span>
                 <ul class="dropdown-menu" role="menu">
                   {if: $cek_vclaim}
                     <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor Kartu</a></li>
                     <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor KTP</a></li>
                   {/if}
-                  <li><a href="#" onclick="openPdfTteModal('{$value.no_rkm_medis}','{$value.no_rawat}')">Elektronik Rekam Medis</a></li>
+                  <li><a href="#" onclick="openPdfTteModal('{?=isset_or($value.no_rkm_medis)?}','{?=isset_or($value.no_rawat)?}')">Elektronik Rekam Medis</a></li>
                   {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
-                  <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-umur="{$value.umurdaftar} {$value.sttsumur}">SOAPIE & Pemeriksaan</a></li>
-                  <li><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Layanan & Obat</a></li>
+                  <li><a href="#soap" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}" data-umur="{?=isset_or($value.umurdaftar)?} {?=isset_or($value.sttsumur)?}">SOAPIE & Pemeriksaan</a></li>
+                  <li><a href="#layanan_obat" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}">Layanan & Obat</a></li>
                   {? \Systems\Lib\Event::call('rsgmgha.dropdown_menu', [$value]) ?}
-                  <li><a href="#rujuk_internal" data-no_rawat="{$value.no_rawat}">Rujuk Internal</a></li>
+                  <li><a href="#rujuk_internal" data-no_rawat="{?=isset_or($value.no_rawat)?}">Rujuk Internal</a></li>
                   <li class="dropdown-submenu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Surat-Surat</a>
                     <ul class="dropdown-menu">
-                      <li><a href="#surat_kontrol" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-tgl_registrasi="{$value.tgl_registrasi}">Surat Kontrol</a></li>
+                      <li><a href="#surat_kontrol" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}" data-tgl_registrasi="{?=isset_or($value.tgl_registrasi)?}">Surat Kontrol</a></li>
                       <li><a href="{?=url([ADMIN,'dokter_ralan','suratrujukan',convertNorawat($value.no_rawat)])?}" target="_blank">Surat Rujukan</a></li>
                       <li><a href="{?=url([ADMIN,'dokter_ralan','suratsehat',convertNorawat($value.no_rawat)])?}" target="_blank">Surat Keterangan Sehat</a></li>
                       <li><a href="{?=url([ADMIN,'dokter_ralan','suratsakit',convertNorawat($value.no_rawat)])?}" target="_blank">Surat Keterangan Sakit</a></li>
@@ -102,23 +102,23 @@
                   {/if}
                 </ul>
               </td>
-              <td style="white-space: nowrap;"><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">{$value.nm_pasien}</a></td>
-              <td style="white-space: nowrap;"><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">{$value.no_rawat}</a></td>
+              <td style="white-space: nowrap;"><a href="#soap" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}">{?=isset_or($value.nm_pasien)?}</a></td>
+              <td style="white-space: nowrap;"><a href="#layanan_obat" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}">{?=isset_or($value.no_rawat)?}</a></td>
               <td style="white-space: nowrap;">
                 <button type="button" name="button" class="btn btn-xs btn-warning antrian"
-                  data-no_rawat="{$value.no_rawat}"
+                  data-no_rawat="{?=isset_or($value.no_rawat)?}"
                   {if: $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
                   disabled
                   {/if}
-                ><span class="fa fa-print"></span> {$value.no_reg}</button> {if: $responsivevoice == 'true'}<button type="button" name="button" class="btn btn-xs btn-primary panggil" data-nm_pasien="{?=strtolower($value.nm_pasien)?}" data-nm_poli="{?=strtolower($value.nm_poli)?}" data-no_reg="{?=strtolower($value.no_reg)}"><i class="fa fa-bullhorn"></i><span class="hidden-xs hidden-sm"> Panggil</span></button>{/if}</td>
-              <td style="white-space: nowrap;">{$value.nm_poli}</td>
-              <td style="white-space: nowrap;">{$value.nm_dokter}</td>
-              <td style="white-space: nowrap;">{$value.png_jawab} {if: $value.kd_pj == 'BPJ'}{if: $value.potensi_prb !=''}<button class="btn btn-xs btn-danger"><span class="fa fa-wheelchair"></span> {$value.potensi_prb}</button>{/if}{if: $this->core->ActiveModule('vclaim')}<a href="{?=url([ADMIN, 'icare', 'riwayat', convertNorawat($value.no_rawat)])?}" class="btn btn-xs btn-info" data-toggle="modal" data-target="#riwayatModal"><span class="fa fa-file"></span> iCare</a>{/if}{if: $this->core->ActiveModule('pcare')}<a href="{?=url([ADMIN, 'icare', 'riwayat', convertNorawat($value.no_rawat), 'fktp'])?}" class="btn btn-xs btn-info" data-toggle="modal" data-target="#riwayatModal"><span class="fa fa-file"></span> iCare</a>{/if}{/if}</td>
-              <td style="white-space: nowrap;">{$value.no_peserta}</td>
-              <td style="white-space: nowrap;">{$value.tgl_registrasi} {$value.jam_reg}</td>
-              <td style="white-space: nowrap;">{$value.stts}</td>
-              <td style="white-space: nowrap;">{$value.status_lanjut}</td>
-              <td style="white-space: nowrap;">{$value.status_bayar}</td>
+                ><span class="fa fa-print"></span> {?=isset_or($value.no_reg)?}</button> {if: $responsivevoice == 'true'}<button type="button" name="button" class="btn btn-xs btn-primary panggil" data-nm_pasien="{?=strtolower($value.nm_pasien)?}" data-nm_poli="{?=strtolower($value.nm_poli)?}" data-no_reg="{?=strtolower($value.no_reg)}"><i class="fa fa-bullhorn"></i><span class="hidden-xs hidden-sm"> Panggil</span></button>{/if}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.nm_poli)?}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.nm_dokter)?}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.png_jawab)?} {if: $value.kd_pj == 'BPJ'}{if: $value.potensi_prb !=''}<button class="btn btn-xs btn-danger"><span class="fa fa-wheelchair"></span> {?=isset_or($value.potensi_prb)?}</button>{/if}{if: $this->core->ActiveModule('vclaim')}<a href="{?=url([ADMIN, 'icare', 'riwayat', convertNorawat($value.no_rawat)])?}" class="btn btn-xs btn-info" data-toggle="modal" data-target="#riwayatModal"><span class="fa fa-file"></span> iCare</a>{/if}{if: $this->core->ActiveModule('pcare')}<a href="{?=url([ADMIN, 'icare', 'riwayat', convertNorawat($value.no_rawat), 'fktp'])?}" class="btn btn-xs btn-info" data-toggle="modal" data-target="#riwayatModal"><span class="fa fa-file"></span> iCare</a>{/if}{/if}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.no_peserta)?}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.tgl_registrasi)?} {?=isset_or($value.jam_reg)?}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.stts)?}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.status_lanjut)?}</td>
+              <td style="white-space: nowrap;">{?=isset_or($value.status_bayar)?}</td>
             </tr>
             {/loop}
           </tbody>
@@ -146,14 +146,14 @@
           <tbody>
             {loop: $rawat_jalan.list_rujukan_internal} 
             <tr>
-              <td style="white-space: nowrap;">{if: isset($value.no_rkm_medis)}{$value.no_rkm_medis}{else}-{/if}</td>
-              <td style="white-space: nowrap;"><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', isset($value.no_rkm_medis) ? $value.no_rkm_medis : '-'])?}" data-toggle="modal" data-target="#riwayatModal">{if: isset($value.nm_pasien)}{$value.nm_pasien}{else}-{/if}</a></td>
-              <td style="white-space: nowrap;">{if: isset($value.no_rawat)}{$value.no_rawat}{else}-{/if}</td>
-              <td style="white-space: nowrap;">{if: isset($value.poli_asal)}{$value.poli_asal}{else}-{/if}</td>
-              <td style="white-space: nowrap;">{if: isset($value.poli_tujuan)}{$value.poli_tujuan}{else}-{/if}</td>
-              <td style="white-space: nowrap;">{if: isset($value.dokter_perujuk)}{$value.dokter_perujuk}{else}-{/if}</td>
-              <td style="white-space: nowrap;">{if: isset($value.dokter_tujuan)}{$value.dokter_tujuan}{else}-{/if}</td>
-              <td style="white-space: nowrap;">{if: isset($value.tgl_rujukan)}{$value.tgl_rujukan}{else}-{/if}</td>
+              <td style="white-space: nowrap;">{if: isset($value.no_rkm_medis)}{?=isset_or($value.no_rkm_medis)?}{else}-{/if}</td>
+              <td style="white-space: nowrap;"><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', isset($value.no_rkm_medis) ? $value.no_rkm_medis : '-'])?}" data-toggle="modal" data-target="#riwayatModal">{if: isset($value.nm_pasien)}{?=isset_or($value.nm_pasien)?}{else}-{/if}</a></td>
+              <td style="white-space: nowrap;">{if: isset($value.no_rawat)}{?=isset_or($value.no_rawat)?}{else}-{/if}</td>
+              <td style="white-space: nowrap;">{if: isset($value.poli_asal)}{?=isset_or($value.poli_asal)?}{else}-{/if}</td>
+              <td style="white-space: nowrap;">{if: isset($value.poli_tujuan)}{?=isset_or($value.poli_tujuan)?}{else}-{/if}</td>
+              <td style="white-space: nowrap;">{if: isset($value.dokter_perujuk)}{?=isset_or($value.dokter_perujuk)?}{else}-{/if}</td>
+              <td style="white-space: nowrap;">{if: isset($value.dokter_tujuan)}{?=isset_or($value.dokter_tujuan)?}{else}-{/if}</td>
+              <td style="white-space: nowrap;">{if: isset($value.tgl_rujukan)}{?=isset_or($value.tgl_rujukan)?}{else}-{/if}</td>
               <td style="white-space: nowrap;">
                 {if: isset($value.keterangan_jawab) && $value.keterangan_jawab != ''}
                   <span class="label label-success">Sudah Dijawab</span>
@@ -162,7 +162,7 @@
                 {/if}
               </td>
               <td style="white-space: nowrap; width: 17%;">
-                <a href="#jawab_rujukan_internal" class="btn btn-xs btn-primary" data-no_rawat="{if: isset($value.no_rawat)}{$value.no_rawat}{else}-{/if}" data-kd_dokter="{if: isset($value.kd_dokter)}{$value.kd_dokter}{else}-{/if}" data-nm_dokter="{if: isset($value.kd_dokter_tujuan)}{$value.dokter_tujuan}{else}-{/if}" data-kd_dokter_tujuan="{if: isset($value.kd_dokter_tujuan)}{$value.kd_dokter_tujuan}{else}-{/if}" data-dokter_tujuan="{if: isset($value.dokter_tujuan)}{$value.dokter_tujuan}{else}-{/if}" data-kd_poli_tujuan="{if: isset($value.kd_poli_tujuan)}{$value.kd_poli_tujuan}{else}-{/if}" data-poli_tujuan="{if: isset($value.poli_tujuan)}{$value.poli_tujuan}{else}-{/if}" data-keterangan="{if: isset($value.keterangan)}{$value.keterangan}{else}-{/if}" data-keterangan_jawab="{if: isset($value.keterangan_jawab)}{$value.keterangan_jawab}{else}-{/if}">Jawab</a><a href="#hapus_rujukan_internal" class="btn btn-xs btn-danger" data-no_rawat="{if: isset($value.no_rawat)}{$value.no_rawat}{else}-{/if}">Hapus</a>
+                <a href="#jawab_rujukan_internal" class="btn btn-xs btn-primary" data-no_rawat="{if: isset($value.no_rawat)}{?=isset_or($value.no_rawat)?}{else}-{/if}" data-kd_dokter="{if: isset($value.kd_dokter)}{?=isset_or($value.kd_dokter)?}{else}-{/if}" data-nm_dokter="{if: isset($value.kd_dokter_tujuan)}{?=isset_or($value.dokter_tujuan)?}{else}-{/if}" data-kd_dokter_tujuan="{if: isset($value.kd_dokter_tujuan)}{?=isset_or($value.kd_dokter_tujuan)?}{else}-{/if}" data-dokter_tujuan="{if: isset($value.dokter_tujuan)}{?=isset_or($value.dokter_tujuan)?}{else}-{/if}" data-kd_poli_tujuan="{if: isset($value.kd_poli_tujuan)}{?=isset_or($value.kd_poli_tujuan)?}{else}-{/if}" data-poli_tujuan="{if: isset($value.poli_tujuan)}{?=isset_or($value.poli_tujuan)?}{else}-{/if}" data-keterangan="{if: isset($value.keterangan)}{?=isset_or($value.keterangan)?}{else}-{/if}" data-keterangan_jawab="{if: isset($value.keterangan_jawab)}{?=isset_or($value.keterangan_jawab)?}{else}-{/if}">Jawab</a><a href="#hapus_rujukan_internal" class="btn btn-xs btn-danger" data-no_rawat="{if: isset($value.no_rawat)}{?=isset_or($value.no_rawat)?}{else}-{/if}">Hapus</a>
               </td>
             </tr>
             {/loop}

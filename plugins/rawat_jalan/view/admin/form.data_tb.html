@@ -5,20 +5,20 @@
 <div class="modal-body">
   <div class="row">
     <!-- Hidden field untuk no_rawat -->
-    <input type="hidden" name="no_rawat" value="{$no_rawat}" />
+    <input type="hidden" name="no_rawat" value="{?=isset_or($no_rawat)?}" />
     
     <!-- Informasi Dasar -->
     <div class="col-md-12"><h5><strong>Informasi Dasar</strong></h5></div>
     <div class="col-md-6">
       <div class="form-group">
           <label>Nomor Rawat</label>
-          <input type="text" name="no_rawat_display" class="form-control" placeholder="Nomor Rawat" value="{$no_rawat}" readonly />
+          <input type="text" name="no_rawat_display" class="form-control" placeholder="Nomor Rawat" value="{?=isset_or($no_rawat)?}" readonly />
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
           <label>ID TB 03</label>
-          <input type="text" name="id_tb_03" class="form-control" placeholder="ID TB 03" value="{if: $data_tb}{$data_tb.id_tb_03}{/if}" />
+          <input type="text" name="id_tb_03" class="form-control" placeholder="ID TB 03" value="{if: $data_tb}{?=isset_or($data_tb.id_tb_03)?}{/if}" />
       </div>
     </div>
     <div class="col-md-6">
@@ -36,13 +36,13 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Tanggal Buat Laporan</label>
-          <input type="datetime-local" name="tanggal_buat_laporan" class="form-control" value="{if: $data_tb}{$data_tb.tanggal_buat_laporan}{else}{?=date('Y-m-d\TH:i')?}{/if}" />
+          <input type="datetime-local" name="tanggal_buat_laporan" class="form-control" value="{if: $data_tb}{?=isset_or($data_tb.tanggal_buat_laporan)?}{else}{?=date('Y-m-d\TH:i')?}{/if}" />
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
           <label>Tahun Buat Laporan</label>
-          <input type="number" name="tahun_buat_laporan" class="form-control" placeholder="Tahun" value="{if: $data_tb}{$data_tb.tahun_buat_laporan}{else}{?=date('Y')?}{/if}" min="2000" max="2099" />
+          <input type="number" name="tahun_buat_laporan" class="form-control" placeholder="Tahun" value="{if: $data_tb}{?=isset_or($data_tb.tahun_buat_laporan)?}{else}{?=date('Y')?}{/if}" min="2000" max="2099" />
       </div>
     </div>
     
@@ -51,37 +51,37 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>Kode Wasor</label>
-          <input type="number" name="kd_wasor" class="form-control" placeholder="Kode Wasor" value="{if: $data_tb}{$data_tb.kd_wasor}{/if}" />
+          <input type="number" name="kd_wasor" class="form-control" placeholder="Kode Wasor" value="{if: $data_tb}{?=isset_or($data_tb.kd_wasor)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>No Reg Kabupaten</label>
-          <input type="number" name="noregkab" class="form-control" placeholder="No Reg Kabupaten" value="{if: $data_tb}{$data_tb.noregkab}{/if}" />
+          <input type="number" name="noregkab" class="form-control" placeholder="No Reg Kabupaten" value="{if: $data_tb}{?=isset_or($data_tb.noregkab)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>ID Propinsi</label>
-          <input type="text" name="id_propinsi" class="form-control" placeholder="ID Propinsi" value="{if: $data_tb}{$data_tb.id_propinsi}{/if}" />
+          <input type="text" name="id_propinsi" class="form-control" placeholder="ID Propinsi" value="{if: $data_tb}{?=isset_or($data_tb.id_propinsi)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>Kode Kabupaten</label>
-          <input type="text" name="kd_kabupaten" class="form-control" placeholder="Kode Kabupaten" value="{if: $data_tb}{$data_tb.kd_kabupaten}{/if}" />
+          <input type="text" name="kd_kabupaten" class="form-control" placeholder="Kode Kabupaten" value="{if: $data_tb}{?=isset_or($data_tb.kd_kabupaten)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>ID Kecamatan</label>
-          <input type="text" name="id_kecamatan" class="form-control" placeholder="ID Kecamatan" value="{if: $data_tb}{$data_tb.id_kecamatan}{/if}" />
+          <input type="text" name="id_kecamatan" class="form-control" placeholder="ID Kecamatan" value="{if: $data_tb}{?=isset_or($data_tb.id_kecamatan)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>ID Kelurahan</label>
-          <input type="text" name="id_kelurahan" class="form-control" placeholder="ID Kelurahan" value="{if: $data_tb}{$data_tb.id_kelurahan}{/if}" />
+          <input type="text" name="id_kelurahan" class="form-control" placeholder="ID Kelurahan" value="{if: $data_tb}{?=isset_or($data_tb.id_kelurahan)?}{/if}" />
       </div>
     </div>
     
@@ -104,7 +104,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Sebutkan</label>
-          <input type="text" name="sebutkan1" class="form-control" placeholder="Sebutkan" value="{if: $data_tb}{$data_tb.sebutkan1}{/if}" />
+          <input type="text" name="sebutkan1" class="form-control" placeholder="Sebutkan" value="{if: $data_tb}{?=isset_or($data_tb.sebutkan1)?}{/if}" />
       </div>
     </div>
     <div class="col-md-6">
@@ -210,7 +210,7 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Tanggal Mulai Pengobatan</label>
-          <input type="date" name="tanggal_mulai_pengobatan" class="form-control" value="{if: $data_tb}{$data_tb.tanggal_mulai_pengobatan}{/if}" />
+          <input type="date" name="tanggal_mulai_pengobatan" class="form-control" value="{if: $data_tb}{?=isset_or($data_tb.tanggal_mulai_pengobatan)?}{/if}" />
       </div>
     </div>
     <div class="col-md-6">
@@ -228,13 +228,13 @@
     <div class="col-md-12">
       <div class="form-group">
           <label>Paduan OAT</label>
-          <textarea name="paduan_oat" class="form-control" rows="3" placeholder="Paduan OAT">{if: $data_tb}{$data_tb.paduan_oat}{/if}</textarea>
+          <textarea name="paduan_oat" class="form-control" rows="3" placeholder="Paduan OAT">{if: $data_tb}{?=isset_or($data_tb.paduan_oat)?}{/if}</textarea>
       </div>
     </div>
     <div class="col-md-12">
       <div class="form-group">
           <label>Sebutkan (Sumber Obat)</label>
-          <textarea name="sebutkan" class="form-control" rows="2" placeholder="Sebutkan">{if: $data_tb}{$data_tb.sebutkan}{/if}</textarea>
+          <textarea name="sebutkan" class="form-control" rows="2" placeholder="Sebutkan">{if: $data_tb}{?=isset_or($data_tb.sebutkan)?}{/if}</textarea>
       </div>
     </div>
     
@@ -293,7 +293,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>No Reg Lab Bulan 2</label>
-          <input type="text" name="noreglab_bulan_2" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{$data_tb.noreglab_bulan_2}{/if}" />
+          <input type="text" name="noreglab_bulan_2" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{?=isset_or($data_tb.noreglab_bulan_2)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
@@ -313,7 +313,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>No Reg Lab Bulan 3</label>
-          <input type="text" name="noreglab_bulan_3" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{$data_tb.noreglab_bulan_3}{/if}" />
+          <input type="text" name="noreglab_bulan_3" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{?=isset_or($data_tb.noreglab_bulan_3)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
@@ -333,7 +333,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>No Reg Lab Bulan 5</label>
-          <input type="text" name="noreglab_bulan_5" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{$data_tb.noreglab_bulan_5}{/if}" />
+          <input type="text" name="noreglab_bulan_5" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{?=isset_or($data_tb.noreglab_bulan_5)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
@@ -356,7 +356,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>No Reg Lab Akhir Pengobatan</label>
-          <input type="text" name="akhir_pengobatan_noreglab" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{$data_tb.akhir_pengobatan_noreglab}{/if}" />
+          <input type="text" name="akhir_pengobatan_noreglab" class="form-control" placeholder="No Reg Lab" value="{if: $data_tb}{?=isset_or($data_tb.akhir_pengobatan_noreglab)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
@@ -376,7 +376,7 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>Tanggal Hasil Akhir Pengobatan</label>
-          <input type="date" name="tanggal_hasil_akhir_pengobatan" class="form-control" value="{if: $data_tb}{$data_tb.tanggal_hasil_akhir_pengobatan}{/if}" />
+          <input type="date" name="tanggal_hasil_akhir_pengobatan" class="form-control" value="{if: $data_tb}{?=isset_or($data_tb.tanggal_hasil_akhir_pengobatan)?}{/if}" />
       </div>
     </div>
     <div class="col-md-12">
@@ -400,13 +400,13 @@
     <div class="col-md-4">
       <div class="form-group">
           <label>Tanggal Dianjurkan Tes</label>
-          <input type="date" name="tanggal_dianjurkan_tes" class="form-control" value="{if: $data_tb}{$data_tb.tanggal_dianjurkan_tes}{/if}" />
+          <input type="date" name="tanggal_dianjurkan_tes" class="form-control" value="{if: $data_tb}{?=isset_or($data_tb.tanggal_dianjurkan_tes)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
       <div class="form-group">
           <label>Tanggal Tes HIV</label>
-          <input type="date" name="tanggal_tes_hiv" class="form-control" value="{if: $data_tb}{$data_tb.tanggal_tes_hiv}{/if}" />
+          <input type="date" name="tanggal_tes_hiv" class="form-control" value="{if: $data_tb}{?=isset_or($data_tb.tanggal_tes_hiv)?}{/if}" />
       </div>
     </div>
     <div class="col-md-4">
@@ -514,13 +514,13 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Keterangan</label>
-          <input type="text" name="keterangan" class="form-control" placeholder="Keterangan" value="{if: $data_tb}{$data_tb.keterangan}{/if}" />
+          <input type="text" name="keterangan" class="form-control" placeholder="Keterangan" value="{if: $data_tb}{?=isset_or($data_tb.keterangan)?}{/if}" />
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
           <label>Kode ICD X</label>
-          <input type="text" name="kode_icd_x" class="form-control" placeholder="Kode ICD X" value="{if: $data_tb}{$data_tb.kode_icd_x}{/if}" />
+          <input type="text" name="kode_icd_x" class="form-control" placeholder="Kode ICD X" value="{if: $data_tb}{?=isset_or($data_tb.kode_icd_x)?}{/if}" />
       </div>
     </div>
     

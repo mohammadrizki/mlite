@@ -11,7 +11,7 @@
                 {/if}
                 {if: isset($error)}
                 <div class="well well-sm clearfix" style="margin: 15px 0 15px 0;">
-                    <span class="text-danger">{$error}</span>
+                    <span class="text-danger">{?=isset_or($error)?}</span>
                     <span class="label label-danger pull-right">System Error</span>
                 </div>
                 {/if}
@@ -22,7 +22,7 @@
                 </div>
                 {/if}
                 <p>Terima kasih, perbaruan sistem selalu aman dan up-todate!</p>
-                <p><b>Versi:</b> {$settings.version}</p>
+                <p><b>Versi:</b> {?=isset_or($settings.version)?}</p>
                 {if: $manual_mode}
                     <div class="well well-sm clearfix" style="margin: 15px 0 15px 0;">
                         <span class="text-info"><b>Manual mode enabled.</b> Pleasy copy latest version to base directory. System will detect it automatically.</span>

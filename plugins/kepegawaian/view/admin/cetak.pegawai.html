@@ -13,11 +13,11 @@
     <tbody>
         {loop: $pegawai}
         <tr>
-            <td>{$value.nik}</td>
-            <td>{$value.nama}</td>
-            <td>{$value.tmp_lahir}</td>
-            <td>{$value.tgl_lahir}</td>
-            <td>{$value.stts_aktif}</td>
+            <td>{?=isset_or($value.nik)?}</td>
+            <td>{?=isset_or($value.nama)?}</td>
+            <td>{?=isset_or($value.tmp_lahir)?}</td>
+            <td>{?=isset_or($value.tgl_lahir)?}</td>
+            <td>{?=isset_or($value.stts_aktif)?}</td>
         </tr>
         {/loop}
     </tbody>

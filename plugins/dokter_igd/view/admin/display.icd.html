@@ -20,11 +20,11 @@
            </tr>
            {loop: $diagnosa}
            <tr>
-             <td valign="top" width="100px">{$value.kd_penyakit}</td>
-             <td valign="top">{$value.nama}</td>
-             <td valign="top" width="10px">{$value.prioritas}</td>
+             <td valign="top" width="100px">{?=isset_or($value.kd_penyakit)?}</td>
+             <td valign="top">{?=isset_or($value.nama)?}</td>
+             <td valign="top" width="10px">{?=isset_or($value.prioritas)?}</td>
              <td valign="top" width="10px">
-               <button type="button" name="button" class="btn btn-danger btn-xs hapus_icd10" data-no_rawat="{$value.no_rawat}" data-prioritas="{$value.prioritas}"><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
+               <button type="button" name="button" class="btn btn-danger btn-xs hapus_icd10" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-prioritas="{?=isset_or($value.prioritas)?}"><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
              </td>
            </tr>
            {/loop}
@@ -44,11 +44,11 @@
            </tr>
            {loop: $prosedur}
            <tr>
-             <td valign="top" width="100px">{$value.kode}</td>
-             <td valign="top">{$value.nama}</td>
-             <td valign="top" width="10px">{$value.prioritas}</td>
+             <td valign="top" width="100px">{?=isset_or($value.kode)?}</td>
+             <td valign="top">{?=isset_or($value.nama)?}</td>
+             <td valign="top" width="10px">{?=isset_or($value.prioritas)?}</td>
              <td valign="top" width="10px">
-               <button type="button" name="button" class="btn btn-danger btn-xs hapus_icd9" data-no_rawat="{$value.no_rawat}" data-prioritas="{$value.prioritas}"><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
+               <button type="button" name="button" class="btn btn-danger btn-xs hapus_icd9" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-prioritas="{?=isset_or($value.prioritas)?}"><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
              </td>
            </tr>
            {/loop}

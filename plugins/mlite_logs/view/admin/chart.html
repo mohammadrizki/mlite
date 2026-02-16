@@ -83,9 +83,9 @@
                     <div class="dropdown-content">
                         {loop: $column}
                             {if: isset_or(parseUrl()[3])} 
-                                <a href="{?=url([ADMIN,'mlite_logs','chart',parseUrl()[2], $value.COLUMN_NAME])?}">{$value.COLUMN_NAME}</a>
+                                <a href="{?=url([ADMIN,'mlite_logs','chart',parseUrl()[2], $value.COLUMN_NAME])?}">{?=isset_or($value.COLUMN_NAME)?}</a>
                             {else}
-                                <a href="{?=url([ADMIN,'mlite_logs','chart','pie', $value.COLUMN_NAME])?}">{$value.COLUMN_NAME}</a>
+                                <a href="{?=url([ADMIN,'mlite_logs','chart','pie', $value.COLUMN_NAME])?}">{?=isset_or($value.COLUMN_NAME)?}</a>
                             {/if}
                         {/loop}
                     </div>                    
@@ -102,12 +102,12 @@
 <script>
 	const ctx = document.getElementById('mlite_logs_chart');
 	new Chart(ctx, {
-		type: '{$type}',
+		type: '{?=isset_or($type)?}',
 		data: {
-			labels: {$labels},
+			labels: {?=isset_or($labels)?},
 			datasets: [{
 				label: '# of {if: isset_or(parseUrl()[3])}{?=parseUrl()[3]?}{else}username{/if}',
-				data: {$datasets}
+				data: {?=isset_or($datasets)?}
 			}]
 		},
 		options: {

@@ -50,9 +50,9 @@
               {if: $bukubesar}
               {loop: $bukubesar}
               <tr>
-                <td>{$value.no_jurnal}</td>
-                <td>{$value.tgl_jurnal}</td>
-                <td>{$value.keterangan}</td>
+                <td>{?=isset_or($value.no_jurnal)?}</td>
+                <td>{?=isset_or($value.tgl_jurnal)?}</td>
+                <td>{?=isset_or($value.keterangan)?}</td>
                 <td><span class="pull-right">{?= number_format($value.debet,2,',','.')?}</span></td>
                 <td><span class="pull-right">{?= number_format($value.kredit,2,',','.')?}</span></td>
                 <td><span class="pull-right">{?= number_format($value.saldo,2,',','.')?}</span></td>

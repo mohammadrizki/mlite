@@ -17,7 +17,7 @@
                         <label>Pilih Perawatan</label>
                         <select name="id_template" id="id_template" class="form-control" data-use-search="true">
                             {loop: $template_laboratorium}
-                            <option value="{$value.id_template} : {$value.kd_jenis_prw}">[{$value.id_template}] - {$value.kd_jenis_prw} - {$value.Pemeriksaan}</option>
+                            <option value="{?=isset_or($value.id_template)?} : {?=isset_or($value.kd_jenis_prw)?}">[{?=isset_or($value.id_template)?}] - {?=isset_or($value.kd_jenis_prw)?} - {?=isset_or($value.Pemeriksaan)?}</option>
                             {/loop}
                         </select>
                     </div>
@@ -56,13 +56,13 @@
         <tbody>
         {loop: $mapping_lab_satu_sehat}
         <tr class="mapping_lab_satu_sehat"
-        data-id_template="{$value.id_template}"
+        data-id_template="{?=isset_or($value.id_template)?}"
         >
-            <td>{$value.id_template}</td>
-            <td>{$value.kd_jenis_prw}</td>
-            <td>{$value.Pemeriksaan}</td>
-            <td>{$value.code}</td>
-            <td>{$value.display}</td>
+            <td>{?=isset_or($value.id_template)?}</td>
+            <td>{?=isset_or($value.kd_jenis_prw)?}</td>
+            <td>{?=isset_or($value.Pemeriksaan)?}</td>
+            <td>{?=isset_or($value.code)?}</td>
+            <td>{?=isset_or($value.display)?}</td>
             <td>{?=isset_or($value.sampel_code, '-')?}</td>
             <td>{?=isset_or($value.sampel_system, '-')?}</td>
             <td>{?=isset_or($value.sampel_display, '-')?}</td>

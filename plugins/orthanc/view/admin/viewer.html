@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DICOM-Viewer</title>
     <link rel="stylesheet" type="text/css" href="{?=url()?}/assets/css/font-awesome.css">
-    <link rel="stylesheet" type="text/css" href="{$baseUrl}/css/admin/styles.css?v=2">
+    <link rel="stylesheet" type="text/css" href="{?=isset_or($baseUrl)?}/css/admin/styles.css?v=2">
     <!-- Bootstrap 3 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -258,12 +258,12 @@
     <!-- Scripts -->
     <script src="{?=url()?}/assets/jscripts/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="{$baseUrl}/js/admin/diacom/hammer.js"></script>
-    <script src="{$baseUrl}/js/admin/diacom/dicomParser.min.js"></script>
-    <script src="{$baseUrl}/js/admin/diacom/cornerstone.js"></script>
-    <script src="{$baseUrl}/js/admin/diacom/cornerstoneMath.min.js"></script>
-    <script src="{$baseUrl}/js/admin/diacom/cornerstoneWADOImageLoader.bundle.min.js"></script>
-    <script src="{$baseUrl}/js/admin/diacom/cornerstoneTools.js"></script>
+    <script src="{?=isset_or($baseUrl)?}/js/admin/diacom/hammer.js"></script>
+    <script src="{?=isset_or($baseUrl)?}/js/admin/diacom/dicomParser.min.js"></script>
+    <script src="{?=isset_or($baseUrl)?}/js/admin/diacom/cornerstone.js"></script>
+    <script src="{?=isset_or($baseUrl)?}/js/admin/diacom/cornerstoneMath.min.js"></script>
+    <script src="{?=isset_or($baseUrl)?}/js/admin/diacom/cornerstoneWADOImageLoader.bundle.min.js"></script>
+    <script src="{?=isset_or($baseUrl)?}/js/admin/diacom/cornerstoneTools.js"></script>
     <script src="{?=url([ADMIN, 'orthanc', 'javascripttools'])?}"></script>
 </body>
 </html>

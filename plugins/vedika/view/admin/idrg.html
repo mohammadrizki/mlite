@@ -19,7 +19,7 @@
                             </h4>
                         
                         <div class="search-row">
-                            <input type="hidden" id="hide_input_data" value="{$is_final}">
+                            <input type="hidden" id="hide_input_data" value="{?=isset_or($is_final)?}">
                             <label class="search-label">Diagnosa:</label>
                             <div class="search-input">
                                 <select class="form-control" id="diagnosisSelect" style="width: 100%;">
@@ -1219,7 +1219,7 @@
         // Set jenis rawat berdasarkan data form
         const tglMasuk = $('#tanggalMasuk').val();
         const tglPulang = $('#tanggalPulang').val();
-        const jenisRawat = '{$reg_periksa.jnspelayanan}';
+        const jenisRawat = '{?=isset_or($reg_periksa.jnspelayanan)?}';
         
         let jenisRawatText = '';
         if (jenisRawat === '1') {
@@ -1717,7 +1717,7 @@
 
         var noSep = $('#nosep').val();
         
-        var msg = JSON.parse('{$msg}');
+        var msg = JSON.parse('{?=isset_or($msg)?}');
 
         if (msg && msg.metadata && msg.metadata.message) {
             showSuccessMessage(msg.metadata.message);
@@ -1938,7 +1938,7 @@
                 console.error('Error :', error);
             }
         });
-        console.log('{$noRawat}');
+        console.log('{?=isset_or($noRawat)?}');
     });
         
     // Initialize diagnosis Selectator (deferred until modal is shown)

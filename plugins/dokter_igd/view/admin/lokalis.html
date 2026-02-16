@@ -280,7 +280,7 @@ jQuery(document).ready( $ => {
 
   }
   
-  if('{$lokalis}' !== ""){
+  if('{?=isset_or($lokalis)?}' !== ""){
     loadImage("{?=url(UPLOADS)?}/lokalis/{?=$lokalis?}");
   } else {
     loadImage("{?=url()?}/assets/img/lokalis.jpeg");

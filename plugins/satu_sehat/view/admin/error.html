@@ -3,13 +3,13 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <i class="fa fa-exclamation-triangle text-danger"></i> {$title}
+          <i class="fa fa-exclamation-triangle text-danger"></i> {?=isset_or($title)?}
         </h3>
       </div>
       <div class="panel-body">
         <div class="alert alert-danger" role="alert">
           <h4><i class="fa fa-exclamation-triangle"></i> Error!</h4>
-          <p>{$message}</p>
+          <p>{?=isset_or($message)?}</p>
         </div>
         <div class="text-center">
           <a href="{?=url([ADMIN, 'satu_sehat', 'settings'])?}" class="btn btn-primary">

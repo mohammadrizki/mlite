@@ -117,9 +117,9 @@
   
   var currentPage = 1;
   var baseUrl = '{?=url()?}/{?=ADMIN?}/api/pasien';
-  var token = '{$token}';
-  var canUpdate = '{$mlite_crud_permissions.can_update}' == 'true';
-  var adminMode = '{$admin_mode}';
+  var token = '{?=isset_or($token)?}';
+  var canUpdate = '{?=isset_or($mlite_crud_permissions.can_update)?}' == 'true';
+  var adminMode = '{?=isset_or($admin_mode)?}';
 
   $(document).ready(function() {
       loadData();

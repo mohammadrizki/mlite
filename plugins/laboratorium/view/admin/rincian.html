@@ -14,31 +14,31 @@
     <tbody>
       {loop: $periksa_lab}
       <tr>
-        <td>{$value.nomor}</td>
+        <td>{?=isset_or($value.nomor)?}</td>
         <td colspan="4">
-          Nama Pemeriksaan: {$value.nm_perawatan}<br>
-          Tanggal: {$value.tgl_periksa}<br>
-          Jam: {$value.jam}<br>
-          Dokter perujuk: {$value.nm_dokter}
+          Nama Pemeriksaan: {?=isset_or($value.nm_perawatan)?}<br>
+          Tanggal: {?=isset_or($value.tgl_periksa)?}<br>
+          Jam: {?=isset_or($value.jam)?}<br>
+          Dokter perujuk: {?=isset_or($value.nm_dokter)?}
         </td>
         <td colspan="2">
-          <button type="button" class="btn btn-danger btn-xs {if: $this->core->getUserInfo('role') != 'admin'}disabled{else}hapus_laboratorium{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}" data-kd_jenis_prw="{$value.kd_jenis_prw}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
-          <button type="button" name="button" class="btn btn-primary btn-xs cetak_hasil" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}"><i class="fa fa-print"></i><span class="hidden-xs"> Cetak Hasil</span></button>
+          <button type="button" class="btn btn-danger btn-xs {if: $this->core->getUserInfo('role') != 'admin'}disabled{else}hapus_laboratorium{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}" data-kd_jenis_prw="{?=isset_or($value.kd_jenis_prw)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
+          <button type="button" name="button" class="btn btn-primary btn-xs cetak_hasil" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}"><i class="fa fa-print"></i><span class="hidden-xs"> Cetak Hasil</span></button>
         </td>
       </tr>
       {loop: $value.detail_periksa_lab as $data2}
       <tr>
         <td></td>
-        <td>{$data2.Pemeriksaan}</td>
-        <td with="200" contenteditable="true" data-old_value="{$data2.nilai}" onBlur="saveNilai(this,'nilai','{$data2.no_rawat}','{$data2.tgl_periksa}','{$data2.jam}','{$data2.id_template}')" onClick="highlightEdit(this);">{$data2.nilai}</td>
+        <td>{?=isset_or($data2.Pemeriksaan)?}</td>
+        <td with="200" contenteditable="true" data-old_value="{?=isset_or($data2.nilai)?}" onBlur="saveNilai(this,'nilai','{?=isset_or($data2.no_rawat)?}','{?=isset_or($data2.tgl_periksa)?}','{?=isset_or($data2.jam)?}','{?=isset_or($data2.id_template)?}')" onClick="highlightEdit(this);">{?=isset_or($data2.nilai)?}</td>
         <td>
-          {if: $pasien.jk == 'L' && $reg_periksa.umurdaftar < '16'}{$data2.nilai_rujukan_la}{/if}
-          {if: $pasien.jk == 'L' && $reg_periksa.umurdaftar >= '16'}{$data2.nilai_rujukan_ld}{/if}
-          {if: $pasien.jk == 'P' && $reg_periksa.umurdaftar < '16'}{$data2.nilai_rujukan_pa}{/if}
-          {if: $pasien.jk == 'P' && $reg_periksa.umurdaftar >= '16'}{$data2.nilai_rujukan_pd}{/if}
+          {if: $pasien.jk == 'L' && $reg_periksa.umurdaftar < '16'}{?=isset_or($data2.nilai_rujukan_la)?}{/if}
+          {if: $pasien.jk == 'L' && $reg_periksa.umurdaftar >= '16'}{?=isset_or($data2.nilai_rujukan_ld)?}{/if}
+          {if: $pasien.jk == 'P' && $reg_periksa.umurdaftar < '16'}{?=isset_or($data2.nilai_rujukan_pa)?}{/if}
+          {if: $pasien.jk == 'P' && $reg_periksa.umurdaftar >= '16'}{?=isset_or($data2.nilai_rujukan_pd)?}{/if}
         </td>
-        <td>{$data2.satuan}</td>
-        <td contenteditable="true" data-old_value="{$data2.keterangan}" onBlur="saveKeterangan(this,'keterangan','{$data2.no_rawat}','{$data2.tgl_periksa}','{$data2.jam}','{$data2.id_template}')" onClick="highlightEdit(this);">{?=nl2br($data2.keterangan)?}</td>
+        <td>{?=isset_or($data2.satuan)?}</td>
+        <td contenteditable="true" data-old_value="{?=isset_or($data2.keterangan)?}" onBlur="saveKeterangan(this,'keterangan','{?=isset_or($data2.no_rawat)?}','{?=isset_or($data2.tgl_periksa)?}','{?=isset_or($data2.jam)?}','{?=isset_or($data2.id_template)?}')" onClick="highlightEdit(this);">{?=nl2br($data2.keterangan)?}</td>
       </tr>
       {/loop}
       <tr>
@@ -67,15 +67,15 @@
     <tbody>
       {loop: $laboratorium}
       <tr>
-        <td>{$value.nm_dokter}</td>
-        <td>{$value.noorder}</td>
-        <td>{$value.tgl_permintaan} {$value.jam_permintaan}</td>
+        <td>{?=isset_or($value.nm_dokter)?}</td>
+        <td>{?=isset_or($value.noorder)?}</td>
+        <td>{?=isset_or($value.tgl_permintaan)?} {?=isset_or($value.jam_permintaan)?}</td>
         <td>
-          <!--<button type="button" class="btn btn-danger btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}hapus_permintaan_lab{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_permintaan="{$value.tgl_permintaan}" data-jam_permintaan="{$value.jam_permintaan}" data-noorder="{$value.noorder}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>-->
+          <!--<button type="button" class="btn btn-danger btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}hapus_permintaan_lab{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_permintaan="{?=isset_or($value.tgl_permintaan)?}" data-jam_permintaan="{?=isset_or($value.jam_permintaan)?}" data-noorder="{?=isset_or($value.noorder)?}"><i class="fa fa-trash"></i><span class="hidden-xs"> Hapus</span></button>-->
           {if: $this->core->checkPermission($this->core->getUserInfo('username'), 'can_update', 'laboratorium') == true || $this->core->checkPermission($this->core->getUserInfo('username'), 'can_update', 'laboratorium') == true}
-          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}validasi_permintaan_lab{/if}" data-no_rawat="{$value.no_rawat}" data-tgl_permintaan="{$value.tgl_permintaan}" data-jam_permintaan="{$value.jam_permintaan}" data-noorder="{$value.noorder}"><i class="fa fa-check"></i><span class="hidden-xs"> Validasi</span></button>
+          <button type="button" class="btn btn-success btn-xs {if: $value.tgl_sampel !== '0000-00-00' || $value.jam_sampel !== '00:00:00'}disabled{else}validasi_permintaan_lab{/if}" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_permintaan="{?=isset_or($value.tgl_permintaan)?}" data-jam_permintaan="{?=isset_or($value.jam_permintaan)?}" data-noorder="{?=isset_or($value.noorder)?}"><i class="fa fa-check"></i><span class="hidden-xs"> Validasi</span></button>
           {/if}
-          <button type="button" name="button" class="btn btn-primary btn-xs cetak_permintaan" data-noorder="{$value.noorder}"><i class="fa fa-print"></i><span class="hidden-xs"> Cetak Permintaan</span></button>
+          <button type="button" name="button" class="btn btn-primary btn-xs cetak_permintaan" data-noorder="{?=isset_or($value.noorder)?}"><i class="fa fa-print"></i><span class="hidden-xs"> Cetak Permintaan</span></button>
         </td>
       </tr>
       <tr>
@@ -84,8 +84,8 @@
       </tr>
         {loop: $value.permintaan_pemeriksaan_lab as $data}
         <tr>
-          <td colspan="3">{$data.nm_perawatan}</td>
-          <td>{$data.stts_bayar}</td>
+          <td colspan="3">{?=isset_or($data.nm_perawatan)?}</td>
+          <td>{?=isset_or($data.stts_bayar)?}</td>
         </tr>
         <tr>
           <td colspan="4">
@@ -101,13 +101,13 @@
               </tr>
               {loop: $data.permintaan_detail_permintaan_lab as $data2}
               <tr>
-                <td>- {$data2.template_laboratorium.Pemeriksaan}</td>
-                <td>{$data2.template_laboratorium.satuan}</td>
-                <td>{$data2.template_laboratorium.nilai_rujukan_la}</td>
-                <td>{$data2.template_laboratorium.nilai_rujukan_pa}</td>
-                <td>{$data2.template_laboratorium.nilai_rujukan_ld}</td>
-                <td>{$data2.template_laboratorium.nilai_rujukan_pd}</td>
-                <!--<td><span class="fa fa-trash btn btn-danger hapus_detail_permintaan" data-noorder={$data.noorder} data-kd_jenis_prw={$data.kd_jenis_prw}  data-id_template={$data2.template_laboratorium.id_template}><span></td>-->
+                <td>- {?=isset_or($data2.template_laboratorium.Pemeriksaan)?}</td>
+                <td>{?=isset_or($data2.template_laboratorium.satuan)?}</td>
+                <td>{?=isset_or($data2.template_laboratorium.nilai_rujukan_la)?}</td>
+                <td>{?=isset_or($data2.template_laboratorium.nilai_rujukan_pa)?}</td>
+                <td>{?=isset_or($data2.template_laboratorium.nilai_rujukan_ld)?}</td>
+                <td>{?=isset_or($data2.template_laboratorium.nilai_rujukan_pd)?}</td>
+                <!--<td><span class="fa fa-trash btn btn-danger hapus_detail_permintaan" data-noorder={?=isset_or($data.noorder)?} data-kd_jenis_prw={?=isset_or($data.kd_jenis_prw)?}  data-id_template={?=isset_or($data2.template_laboratorium.id_template)?}><span></td>-->
               </tr>
               {/loop}
             </table>

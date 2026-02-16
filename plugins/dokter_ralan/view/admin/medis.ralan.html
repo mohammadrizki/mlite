@@ -8,19 +8,19 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Nomor Rawat</label>
-          <input type="text" name="no_rawat_medisRalan" class="form-control" placeholder="Nomor Rawat" required value="{$reg_periksa.no_rawat}" readonly />
+          <input type="text" name="no_rawat_medisRalan" class="form-control" placeholder="Nomor Rawat" required value="{?=isset_or($reg_periksa.no_rawat)?}" readonly />
       </div>
     </div>
      <div class="col-md-6">
       <div class="form-group">
           <label>Nama Pasien</label>
-          <input type="text" name="nm_pasien" class="form-control" placeholder="Nomor Rawat" required value="{$pasien.nm_pasien}" readonly />
+          <input type="text" name="nm_pasien" class="form-control" placeholder="Nomor Rawat" required value="{?=isset_or($pasien.nm_pasien)?}" readonly />
       </div>
     </div>
     <div class="col-sm-3">
       <div class="form-group">
         <label for="kd_dokter">Dokter</label>
-        <input type="text" name="kd_dokter" class="form-control" required value="{$dokter.nm_dokter}" readonly>
+        <input type="text" name="kd_dokter" class="form-control" required value="{?=isset_or($dokter.nm_dokter)?}" readonly>
       </div>
     </div>
     <div class="col-sm-3">

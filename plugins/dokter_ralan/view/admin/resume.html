@@ -7,7 +7,7 @@
     <div class="col-md-12">
       <div class="form-group">
           <label>Nomor Rawat</label>
-          <input type="text" name="no_rawat_resume" class="form-control" placeholder="Nomor Rawat" required value="{$reg_periksa.no_rawat}" readonly />
+          <input type="text" name="no_rawat_resume" class="form-control" placeholder="Nomor Rawat" required value="{?=isset_or($reg_periksa.no_rawat)?}" readonly />
       </div>
     </div>
     <div class="col-md-12">
@@ -57,14 +57,14 @@
         <tbody>
           {if: $resume_pasien}
           <tr>
-            <td>{$resume_pasien.no_rawat}</td>
-            <td>{$resume_pasien.keluhan_utama}</td>
-            <td>{$resume_pasien.diagnosa_utama}</td>
-            <td>{$resume_pasien.prosedur_utama}</td>
-            <td>{$resume_pasien.kondisi_pulang}</td>
-            <td>{$resume_pasien.nm_dokter}</td>
+            <td>{?=isset_or($resume_pasien.no_rawat)?}</td>
+            <td>{?=isset_or($resume_pasien.keluhan_utama)?}</td>
+            <td>{?=isset_or($resume_pasien.diagnosa_utama)?}</td>
+            <td>{?=isset_or($resume_pasien.prosedur_utama)?}</td>
+            <td>{?=isset_or($resume_pasien.kondisi_pulang)?}</td>
+            <td>{?=isset_or($resume_pasien.nm_dokter)?}</td>
             <td>
-              <button type="button" class="btn btn-danger btn-xs hapus_resume" data-no_rawat="{$resume_pasien.no_rawat}">
+              <button type="button" class="btn btn-danger btn-xs hapus_resume" data-no_rawat="{?=isset_or($resume_pasien.no_rawat)?}">
                 <i class="fa fa-trash"></i> Hapus
               </button>
             </td>

@@ -8,7 +8,7 @@
                         <a href="{?=url(ADMIN.'/presensi/jammasuk')?}" role="tab">Jam Masuk</a>
                     </li>
                     <li class="{if: !empty($jam_masuk.addUrl)}active{/if}">
-                        <a href="{$jam_masuk.addURL}" role="tab">Tambah</a>
+                        <a href="{?=isset_or($jam_masuk.addURL)?}" role="tab">Tambah</a>
                     </li>
                 </ul>
             </div>
@@ -43,14 +43,14 @@
         					{if: !empty($jam_masuk.list)}
 						{loop: $jam_masuk.list}
     						<tr>
-    							<td>{$value.shift}</td>
-                                        <td>{$value.jam_masuk}</td>
-                                        <td>{$value.jam_pulang}</td>
+    							<td>{?=isset_or($value.shift)?}</td>
+                                        <td>{?=isset_or($value.jam_masuk)?}</td>
+                                        <td>{?=isset_or($value.jam_pulang)?}</td>
     							<td class="text-right">
-    								<a href="{$value.editURL}" class="btn btn-success btn-xs">
+    								<a href="{?=isset_or($value.editURL)?}" class="btn btn-success btn-xs">
     									<i class="fa fa-pencil"></i> <span class="hidden-xs">Edit</span>
     								</a>
-                                            <a href="{$value.delURL}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
+                                            <a href="{?=isset_or($value.delURL)?}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
       									<i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>
       								</a>
     							</td>
@@ -64,7 +64,7 @@
     					</tbody>
     				</table>
     			</div>
-			{$jam_masuk.pagination}
+			{?=isset_or($jam_masuk.pagination)?}
             </div>
         </div>
     </div>

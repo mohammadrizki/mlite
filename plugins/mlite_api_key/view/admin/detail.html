@@ -8,12 +8,12 @@
         </thead>
         <tbody>
             {loop: $detail}
-            <tr><td>Id</td><td>{$value.id}</td><tr>
-<tr><td>Api Key</td><td>{$value.api_key}</td><tr>
-<tr><td>Username</td><td>{$value.username}</td><tr>
-<tr><td>Method</td><td>{$value.method}</td><tr>
-<tr><td>Ip Range</td><td>{$value.ip_range}</td><tr>
-<tr><td>Exp Time</td><td>{$value.exp_time}</td><tr>
+            <tr><td>Id</td><td>{?=isset_or($value.id)?}</td><tr>
+<tr><td>Api Key</td><td>{?=isset_or($value.api_key)?}</td><tr>
+<tr><td>Username</td><td>{?=isset_or($value.username)?}</td><tr>
+<tr><td>Method</td><td>{?=isset_or($value.method)?}</td><tr>
+<tr><td>Ip Range</td><td>{?=isset_or($value.ip_range)?}</td><tr>
+<tr><td>Exp Time</td><td>{?=isset_or($value.exp_time)?}</td><tr>
 
             {/loop}
         </tbody>
@@ -34,10 +34,10 @@ $(document).ready(function() {
         var img = "{?=base64_encode(file_get_contents(url(ADMIN . '/' . $settings['logo'])))?}";
         doc.addImage(img, 'JPEG', 20, 10, 50, 50);
         doc.setFontSize(20);
-        doc.text("{$settings.nama_instansi}", 80, 35, null, null, null);
+        doc.text("{?=isset_or($settings.nama_instansi)?}", 80, 35, null, null, null);
         doc.setFontSize(10);
-        doc.text("{$settings.alamat} - {$settings.kota} - {$settings.propinsi}", 80, 46, null, null, null);
-        doc.text("Telepon: {$settings.nomor_telepon} - Email: {$settings.email}", 80, 56, null, null, null);
+        doc.text("{?=isset_or($settings.alamat)?} - {?=isset_or($settings.kota)?} - {?=isset_or($settings.propinsi)?}", 80, 46, null, null, null);
+        doc.text("Telepon: {?=isset_or($settings.nomor_telepon)?} - Email: {?=isset_or($settings.email)?}", 80, 56, null, null, null);
         doc.line(20,70,572,70,null); /* doc.line(20,70,820,70,null); --> Jika landscape */
         doc.line(20,72,572,72,null); /* doc.line(20,72,820,72,null); --> Jika landscape */
         doc.setFontSize(14);
@@ -60,7 +60,7 @@ $(document).ready(function() {
                 footerStr = footerStr + " of " + totalPagesExp;
                 }
                 doc.setFontSize(10);
-                doc.text(`© ${new Date().getFullYear()} {$settings.nama_instansi}.`, data.settings.margin.left, doc.internal.pageSize.height - 10);                
+                doc.text(`© ${new Date().getFullYear()} {?=isset_or($settings.nama_instansi)?}.`, data.settings.margin.left, doc.internal.pageSize.height - 10);                
                 doc.text(footerStr, data.settings.margin.left + 480, doc.internal.pageSize.height - 10);
            }
         });

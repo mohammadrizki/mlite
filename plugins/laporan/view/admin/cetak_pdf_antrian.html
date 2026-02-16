@@ -27,15 +27,15 @@
                 {loop: $laporan}
                 <tr>
                     <td>{?=$key+1?}</td>
-                    <td>{$value.no_rawat}</td>
-                    <td>{$value.no_rkm_medis}</td>
-                    <td>{$value.nm_pasien}</td>
-                    <td>{$value.tgl_registrasi}</td>
-                    <td>{$value.jam_reg}</td>
-                    <td>{$value.nm_poli}</td>
-                    <td>{$value.nm_dokter}</td>
-                    <td>{$value.status_bayar}</td>
-                    <td>{$value.stts}</td>
+                    <td>{?=isset_or($value.no_rawat)?}</td>
+                    <td>{?=isset_or($value.no_rkm_medis)?}</td>
+                    <td>{?=isset_or($value.nm_pasien)?}</td>
+                    <td>{?=isset_or($value.tgl_registrasi)?}</td>
+                    <td>{?=isset_or($value.jam_reg)?}</td>
+                    <td>{?=isset_or($value.nm_poli)?}</td>
+                    <td>{?=isset_or($value.nm_dokter)?}</td>
+                    <td>{?=isset_or($value.status_bayar)?}</td>
+                    <td>{?=isset_or($value.stts)?}</td>
                 </tr>
                 {/loop}
             </tbody>
@@ -53,10 +53,10 @@
         }
         
         doc.setFontSize(18);
-        doc.text("{$settings.nama_instansi}", 80, 30, null, null, null);
+        doc.text("{?=isset_or($settings.nama_instansi)?}", 80, 30, null, null, null);
         doc.setFontSize(10);
-        doc.text("{$settings.alamat} - {$settings.kota} - {$settings.propinsi}", 80, 45, null, null, null);
-        doc.text("Telepon: {$settings.nomor_telepon} - Email: {$settings.email}", 80, 58, null, null, null);
+        doc.text("{?=isset_or($settings.alamat)?} - {?=isset_or($settings.kota)?} - {?=isset_or($settings.propinsi)?}", 80, 45, null, null, null);
+        doc.text("Telepon: {?=isset_or($settings.nomor_telepon)?} - Email: {?=isset_or($settings.email)?}", 80, 58, null, null, null);
         
         // Garis pemisah
         doc.line(20, 70, 820, 70, null);
@@ -66,7 +66,7 @@
         doc.setFontSize(16);
         doc.text("LAPORAN ANTRIAN ONLINE", 20, 95, null, null, null);
         doc.setFontSize(12);
-        doc.text("Periode: {$tgl_awal} s/d {$tgl_akhir}", 20, 115, null, null, null);
+        doc.text("Periode: {?=isset_or($tgl_awal)?} s/d {?=isset_or($tgl_akhir)?}", 20, 115, null, null, null);
         
         // Tabel data
         const totalPagesExp = "{total_pages_count_string}";
@@ -95,7 +95,7 @@
                     footerStr = footerStr + " dari " + totalPagesExp;
                 }
                 doc.setFontSize(8);
-                doc.text(`© ${new Date().getFullYear()} {$settings.nama_instansi}.`, data.settings.margin.left, doc.internal.pageSize.height - 20);
+                doc.text(`© ${new Date().getFullYear()} {?=isset_or($settings.nama_instansi)?}.`, data.settings.margin.left, doc.internal.pageSize.height - 20);
                 doc.text(footerStr, data.settings.margin.left + 700, doc.internal.pageSize.height - 20);
                 doc.text(`Dicetak pada: ${new Date().toLocaleString('id-ID')}`, data.settings.margin.left + 500, doc.internal.pageSize.height - 10);
             }

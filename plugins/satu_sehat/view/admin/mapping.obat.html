@@ -14,7 +14,7 @@
                         <label>Pilih Obat</label>
                         <select name="kode_brng" id="kode_brng" class="form-control" data-use-search="true" >
                             {loop: $databarang}
-                            <option value="{$value.kode_brng}">[{$value.kode_brng}] - {$value.nama_brng}</option>
+                            <option value="{?=isset_or($value.kode_brng)?}">[{?=isset_or($value.kode_brng)?}] - {?=isset_or($value.nama_brng)?}</option>
                             {/loop}
                         </select>
                     </div>
@@ -66,23 +66,23 @@
         <tbody>
             {loop: $mapping_obat_satu_sehat}
             <tr class="mapping_obat_satu_sehat"
-            data-kode_brng="{$value.kode_brng}"
+            data-kode_brng="{?=isset_or($value.kode_brng)?}"
             >
-                <td>{$value.kode_brng}</td>
-                <td>{$value.kode_kfa}</td>
-                <td>{$value.nama_kfa}</td>
-                <td>{$value.kode_bahan}</td>
-                <td>{$value.nama_bahan}</td>
-                <td>{$value.numerator}</td>
-                <td>{$value.satuan_num}</td>
-                <td>{$value.denominator}</td>
-                <td>{$value.satuan_den}</td>
-                <td>{$value.nama_satuan_den}</td>
-                <td>{$value.kode_sediaan}</td>
-                <td>{$value.nama_sediaan}</td>
-                <td>{$value.kode_route}</td>
-                <td>{$value.nama_route}</td>
-                <td>{$value.type}</td>
+                <td>{?=isset_or($value.kode_brng)?}</td>
+                <td>{?=isset_or($value.kode_kfa)?}</td>
+                <td>{?=isset_or($value.nama_kfa)?}</td>
+                <td>{?=isset_or($value.kode_bahan)?}</td>
+                <td>{?=isset_or($value.nama_bahan)?}</td>
+                <td>{?=isset_or($value.numerator)?}</td>
+                <td>{?=isset_or($value.satuan_num)?}</td>
+                <td>{?=isset_or($value.denominator)?}</td>
+                <td>{?=isset_or($value.satuan_den)?}</td>
+                <td>{?=isset_or($value.nama_satuan_den)?}</td>
+                <td>{?=isset_or($value.kode_sediaan)?}</td>
+                <td>{?=isset_or($value.nama_sediaan)?}</td>
+                <td>{?=isset_or($value.kode_route)?}</td>
+                <td>{?=isset_or($value.nama_route)?}</td>
+                <td>{?=isset_or($value.type)?}</td>
                 <td style="white-space: nowrap;">{?=isset_or($value.id_medication, '<a href="'.url([ADMIN, 'satu_sehat', 'medication', $value.kode_brng, 'mapping']).'" data-toggle="modal" data-target="#asuransiModal"><i class="fa fa-check"></i></a>')?}</td>
             </tr>
             {/loop}

@@ -203,10 +203,10 @@
                         {loop: $studies as $study}
                             <tr>
                                 <td>
-                                    <strong>{$study.PatientName}</strong><br>
+                                    <strong>{?=isset_or($study.PatientName)?}</strong><br>
                                     <small class="text-muted">
                                         {if: $study.PatientMainDicomTags.PatientSex}
-                                            {$study.PatientMainDicomTags.PatientSex} - 
+                                            {?=isset_or($study.PatientMainDicomTags.PatientSex)?} - 
                                         {/if}
                                         {if: $study.PatientMainDicomTags.PatientBirthDate}
                                             Born: {?=date('d/m/Y', strtotime($study.PatientMainDicomTags.PatientBirthDate))?}
@@ -214,51 +214,51 @@
                                     </small>
                                 </td>
                                 <td>
-                                    <code>{$study.PatientID}</code>
+                                    <code>{?=isset_or($study.PatientID)?}</code>
                                 </td>
                                 <td>
-                                    <span class="label label-info">{$study.StudyDate}</span>
+                                    <span class="label label-info">{?=isset_or($study.StudyDate)?}</span>
                                 </td>
                                 <td>
-                                    <small>{$study.StudyTime}</small>
+                                    <small>{?=isset_or($study.StudyTime)?}</small>
                                 </td>
                                 <td>
-                                    <strong>{$study.StudyDescription}</strong><br>
+                                    <strong>{?=isset_or($study.StudyDescription)?}</strong><br>
                                     {if: $study.MainDicomTags.StudyID ?? ''}
-                                        <small class="text-muted">ID: {$study.MainDicomTags.StudyID}</small>
+                                        <small class="text-muted">ID: {?=isset_or($study.MainDicomTags.StudyID)?}</small>
                                     {/if}
                                 </td>
                                 <td>
-                                    <span class="label label-default">{$study.Modality}</span>
+                                    <span class="label label-default">{?=isset_or($study.Modality)?}</span>
                                 </td>
                                 <td>
-                                    <span class="badge">{$study.SeriesCount}</span>
+                                    <span class="badge">{?=isset_or($study.SeriesCount)?}</span>
                                 </td>
                                 <td>
-                                    <span class="badge">{$study.InstancesCount}</span>
+                                    <span class="badge">{?=isset_or($study.InstancesCount)?}</span>
                                 </td>
                                 <td class="study-actions">
                                     <div class="btn-group btn-group-sm">
-                                        <a onclick="openFullWindow('{$baseUrl}/viewer?study={$study.ID}&t={?=$_SESSION['token']?}')" 
+                                        <a onclick="openFullWindow('{?=isset_or($baseUrl)?}/viewer?study={?=isset_or($study.ID)?}&t={?=$_SESSION['token']?}')" 
                                           class="btn btn-primary" title="View DICOM" style="cursor:pointer">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{$baseUrl}/series?study={$study.ID}&t={?=$_SESSION['token']?}" 
+                                        <a href="{?=isset_or($baseUrl)?}/series?study={?=isset_or($study.ID)?}&t={?=$_SESSION['token']?}" 
                                            class="btn btn-info" title="View Series">
                                             <i class="fa fa-list"></i>
                                         </a>
                                         <button class="btn btn-warning" 
-                                                onclick="openModifyModal('{$study.ID}', '{$study.PatientName}', '{$study.PatientID}')" 
+                                                onclick="openModifyModal('{?=isset_or($study.ID)?}', '{?=isset_or($study.PatientName)?}', '{?=isset_or($study.PatientID)?}')" 
                                                 title="Modify Tags">
                                             <i class="fa fa-edit"></i>
                                         </button>
                                         <button class="btn btn-success" 
-                                                onclick="downloadStudy('{$study.ID}')" 
+                                                onclick="downloadStudy('{?=isset_or($study.ID)?}')" 
                                                 title="Download Study">
                                             <i class="fa fa-download"></i>
                                         </button>
                                         <button class="btn btn-danger" 
-                                                onclick="deleteStudy('{$study.ID}', '{$study.PatientName}', '{$study.PatientID}')" 
+                                                onclick="deleteStudy('{?=isset_or($study.ID)?}', '{?=isset_or($study.PatientName)?}', '{?=isset_or($study.PatientID)?}')" 
                                                 title="Delete Study">
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -289,11 +289,11 @@
                 <div class="col-md-6">
                   <div class="pagination-info">
                     <p class="text-muted">
-                      Showing page {$pagination.current_page} 
+                      Showing page {?=isset_or($pagination.current_page)?} 
                       {if: $pagination.study_date}
-                        for date: <strong>{$pagination.study_date}</strong>
+                        for date: <strong>{?=isset_or($pagination.study_date)?}</strong>
                       {/if}
-                      (Limit: {$pagination.limit} studies per page)
+                      (Limit: {?=isset_or($pagination.limit)?} studies per page)
                     </p>
                   </div>
                 </div>
@@ -302,7 +302,7 @@
                     <ul class="pagination pull-right" style="margin: 0;">
                       {if: $pagination.has_prev}
                         <li>
-                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}?limit={$pagination.limit}&since={$pagination.prev_offset}{if: $pagination.from_date}&from_date={$pagination.from_date}{/if}{if: $pagination.to_date}&to_date={$pagination.to_date}{/if}" 
+                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}?limit={?=isset_or($pagination.limit)?}&since={?=isset_or($pagination.prev_offset)?}{if: $pagination.from_date}&from_date={?=isset_or($pagination.from_date)?}{/if}{if: $pagination.to_date}&to_date={?=isset_or($pagination.to_date)?}{/if}" 
                              aria-label="Previous">
                             <span aria-hidden="true">&laquo; Previous</span>
                           </a>
@@ -314,12 +314,12 @@
                       {/if}
                       
                       <li class="active">
-                        <span>Page {$pagination.current_page}</span>
+                        <span>Page {?=isset_or($pagination.current_page)?}</span>
                       </li>
                       
                       {if: $pagination.has_next}
                         <li>
-                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}?limit={$pagination.limit}&since={$pagination.next_offset}{if: $pagination.from_date}&from_date={$pagination.from_date}{/if}{if: $pagination.to_date}&to_date={$pagination.to_date}{/if}" 
+                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}?limit={?=isset_or($pagination.limit)?}&since={?=isset_or($pagination.next_offset)?}{if: $pagination.from_date}&from_date={?=isset_or($pagination.from_date)?}{/if}{if: $pagination.to_date}&to_date={?=isset_or($pagination.to_date)?}{/if}" 
                              aria-label="Next">
                             <span aria-hidden="true">Next &raquo;</span>
                           </a>
@@ -340,10 +340,10 @@
                   <div class="page-size-selector">
                     <form method="GET" style="display: inline-block;">
                       {if: $pagination.from_date}
-                        <input type="hidden" name="from_date" value="{$pagination.from_date}">
+                        <input type="hidden" name="from_date" value="{?=isset_or($pagination.from_date)?}">
                       {/if}
                       {if: $pagination.to_date}
-                        <input type="hidden" name="to_date" value="{$pagination.to_date}">
+                        <input type="hidden" name="to_date" value="{?=isset_or($pagination.to_date)?}">
                       {/if}
                       <input type="hidden" name="since" value="0">
                       <label for="limitSelect" class="text-muted" style="margin-right: 5px;">Studies per page:</label>

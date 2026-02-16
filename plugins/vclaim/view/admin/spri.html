@@ -14,7 +14,7 @@
                       <label>Dokter</label>
                       <select class="form-control" name="dokter" id="dokter" data-use-search="true">
                         {loop: $maping_dokter_dpjpvclaim}
-                        <option value="{$value.kd_dokter_bpjs}">{$value.nm_dokter_bpjs}</option>
+                        <option value="{?=isset_or($value.kd_dokter_bpjs)?}">{?=isset_or($value.nm_dokter_bpjs)?}</option>
                         {/loop}
                       </select>
                   </div>
@@ -24,7 +24,7 @@
                       <label>Poli/Unit</label>
                       <select class="form-control" name="poli" id="poli" data-use-search="true">
                         {loop: $maping_poli_bpjs}
-                        <option value="{$value.kd_poli_bpjs}">{$value.nm_poli_bpjs}</option>
+                        <option value="{?=isset_or($value.kd_poli_bpjs)?}">{?=isset_or($value.nm_poli_bpjs)?}</option>
                         {/loop}
                       </select>
                   </div>
@@ -79,12 +79,12 @@
   $("#form_spri").on("click","#load_spri", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{?=isset_or($no_kartu)?}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
   $(document).ready(function() {
     var baseURL = mlite.url + '/' + mlite.admin;
-    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+    $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{?=isset_or($no_kartu)?}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
   });
 
   $("#form_spri").on("click","#simpan_spri", function(event){
@@ -96,7 +96,7 @@
     var poli            = $('#poli').val();
     var dokter          = $('#dokter').val();
 
-    var url = baseURL + '/vclaim/savespri/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
+    var url = baseURL + '/vclaim/savespri/{?=isset_or($no_kartu)?}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token;
 
     $.post(url,{
       tanggal_surat : tanggal_surat,
@@ -105,7 +105,7 @@
       poli : poli
     } ,function(data) {
         alert(data);
-        $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{$no_kartu}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
+        $("#spridisplay").show().load(baseURL + '/vclaim/spridisplay/{?=isset_or($no_kartu)?}/{?=convertNorawat($no_rawat)?}?t=' + mlite.token);
         $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
         "Data SPRI telah disimpan!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+

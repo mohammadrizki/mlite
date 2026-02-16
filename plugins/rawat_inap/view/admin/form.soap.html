@@ -12,19 +12,19 @@
           </div>
           <div class="form-group">
             <label for="id_pendaftaran">Id Rawat</label>
-            <input type="text" name="no_rawat" placeholder="ID Pendaftaran" class="form-control" value="{$patient_data.no_rawat}" readonly>
+            <input type="text" name="no_rawat" placeholder="ID Pendaftaran" class="form-control" value="{?=isset_or($patient_data.no_rawat)?}" readonly>
           </div>
           <div class="form-group">
             <label for="id_pasien">Nomor RM</label>
-            <input type="text" name="no_rkm_medis" class="form-control" placeholder="Nomor Rekam Medik" value="{$patient_data.no_rkm_medis}" readonly>
+            <input type="text" name="no_rkm_medis" class="form-control" placeholder="Nomor Rekam Medik" value="{?=isset_or($patient_data.no_rkm_medis)?}" readonly>
           </div>
           <div class="form-group">
             <label for="nama_pasien">Nama Pasien</label>
-            <input type="text" name="nm_pasien" class="form-control" placeholder="Nama pasien" value="{$patient_data.nm_pasien}" readonly>
+            <input type="text" name="nm_pasien" class="form-control" placeholder="Nama pasien" value="{?=isset_or($patient_data.nm_pasien)?}" readonly>
           </div>
           <div class="form-group">
             <label for="nama_pasien">Umur</label>
-            <input type="text" name="umur" class="form-control" placeholder="Umur pasien" value="{$patient_data.umur}" readonly>
+            <input type="text" name="umur" class="form-control" placeholder="Umur pasien" value="{?=isset_or($patient_data.umur)?}" readonly>
           </div>
       </div>
     </div>
@@ -37,27 +37,27 @@
           <div class="row">
             <div class="col-sm-2">
               <label for="nama_pasien">Tensi(mmHg)</label>
-              <input type="text" name="tensi" class="form-control" placeholder="" value="{$default_values.tensi}">
+              <input type="text" name="tensi" class="form-control" placeholder="" value="{?=isset_or($default_values.tensi)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">Suhu(C)</label>
-              <input type="text" name="suhu_tubuh" class="form-control" placeholder="" value="{$default_values.suhu_tubuh}">
+              <input type="text" name="suhu_tubuh" class="form-control" placeholder="" value="{?=isset_or($default_values.suhu_tubuh)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">Nadi(/mnt)</label>
-              <input type="text" name="nadi" class="form-control" placeholder="" value="{$default_values.nadi}">
+              <input type="text" name="nadi" class="form-control" placeholder="" value="{?=isset_or($default_values.nadi)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">RR(/mnt)</label>
-              <input type="text" name="respirasi" class="form-control" placeholder="" value="{$default_values.respirasi}">
+              <input type="text" name="respirasi" class="form-control" placeholder="" value="{?=isset_or($default_values.respirasi)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">Tinggi(cm)</label>
-              <input type="text" name="tinggi" class="form-control" placeholder="" value="{$default_values.tinggi}">
+              <input type="text" name="tinggi" class="form-control" placeholder="" value="{?=isset_or($default_values.tinggi)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">Berat(kg)</label>
-              <input type="text" name="berat" class="form-control" placeholder="" value="{$default_values.berat}">
+              <input type="text" name="berat" class="form-control" placeholder="" value="{?=isset_or($default_values.berat)?}">
             </div>
           </div>
         </div>
@@ -65,23 +65,23 @@
           <div class="row">
             <div class="col-sm-3">
               <label for="nama_pasien">Kesadaran</label>
-              <input type="text" name="kesadaran" class="form-control" placeholder="" value="{$default_values.kesadaran}">
+              <input type="text" name="kesadaran" class="form-control" placeholder="" value="{?=isset_or($default_values.kesadaran)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">SPO2</label>
-              <input type="text" name="spo2" class="form-control" placeholder="" value="{$default_values.spo2}">
+              <input type="text" name="spo2" class="form-control" placeholder="" value="{?=isset_or($default_values.spo2)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">GCS(E,V,M)</label>
-              <input type="text" name="gcs" class="form-control" placeholder="" value="{$default_values.gcs}">
+              <input type="text" name="gcs" class="form-control" placeholder="" value="{?=isset_or($default_values.gcs)?}">
             </div>
             <div class="col-sm-2">
               <label for="nama_pasien">Alergi</label>
-              <input type="text" name="alergi" class="form-control" placeholder="" value="{$default_values.alergi}">
+              <input type="text" name="alergi" class="form-control" placeholder="" value="{?=isset_or($default_values.alergi)?}">
             </div>
             <div class="col-sm-3">
               <label for="lingkar_perut">Lingkar Perut</label>
-              <input type="text" name="lingkar_perut" class="form-control" placeholder="" value="{$default_values.lingkar_perut}">
+              <input type="text" name="lingkar_perut" class="form-control" placeholder="" value="{?=isset_or($default_values.lingkar_perut)?}">
             </div>
           </div>
         </div>
@@ -90,13 +90,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis">Subyektif</label>
-              <textarea name="keluhan" id="keluhan" rows="2" class="form-control">{$default_values.keluhan}</textarea>
+              <textarea name="keluhan" id="keluhan" rows="2" class="form-control">{?=isset_or($default_values.keluhan)?}</textarea>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis">Obyektif</label>
-              <textarea name="pemeriksaan" id="pemeriksaan" rows="2" class="form-control">{$default_values.pemeriksaan}</textarea>
+              <textarea name="pemeriksaan" id="pemeriksaan" rows="2" class="form-control">{?=isset_or($default_values.pemeriksaan)?}</textarea>
             </div>
           </div>
         </div>
@@ -104,13 +104,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis">Assesment</label>
-              <textarea name="penilaian" id="penilaian" rows="2" class="form-control">{$default_values.penilaian}</textarea>
+              <textarea name="penilaian" id="penilaian" rows="2" class="form-control">{?=isset_or($default_values.penilaian)?}</textarea>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis">Plan</label>
-              <textarea name="rtl" id="rtl" rows="2" class="form-control">{$default_values.rtl}</textarea>
+              <textarea name="rtl" id="rtl" rows="2" class="form-control">{?=isset_or($default_values.rtl)?}</textarea>
             </div>
           </div>
         </div>
@@ -118,13 +118,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis">Instruksi</label>
-              <textarea name="instruksi" id="instruksi" rows="2" class="form-control">{$default_values.instruksi}</textarea>
+              <textarea name="instruksi" id="instruksi" rows="2" class="form-control">{?=isset_or($default_values.instruksi)?}</textarea>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="jenis">Evaluasi</label>
-              <textarea name="evaluasi" id="evaluasi" rows="2" class="form-control">{$default_values.evaluasi}</textarea>
+              <textarea name="evaluasi" id="evaluasi" rows="2" class="form-control">{?=isset_or($default_values.evaluasi)?}</textarea>
             </div>
           </div>
         </div>

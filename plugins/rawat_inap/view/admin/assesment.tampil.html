@@ -13,42 +13,42 @@
   </thead>
   <tbody>
     <tr>
-      <td>{$penilaian_ranap.no_rawat}</td>
-      <td>{$penilaian_ranap.tanggal}</td>
+      <td>{?=isset_or($penilaian_ranap.no_rawat)?}</td>
+      <td>{?=isset_or($penilaian_ranap.tanggal)?}</td>
       <td>
-        <strong>Informasi:</strong> {$penilaian_ranap.informasi}<br>
-        <strong>Cara Masuk:</strong> {$penilaian_ranap.cara_masuk}<br>
-        <strong>Tiba di Ruang:</strong> {$penilaian_ranap.tiba_diruang_rawat}
+        <strong>Informasi:</strong> {?=isset_or($penilaian_ranap.informasi)?}<br>
+        <strong>Cara Masuk:</strong> {?=isset_or($penilaian_ranap.cara_masuk)?}<br>
+        <strong>Tiba di Ruang:</strong> {?=isset_or($penilaian_ranap.tiba_diruang_rawat)?}
       </td>
       <td>
-        <strong>TD:</strong> {$penilaian_ranap.pemeriksaan_td} mmHg<br>
-        <strong>Nadi:</strong> {$penilaian_ranap.pemeriksaan_nadi} x/mnt<br>
-        <strong>RR:</strong> {$penilaian_ranap.pemeriksaan_rr} x/mnt<br>
-        <strong>Suhu:</strong> {$penilaian_ranap.pemeriksaan_suhu} °C<br>
-        <strong>SpO2:</strong> {$penilaian_ranap.pemeriksaan_spo2} &#37;<br>
-        <strong>GCS:</strong> {$penilaian_ranap.pemeriksaan_gcs}<br>
-        <strong>BB:</strong> {$penilaian_ranap.pemeriksaan_bb} kg<br>
-        <strong>TB:</strong> {$penilaian_ranap.pemeriksaan_tb} cm
+        <strong>TD:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_td)?} mmHg<br>
+        <strong>Nadi:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_nadi)?} x/mnt<br>
+        <strong>RR:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_rr)?} x/mnt<br>
+        <strong>Suhu:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_suhu)?} °C<br>
+        <strong>SpO2:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_spo2)?} &#37;<br>
+        <strong>GCS:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_gcs)?}<br>
+        <strong>BB:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_bb)?} kg<br>
+        <strong>TB:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_tb)?} cm
       </td>
       <td>
-        <strong>Nyeri:</strong> {$penilaian_ranap.penilaian_nyeri}<br>
+        <strong>Nyeri:</strong> {?=isset_or($penilaian_ranap.penilaian_nyeri)?}<br>
         {if: $penilaian_ranap.penilaian_nyeri != 'Tidak Ada Nyeri'}
-        <strong>Skala:</strong> {$penilaian_ranap.penilaian_nyeri_skala}/10<br>
-        <strong>Lokasi:</strong> {$penilaian_ranap.penilaian_nyeri_lokasi}<br>
-        <strong>Kualitas:</strong> {$penilaian_ranap.penilaian_nyeri_kualitas}
+        <strong>Skala:</strong> {?=isset_or($penilaian_ranap.penilaian_nyeri_skala)?}/10<br>
+        <strong>Lokasi:</strong> {?=isset_or($penilaian_ranap.penilaian_nyeri_lokasi)?}<br>
+        <strong>Kualitas:</strong> {?=isset_or($penilaian_ranap.penilaian_nyeri_kualitas)?}
         {/if}
       </td>
       <td>
-        <strong>Petugas 1:</strong> {$penilaian_ranap.nama_petugas1}<br>
-        <strong>Petugas 2:</strong> {$penilaian_ranap.nama_petugas2}
+        <strong>Petugas 1:</strong> {?=isset_or($penilaian_ranap.nama_petugas1)?}<br>
+        <strong>Petugas 2:</strong> {?=isset_or($penilaian_ranap.nama_petugas2)?}
       </td>
       <td>
         <button type="button" class="btn btn-success btn-xs edit_assesment" 
-          data-no_rawat="{$penilaian_ranap.no_rawat}">
+          data-no_rawat="{?=isset_or($penilaian_ranap.no_rawat)?}">
           <span class="fa fa-edit"></span> Edit
         </button>
         <button type="button" class="btn btn-danger btn-xs hapus_assesment" 
-          data-no_rawat="{$penilaian_ranap.no_rawat}">
+          data-no_rawat="{?=isset_or($penilaian_ranap.no_rawat)?}">
           <span class="fa fa-trash"></span> Hapus
         </button>
       </td>
@@ -71,37 +71,37 @@
         <div class="row">
           <div class="col-md-12">
             <strong>Riwayat Penyakit Sekarang (RPS):</strong><br>
-            {$penilaian_ranap.rps}
+            {?=isset_or($penilaian_ranap.rps)?}
           </div>
         </div>
         <hr>
         <div class="row">
           <div class="col-md-4">
-            <strong>RPD:</strong> {$penilaian_ranap.rpd}
+            <strong>RPD:</strong> {?=isset_or($penilaian_ranap.rpd)?}
           </div>
           <div class="col-md-4">
-            <strong>RPK:</strong> {$penilaian_ranap.rpk}
+            <strong>RPK:</strong> {?=isset_or($penilaian_ranap.rpk)?}
           </div>
           <div class="col-md-4">
-            <strong>RPO:</strong> {$penilaian_ranap.rpo}
+            <strong>RPO:</strong> {?=isset_or($penilaian_ranap.rpo)?}
           </div>
         </div>
         <hr>
         <div class="row">
           <div class="col-md-6">
-            <strong>Riwayat Pembedahan:</strong> {$penilaian_ranap.riwayat_pembedahan}
+            <strong>Riwayat Pembedahan:</strong> {?=isset_or($penilaian_ranap.riwayat_pembedahan)?}
           </div>
           <div class="col-md-6">
-            <strong>Riwayat Dirawat di RS:</strong> {$penilaian_ranap.riwayat_dirawat_dirs}
+            <strong>Riwayat Dirawat di RS:</strong> {?=isset_or($penilaian_ranap.riwayat_dirawat_dirs)?}
           </div>
         </div>
         <hr>
         <div class="row">
           <div class="col-md-6">
-            <strong>Riwayat Alergi:</strong> {$penilaian_ranap.riwayat_alergi}
+            <strong>Riwayat Alergi:</strong> {?=isset_or($penilaian_ranap.riwayat_alergi)?}
           </div>
           <div class="col-md-6">
-            <strong>Alat Bantu:</strong> {$penilaian_ranap.alat_bantu_dipakai}
+            <strong>Alat Bantu:</strong> {?=isset_or($penilaian_ranap.alat_bantu_dipakai)?}
           </div>
         </div>
       </div>
@@ -120,57 +120,57 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-6">
-            <strong>Keadaan Umum:</strong> {$penilaian_ranap.pemeriksaan_keadaan_umum}
+            <strong>Keadaan Umum:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_keadaan_umum)?}
           </div>
           <div class="col-md-6">
-            <strong>Pemeriksaan Mental:</strong> {$penilaian_ranap.pemeriksaan_mental}
+            <strong>Pemeriksaan Mental:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_mental)?}
           </div>
         </div>
         <hr>
         <h6><strong>Susunan Saraf:</strong></h6>
         <div class="row">
           <div class="col-md-3">
-            <strong>Kepala:</strong> {$penilaian_ranap.pemeriksaan_susunan_kepala}
+            <strong>Kepala:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_susunan_kepala)?}
           </div>
           <div class="col-md-3">
-            <strong>Wajah:</strong> {$penilaian_ranap.pemeriksaan_susunan_wajah}
+            <strong>Wajah:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_susunan_wajah)?}
           </div>
           <div class="col-md-3">
-            <strong>Leher:</strong> {$penilaian_ranap.pemeriksaan_susunan_leher}
+            <strong>Leher:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_susunan_leher)?}
           </div>
           <div class="col-md-3">
-            <strong>Kejang:</strong> {$penilaian_ranap.pemeriksaan_susunan_kejang}
+            <strong>Kejang:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_susunan_kejang)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <strong>Sensorik:</strong> {$penilaian_ranap.pemeriksaan_susunan_sensorik}
+            <strong>Sensorik:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_susunan_sensorik)?}
           </div>
         </div>
         <hr>
         <h6><strong>Kardiovaskular:</strong></h6>
         <div class="row">
           <div class="col-md-4">
-            <strong>Denyut Nadi:</strong> {$penilaian_ranap.pemeriksaan_kardiovaskuler_denyut_nadi}
+            <strong>Denyut Nadi:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_kardiovaskuler_denyut_nadi)?}
           </div>
           <div class="col-md-4">
-            <strong>Sirkulasi:</strong> {$penilaian_ranap.pemeriksaan_kardiovaskuler_sirkulasi}
+            <strong>Sirkulasi:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_kardiovaskuler_sirkulasi)?}
           </div>
           <div class="col-md-4">
-            <strong>Pulsasi:</strong> {$penilaian_ranap.pemeriksaan_kardiovaskuler_pulsasi}
+            <strong>Pulsasi:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_kardiovaskuler_pulsasi)?}
           </div>
         </div>
         <hr>
         <h6><strong>Respirasi:</strong></h6>
         <div class="row">
           <div class="col-md-4">
-            <strong>Pola Nafas:</strong> {$penilaian_ranap.pemeriksaan_respirasi_pola_nafas}
+            <strong>Pola Nafas:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_respirasi_pola_nafas)?}
           </div>
           <div class="col-md-4">
-            <strong>Suara Nafas:</strong> {$penilaian_ranap.pemeriksaan_respirasi_suara_nafas}
+            <strong>Suara Nafas:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_respirasi_suara_nafas)?}
           </div>
           <div class="col-md-4">
-            <strong>Batuk:</strong> {$penilaian_ranap.pemeriksaan_respirasi_batuk}
+            <strong>Batuk:</strong> {?=isset_or($penilaian_ranap.pemeriksaan_respirasi_batuk)?}
           </div>
         </div>
       </div>
@@ -189,39 +189,39 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-6">
-            <strong>Kemampuan Sehari-hari:</strong> {$penilaian_ranap.pengkajian_fungsi_kemampuan_sehari}
+            <strong>Kemampuan Sehari-hari:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_kemampuan_sehari)?}
           </div>
           <div class="col-md-6">
-            <strong>Aktifitas:</strong> {$penilaian_ranap.pengkajian_fungsi_aktifitas}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <strong>Berjalan:</strong> {$penilaian_ranap.pengkajian_fungsi_berjalan}
-          </div>
-          <div class="col-md-6">
-            <strong>Ambulasi:</strong> {$penilaian_ranap.pengkajian_fungsi_ambulasi}
+            <strong>Aktifitas:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_aktifitas)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <strong>Ekstrimitas Atas:</strong> {$penilaian_ranap.pengkajian_fungsi_ekstrimitas_atas}
+            <strong>Berjalan:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_berjalan)?}
           </div>
           <div class="col-md-6">
-            <strong>Ekstrimitas Bawah:</strong> {$penilaian_ranap.pengkajian_fungsi_ekstrimitas_bawah}
+            <strong>Ambulasi:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_ambulasi)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <strong>Menggenggam:</strong> {$penilaian_ranap.pengkajian_fungsi_menggenggam}
+            <strong>Ekstrimitas Atas:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_ekstrimitas_atas)?}
           </div>
           <div class="col-md-6">
-            <strong>Koordinasi:</strong> {$penilaian_ranap.pengkajian_fungsi_koordinasi}
+            <strong>Ekstrimitas Bawah:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_ekstrimitas_bawah)?}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Menggenggam:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_menggenggam)?}
+          </div>
+          <div class="col-md-6">
+            <strong>Koordinasi:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_koordinasi)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <strong>Kesimpulan:</strong> {$penilaian_ranap.pengkajian_fungsi_kesimpulan}
+            <strong>Kesimpulan:</strong> {?=isset_or($penilaian_ranap.pengkajian_fungsi_kesimpulan)?}
           </div>
         </div>
       </div>
@@ -240,34 +240,34 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-6">
-            <strong>Kondisi Psiko:</strong> {$penilaian_ranap.riwayat_psiko_kondisi_psiko}
+            <strong>Kondisi Psiko:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_kondisi_psiko)?}
           </div>
           <div class="col-md-6">
-            <strong>Gangguan Jiwa:</strong> {$penilaian_ranap.riwayat_psiko_gangguan_jiwa}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <strong>Perilaku:</strong> {$penilaian_ranap.riwayat_psiko_perilaku}
-          </div>
-          <div class="col-md-6">
-            <strong>Hubungan Keluarga:</strong> {$penilaian_ranap.riwayat_psiko_hubungan_keluarga}
+            <strong>Gangguan Jiwa:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_gangguan_jiwa)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <strong>Tinggal dengan:</strong> {$penilaian_ranap.riwayat_psiko_tinggal}
+            <strong>Perilaku:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_perilaku)?}
           </div>
           <div class="col-md-6">
-            <strong>Nilai Kepercayaan:</strong> {$penilaian_ranap.riwayat_psiko_nilai_kepercayaan}
+            <strong>Hubungan Keluarga:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_hubungan_keluarga)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-6">
-            <strong>Pendidikan PJ:</strong> {$penilaian_ranap.riwayat_psiko_pendidikan_pj}
+            <strong>Tinggal dengan:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_tinggal)?}
           </div>
           <div class="col-md-6">
-            <strong>Edukasi Diberikan:</strong> {$penilaian_ranap.riwayat_psiko_edukasi_diberikan}
+            <strong>Nilai Kepercayaan:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_nilai_kepercayaan)?}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <strong>Pendidikan PJ:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_pendidikan_pj)?}
+          </div>
+          <div class="col-md-6">
+            <strong>Edukasi Diberikan:</strong> {?=isset_or($penilaian_ranap.riwayat_psiko_edukasi_diberikan)?}
           </div>
         </div>
       </div>
@@ -286,23 +286,23 @@
       <div class="panel-body">
         <div class="row">
           <div class="col-md-8">
-            <strong>1. Penurunan berat badan:</strong> {$penilaian_ranap.skrining_gizi1}
+            <strong>1. Penurunan berat badan:</strong> {?=isset_or($penilaian_ranap.skrining_gizi1)?}
           </div>
           <div class="col-md-4">
-            <strong>Nilai:</strong> {$penilaian_ranap.nilai_gizi1}
+            <strong>Nilai:</strong> {?=isset_or($penilaian_ranap.nilai_gizi1)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-8">
-            <strong>2. Asupan makan berkurang:</strong> {$penilaian_ranap.skrining_gizi2}
+            <strong>2. Asupan makan berkurang:</strong> {?=isset_or($penilaian_ranap.skrining_gizi2)?}
           </div>
           <div class="col-md-4">
-            <strong>Nilai:</strong> {$penilaian_ranap.nilai_gizi2}
+            <strong>Nilai:</strong> {?=isset_or($penilaian_ranap.nilai_gizi2)?}
           </div>
         </div>
         <div class="row">
           <div class="col-md-8">
-            <strong>Total Nilai Gizi:</strong> {$penilaian_ranap.nilai_total_gizi}
+            <strong>Total Nilai Gizi:</strong> {?=isset_or($penilaian_ranap.nilai_total_gizi)?}
           </div>
           <div class="col-md-4">
             <strong>Status:</strong> 
@@ -317,16 +317,16 @@
         </div>
         <div class="row">
           <div class="col-md-6">
-            <strong>Diagnosa Khusus:</strong> {$penilaian_ranap.skrining_gizi_diagnosa_khusus}
+            <strong>Diagnosa Khusus:</strong> {?=isset_or($penilaian_ranap.skrining_gizi_diagnosa_khusus)?}
           </div>
           <div class="col-md-6">
-            <strong>Diketahui Dietisen:</strong> {$penilaian_ranap.skrining_gizi_diketahui_dietisen}
+            <strong>Diketahui Dietisen:</strong> {?=isset_or($penilaian_ranap.skrining_gizi_diketahui_dietisen)?}
           </div>
         </div>
         {if: $penilaian_ranap.skrining_gizi_jam_diketahui_dietisen}
         <div class="row">
           <div class="col-md-12">
-            <strong>Jam Diketahui Dietisen:</strong> {$penilaian_ranap.skrining_gizi_jam_diketahui_dietisen}
+            <strong>Jam Diketahui Dietisen:</strong> {?=isset_or($penilaian_ranap.skrining_gizi_jam_diketahui_dietisen)?}
           </div>
         </div>
         {/if}
@@ -347,7 +347,7 @@
         <div class="row">
           <div class="col-md-12">
             <strong>Rencana:</strong><br>
-            {$penilaian_ranap.rencana}
+            {?=isset_or($penilaian_ranap.rencana)?}
           </div>
         </div>
       </div>
@@ -359,7 +359,7 @@
 <div class="alert alert-info">
   <i class="fa fa-info-circle"></i> Belum ada data assessment untuk pasien ini.
   <button type="button" class="btn btn-primary btn-sm buat_assesment" 
-    data-no_rawat="{$smarty.get.no_rawat}" style="margin-left: 10px;">
+    data-no_rawat="{?=isset_or($smarty.get.no_rawat)?}" style="margin-left: 10px;">
     <span class="fa fa-plus"></span> Buat Assessment
   </button>
 </div>

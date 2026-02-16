@@ -29,7 +29,7 @@
                     <h3 style="margin-top:5px;margin-bottom:15px;">Total Log: {?=count($log_apotek.totalRecords)?}</h3>
                   </div>
                   <div class="col col-md-6">
-                    <form action="{$log_apotek.searchUrl}" class="searchbox-input form-inline pull-right padding-bottom-lg" style="margin-top:5px;margin-bottom:15px;">
+                    <form action="{?=isset_or($log_apotek.searchUrl)?}" class="searchbox-input form-inline pull-right padding-bottom-lg" style="margin-top:5px;margin-bottom:15px;">
                         <div class="input-group">
                             <input type="text" name="s" minlength="3" class="form-control" placeholder="Cari No.Rawat, No.Resep, atau User" value="{if: isset($_GET['s'])}{?=$_GET['s']?}{/if}" required>
                             <input type="hidden" name="start_date" value="{if: isset($_GET['start_date'])}{?=$_GET['start_date']?}{else}{?=date('Y-m-d')?}{/if}">
@@ -83,8 +83,8 @@
                                     {if: !empty($value.noresep)}
                                     <tr class="{if: $value.status == 'success'}success{elseif: $value.status == 'error'}danger{else}warning{/if}" style="color: black;">
                                         <td>{?=date('d/m/Y H:i', strtotime($value.tanggal_kirim))?}</td>
-                                        <td>{$value.no_rawat}</td>
-                                        <td>{$value.noresep}</td>
+                                        <td>{?=isset_or($value.no_rawat)?}</td>
+                                        <td>{?=isset_or($value.noresep)?}</td>
                                         <td>
                                             {if: $value.status == 'success'}
                                                 <span class="label label-success">Berhasil</span>
@@ -94,10 +94,10 @@
                                                 <span class="label label-warning">Pending</span>
                                             {/if}
                                         </td>
-                                        <td>{$value.user}</td>
+                                        <td>{?=isset_or($value.user)?}</td>
                                         <td>
                                             {if: $value.request}
-                                                <button class="btn btn-xs btn-primary view-response" data-type="request" data-response="{$value.request}">
+                                                <button class="btn btn-xs btn-primary view-response" data-type="request" data-response="{?=isset_or($value.request)?}">
                                                     <i class="fa fa-eye"></i> Lihat
                                                 </button>
                                             {else}
@@ -106,7 +106,7 @@
                                         </td>
                                         <td>
                                             {if: $value.response_resep}
-                                                <button class="btn btn-xs btn-info view-response" data-type="resep" data-response="{$value.response_resep}">
+                                                <button class="btn btn-xs btn-info view-response" data-type="resep" data-response="{?=isset_or($value.response_resep)?}">
                                                     <i class="fa fa-eye"></i> Lihat
                                                 </button>
                                             {else}
@@ -115,7 +115,7 @@
                                         </td>
                                         <td>
                                             {if: $value.response_obat}
-                                                <button class="btn btn-xs btn-info view-response" data-type="obat" data-response="{$value.response_obat}">
+                                                <button class="btn btn-xs btn-info view-response" data-type="obat" data-response="{?=isset_or($value.response_obat)?}">
                                                     <i class="fa fa-eye"></i> Lihat
                                                 </button>
                                             {else}
@@ -123,7 +123,7 @@
                                             {/if}
                                         </td>
                                         <td>
-                                            <button class="btn btn-xs btn-danger hapus-log" data-id="{$value.id}" data-no_rawat="{$value.no_rawat}">
+                                            <button class="btn btn-xs btn-danger hapus-log" data-id="{?=isset_or($value.id)?}" data-no_rawat="{?=isset_or($value.no_rawat)?}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </td>
@@ -159,7 +159,7 @@
                                     {if: empty($value.noresep)}
                                     <tr class="{if: $value.status == 'success'}success{elseif: $value.status == 'error'}danger{else}warning{/if}" style="color: black;">
                                         <td>{?=date('d/m/Y H:i', strtotime($value.tanggal_kirim))?}</td>
-                                        <td>{$value.no_rawat}</td>
+                                        <td>{?=isset_or($value.no_rawat)?}</td>
                                         <td>
                                             {if: $value.status == 'success'}
                                                 <span class="label label-success">Berhasil</span>
@@ -169,10 +169,10 @@
                                                 <span class="label label-warning">Pending</span>
                                             {/if}
                                         </td>
-                                        <td>{$value.user}</td>
+                                        <td>{?=isset_or($value.user)?}</td>
                                         <td>
                                             {if: $value.request}
-                                                <button class="btn btn-xs btn-primary view-response" data-type="request" data-response="{$value.request}">
+                                                <button class="btn btn-xs btn-primary view-response" data-type="request" data-response="{?=isset_or($value.request)?}">
                                                     <i class="fa fa-eye"></i> Lihat
                                                 </button>
                                             {else}
@@ -181,7 +181,7 @@
                                         </td>
                                         <td>
                                             {if: $value.response_resep}
-                                                <button class="btn btn-xs btn-info view-response" data-type="resep" data-response="{$value.response_resep}">
+                                                <button class="btn btn-xs btn-info view-response" data-type="resep" data-response="{?=isset_or($value.response_resep)?}">
                                                     <i class="fa fa-eye"></i> Lihat
                                                 </button>
                                             {else}
@@ -190,7 +190,7 @@
                                         </td>
                                         <td>
                                             {if: $value.response_obat}
-                                                <button class="btn btn-xs btn-info view-response" data-type="obat" data-response="{$value.response_obat}">
+                                                <button class="btn btn-xs btn-info view-response" data-type="obat" data-response="{?=isset_or($value.response_obat)?}">
                                                     <i class="fa fa-eye"></i> Lihat
                                                 </button>
                                             {else}
@@ -198,7 +198,7 @@
                                             {/if}
                                         </td>
                                         <td>
-                                            <button class="btn btn-xs btn-danger hapus-log" data-id="{$value.id}" data-no_rawat="{$value.no_rawat}">
+                                            <button class="btn btn-xs btn-danger hapus-log" data-id="{?=isset_or($value.id)?}" data-no_rawat="{?=isset_or($value.no_rawat)?}">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </td>
@@ -214,7 +214,7 @@
                         </div>
                     </div>
                 </div>
-                {$log_apotek.pagination}
+                {?=isset_or($log_apotek.pagination)?}
             </div>
         </div>
     </div>

@@ -21,7 +21,7 @@
         {loop: $rawat_jalan.list}
         <tr{if: $value.stts == 'Sudah'} style="background-color: #dff0d8 !important;"{/if}>
           <td style="white-space: nowrap;">
-            <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{$value.no_rkm_medis} <span class="caret"></span></button></span>
+            <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{?=isset_or($value.no_rkm_medis)?} <span class="caret"></span></button></span>
             <ul class="dropdown-menu" role="menu">
               {if: $cek_vclaim}
                 <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[BPJS] Cek Nomor Kartu</a></li>
@@ -29,25 +29,25 @@
               {/if}
               <li><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Elektronik Rekam Medis</a></li>
               {if: $this->core->getUserInfo('role') == 'admin' || $this->core->getUserInfo('role') == 'medis' || $this->core->getUserInfo('role') == 'paramedis'}
-              <li><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-umur="{$value.umurdaftar} {$value.sttsumur}">SOAPIE & Pemeriksaan</a></li>
-              <li><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">Layanan & Obat</a></li>
+              <li><a href="#soap" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}" data-umur="{?=isset_or($value.umurdaftar)?} {?=isset_or($value.sttsumur)?}">SOAPIE & Pemeriksaan</a></li>
+              <li><a href="#layanan_obat" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}">Layanan & Obat</a></li>
               {? \Systems\Lib\Event::call('rsgmgha.dropdown_menu', [$value]) ?}
-              <li><a href="#triase_igd" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}" data-tgl_registrasi="{$value.tgl_registrasi}">Triase IGD</a></li>
+              <li><a href="#triase_igd" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}" data-tgl_registrasi="{?=isset_or($value.tgl_registrasi)?}">Triase IGD</a></li>
               <li><a href="{?=url([ADMIN,'dokter_igd','lokalis',convertNoRawat($value.no_rawat)])?}" data-toggle="modal" data-target="#lokalisModal">Status Lokalis</a></li>
               {/if}
             </ul>
           </td>
-          <td style="white-space: nowrap;"><a href="#soap" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">{$value.nm_pasien}</a></td>
-          <td style="white-space: nowrap;"><a href="#layanan_obat" data-no_rawat="{$value.no_rawat}" data-no_rkm_medis="{$value.no_rkm_medis}" data-nm_pasien="{$value.nm_pasien}">{$value.no_rawat}</a></td>
-          <td style="white-space: nowrap;">{$value.no_reg}</td>
-          <td style="white-space: nowrap;">{$value.nm_poli}</td>
-          <td style="white-space: nowrap;">{$value.nm_dokter}</td>
-          <td style="white-space: nowrap;">{$value.png_jawab}</td>
-          <td style="white-space: nowrap;">{$value.no_peserta}</td>
-          <td style="white-space: nowrap;">{$value.tgl_registrasi} {$value.jam_reg}</td>
-          <td style="white-space: nowrap;">{$value.stts}</td>
-          <td style="white-space: nowrap;">{$value.status_lanjut}</td>
-          <td style="white-space: nowrap;">{$value.status_bayar}</td>
+          <td style="white-space: nowrap;"><a href="#soap" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}">{?=isset_or($value.nm_pasien)?}</a></td>
+          <td style="white-space: nowrap;"><a href="#layanan_obat" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}" data-nm_pasien="{?=isset_or($value.nm_pasien)?}">{?=isset_or($value.no_rawat)?}</a></td>
+          <td style="white-space: nowrap;">{?=isset_or($value.no_reg)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.nm_poli)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.nm_dokter)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.png_jawab)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.no_peserta)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.tgl_registrasi)?} {?=isset_or($value.jam_reg)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.stts)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.status_lanjut)?}</td>
+          <td style="white-space: nowrap;">{?=isset_or($value.status_bayar)?}</td>
         </tr>
         {/loop}
       </tbody>

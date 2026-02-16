@@ -14,7 +14,7 @@
                       <label>Akun Rekening</label>
                       <select name="kd_rek" id="kd_rek" class="form-control" data-use-search="true">
                         {loop: $akunrekening}
-                          <option value="{$value.kd_rek}">{$value.kd_rek} - {$value.nm_rek}</option>
+                          <option value="{?=isset_or($value.kd_rek)?}">{?=isset_or($value.kd_rek)?} - {?=isset_or($value.nm_rek)?}</option>
                         {/loop}
                       </select>
                   </div>
@@ -44,9 +44,9 @@
             <tbody>
               {if: $rekeningtahun}
               {loop: $rekeningtahun}
-              <tr class="rekeningtahun" data-tahun="{$value.thn}" data-kd_rek="{$value.kd_rek}" data-saldo_awal="{$value.saldo_awal}">
-                <td>{$value.thn}</td>
-                <td>{$value.kd_rek} - {$value.nm_rek}</td>
+              <tr class="rekeningtahun" data-tahun="{?=isset_or($value.thn)?}" data-kd_rek="{?=isset_or($value.kd_rek)?}" data-saldo_awal="{?=isset_or($value.saldo_awal)?}">
+                <td>{?=isset_or($value.thn)?}</td>
+                <td>{?=isset_or($value.kd_rek)?} - {?=isset_or($value.nm_rek)?}</td>
                 <td><span class="pull-right">{?= number_format($value.saldo_awal,2,',','.')?}</span></td>
               </tr>
               {/loop}

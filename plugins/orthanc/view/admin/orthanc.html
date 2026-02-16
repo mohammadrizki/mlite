@@ -7,9 +7,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <h5>Status: {$status}</h5>
-        <h5>Tanggal: {$tgl_periksa}</h5>
-        <h5>Jam: {$jam}</h5>
+        <h5>Status: {?=isset_or($status)?}</h5>
+        <h5>Tanggal: {?=isset_or($tgl_periksa)?}</h5>
+        <h5>Jam: {?=isset_or($jam)?}</h5>
       </div>
       <div class="col-md-12">
         <textarea name="hasil" class="form-control" rows="8" cols="80"></textarea>
@@ -26,10 +26,10 @@
       {if: isset($pacs.Instances) && !empty($pacs.Instances)}
       {loop: $pacs.Instances}
   		<div class="col-md-6">
-        <a href="{?=url()?}/{?=ADMIN?}/orthanc/viewer?study={$value.ParentStudy}&t={?=$_SESSION['token']?}" onclick="window.open(this.href, '_blank', 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,directories=no,status=no,width=1200,height=800'); return false;"><img class="img-responsive" src="{?=url([ADMIN, 'orthanc', 'render', $value.Instances[0], '600'])?}"></a><br>
+        <a href="{?=url()?}/{?=ADMIN?}/orthanc/viewer?study={?=isset_or($value.ParentStudy)?}&t={?=$_SESSION['token']?}" onclick="window.open(this.href, '_blank', 'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,directories=no,status=no,width=1200,height=800'); return false;"><img class="img-responsive" src="{?=url([ADMIN, 'orthanc', 'render', $value.Instances[0], '600'])?}"></a><br>
         <div class="title">Tanggal: {?=date('Y-m-d', strtotime($value.MainDicomTags.SeriesDate))?}</div>
         Deskripsi: {?=isset_or($value.MainDicomTags.AcquisitionDeviceProcessingDescription, 'N/A')?}<br>
-        <button type="button" class="btn btn-xs btn-success simpansimrs" data-image_url="{$orthanc}/instances/{$value.Instances[0]}/rendered">Simpan ke SIMRS</button><br><br>
+        <button type="button" class="btn btn-xs btn-success simpansimrs" data-image_url="{?=isset_or($orthanc)?}/instances/{$value.Instances[0]}/rendered">Simpan ke SIMRS</button><br><br>
       </div>
       {/loop}
       {else}
@@ -50,10 +50,10 @@
     event.preventDefault();
     var url = baseURL + '/orthanc/savehasilbaca?t=' + mlite.token;
     var no_rawat = $('input:text[name=no_rawat]').val();
-    var tgl_periksa = '{$tgl_periksa}';
-    var jam_periksa = '{$jam}';
+    var tgl_periksa = '{?=isset_or($tgl_periksa)?}';
+    var jam_periksa = '{?=isset_or($jam)?}';
     var hasil = $('textarea[name=hasil]').val();
-    var status = '{$status}';
+    var status = '{?=isset_or($status)?}';
 
     alert("Proses simpan ke server SIMRS...!! Tunggu sejenak..");
     $('#simpan_hasil').attr("disabled", "disabled");
@@ -89,10 +89,10 @@
     event.preventDefault();
     var url = baseURL + '/orthanc/savepacs?t=' + mlite.token;
     var no_rawat = $('input:text[name=no_rawat]').val();
-    var tgl_periksa = '{$tgl_periksa}';
-    var jam_periksa = '{$jam}';
+    var tgl_periksa = '{?=isset_or($tgl_periksa)?}';
+    var jam_periksa = '{?=isset_or($jam)?}';
     var image_url = $(this).attr("data-image_url");
-    var status = '{$status}';
+    var status = '{?=isset_or($status)?}';
     alert("Proses simpan ke server SIMRS...!! Tunggu sejenak..");
     $('.simpansimrs').attr("disabled", "disabled");
     $.ajax({

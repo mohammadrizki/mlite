@@ -5,14 +5,14 @@
     </div>
     <div class="panel-body">
       <form id="assesmentForm">
-        <input type="hidden" name="no_rawat" value="{$penilaian_igd.no_rawat}">
+        <input type="hidden" name="no_rawat" value="{?=isset_or($penilaian_igd.no_rawat)?}">
         
         <!-- Informasi Dasar -->
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Tanggal</label>
-              <input type="datetime-local" name="tanggal" class="form-control" value="{$penilaian_igd.tanggal}" required>
+              <input type="datetime-local" name="tanggal" class="form-control" value="{?=isset_or($penilaian_igd.tanggal)?}" required>
             </div>
           </div>
           <div class="col-md-6">
@@ -31,7 +31,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Keluhan Utama</label>
-              <textarea name="keluhan_utama" class="form-control" rows="3" required>{$penilaian_igd.keluhan_utama}</textarea>
+              <textarea name="keluhan_utama" class="form-control" rows="3" required>{?=isset_or($penilaian_igd.keluhan_utama)?}</textarea>
             </div>
           </div>
         </div>
@@ -40,13 +40,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Riwayat Penyakit Dahulu (RPD)</label>
-              <textarea name="rpd" class="form-control" rows="3" required>{$penilaian_igd.rpd}</textarea>
+              <textarea name="rpd" class="form-control" rows="3" required>{?=isset_or($penilaian_igd.rpd)?}</textarea>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Riwayat Penyakit Sekarang (RPO)</label>
-              <textarea name="rpo" class="form-control" rows="3" required>{$penilaian_igd.rpo}</textarea>
+              <textarea name="rpo" class="form-control" rows="3" required>{?=isset_or($penilaian_igd.rpo)?}</textarea>
             </div>
           </div>
         </div>
@@ -65,19 +65,19 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Gravida</label>
-              <input type="text" name="gravida" class="form-control" value="{$penilaian_igd.gravida}">
+              <input type="text" name="gravida" class="form-control" value="{?=isset_or($penilaian_igd.gravida)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Para</label>
-              <input type="text" name="para" class="form-control" value="{$penilaian_igd.para}">
+              <input type="text" name="para" class="form-control" value="{?=isset_or($penilaian_igd.para)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Abortus</label>
-              <input type="text" name="abortus" class="form-control" value="{$penilaian_igd.abortus}">
+              <input type="text" name="abortus" class="form-control" value="{?=isset_or($penilaian_igd.abortus)?}">
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>HPHT</label>
-              <input type="text" name="hpht" class="form-control" value="{$penilaian_igd.hpht}">
+              <input type="text" name="hpht" class="form-control" value="{?=isset_or($penilaian_igd.hpht)?}">
             </div>
           </div>
         </div>
@@ -194,7 +194,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Jumlah Perdarahan</label>
-              <input type="text" name="jumlah_perdarahan" class="form-control" value="{$penilaian_igd.jumlah_perdarahan}" maxlength="5">
+              <input type="text" name="jumlah_perdarahan" class="form-control" value="{?=isset_or($penilaian_igd.jumlah_perdarahan)?}" maxlength="5">
             </div>
           </div>
         </div>
@@ -203,7 +203,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Warna Perdarahan</label>
-              <input type="text" name="warna_perdarahan" class="form-control" value="{$penilaian_igd.warna_perdarahan}" maxlength="40">
+              <input type="text" name="warna_perdarahan" class="form-control" value="{?=isset_or($penilaian_igd.warna_perdarahan)?}" maxlength="40">
             </div>
           </div>
           <div class="col-md-6">
@@ -227,25 +227,25 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>BAB (x/hari)</label>
-              <input type="text" name="bab" class="form-control" value="{$penilaian_igd.bab}" maxlength="2">
+              <input type="text" name="bab" class="form-control" value="{?=isset_or($penilaian_igd.bab)?}" maxlength="2">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Frekuensi BAB</label>
-              <input type="text" name="xbab" class="form-control" value="{$penilaian_igd.xbab}" maxlength="10">
+              <input type="text" name="xbab" class="form-control" value="{?=isset_or($penilaian_igd.xbab)?}" maxlength="10">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Konsistensi BAB</label>
-              <input type="text" name="kbab" class="form-control" value="{$penilaian_igd.kbab}" maxlength="40">
+              <input type="text" name="kbab" class="form-control" value="{?=isset_or($penilaian_igd.kbab)?}" maxlength="40">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Warna BAB</label>
-              <input type="text" name="wbab" class="form-control" value="{$penilaian_igd.wbab}" maxlength="40">
+              <input type="text" name="wbab" class="form-control" value="{?=isset_or($penilaian_igd.wbab)?}" maxlength="40">
             </div>
           </div>
         </div>
@@ -254,25 +254,25 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>BAK (x/hari)</label>
-              <input type="text" name="bak" class="form-control" value="{$penilaian_igd.bak}" maxlength="2">
+              <input type="text" name="bak" class="form-control" value="{?=isset_or($penilaian_igd.bak)?}" maxlength="2">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Frekuensi BAK</label>
-              <input type="text" name="xbak" class="form-control" value="{$penilaian_igd.xbak}" maxlength="10">
+              <input type="text" name="xbak" class="form-control" value="{?=isset_or($penilaian_igd.xbak)?}" maxlength="10">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Warna BAK</label>
-              <input type="text" name="wbak" class="form-control" value="{$penilaian_igd.wbak}" maxlength="40">
+              <input type="text" name="wbak" class="form-control" value="{?=isset_or($penilaian_igd.wbak)?}" maxlength="40">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Lain-lain BAK</label>
-              <input type="text" name="lbak" class="form-control" value="{$penilaian_igd.lbak}" maxlength="40">
+              <input type="text" name="lbak" class="form-control" value="{?=isset_or($penilaian_igd.lbak)?}" maxlength="40">
             </div>
           </div>
         </div>
@@ -324,13 +324,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Dilaporkan</label>
-              <input type="text" name="dilaporkan" class="form-control" value="{$penilaian_igd.dilaporkan}" maxlength="50">
+              <input type="text" name="dilaporkan" class="form-control" value="{?=isset_or($penilaian_igd.dilaporkan)?}" maxlength="50">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Sebutkan</label>
-              <input type="text" name="sebutkan" class="form-control" value="{$penilaian_igd.sebutkan}" maxlength="50">
+              <input type="text" name="sebutkan" class="form-control" value="{?=isset_or($penilaian_igd.sebutkan)?}" maxlength="50">
             </div>
           </div>
         </div>
@@ -366,7 +366,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Tinggal</label>
-              <input type="text" name="ket_tinggal" class="form-control" value="{$penilaian_igd.ket_tinggal}" maxlength="50">
+              <input type="text" name="ket_tinggal" class="form-control" value="{?=isset_or($penilaian_igd.ket_tinggal)?}" maxlength="50">
             </div>
           </div>
           <div class="col-md-6">
@@ -384,7 +384,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Keterangan Budaya</label>
-              <input type="text" name="ket_budaya" class="form-control" value="{$penilaian_igd.ket_budaya}" maxlength="50" required>
+              <input type="text" name="ket_budaya" class="form-control" value="{?=isset_or($penilaian_igd.ket_budaya)?}" maxlength="50" required>
             </div>
           </div>
         </div>
@@ -416,7 +416,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Pendidikan PJ</label>
-              <input type="text" name="ket_pendidikan_pj" class="form-control" value="{$penilaian_igd.ket_pendidikan_pj}" maxlength="50">
+              <input type="text" name="ket_pendidikan_pj" class="form-control" value="{?=isset_or($penilaian_igd.ket_pendidikan_pj)?}" maxlength="50">
             </div>
           </div>
           <div class="col-md-4">
@@ -434,7 +434,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Keterangan Edukasi</label>
-              <input type="text" name="ket_edukasi" class="form-control" value="{$penilaian_igd.ket_edukasi}" maxlength="50" required>
+              <input type="text" name="ket_edukasi" class="form-control" value="{?=isset_or($penilaian_igd.ket_edukasi)?}" maxlength="50" required>
             </div>
           </div>
         </div>
@@ -478,7 +478,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Keterangan Alat Bantu</label>
-              <input type="text" name="ket_bantu" class="form-control" value="{$penilaian_igd.ket_bantu}" maxlength="50">
+              <input type="text" name="ket_bantu" class="form-control" value="{?=isset_or($penilaian_igd.ket_bantu)?}" maxlength="50">
             </div>
           </div>
         </div>
@@ -509,7 +509,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Provokes</label>
-              <input type="text" name="ket_provokes" class="form-control" value="{$penilaian_igd.ket_provokes}" maxlength="40" required>
+              <input type="text" name="ket_provokes" class="form-control" value="{?=isset_or($penilaian_igd.ket_provokes)?}" maxlength="40" required>
             </div>
           </div>
         </div>
@@ -531,13 +531,13 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Quality</label>
-              <input type="text" name="ket_quality" class="form-control" value="{$penilaian_igd.ket_quality}" maxlength="50" required>
+              <input type="text" name="ket_quality" class="form-control" value="{?=isset_or($penilaian_igd.ket_quality)?}" maxlength="50" required>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Lokasi</label>
-              <input type="text" name="lokasi" class="form-control" value="{$penilaian_igd.lokasi}" maxlength="50" required>
+              <input type="text" name="lokasi" class="form-control" value="{?=isset_or($penilaian_igd.lokasi)?}" maxlength="50" required>
             </div>
           </div>
         </div>
@@ -573,7 +573,7 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Durasi</label>
-              <input type="text" name="durasi" class="form-control" value="{$penilaian_igd.durasi}" maxlength="25" required>
+              <input type="text" name="durasi" class="form-control" value="{?=isset_or($penilaian_igd.durasi)?}" maxlength="25" required>
             </div>
           </div>
           <div class="col-md-3">
@@ -592,7 +592,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Nyeri</label>
-              <input type="text" name="ket_nyeri" class="form-control" value="{$penilaian_igd.ket_nyeri}" maxlength="40">
+              <input type="text" name="ket_nyeri" class="form-control" value="{?=isset_or($penilaian_igd.ket_nyeri)?}" maxlength="40">
             </div>
           </div>
           <div class="col-md-3">
@@ -607,7 +607,7 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Keterangan Dokter</label>
-              <input type="text" name="ket_dokter" class="form-control" value="{$penilaian_igd.ket_dokter}" maxlength="15">
+              <input type="text" name="ket_dokter" class="form-control" value="{?=isset_or($penilaian_igd.ket_dokter)?}" maxlength="15">
             </div>
           </div>
         </div>
@@ -667,7 +667,7 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Keterangan Lapor</label>
-              <input type="text" name="ket_lapor" class="form-control" value="{$penilaian_igd.ket_lapor}" maxlength="15">
+              <input type="text" name="ket_lapor" class="form-control" value="{?=isset_or($penilaian_igd.ket_lapor)?}" maxlength="15">
             </div>
           </div>
         </div>
@@ -677,7 +677,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Rencana</label>
-              <textarea name="rencana" class="form-control" rows="4" required>{$penilaian_igd.rencana}</textarea>
+              <textarea name="rencana" class="form-control" rows="4" required>{?=isset_or($penilaian_igd.rencana)?}</textarea>
             </div>
           </div>
         </div>

@@ -71,7 +71,7 @@
               <tbody>
                 <tr>
                   <td>1.</td>
-                  <td>{$poliklinik.nm_poli}</td>
+                  <td>{?=isset_or($poliklinik.nm_poli)?}</td>
                   <td>1</td>
                   <td>Rp. <span class="pull-right">{?= number_format($poliklinik.registrasi,2,',','.')?}</span></td>
                 </tr>
@@ -101,11 +101,11 @@
               <tbody>
                 {loop: $tindakan}
                 <tr>
-                  <td>{$value.nomor}</td>
-                  <td>{$value.nm_perawatan}</td>
-                  <td>{$value.provider}</td>
+                  <td>{?=isset_or($value.nomor)?}</td>
+                  <td>{?=isset_or($value.nm_perawatan)?}</td>
+                  <td>{?=isset_or($value.provider)?}</td>
                   <td>Rp. <span class="pull-right">{?= number_format($value.biaya_rawat,2,',','.')?}</span></td>
-                  <td><button type="button" class="btn btn-danger btn-xs hapus_detail" data-no_rawat="{$value.no_rawat}" data-kd_jenis_prw="{$value.kd_jenis_prw}" data-tgl_perawatan="{$value.tgl_perawatan}" data-jam_rawat="{$value.jam_rawat}" data-provider="{if: $value.provider == 'Dokter'}rawat_jl_dr{elseif: $value.provider == 'Perawat'}rawat_jl_pr{else}rawat_jl_drpr{/if}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button></td>
+                  <td><button type="button" class="btn btn-danger btn-xs hapus_detail" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-kd_jenis_prw="{?=isset_or($value.kd_jenis_prw)?}" data-tgl_perawatan="{?=isset_or($value.tgl_perawatan)?}" data-jam_rawat="{?=isset_or($value.jam_rawat)?}" data-provider="{if: $value.provider == 'Dokter'}rawat_jl_dr{elseif: $value.provider == 'Perawat'}rawat_jl_pr{else}rawat_jl_drpr{/if}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button></td>
                 </tr>
                 {/loop}
               </tbody>
@@ -135,12 +135,12 @@
               <tbody>
                 {loop: $detail_pemberian_obat}
                 <tr>
-                  <td>{$value.nomor}</td>
-                  <td>{$value.nama_brng}</td>
-                  <td>{if: $value.jml > 0}{$value.jml}{/if}</td>
+                  <td>{?=isset_or($value.nomor)?}</td>
+                  <td>{?=isset_or($value.nama_brng)?}</td>
+                  <td>{if: $value.jml > 0}{?=isset_or($value.jml)?}{/if}</td>
                   <td>Rp. <span class="pull-right">{?= number_format(($value.biaya_obat * $value.jml),2,',','.')?}</span></td>
                   <td colspan="2">
-                    <button type="button" class="btn btn-danger btn-xs hapus_obat" data-no_rawat="{$value.no_rawat}" data-tgl_peresepan="{$value.tgl_perawatan}" data-jam_peresepan="{$value.jam}" data-kode_brng="{$value.kode_brng}" data-jml="{$value.jml}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
+                    <button type="button" class="btn btn-danger btn-xs hapus_obat" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_peresepan="{?=isset_or($value.tgl_perawatan)?}" data-jam_peresepan="{?=isset_or($value.jam)?}" data-kode_brng="{?=isset_or($value.kode_brng)?}" data-jml="{?=isset_or($value.jml)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
                   </td>
                 </tr>
                 {/loop}
@@ -180,11 +180,11 @@
               <tbody>
                 {loop: $periksa_lab}
                 <tr>
-                  <td>{$value.nomor}</td>
-                  <td>{$value.nm_perawatan}</td>
+                  <td>{?=isset_or($value.nomor)?}</td>
+                  <td>{?=isset_or($value.nm_perawatan)?}</td>
                   <td>Rp. <span class="pull-right">{?= number_format($value.biaya,2,',','.')?}</span></td>
                   <td colspan="2">
-                    <button type="button" class="btn btn-danger btn-xs hapus_laboratorium" data-no_rawat="{$value.no_rawat}" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}" data-kd_jenis_prw="{$value.kd_jenis_prw}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
+                    <button type="button" class="btn btn-danger btn-xs hapus_laboratorium" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}" data-kd_jenis_prw="{?=isset_or($value.kd_jenis_prw)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
                   </td>
                 </tr>
                 {/loop}
@@ -214,11 +214,11 @@
               <tbody>
                 {loop: $periksa_radiologi}
                 <tr>
-                  <td>{$value.nomor}</td>
-                  <td>{$value.nm_perawatan}</td>
+                  <td>{?=isset_or($value.nomor)?}</td>
+                  <td>{?=isset_or($value.nm_perawatan)?}</td>
                   <td>Rp. <span class="pull-right">{?= number_format($value.biaya,2,',','.')?}</span></td>
                   <td colspan="2">
-                    <button type="button" class="btn btn-danger btn-xs hapus_radiologi" data-no_rawat="{$value.no_rawat}" data-tgl_periksa="{$value.tgl_periksa}" data-jam_periksa="{$value.jam}" data-kd_jenis_prw="{$value.kd_jenis_prw}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
+                    <button type="button" class="btn btn-danger btn-xs hapus_radiologi" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-tgl_periksa="{?=isset_or($value.tgl_periksa)?}" data-jam_periksa="{?=isset_or($value.jam)?}" data-kd_jenis_prw="{?=isset_or($value.kd_jenis_prw)?}"><i class="fa fa-close"></i><span class="hidden-xs"> Hapus</span></button>
                   </td>
                 </tr>
                 {/loop}
@@ -316,8 +316,8 @@
   </div>
   <div class="pull-right">
     <button type="button" name="button" class="btn btn-success" id="simpan_billing"><span class="fa fa-save"></span><span class="hidden-xs"> Simpan</span></button>
-    <button type="button" name="button" class="btn btn-primary" id="cetak_billing_kecil" data-no_rawat="{$no_rawat}"><span class="fa fa-file-o"></span><span class="hidden-xs"> Nota</span></button>
-    <button type="button" name="button" class="btn btn-info" id="cetak_billing" data-no_rawat="{$no_rawat}"><span class="fa fa-file"></span><span class="hidden-xs"> Invoice</span></button>
+    <button type="button" name="button" class="btn btn-primary" id="cetak_billing_kecil" data-no_rawat="{?=isset_or($no_rawat)?}"><span class="fa fa-file-o"></span><span class="hidden-xs"> Nota</span></button>
+    <button type="button" name="button" class="btn btn-info" id="cetak_billing" data-no_rawat="{?=isset_or($no_rawat)?}"><span class="fa fa-file"></span><span class="hidden-xs"> Invoice</span></button>
     <button type="button" name="button" class="btn btn-warning" id="selesai_billing"><span class="fa fa-check"></span><span class="hidden-xs"> Selesai</span></button>
   </div>
 </div>

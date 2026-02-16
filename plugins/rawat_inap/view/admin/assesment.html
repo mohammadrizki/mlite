@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body">
   <form id="form_assessment" method="post" accept-charset="utf-8">
-    <input type="hidden" name="no_rawat" value="{$penilaian_ranap.no_rawat}">
+    <input type="hidden" name="no_rawat" value="{?=isset_or($penilaian_ranap.no_rawat)?}">
     
     <!-- Informasi Dasar -->
     <div class="panel panel-default">
@@ -14,13 +14,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>No. Rawat</label>
-              <input type="text" class="form-control" name="no_rawat_display" value="{$penilaian_ranap.no_rawat}" readonly>
+              <input type="text" class="form-control" name="no_rawat_display" value="{?=isset_or($penilaian_ranap.no_rawat)?}" readonly>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Tanggal</label>
-              <input type="datetime-local" class="form-control" name="tanggal" value="{$penilaian_ranap.tanggal}" required>
+              <input type="datetime-local" class="form-control" name="tanggal" value="{?=isset_or($penilaian_ranap.tanggal)?}" required>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Informasi</label>
-              <input type="text" class="form-control" name="ket_informasi" value="{if: $penilaian_ranap.ket_informasi}{$penilaian_ranap.ket_informasi}{/if}">
+              <input type="text" class="form-control" name="ket_informasi" value="{if: $penilaian_ranap.ket_informasi}{?=isset_or($penilaian_ranap.ket_informasi)?}{/if}">
             </div>
           </div>
         </div>
@@ -83,25 +83,25 @@
       <div class="panel-body">
         <div class="form-group">
           <label>Riwayat Penyakit Sekarang (RPS)</label>
-          <textarea class="form-control" name="rps" rows="3">{$penilaian_ranap.rps}</textarea>
+          <textarea class="form-control" name="rps" rows="3">{?=isset_or($penilaian_ranap.rps)?}</textarea>
         </div>
         <div class="row">
           <div class="col-md-4">
             <div class="form-group">
               <label>Riwayat Penyakit Dahulu (RPD)</label>
-              <input type="text" class="form-control" name="rpd" value="{$penilaian_ranap.rpd}">
+              <input type="text" class="form-control" name="rpd" value="{?=isset_or($penilaian_ranap.rpd)?}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Riwayat Penyakit Keluarga (RPK)</label>
-              <input type="text" class="form-control" name="rpk" value="{$penilaian_ranap.rpk}">
+              <input type="text" class="form-control" name="rpk" value="{?=isset_or($penilaian_ranap.rpk)?}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Riwayat Pengobatan (RPO)</label>
-              <input type="text" class="form-control" name="rpo" value="{$penilaian_ranap.rpo}">
+              <input type="text" class="form-control" name="rpo" value="{?=isset_or($penilaian_ranap.rpo)?}">
             </div>
           </div>
         </div>
@@ -109,13 +109,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Riwayat Pembedahan</label>
-              <input type="text" class="form-control" name="riwayat_pembedahan" value="{$penilaian_ranap.riwayat_pembedahan}">
+              <input type="text" class="form-control" name="riwayat_pembedahan" value="{?=isset_or($penilaian_ranap.riwayat_pembedahan)?}">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Riwayat Dirawat di RS</label>
-              <input type="text" class="form-control" name="riwayat_dirawat_dirs" value="{$penilaian_ranap.riwayat_dirawat_dirs}">
+              <input type="text" class="form-control" name="riwayat_dirawat_dirs" value="{?=isset_or($penilaian_ranap.riwayat_dirawat_dirs)?}">
             </div>
           </div>
         </div>
@@ -152,19 +152,19 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Perkiraan Kehamilan</label>
-              <input type="text" class="form-control" name="riwayat_kehamilan_perkiraan" value="{$penilaian_ranap.riwayat_kehamilan_perkiraan}">
+              <input type="text" class="form-control" name="riwayat_kehamilan_perkiraan" value="{?=isset_or($penilaian_ranap.riwayat_kehamilan_perkiraan)?}">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Riwayat Transfusi</label>
-              <input type="text" class="form-control" name="riwayat_tranfusi" value="{$penilaian_ranap.riwayat_tranfusi}">
+              <input type="text" class="form-control" name="riwayat_tranfusi" value="{?=isset_or($penilaian_ranap.riwayat_tranfusi)?}">
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>Riwayat Alergi</label>
-          <input type="text" class="form-control" name="riwayat_alergi" value="{$penilaian_ranap.riwayat_alergi}">
+          <input type="text" class="form-control" name="riwayat_alergi" value="{?=isset_or($penilaian_ranap.riwayat_alergi)?}">
         </div>
         <div class="row">
           <div class="col-md-3">
@@ -179,7 +179,7 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Jumlah (batang/hari)</label>
-              <input type="text" class="form-control" name="riwayat_merokok_jumlah" value="{$penilaian_ranap.riwayat_merokok_jumlah}">
+              <input type="text" class="form-control" name="riwayat_merokok_jumlah" value="{?=isset_or($penilaian_ranap.riwayat_merokok_jumlah)?}">
             </div>
           </div>
           <div class="col-md-3">
@@ -194,7 +194,7 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Jumlah (gelas/hari)</label>
-              <input type="text" class="form-control" name="riwayat_alkohol_jumlah" value="{$penilaian_ranap.riwayat_alkohol_jumlah}">
+              <input type="text" class="form-control" name="riwayat_alkohol_jumlah" value="{?=isset_or($penilaian_ranap.riwayat_alkohol_jumlah)?}">
             </div>
           </div>
         </div>
@@ -229,7 +229,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Pemeriksaan Mental</label>
-              <input type="text" class="form-control" name="pemeriksaan_mental" value="{$penilaian_ranap.pemeriksaan_mental}">
+              <input type="text" class="form-control" name="pemeriksaan_mental" value="{?=isset_or($penilaian_ranap.pemeriksaan_mental)?}">
             </div>
           </div>
           <div class="col-md-6">
@@ -250,37 +250,37 @@
           <div class="col-md-2">
             <div class="form-group">
               <label>GCS</label>
-              <input type="text" class="form-control" name="pemeriksaan_gcs" value="{$penilaian_ranap.pemeriksaan_gcs}">
+              <input type="text" class="form-control" name="pemeriksaan_gcs" value="{?=isset_or($penilaian_ranap.pemeriksaan_gcs)?}">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label>TD (mmHg)</label>
-              <input type="text" class="form-control" name="pemeriksaan_td" value="{$penilaian_ranap.pemeriksaan_td}">
+              <input type="text" class="form-control" name="pemeriksaan_td" value="{?=isset_or($penilaian_ranap.pemeriksaan_td)?}">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label>Nadi (x/mnt)</label>
-              <input type="text" class="form-control" name="pemeriksaan_nadi" value="{$penilaian_ranap.pemeriksaan_nadi}">
+              <input type="text" class="form-control" name="pemeriksaan_nadi" value="{?=isset_or($penilaian_ranap.pemeriksaan_nadi)?}">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label>RR (x/mnt)</label>
-              <input type="text" class="form-control" name="pemeriksaan_rr" value="{$penilaian_ranap.pemeriksaan_rr}">
+              <input type="text" class="form-control" name="pemeriksaan_rr" value="{?=isset_or($penilaian_ranap.pemeriksaan_rr)?}">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label>Suhu (°C)</label>
-              <input type="text" class="form-control" name="pemeriksaan_suhu" value="{$penilaian_ranap.pemeriksaan_suhu}">
+              <input type="text" class="form-control" name="pemeriksaan_suhu" value="{?=isset_or($penilaian_ranap.pemeriksaan_suhu)?}">
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label>SpO2 (&#37;)</label>
-              <input type="text" class="form-control" name="pemeriksaan_spo2" value="{$penilaian_ranap.pemeriksaan_spo2}">
+              <input type="text" class="form-control" name="pemeriksaan_spo2" value="{?=isset_or($penilaian_ranap.pemeriksaan_spo2)?}">
             </div>
           </div>
         </div>
@@ -288,13 +288,13 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>BB (kg)</label>
-              <input type="text" class="form-control" name="pemeriksaan_bb" id="bb" value="{$penilaian_ranap.pemeriksaan_bb}">
+              <input type="text" class="form-control" name="pemeriksaan_bb" id="bb" value="{?=isset_or($penilaian_ranap.pemeriksaan_bb)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>TB (cm)</label>
-              <input type="text" class="form-control" name="pemeriksaan_tb" id="tb" value="{$penilaian_ranap.pemeriksaan_tb}">
+              <input type="text" class="form-control" name="pemeriksaan_tb" id="tb" value="{?=isset_or($penilaian_ranap.pemeriksaan_tb)?}">
             </div>
           </div>
           <div class="col-md-3">
@@ -367,19 +367,19 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Kepala</label>
-              <input type="text" class="form-control" name="pemeriksaan_susunan_kepala_keterangan" value="{if: $penilaian_ranap.pemeriksaan_susunan_kepala_keterangan}{$penilaian_ranap.pemeriksaan_susunan_kepala_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_susunan_kepala_keterangan" value="{if: $penilaian_ranap.pemeriksaan_susunan_kepala_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_susunan_kepala_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Wajah</label>
-              <input type="text" class="form-control" name="pemeriksaan_susunan_wajah_keterangan" value="{if: $penilaian_ranap.pemeriksaan_susunan_wajah_keterangan}{$penilaian_ranap.pemeriksaan_susunan_wajah_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_susunan_wajah_keterangan" value="{if: $penilaian_ranap.pemeriksaan_susunan_wajah_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_susunan_wajah_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Kejang</label>
-              <input type="text" class="form-control" name="pemeriksaan_susunan_kejang_keterangan" value="{if: $penilaian_ranap.pemeriksaan_susunan_kejang_keterangan}{$penilaian_ranap.pemeriksaan_susunan_kejang_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_susunan_kejang_keterangan" value="{if: $penilaian_ranap.pemeriksaan_susunan_kejang_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_susunan_kejang_keterangan)?}{/if}">
             </div>
           </div>
         </div>
@@ -437,13 +437,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Penyebab</label>
-              <input type="text" class="form-control" name="penilaian_nyeri_ket_penyebab" value="{if: $penilaian_ranap.penilaian_nyeri_ket_penyebab}{$penilaian_ranap.penilaian_nyeri_ket_penyebab}{/if}">
+              <input type="text" class="form-control" name="penilaian_nyeri_ket_penyebab" value="{if: $penilaian_ranap.penilaian_nyeri_ket_penyebab}{?=isset_or($penilaian_ranap.penilaian_nyeri_ket_penyebab)?}{/if}">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Kualitas</label>
-              <input type="text" class="form-control" name="penilaian_nyeri_ket_kualitas" value="{if: $penilaian_ranap.penilaian_nyeri_ket_kualitas}{$penilaian_ranap.penilaian_nyeri_ket_kualitas}{/if}">
+              <input type="text" class="form-control" name="penilaian_nyeri_ket_kualitas" value="{if: $penilaian_ranap.penilaian_nyeri_ket_kualitas}{?=isset_or($penilaian_ranap.penilaian_nyeri_ket_kualitas)?}{/if}">
             </div>
           </div>
         </div>
@@ -451,7 +451,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Lokasi</label>
-              <input type="text" class="form-control" name="penilaian_nyeri_lokasi" value="{$penilaian_ranap.penilaian_nyeri_lokasi}">
+              <input type="text" class="form-control" name="penilaian_nyeri_lokasi" value="{?=isset_or($penilaian_ranap.penilaian_nyeri_lokasi)?}">
             </div>
           </div>
           <div class="col-md-4">
@@ -486,7 +486,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Waktu</label>
-              <input type="text" class="form-control" name="penilaian_nyeri_waktu" value="{$penilaian_ranap.penilaian_nyeri_waktu}">
+              <input type="text" class="form-control" name="penilaian_nyeri_waktu" value="{?=isset_or($penilaian_ranap.penilaian_nyeri_waktu)?}">
             </div>
           </div>
           <div class="col-md-4">
@@ -504,13 +504,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Nyeri Hilang</label>
-              <input type="text" class="form-control" name="penilaian_nyeri_ket_hilang" value="{$penilaian_ranap.penilaian_nyeri_ket_hilang}">
+              <input type="text" class="form-control" name="penilaian_nyeri_ket_hilang" value="{?=isset_or($penilaian_ranap.penilaian_nyeri_ket_hilang)?}">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Jam Diberitahukan ke Dokter</label>
-              <input type="text" class="form-control" name="penilaian_nyeri_jam_diberitahukan_dokter" value="{$penilaian_ranap.penilaian_nyeri_jam_diberitahukan_dokter}">
+              <input type="text" class="form-control" name="penilaian_nyeri_jam_diberitahukan_dokter" value="{?=isset_or($penilaian_ranap.penilaian_nyeri_jam_diberitahukan_dokter)?}">
             </div>
           </div>
           <div class="col-md-4">
@@ -525,7 +525,7 @@
         </div>
         <div class="form-group">
           <label>Jam Diberitahukan ke Dokter</label>
-          <input type="text" class="form-control" name="penilaian_nyeri_jam_diberitahukan_dokter" value="{$penilaian_ranap.penilaian_nyeri_jam_diberitahukan_dokter}">
+          <input type="text" class="form-control" name="penilaian_nyeri_jam_diberitahukan_dokter" value="{?=isset_or($penilaian_ranap.penilaian_nyeri_jam_diberitahukan_dokter)?}">
         </div>
       </div>
     </div>
@@ -568,7 +568,7 @@
         </div>
         <div class="form-group">
           <label>Keterangan Sirkulasi</label>
-          <input type="text" class="form-control" name="pemeriksaan_kardiovaskuler_sirkulasi_keterangan" value="{if: $penilaian_ranap.pemeriksaan_kardiovaskuler_sirkulasi_keterangan}{$penilaian_ranap.pemeriksaan_kardiovaskuler_sirkulasi_keterangan}{/if}">
+          <input type="text" class="form-control" name="pemeriksaan_kardiovaskuler_sirkulasi_keterangan" value="{if: $penilaian_ranap.pemeriksaan_kardiovaskuler_sirkulasi_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_kardiovaskuler_sirkulasi_keterangan)?}{/if}">
         </div>
         
         <h6><strong>Respirasi</strong></h6>
@@ -627,7 +627,7 @@
         </div>
         <div class="form-group">
           <label>Keterangan Jenis Pernafasan</label>
-          <input type="text" class="form-control" name="pemeriksaan_respirasi_jenis_pernafasan_keterangan" value="{if: $penilaian_ranap.pemeriksaan_respirasi_jenis_pernafasan_keterangan}{$penilaian_ranap.pemeriksaan_respirasi_jenis_pernafasan_keterangan}{/if}">
+          <input type="text" class="form-control" name="pemeriksaan_respirasi_jenis_pernafasan_keterangan" value="{if: $penilaian_ranap.pemeriksaan_respirasi_jenis_pernafasan_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_respirasi_jenis_pernafasan_keterangan)?}{/if}">
         </div>
         <div class="row">
           <div class="col-md-4">
@@ -690,19 +690,19 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Mulut</label>
-              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_mulut_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_mulut_keterangan}{$penilaian_ranap.pemeriksaan_gastrointestinal_mulut_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_mulut_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_mulut_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_gastrointestinal_mulut_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Gigi</label>
-              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_gigi_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_gigi_keterangan}{$penilaian_ranap.pemeriksaan_gastrointestinal_gigi_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_gigi_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_gigi_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_gastrointestinal_gigi_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Lidah</label>
-              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_lidah_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_lidah_keterangan}{$penilaian_ranap.pemeriksaan_gastrointestinal_lidah_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_lidah_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_lidah_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_gastrointestinal_lidah_keterangan)?}{/if}">
             </div>
           </div>
         </div>
@@ -745,13 +745,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Tenggorokan</label>
-              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_tenggorokan_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_tenggorokan_keterangan}{$penilaian_ranap.pemeriksaan_gastrointestinal_tenggorokan_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_tenggorokan_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_tenggorokan_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_gastrointestinal_tenggorokan_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Abdomen</label>
-              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_abdomen_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_abdomen_keterangan}{$penilaian_ranap.pemeriksaan_gastrointestinal_abdomen_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_gastrointestinal_abdomen_keterangan" value="{if: $penilaian_ranap.pemeriksaan_gastrointestinal_abdomen_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_gastrointestinal_abdomen_keterangan)?}{/if}">
             </div>
           </div>
         </div>
@@ -800,7 +800,7 @@
         </div>
         <div class="form-group">
           <label>Keterangan Penglihatan</label>
-          <input type="text" class="form-control" name="pemeriksaan_neurologi_pengelihatan_keterangan" value="{if: $penilaian_ranap.pemeriksaan_neurologi_pengelihatan_keterangan}{$penilaian_ranap.pemeriksaan_neurologi_pengelihatan_keterangan}{/if}">
+          <input type="text" class="form-control" name="pemeriksaan_neurologi_pengelihatan_keterangan" value="{if: $penilaian_ranap.pemeriksaan_neurologi_pengelihatan_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_neurologi_pengelihatan_keterangan)?}{/if}">
         </div>
         <div class="row">
           <div class="col-md-3">
@@ -815,7 +815,7 @@
         </div>
         <div class="form-group">
           <label>Keterangan Bicara</label>
-          <input type="text" class="form-control" name="pemeriksaan_neurologi_bicara_keterangan" value="{if: $penilaian_ranap.pemeriksaan_neurologi_bicara_keterangan}{$penilaian_ranap.pemeriksaan_neurologi_bicara_keterangan}{/if}">
+          <input type="text" class="form-control" name="pemeriksaan_neurologi_bicara_keterangan" value="{if: $penilaian_ranap.pemeriksaan_neurologi_bicara_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_neurologi_bicara_keterangan)?}{/if}">
         </div>
         <div class="row">
           <div class="col-md-3">
@@ -960,19 +960,19 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Nyeri Sendi</label>
-              <input type="text" class="form-control" name="pemeriksaan_muskuloskletal_nyeri_sendi_keterangan" value="{if: $penilaian_ranap.pemeriksaan_muskuloskletal_nyeri_sendi_keterangan}{$penilaian_ranap.pemeriksaan_muskuloskletal_nyeri_sendi_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_muskuloskletal_nyeri_sendi_keterangan" value="{if: $penilaian_ranap.pemeriksaan_muskuloskletal_nyeri_sendi_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_muskuloskletal_nyeri_sendi_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Oedema</label>
-              <input type="text" class="form-control" name="pemeriksaan_muskuloskletal_oedema_keterangan" value="{if: $penilaian_ranap.pemeriksaan_muskuloskletal_oedema_keterangan}{$penilaian_ranap.pemeriksaan_muskuloskletal_oedema_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_muskuloskletal_oedema_keterangan" value="{if: $penilaian_ranap.pemeriksaan_muskuloskletal_oedema_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_muskuloskletal_oedema_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Fraktur</label>
-              <input type="text" class="form-control" name="pemeriksaan_muskuloskletal_fraktur_keterangan" value="{if: $penilaian_ranap.pemeriksaan_muskuloskletal_fraktur_keterangan}{$penilaian_ranap.pemeriksaan_muskuloskletal_fraktur_keterangan}{/if}">
+              <input type="text" class="form-control" name="pemeriksaan_muskuloskletal_fraktur_keterangan" value="{if: $penilaian_ranap.pemeriksaan_muskuloskletal_fraktur_keterangan}{?=isset_or($penilaian_ranap.pemeriksaan_muskuloskletal_fraktur_keterangan)?}{/if}">
             </div>
           </div>
         </div>
@@ -988,25 +988,25 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Frekuensi Jumlah</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_frekuensi_jumlah" value="{$penilaian_ranap.pemeriksaan_eliminasi_bab_frekuensi_jumlah}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_frekuensi_jumlah" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bab_frekuensi_jumlah)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Frekuensi Durasi</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_frekuensi_durasi" value="{$penilaian_ranap.pemeriksaan_eliminasi_bab_frekuensi_durasi}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_frekuensi_durasi" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bab_frekuensi_durasi)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Konsistensi</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_konsistensi" value="{$penilaian_ranap.pemeriksaan_eliminasi_bab_konsistensi}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_konsistensi" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bab_konsistensi)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Warna</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_warna" value="{$penilaian_ranap.pemeriksaan_eliminasi_bab_warna}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bab_warna" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bab_warna)?}">
             </div>
           </div>
         </div>
@@ -1016,25 +1016,25 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Frekuensi Jumlah</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_frekuensi_jumlah" value="{$penilaian_ranap.pemeriksaan_eliminasi_bak_frekuensi_jumlah}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_frekuensi_jumlah" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bak_frekuensi_jumlah)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Frekuensi Durasi</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_frekuensi_durasi" value="{$penilaian_ranap.pemeriksaan_eliminasi_bak_frekuensi_durasi}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_frekuensi_durasi" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bak_frekuensi_durasi)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Warna</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_warna" value="{$penilaian_ranap.pemeriksaan_eliminasi_bak_warna}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_warna" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bak_warna)?}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Lain-lain</label>
-              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_lainlain" value="{$penilaian_ranap.pemeriksaan_eliminasi_bak_lainlain}">
+              <input type="text" class="form-control" name="pemeriksaan_eliminasi_bak_lainlain" value="{?=isset_or($penilaian_ranap.pemeriksaan_eliminasi_bak_lainlain)?}">
             </div>
           </div>
         </div>
@@ -1106,19 +1106,19 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Frekuensi Makan (x/hari)</label>
-              <input type="text" class="form-control" name="pola_nutrisi_frekuesi_makan" value="{$penilaian_ranap.pola_nutrisi_frekuesi_makan}">
+              <input type="text" class="form-control" name="pola_nutrisi_frekuesi_makan" value="{?=isset_or($penilaian_ranap.pola_nutrisi_frekuesi_makan)?}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Jenis Makanan</label>
-              <input type="text" class="form-control" name="pola_nutrisi_jenis_makanan" value="{$penilaian_ranap.pola_nutrisi_jenis_makanan}">
+              <input type="text" class="form-control" name="pola_nutrisi_jenis_makanan" value="{?=isset_or($penilaian_ranap.pola_nutrisi_jenis_makanan)?}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Porsi Makan (&#37;)</label>
-              <input type="text" class="form-control" name="pola_nutrisi_porsi_makan" value="{$penilaian_ranap.pola_nutrisi_porsi_makan}">
+              <input type="text" class="form-control" name="pola_nutrisi_porsi_makan" value="{?=isset_or($penilaian_ranap.pola_nutrisi_porsi_makan)?}">
             </div>
           </div>
         </div>
@@ -1128,7 +1128,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Lama Tidur (jam/hari)</label>
-              <input type="text" class="form-control" name="pola_tidur_lama_tidur" value="{$penilaian_ranap.pola_tidur_lama_tidur}">
+              <input type="text" class="form-control" name="pola_tidur_lama_tidur" value="{?=isset_or($penilaian_ranap.pola_tidur_lama_tidur)?}">
             </div>
           </div>
           <div class="col-md-6">
@@ -1188,7 +1188,7 @@
         </div>
         <div class="form-group">
           <label>Keterangan Berjalan</label>
-          <input type="text" class="form-control" name="pengkajian_fungsi_berjalan_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_berjalan_keterangan}{$penilaian_ranap.pengkajian_fungsi_berjalan_keterangan}{/if}">
+          <input type="text" class="form-control" name="pengkajian_fungsi_berjalan_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_berjalan_keterangan}{?=isset_or($penilaian_ranap.pengkajian_fungsi_berjalan_keterangan)?}{/if}">
         </div>
         <div class="row">
         </div>
@@ -1263,25 +1263,25 @@
           <div class="col-md-3">
             <div class="form-group">
               <label>Keterangan Ekstremitas Atas</label>
-              <input type="text" class="form-control" name="pengkajian_fungsi_ekstrimitas_atas_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_ekstrimitas_atas_keterangan}{$penilaian_ranap.pengkajian_fungsi_ekstrimitas_atas_keterangan}{/if}">
+              <input type="text" class="form-control" name="pengkajian_fungsi_ekstrimitas_atas_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_ekstrimitas_atas_keterangan}{?=isset_or($penilaian_ranap.pengkajian_fungsi_ekstrimitas_atas_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Keterangan Ekstremitas Bawah</label>
-              <input type="text" class="form-control" name="pengkajian_fungsi_ekstrimitas_bawah_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_ekstrimitas_bawah_keterangan}{$penilaian_ranap.pengkajian_fungsi_ekstrimitas_bawah_keterangan}{/if}">
+              <input type="text" class="form-control" name="pengkajian_fungsi_ekstrimitas_bawah_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_ekstrimitas_bawah_keterangan}{?=isset_or($penilaian_ranap.pengkajian_fungsi_ekstrimitas_bawah_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Keterangan Menggenggam</label>
-              <input type="text" class="form-control" name="pengkajian_fungsi_menggenggam_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_menggenggam_keterangan}{$penilaian_ranap.pengkajian_fungsi_menggenggam_keterangan}{/if}">
+              <input type="text" class="form-control" name="pengkajian_fungsi_menggenggam_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_menggenggam_keterangan}{?=isset_or($penilaian_ranap.pengkajian_fungsi_menggenggam_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label>Keterangan Koordinasi</label>
-              <input type="text" class="form-control" name="pengkajian_fungsi_koordinasi_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_koordinasi_keterangan}{$penilaian_ranap.pengkajian_fungsi_koordinasi_keterangan}{/if}">
+              <input type="text" class="form-control" name="pengkajian_fungsi_koordinasi_keterangan" value="{if: $penilaian_ranap.pengkajian_fungsi_koordinasi_keterangan}{?=isset_or($penilaian_ranap.pengkajian_fungsi_koordinasi_keterangan)?}{/if}">
             </div>
           </div>
         </div>
@@ -1403,7 +1403,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Edukasi</label>
-              <input type="text" class="form-control" name="riwayat_psiko_edukasi_diberikan_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_edukasi_diberikan_keterangan}{$penilaian_ranap.riwayat_psiko_edukasi_diberikan_keterangan}{/if}">
+              <input type="text" class="form-control" name="riwayat_psiko_edukasi_diberikan_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_edukasi_diberikan_keterangan}{?=isset_or($penilaian_ranap.riwayat_psiko_edukasi_diberikan_keterangan)?}{/if}">
             </div>
           </div>
         </div>
@@ -1411,19 +1411,19 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Perilaku</label>
-              <input type="text" class="form-control" name="riwayat_psiko_perilaku_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_perilaku_keterangan}{$penilaian_ranap.riwayat_psiko_perilaku_keterangan}{/if}">
+              <input type="text" class="form-control" name="riwayat_psiko_perilaku_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_perilaku_keterangan}{?=isset_or($penilaian_ranap.riwayat_psiko_perilaku_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Tinggal</label>
-              <input type="text" class="form-control" name="riwayat_psiko_tinggal_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_tinggal_keterangan}{$penilaian_ranap.riwayat_psiko_tinggal_keterangan}{/if}">
+              <input type="text" class="form-control" name="riwayat_psiko_tinggal_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_tinggal_keterangan}{?=isset_or($penilaian_ranap.riwayat_psiko_tinggal_keterangan)?}{/if}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>Keterangan Nilai Kepercayaan</label>
-              <input type="text" class="form-control" name="riwayat_psiko_nilai_kepercayaan_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_nilai_kepercayaan_keterangan}{$penilaian_ranap.riwayat_psiko_nilai_kepercayaan_keterangan}{/if}">
+              <input type="text" class="form-control" name="riwayat_psiko_nilai_kepercayaan_keterangan" value="{if: $penilaian_ranap.riwayat_psiko_nilai_kepercayaan_keterangan}{?=isset_or($penilaian_ranap.riwayat_psiko_nilai_kepercayaan_keterangan)?}{/if}">
             </div>
           </div>
         </div>
@@ -1448,7 +1448,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai1" value="{$penilaian_ranap.penilaian_jatuhmorse_nilai1}">
+              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai1" value="{?=isset_or($penilaian_ranap.penilaian_jatuhmorse_nilai1)?}">
             </div>
           </div>
         </div>
@@ -1465,7 +1465,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai2" value="{$penilaian_ranap.penilaian_jatuhmorse_nilai2}">
+              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai2" value="{?=isset_or($penilaian_ranap.penilaian_jatuhmorse_nilai2)?}">
             </div>
           </div>
         </div>
@@ -1483,7 +1483,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai3" value="{$penilaian_ranap.penilaian_jatuhmorse_nilai3}">
+              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai3" value="{?=isset_or($penilaian_ranap.penilaian_jatuhmorse_nilai3)?}">
             </div>
           </div>
         </div>
@@ -1500,7 +1500,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai4" value="{$penilaian_ranap.penilaian_jatuhmorse_nilai4}">
+              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai4" value="{?=isset_or($penilaian_ranap.penilaian_jatuhmorse_nilai4)?}">
             </div>
           </div>
         </div>
@@ -1518,7 +1518,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai5" value="{$penilaian_ranap.penilaian_jatuhmorse_nilai5}">
+              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai5" value="{?=isset_or($penilaian_ranap.penilaian_jatuhmorse_nilai5)?}">
             </div>
           </div>
         </div>
@@ -1535,13 +1535,13 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai6" value="{$penilaian_ranap.penilaian_jatuhmorse_nilai6}">
+              <input type="number" class="form-control" name="penilaian_jatuhmorse_nilai6" value="{?=isset_or($penilaian_ranap.penilaian_jatuhmorse_nilai6)?}">
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>Total Nilai Morse</label>
-          <input type="number" class="form-control" name="penilaian_jatuhmorse_totalnilai" value="{$penilaian_ranap.penilaian_jatuhmorse_totalnilai}" readonly>
+          <input type="number" class="form-control" name="penilaian_jatuhmorse_totalnilai" value="{?=isset_or($penilaian_ranap.penilaian_jatuhmorse_totalnilai)?}" readonly>
         </div>
         
         <h6><strong>Sydney Scoring Tool</strong></h6>
@@ -1558,7 +1558,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai1" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai1}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai1" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai1)?}">
             </div>
           </div>
         </div>
@@ -1575,7 +1575,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai2" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai2}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai2" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai2)?}">
             </div>
           </div>
         </div>
@@ -1592,7 +1592,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai3" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai3}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai3" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai3)?}">
             </div>
           </div>
         </div>
@@ -1609,7 +1609,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai4" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai4}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai4" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai4)?}">
             </div>
           </div>
         </div>
@@ -1626,7 +1626,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai5" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai5}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai5" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai5)?}">
             </div>
           </div>
         </div>
@@ -1643,7 +1643,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai6" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai6}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai6" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai6)?}">
             </div>
           </div>
         </div>
@@ -1660,7 +1660,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai7" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai7}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai7" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai7)?}">
             </div>
           </div>
         </div>
@@ -1677,7 +1677,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai8" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai8}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai8" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai8)?}">
             </div>
           </div>
         </div>
@@ -1694,7 +1694,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai9" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai9}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai9" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai9)?}">
             </div>
           </div>
         </div>
@@ -1711,7 +1711,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai10" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai10}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai10" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai10)?}">
             </div>
           </div>
         </div>
@@ -1728,13 +1728,13 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai11" value="{$penilaian_ranap.penilaian_jatuhsydney_nilai11}">
+              <input type="number" class="form-control" name="penilaian_jatuhsydney_nilai11" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_nilai11)?}">
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>Total Nilai Sydney</label>
-          <input type="number" class="form-control" name="penilaian_jatuhsydney_totalnilai" value="{$penilaian_ranap.penilaian_jatuhsydney_totalnilai}" readonly>
+          <input type="number" class="form-control" name="penilaian_jatuhsydney_totalnilai" value="{?=isset_or($penilaian_ranap.penilaian_jatuhsydney_totalnilai)?}" readonly>
         </div>
       </div>
     </div>
@@ -1760,7 +1760,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="nilai_gizi1" id="nilai_gizi1" value="{$penilaian_ranap.nilai_gizi1}" readonly>
+              <input type="number" class="form-control" name="nilai_gizi1" id="nilai_gizi1" value="{?=isset_or($penilaian_ranap.nilai_gizi1)?}" readonly>
             </div>
           </div>
         </div>
@@ -1777,13 +1777,13 @@
           <div class="col-md-4">
             <div class="form-group">
               <label>Nilai</label>
-              <input type="number" class="form-control" name="nilai_gizi2" id="nilai_gizi2" value="{$penilaian_ranap.nilai_gizi2}" readonly>
+              <input type="number" class="form-control" name="nilai_gizi2" id="nilai_gizi2" value="{?=isset_or($penilaian_ranap.nilai_gizi2)?}" readonly>
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>Total Nilai Gizi</label>
-          <input type="number" class="form-control" name="nilai_total_gizi" id="nilai_total_gizi" value="{$penilaian_ranap.nilai_total_gizi}" readonly>
+          <input type="number" class="form-control" name="nilai_total_gizi" id="nilai_total_gizi" value="{?=isset_or($penilaian_ranap.nilai_total_gizi)?}" readonly>
         </div>
         <div class="row">
           <div class="col-md-6">
@@ -1809,13 +1809,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Keterangan Diagnosa Khusus</label>
-              <input type="text" class="form-control" name="skrining_gizi_ket_diagnosa_khusus" value="{if: $penilaian_ranap.skrining_gizi_ket_diagnosa_khusus}{$penilaian_ranap.skrining_gizi_ket_diagnosa_khusus}{/if}">
+              <input type="text" class="form-control" name="skrining_gizi_ket_diagnosa_khusus" value="{if: $penilaian_ranap.skrining_gizi_ket_diagnosa_khusus}{?=isset_or($penilaian_ranap.skrining_gizi_ket_diagnosa_khusus)?}{/if}">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Jam Diketahui Dietisen</label>
-              <input type="text" class="form-control" name="skrining_gizi_jam_diketahui_dietisen" value="{$penilaian_ranap.skrining_gizi_jam_diketahui_dietisen}">
+              <input type="text" class="form-control" name="skrining_gizi_jam_diketahui_dietisen" value="{?=isset_or($penilaian_ranap.skrining_gizi_jam_diketahui_dietisen)?}">
             </div>
           </div>
         </div>
@@ -1828,25 +1828,25 @@
       <div class="panel-body">
         <div class="form-group">
           <label>Rencana</label>
-          <textarea class="form-control" name="rencana" rows="4">{$penilaian_ranap.rencana}</textarea>
+          <textarea class="form-control" name="rencana" rows="4">{?=isset_or($penilaian_ranap.rencana)?}</textarea>
         </div>
         <div class="row">
           <div class="col-md-4">
             <div class="form-group">
               <label>Kode Dokter</label>
-              <input type="text" class="form-control" name="kd_dokter" value="{$penilaian_ranap.kd_dokter}">
+              <input type="text" class="form-control" name="kd_dokter" value="{?=isset_or($penilaian_ranap.kd_dokter)?}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>NIP Petugas 1</label>
-              <input type="text" class="form-control" name="nip1" value="{$penilaian_ranap.nip1}">
+              <input type="text" class="form-control" name="nip1" value="{?=isset_or($penilaian_ranap.nip1)?}">
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label>NIP Petugas 2</label>
-              <input type="text" class="form-control" name="nip2" value="{$penilaian_ranap.nip2}">
+              <input type="text" class="form-control" name="nip2" value="{?=isset_or($penilaian_ranap.nip2)?}">
             </div>
           </div>
         </div>

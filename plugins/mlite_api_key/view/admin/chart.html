@@ -83,9 +83,9 @@
                     <div class="dropdown-content">
                         {loop: $column}
                             {if: isset($slug[3])} 
-                                <a href="{?=url([ADMIN,'mlite_api_key','chart',isset($slug[2]) ? $slug[2] : 'pie', $value.COLUMN_NAME])?}">{$value.COLUMN_NAME}</a>
+                                <a href="{?=url([ADMIN,'mlite_api_key','chart',isset($slug[2]) ? $slug[2] : 'pie', $value.COLUMN_NAME])?}">{?=isset_or($value.COLUMN_NAME)?}</a>
                             {else}
-                                <a href="{?=url([ADMIN,'mlite_api_key','chart','pie', $value.COLUMN_NAME])?}">{$value.COLUMN_NAME}</a>
+                                <a href="{?=url([ADMIN,'mlite_api_key','chart','pie', $value.COLUMN_NAME])?}">{?=isset_or($value.COLUMN_NAME)?}</a>
                             {/if}
                         {/loop}
                     </div>                    
@@ -102,12 +102,12 @@
 <script>
 	const ctx = document.getElementById('mlite_api_key_chart');
 	new Chart(ctx, {
-		type: '{$type}',
+		type: '{?=isset_or($type)?}',
 		data: {
-			labels: {$labels},
+			labels: {?=isset_or($labels)?},
 			datasets: [{
 				label: '# of {if: isset($slug[3])}{$slug[3]}{else}method{/if}',
-				data: {$datasets}
+				data: {?=isset_or($datasets)?}
 			}]
 		},
 		options: {

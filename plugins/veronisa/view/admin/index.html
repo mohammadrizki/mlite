@@ -26,10 +26,10 @@
             <div class="panel-body">
                 <div class="row clearfix">
                   <div class="col col-md-6">
-                    <h3 style="margin-top:5px;margin-bottom:15px;">Jumlah: {$veronisa.totalRecords}</h3>
+                    <h3 style="margin-top:5px;margin-bottom:15px;">Jumlah: {?=isset_or($veronisa.totalRecords)?}</h3>
                   </div>
                   <div class="col col-md-6">
-                    <form action="{$veronisa.searchUrl}" class="searchbox-input form-inline pull-right padding-bottom-lg" style="margin-top:5px;margin-bottom:15px;">
+                    <form action="{?=isset_or($veronisa.searchUrl)?}" class="searchbox-input form-inline pull-right padding-bottom-lg" style="margin-top:5px;margin-bottom:15px;">
                         <div class="input-group">
                             <input type="text" name="s" minlength="3" class="form-control" placeholder="Search" required>
                             <input type="hidden" name="start_date" value="{if: isset($_GET['start_date'])}{?=$_GET['start_date']?}{else}{?=date('Y-m-d')?}{/if}">
@@ -57,23 +57,23 @@
       								<tr>
                         <td style="vertical-align:top">
                           {if: $value.nosep == ''}
-                            <a href="{$value.formSepURL}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#moduleModal">
+                            <a href="{?=isset_or($value.formSepURL)?}" class="btn btn-info btn-xs" data-toggle="modal" data-target="#moduleModal">
                               <i class="fa fa-download"></i> Ambil SEP dari Vclaim
                             </a>
                           {else}
                             <button class="btn btn-info btn-xs">
-                              <i class="fa fa-file-o"></i> {$value.nosep}
+                              <i class="fa fa-file-o"></i> {?=isset_or($value.nosep)?}
                             </button>
-                            <a href="#" class="badge badge-error hapus_veronisa" data-no_rawat="{$value.no_rawat}">
+                            <a href="#" class="badge badge-error hapus_veronisa" data-no_rawat="{?=isset_or($value.no_rawat)?}">
                               <i class="fa fa-trash"></i> Hapus
                             </a>
                           {/if}
                           <br/>
-                          <a href="{$value.pdfURL}" target="_blank" class="btn btn-primary btn-xs">
+                          <a href="{?=isset_or($value.pdfURL)?}" target="_blank" class="btn btn-primary btn-xs">
       											<i class="fa fa-print"></i> Lihat Data Klaim
       										</a>
                           {if: $value.bridgeStatus == ''}
-                            <a href="{$value.formSepURL}" class="badge badge-error" data-toggle="modal" data-target="#moduleModal">
+                            <a href="{?=isset_or($value.formSepURL)?}" class="badge badge-error" data-toggle="modal" data-target="#moduleModal">
                               <i class="fa fa-download"></i> Ambil SEP dari Vclaim
                             </a>
                             {/if}
@@ -82,7 +82,7 @@
                             <button class="btn btn-primary btn-xs" disabled>
                               <i class="fa fa-check"></i> Sudah Dikirim
                             </button>
-                            <a href="#" class="badge badge-error hapus_resep_response" data-no_rawat="{$value.no_rawat}">
+                            <a href="#" class="badge badge-error hapus_resep_response" data-no_rawat="{?=isset_or($value.no_rawat)?}">
                               <i class="fa fa-trash"></i> Hapus
                             </a>
                           {else}
@@ -96,27 +96,27 @@
         											<i class="fa fa-check"></i> Status
         										</button><br>
                           {else}
-                            <a href="{$value.setstatusURL}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#statusModal">
+                            <a href="{?=isset_or($value.setstatusURL)?}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#statusModal">
         											<i class="fa fa-check"></i> Status
         										</a>
                             {loop: $value.status_pengajuan as $data}
-                            <span class="badge badge-{if: $data.status == 'Setuju'}success{elseif: $data.status == 'Perbaiki'}error{else}warning{/if}">{$data.status}</span>
+                            <span class="badge badge-{if: $data.status == 'Setuju'}success{elseif: $data.status == 'Perbaiki'}error{else}warning{/if}">{?=isset_or($data.status)?}</span>
                             {/loop}
                           {/if}
                         </td>
       									<td>
                           <table>
                             <tr>
-                              <td width='120px'>No.Rawat</td><td>: {$value.no_rawat}</td>
+                              <td width='120px'>No.Rawat</td><td>: {?=isset_or($value.no_rawat)?}</td>
                             </tr>
                             <tr>
-                              <td width='120px'>No.RM</td><td>: {$value.no_rkm_medis}</td>
+                              <td width='120px'>No.RM</td><td>: {?=isset_or($value.no_rkm_medis)?}</td>
                             </tr>
                             <tr>
-                              <td width='120px'>Nama Pasien</td><td>: {$value.nm_pasien}</td>
+                              <td width='120px'>Nama Pasien</td><td>: {?=isset_or($value.nm_pasien)?}</td>
                             </tr>
                             <tr>
-                              <td width='120px'>Umur</td><td>: {$value.umur} {$value.sttsumur}</td>
+                              <td width='120px'>Umur</td><td>: {?=isset_or($value.umur)?} {?=isset_or($value.sttsumur)?}</td>
                             </tr>
                             <tr>
                               <td width='120px'>Jenis Kelamin</td><td>: {if: $value.jk == 'L'}Laki-Laki{else}Perempuan{/if}</td>
@@ -129,25 +129,25 @@
                               <td width='120px'>Alamat Pasien</td><td>: {?=substr($value.almt_pj, 0, strrpos(substr($value.almt_pj, 0, 20), ' '))?}</td>
                             </tr>
                             <tr>
-                              <td width='120px'>No. Kartu</td><td>: {$value.no_peserta}</td>
+                              <td width='120px'>No. Kartu</td><td>: {?=isset_or($value.no_peserta)?}</td>
                             </tr>
                             <tr>
-                              <td width='120px'>Tgl.Registrasi</td><td>: {$value.tgl_registrasi} {$value.jam_reg}</td>
+                              <td width='120px'>Tgl.Registrasi</td><td>: {?=isset_or($value.tgl_registrasi)?} {?=isset_or($value.jam_reg)?}</td>
                             </tr>
                             <tr>
-                              <td width='120px'>Poliklinik</td><td>: {$value.nm_poli}</td>
+                              <td width='120px'>Poliklinik</td><td>: {?=isset_or($value.nm_poli)?}</td>
                             </tr>
                             <tr>
-                              <td width='120px'>Dokter</td><td>: {$value.nm_dokter}</td>
+                              <td width='120px'>Dokter</td><td>: {?=isset_or($value.nm_dokter)?}</td>
                             </tr>
                           </table>
                         </td>
                         <td>
                           <table>
-                            <tr><td><br><a href="{$value.berkasPerawatan}"  data-toggle="modal" data-target="#moduleModal" class="btn btn-info btn-xs" target="_blank">Unggah Berkas Perawatan</a></td></tr>
+                            <tr><td><br><a href="{?=isset_or($value.berkasPerawatan)?}"  data-toggle="modal" data-target="#moduleModal" class="btn btn-info btn-xs" target="_blank">Unggah Berkas Perawatan</a></td></tr>
                             {loop: $value.berkas_digital as $data}
                             <tr>
-                              <td>- <a href="{?=url(WEBAPPS_URL)?}/berkasrawat/{$data.lokasi_file}" class="gallery">{$data.nama}</a></td>
+                              <td>- <a href="{?=url(WEBAPPS_URL)?}/berkasrawat/{?=isset_or($data.lokasi_file)?}" class="gallery">{?=isset_or($data.nama)?}</a></td>
                             </tr>
                             {/loop}
                           </table>
@@ -160,7 +160,7 @@
       							</tbody>
       						</table>
       					</div>
-                {$veronisa.pagination}
+                {?=isset_or($veronisa.pagination)?}
             </div>
         </div>
     </div>

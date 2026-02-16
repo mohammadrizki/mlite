@@ -7,13 +7,13 @@
     <div class="col-md-6">
       <div class="form-group">
           <label>Nomor Rawat</label>
-          <input type="text" name="no_rawat_assessmentNyeri" class="form-control" placeholder="Nomor Rawat" required value="{$reg_periksa.no_rawat}" readonly />
+          <input type="text" name="no_rawat_assessmentNyeri" class="form-control" placeholder="Nomor Rawat" required value="{?=isset_or($reg_periksa.no_rawat)?}" readonly />
       </div>
     </div>
      <div class="col-md-6">
       <div class="form-group">
           <label>Nama Pasien</label>
-          <input type="text" name="nm_pasien" class="form-control" placeholder="Nama Pasien" required value="{$reg_periksa.nm_pasien}" readonly />
+          <input type="text" name="nm_pasien" class="form-control" placeholder="Nama Pasien" required value="{?=isset_or($reg_periksa.nm_pasien)?}" readonly />
       </div>
     </div>
     <div class="col-sm-6">
@@ -25,7 +25,7 @@
     <div class="col-sm-6">
       <div class="form-group">
         <label for="nip">Petugas</label>
-        <input type="text" name="nip" class="form-control" required value="{$petugas.nama}" readonly>
+        <input type="text" name="nip" class="form-control" required value="{?=isset_or($petugas.nama)?}" readonly>
       </div>
     </div>
   </div>

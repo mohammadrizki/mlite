@@ -2,7 +2,7 @@
     <div class="form-group">
     <label class="col-sm-5 control-label">Jumlah Tagihan</label>
     <div class="col-sm-7">
-        <input type="text" class="form-control" style="text-align:right;font-weight:bold" placeholder="0" value="{$total_tagihan}" name="jumlah_total" maxlength="11" disabled>
+        <input type="text" class="form-control" style="text-align:right;font-weight:bold" placeholder="0" value="{?=isset_or($total_tagihan)?}" name="jumlah_total" maxlength="11" disabled>
     </div>
     <input type="text" class="form-control" style="background-color:white;border:none;box-shadow:none;text-align:right;font-weight:bold;" placeholder="jumlah total"  value="{?=terbilang($total_tagihan)?}" name="terbilang_jumlah_total" disabled >
     </div>
@@ -15,7 +15,7 @@
     <div class="form-group">
     <label class="col-sm-5 control-label">Jumlah Harus Bayar</label>
     <div class="col-sm-7">
-        <input type="text" class="form-control" style="text-align:right;font-weight:bold" placeholder="0" value="{$total_tagihan}" name="jumlah_harus_bayar" maxlength="11" disabled />
+        <input type="text" class="form-control" style="text-align:right;font-weight:bold" placeholder="0" value="{?=isset_or($total_tagihan)?}" name="jumlah_harus_bayar" maxlength="11" disabled />
     </div>
     <input type="text" class="form-control" style="background-color:white;color:blue;border:none;box-shadow:none;text-align:right;font-weight:bold" placeholder="jumlah total"  value="{?=terbilang($total_tagihan)?}" name="terbilang_jumlah_harus_bayar" disabled >
     </div>

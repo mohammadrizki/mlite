@@ -246,13 +246,13 @@
                         <tbody>
                             {loop: $pasien}
                             <tr>
-                                <td>{$value.no_rkm_medis}</td>
+                                <td>{?=isset_or($value.no_rkm_medis)?}</td>
                                 <td>
                                     <img src="{?=url(MODULES.'/pasien/img/'.$value.jk.'.png')?}" alt="Profile Image" width="40" height="40" style="border-radius:50%;">
-                                    <div style="display:inline;padding-left:10px;padding-top:10px;">{$value.nm_pasien}</div>
+                                    <div style="display:inline;padding-left:10px;padding-top:10px;">{?=isset_or($value.nm_pasien)?}</div>
                                 </td>
-                                <td>{$value.pekerjaan}</td>
-                                <td><span class="badge {if: $value.kd_pj == 'BPJ'}badge-success{/if}">{$value.png_jawab}</span></td>
+                                <td>{?=isset_or($value.pekerjaan)?}</td>
+                                <td><span class="badge {if: $value.kd_pj == 'BPJ'}badge-success{/if}">{?=isset_or($value.png_jawab)?}</span></td>
                             </tr>
                             {/loop}
                         </tbody>
@@ -275,8 +275,8 @@
                 <div class="list-group-item">
                     <img src="{?=url(MODULES.'/pasien/img/default.png')?}" style="border-radius:50%;float:left;" width="40">
                     <div style="display:inline-block;padding-left:10px;">
-                        <b>{$value.nm_dokter}</b><br>
-                        {$value.nm_sps}
+                        <b>{?=isset_or($value.nm_dokter)?}</b><br>
+                        {?=isset_or($value.nm_sps)?}
                     </div>
                 </div>
                 {/loop}
@@ -560,7 +560,7 @@
                 datasets: [{
                     backgroundColor: ["#4caf50", "#34316E", "#F58634"],
                     pointRadius: 0,
-                    data: ["{$stats.tunai.count}", "{$stats.bpjs.count}", "{$stats.lainnya.count}"],
+                    data: ["{?=isset_or($stats.tunai.count)?}", "{?=isset_or($stats.bpjs.count)?}", "{?=isset_or($stats.lainnya.count)?}"],
                 }]
             },
             options: {

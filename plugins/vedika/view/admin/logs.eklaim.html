@@ -7,12 +7,12 @@
             <i class="fa fa-calendar"></i><span class="hidden-xs"> Pilihan dan Pemilahan</span>
           </span>
           <ul class="dropdown-menu dropdown-menu-right">
-            <form class="" action="{$logs.filterUrl}" method="">
+            <form class="" action="{?=isset_or($logs.filterUrl)?}" method="">
               <li style="padding-left:5px;padding-right:5px;">
-                <input type="text" id="start_date" class="form-control tanggal" name="start_date" required value="{$logs.start_date}">
+                <input type="text" id="start_date" class="form-control tanggal" name="start_date" required value="{?=isset_or($logs.start_date)?}">
               </li>
               <li style="padding-left:5px;padding-right:5px;margin-top:5px;">
-                <input type="text" id="end_date" class="form-control tanggal" name="end_date" required value="{$logs.end_date}">
+                <input type="text" id="end_date" class="form-control tanggal" name="end_date" required value="{?=isset_or($logs.end_date)?}">
               </li>
               <li style="padding-left:5px;padding-right:5px;margin-top:5px;">
                 <input type="submit" name="submit" class="btn btn-primary btn-block" value="Submit">
@@ -26,14 +26,14 @@
       <div class="panel-body">
         <div class="row clearfix">
           <div class="col col-md-6">
-            <h3 style="margin-top:5px;margin-bottom:15px;">Jumlah: {$logs.totalRecords}</h3>
+            <h3 style="margin-top:5px;margin-bottom:15px;">Jumlah: {?=isset_or($logs.totalRecords)?}</h3>
           </div>
           <div class="col col-md-6">
-            <form action="{$logs.searchUrl}" class="searchbox-input form-inline pull-right padding-bottom-lg" style="margin-top:5px;margin-bottom:15px;">
+            <form action="{?=isset_or($logs.searchUrl)?}" class="searchbox-input form-inline pull-right padding-bottom-lg" style="margin-top:5px;margin-bottom:15px;">
               <div class="input-group">
                 <input type="text" name="s" minlength="3" class="form-control" placeholder="Search" required>
-                <input type="hidden" name="start_date" value="{$logs.start_date}">
-                <input type="hidden" name="end_date" value="{$logs.end_date}">
+                <input type="hidden" name="start_date" value="{?=isset_or($logs.start_date)?}">
+                <input type="hidden" name="end_date" value="{?=isset_or($logs.end_date)?}">
                 <input type="hidden" name="t" value="{?=$_SESSION['token']?}">
                 <span class="input-group-btn">
                   <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
@@ -58,21 +58,21 @@
               {if: !empty($logs.list)}
               {loop: $logs.list}
               <tr>
-                <td>{$value.created_at}</td>
-                <td>{$value.nomor_sep}</td>
-                <td>{$value.username}</td>
-                <td>{$value.fullname}</td>
+                <td>{?=isset_or($value.created_at)?}</td>
+                <td>{?=isset_or($value.nomor_sep)?}</td>
+                <td>{?=isset_or($value.username)?}</td>
+                <td>{?=isset_or($value.fullname)?}</td>
                 <td>
-                  <button class="btn btn-xs btn-info btn-view-json" data-type="request" data-id="{$value.id}" data-sep="{$value.nomor_sep}" data-toggle="modal" data-target="#jsonModal">
+                  <button class="btn btn-xs btn-info btn-view-json" data-type="request" data-id="{?=isset_or($value.id)?}" data-sep="{?=isset_or($value.nomor_sep)?}" data-toggle="modal" data-target="#jsonModal">
                     <i class="fa fa-eye"></i> Lihat Request
                   </button>
-                  <div class="hidden"><script type="application/json" id="req-json-{$value.id}">{$value.request_data}</script></div>
+                  <div class="hidden"><script type="application/json" id="req-json-{?=isset_or($value.id)?}">{?=isset_or($value.request_data)?}</script></div>
                 </td>
                 <td>
-                  <button class="btn btn-xs btn-primary btn-view-json" data-type="response" data-id="{$value.id}" data-sep="{$value.nomor_sep}" data-toggle="modal" data-target="#jsonModal">
+                  <button class="btn btn-xs btn-primary btn-view-json" data-type="response" data-id="{?=isset_or($value.id)?}" data-sep="{?=isset_or($value.nomor_sep)?}" data-toggle="modal" data-target="#jsonModal">
                     <i class="fa fa-eye"></i> Lihat Response
                   </button>
-                  <div class="hidden"><script type="application/json" id="res-json-{$value.id}">{$value.response_data}</script></div>
+                  <div class="hidden"><script type="application/json" id="res-json-{?=isset_or($value.id)?}">{?=isset_or($value.response_data)?}</script></div>
                 </td>
               </tr>
               {/loop}
@@ -86,7 +86,7 @@
         </div>
         <div class="row">
           <div class="col-md-12">
-            {$logs.pagination}
+            {?=isset_or($logs.pagination)?}
           </div>
         </div>
       </div>

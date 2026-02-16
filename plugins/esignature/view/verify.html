@@ -22,23 +22,23 @@
         <table style="width:100%; margin-top: 20px;">
             <tr>
                 <td><strong>Penandatangan:</strong></td>
-                <td>{$signature.signer_name}</td>
+                <td>{?=isset_or($signature.signer_name)?}</td>
             </tr>
             <tr>
                 <td><strong>Peran:</strong></td>
-                <td>{$signature.signer_role}</td>
+                <td>{?=isset_or($signature.signer_role)?}</td>
             </tr>
             <tr>
                 <td><strong>Waktu:</strong></td>
-                <td>{$signature.signed_at}</td>
+                <td>{?=isset_or($signature.signed_at)?}</td>
             </tr>
             <tr>
                 <td><strong>Hash Dokumen:</strong></td>
-                <td style="word-break: break-all; font-family: monospace;">{$signature.signature_hash}</td>
+                <td style="word-break: break-all; font-family: monospace;">{?=isset_or($signature.signature_hash)?}</td>
             </tr>
             <tr>
                 <td><strong>Legal Basis:</strong></td>
-                <td>{$signature.legal_basis}</td>
+                <td>{?=isset_or($signature.legal_basis)?}</td>
             </tr>
         </table>
         <div style="margin-top: 20px; text-align: center;">

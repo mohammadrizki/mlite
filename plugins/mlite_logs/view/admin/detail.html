@@ -13,15 +13,15 @@
         <tbody>
             {loop: $detail}
             <tr><td>Id</td></tr>
-            <tr><td>{$value.id}</td></tr>
+            <tr><td>{?=isset_or($value.id)?}</td></tr>
             <tr><td>Sql Text</td></tr>
-            <tr><td class="text-wrap">{$value.sql_text}</td></tr>
+            <tr><td class="text-wrap">{?=isset_or($value.sql_text)?}</td></tr>
             <tr><td>Bindings</td></tr>
-            <tr><td class="text-wrap">{$value.bindings}</td></tr>
+            <tr><td class="text-wrap">{?=isset_or($value.bindings)?}</td></tr>
             <tr><td>Created At</td></tr>
-            <tr><td>{$value.created_at}</td></tr>
+            <tr><td>{?=isset_or($value.created_at)?}</td></tr>
             <tr><td>Error Message</td></tr>
-            <tr><td>{$value.error_message}</td></tr>
+            <tr><td>{?=isset_or($value.error_message)?}</td></tr>
             <tr><td>Fullname</td></tr>
             <tr><td>{?=$this->core->getUserInfo('fullname', null, $value['username'])?}</td></tr>
             {/loop}
@@ -43,10 +43,10 @@ $(document).ready(function() {
         var img = "{?=base64_encode(file_get_contents(url(ADMIN . '/' . $settings['logo'])))?}";
         doc.addImage(img, 'JPEG', 20, 10, 50, 50);
         doc.setFontSize(20);
-        doc.text("{$settings.nama_instansi}", 80, 35, null, null, null);
+        doc.text("{?=isset_or($settings.nama_instansi)?}", 80, 35, null, null, null);
         doc.setFontSize(10);
-        doc.text("{$settings.alamat} - {$settings.kota} - {$settings.propinsi}", 80, 46, null, null, null);
-        doc.text("Telepon: {$settings.nomor_telepon} - Email: {$settings.email}", 80, 56, null, null, null);
+        doc.text("{?=isset_or($settings.alamat)?} - {?=isset_or($settings.kota)?} - {?=isset_or($settings.propinsi)?}", 80, 46, null, null, null);
+        doc.text("Telepon: {?=isset_or($settings.nomor_telepon)?} - Email: {?=isset_or($settings.email)?}", 80, 56, null, null, null);
         doc.line(20,70,572,70,null); 
         doc.line(20,72,572,72,null); 
         doc.setFontSize(14);
@@ -69,7 +69,7 @@ $(document).ready(function() {
                 footerStr = footerStr + " of " + totalPagesExp;
                 }
                 doc.setFontSize(10);
-                doc.text(`© ${new Date().getFullYear()} {$settings.nama_instansi}.`, data.settings.margin.left, doc.internal.pageSize.height - 10);                
+                doc.text(`© ${new Date().getFullYear()} {?=isset_or($settings.nama_instansi)?}.`, data.settings.margin.left, doc.internal.pageSize.height - 10);                
                 doc.text(footerStr, data.settings.margin.left + 480, doc.internal.pageSize.height - 10);
            }
         });

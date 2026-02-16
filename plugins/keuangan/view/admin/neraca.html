@@ -3,8 +3,8 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <p style="text-align:center">
-                <b>{$settings.nama_instansi}</b><br>
-                {$settings.alamat}<br>
+                <b>{?=isset_or($settings.nama_instansi)?}</b><br>
+                {?=isset_or($settings.alamat)?}<br>
                 Laporan Neraca Periode {?=date('d-m-Y', strtotime($tgl_awal))?} s/d {?=date('d-m-Y', strtotime($tgl_akhir))?}
                 </p>
                 
@@ -23,10 +23,10 @@
                 
                 <form action="" method="GET">
                   <!-- Tombol Print yang benar -->
-                  <a href="{?=url()?}/{?=ADMIN?}/keuangan/neraca?action=print&tgl_awal={$tgl_awal}&tgl_akhir={$tgl_akhir}&t={?=$_SESSION['token']?}" target="_blank" class="btn btn-sm btn-default pull-right" style="margin-left:5px;"><i class="fa fa-print"></i> Print</a>
+                  <a href="{?=url()?}/{?=ADMIN?}/keuangan/neraca?action=print&tgl_awal={?=isset_or($tgl_awal)?}&tgl_akhir={?=isset_or($tgl_akhir)?}&t={?=$_SESSION['token']?}" target="_blank" class="btn btn-sm btn-default pull-right" style="margin-left:5px;"><i class="fa fa-print"></i> Print</a>
                   
                   <!-- Tombol Export Excel -->
-                  <a href="{?=url()?}/{?=ADMIN?}/keuangan/neraca?action=excel&tgl_awal={$tgl_awal}&tgl_akhir={$tgl_akhir}&t={?=$_SESSION['token']?}" class="btn btn-sm btn-success pull-right" style="margin-left:5px;"><i class="fa fa-file-excel-o"></i> Excel</a>
+                  <a href="{?=url()?}/{?=ADMIN?}/keuangan/neraca?action=excel&tgl_awal={?=isset_or($tgl_awal)?}&tgl_akhir={?=isset_or($tgl_akhir)?}&t={?=$_SESSION['token']?}" class="btn btn-sm btn-success pull-right" style="margin-left:5px;"><i class="fa fa-file-excel-o"></i> Excel</a>
                   <div class="btn-group pull-right" style="margin-top:-8px;">
                     <span class="btn btn-sm dropdown-toggle" data-toggle="dropdown">
                       <i class="fa fa-calendar"></i><span class="hidden-xs"> Filter Periode</span>
@@ -34,11 +34,11 @@
                     <ul class="dropdown-menu dropdown-menu-right" style="width:200px;">
                       <li style="padding:10px;">
                         <label>Tanggal Awal:</label>
-                        <input type="text" id="tgl_awal" class="form-control tanggal" name="tgl_awal" value="{$tgl_awal}" required>
+                        <input type="text" id="tgl_awal" class="form-control tanggal" name="tgl_awal" value="{?=isset_or($tgl_awal)?}" required>
                       </li>
                       <li style="padding:10px;">
                         <label>Tanggal Akhir:</label>
-                        <input type="text" id="tgl_akhir" class="form-control tanggal" name="tgl_akhir" value="{$tgl_akhir}" required>
+                        <input type="text" id="tgl_akhir" class="form-control tanggal" name="tgl_akhir" value="{?=isset_or($tgl_akhir)?}" required>
                       </li>
                       <li style="padding:10px;">
                         <input type="submit" class="btn btn-primary btn-block" value="Tampilkan">
@@ -68,8 +68,8 @@
                                     </tr>
                                     {loop: $aktiva_lancar}
                                     <tr>
-                                        <td style="padding-left:20px;">{$value.kd_rek}</td>
-                                        <td>{$value.nm_rek}</td>
+                                        <td style="padding-left:20px;">{?=isset_or($value.kd_rek)?}</td>
+                                        <td>{?=isset_or($value.nm_rek)?}</td>
                                         <td style="text-align:right;">{?= number_format($value.saldo,2,',','.')?}</td>
                                     </tr>
                                     {/loop}
@@ -84,8 +84,8 @@
                                     </tr>
                                     {loop: $aktiva_tetap}
                                     <tr>
-                                        <td style="padding-left:20px;">{$value.kd_rek}</td>
-                                        <td>{$value.nm_rek}</td>
+                                        <td style="padding-left:20px;">{?=isset_or($value.kd_rek)?}</td>
+                                        <td>{?=isset_or($value.nm_rek)?}</td>
                                         <td style="text-align:right;">{?= number_format($value.saldo,2,',','.')?}</td>
                                     </tr>
                                     {/loop}
@@ -121,8 +121,8 @@
                                     </tr>
                                     {loop: $hutang_lancar}
                                     <tr>
-                                        <td style="padding-left:20px;">{$value.kd_rek}</td>
-                                        <td>{$value.nm_rek}</td>
+                                        <td style="padding-left:20px;">{?=isset_or($value.kd_rek)?}</td>
+                                        <td>{?=isset_or($value.nm_rek)?}</td>
                                         <td style="text-align:right;">{?= number_format($value.saldo,2,',','.')?}</td>
                                     </tr>
                                     {/loop}
@@ -137,8 +137,8 @@
                                     </tr>
                                     {loop: $hutang_jangka_panjang}
                                     <tr>
-                                        <td style="padding-left:20px;">{$value.kd_rek}</td>
-                                        <td>{$value.nm_rek}</td>
+                                        <td style="padding-left:20px;">{?=isset_or($value.kd_rek)?}</td>
+                                        <td>{?=isset_or($value.nm_rek)?}</td>
                                         <td style="text-align:right;">{?= number_format($value.saldo,2,',','.')?}</td>
                                     </tr>
                                     {/loop}
@@ -153,8 +153,8 @@
                                     </tr>
                                     {loop: $modal}
                                     <tr>
-                                        <td style="padding-left:20px;">{$value.kd_rek}</td>
-                                        <td>{$value.nm_rek}</td>
+                                        <td style="padding-left:20px;">{?=isset_or($value.kd_rek)?}</td>
+                                        <td>{?=isset_or($value.nm_rek)?}</td>
                                         <td style="text-align:right;">{?= number_format($value.saldo,2,',','.')?}</td>
                                     </tr>
                                     {/loop}

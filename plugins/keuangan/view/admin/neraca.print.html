@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Neraca - {$settings.nama_instansi}</title>
+    <title>Laporan Neraca - {?=isset_or($settings.nama_instansi)?}</title>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -108,8 +108,8 @@
 </head>
 <body>
     <div class="header">
-        <h2>{$settings.nama_instansi}</h2>
-        <h3>{$settings.alamat}</h3>
+        <h2>{?=isset_or($settings.nama_instansi)?}</h2>
+        <h3>{?=isset_or($settings.alamat)?}</h3>
         <h3>LAPORAN NERACA</h3>
         <h4>Periode {?=date('d-m-Y', strtotime($tgl_awal))?} s/d {?=date('d-m-Y', strtotime($tgl_akhir))?}</h4>
     </div>
@@ -132,8 +132,8 @@
                         </tr>
                         {loop: $aktiva_lancar}
                         <tr>
-                            <td class="indent">{$value.kd_rek}</td>
-                            <td>{$value.nm_rek}</td>
+                            <td class="indent">{?=isset_or($value.kd_rek)?}</td>
+                            <td>{?=isset_or($value.nm_rek)?}</td>
                             <td class="text-right">{?= number_format($value.saldo,2,',','.')?}</td>
                         </tr>
                         {/loop}
@@ -148,8 +148,8 @@
                         </tr>
                         {loop: $aktiva_tetap}
                         <tr>
-                            <td class="indent">{$value.kd_rek}</td>
-                            <td>{$value.nm_rek}</td>
+                            <td class="indent">{?=isset_or($value.kd_rek)?}</td>
+                            <td>{?=isset_or($value.nm_rek)?}</td>
                             <td class="text-right">{?= number_format($value.saldo,2,',','.')?}</td>
                         </tr>
                         {/loop}
@@ -183,8 +183,8 @@
                         </tr>
                         {loop: $hutang_lancar}
                         <tr>
-                            <td class="indent">{$value.kd_rek}</td>
-                            <td>{$value.nm_rek}</td>
+                            <td class="indent">{?=isset_or($value.kd_rek)?}</td>
+                            <td>{?=isset_or($value.nm_rek)?}</td>
                             <td class="text-right">{?= number_format($value.saldo,2,',','.')?}</td>
                         </tr>
                         {/loop}
@@ -199,8 +199,8 @@
                         </tr>
                         {loop: $hutang_jangka_panjang}
                         <tr>
-                            <td class="indent">{$value.kd_rek}</td>
-                            <td>{$value.nm_rek}</td>
+                            <td class="indent">{?=isset_or($value.kd_rek)?}</td>
+                            <td>{?=isset_or($value.nm_rek)?}</td>
                             <td class="text-right">{?= number_format($value.saldo,2,',','.')?}</td>
                         </tr>
                         {/loop}
@@ -215,8 +215,8 @@
                         </tr>
                         {loop: $modal}
                         <tr>
-                            <td class="indent">{$value.kd_rek}</td>
-                            <td>{$value.nm_rek}</td>
+                            <td class="indent">{?=isset_or($value.kd_rek)?}</td>
+                            <td>{?=isset_or($value.nm_rek)?}</td>
                             <td class="text-right">{?= number_format($value.saldo,2,',','.')?}</td>
                         </tr>
                         {/loop}

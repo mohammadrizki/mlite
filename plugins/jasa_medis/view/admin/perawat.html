@@ -20,7 +20,7 @@
                               <select name="search" id="search_perawat" class="form-control">
                                 <option value="">Select</option>
                                 {loop: $petugas} 
-                                  <option value="{$value.nip}" {if: $_GET['search'] == $value.nip}selected{/if}>{$value.nama}</option>
+                                  <option value="{?=isset_or($value.nip)?}" {if: $_GET['search'] == $value.nip}selected{/if}>{?=isset_or($value.nama)?}</option>
                                 {/loop}
                               </select>
                             </span>
@@ -48,18 +48,18 @@
                         <tbody>
                           {loop: isset_or($jasa_medis.petugas, [])}
                           <tr>
-                            <td>{$value.nama}</td>
+                            <td>{?=isset_or($value.nama)?}</td>
                             <td></td>
                           </tr>
                           {loop: isset_or($value.rawat_jl_pr, []) as $data}
                           <tr>
                             <td></td>
-                            <td>Tanggal : {$data.tgl_perawatan}</td>
+                            <td>Tanggal : {?=isset_or($data.tgl_perawatan)?}</td>
                           </tr>
                           {loop: isset_or($data.detail, []) as $hasil}
                           <tr>
                             <td></td>
-                            <td>- {$hasil.nm_perawatan} : Rp. {?=number_format($hasil.tarif_tindakanpr,0,',','.')?}</td>
+                            <td>- {?=isset_or($hasil.nm_perawatan)?} : Rp. {?=number_format($hasil.tarif_tindakanpr,0,',','.')?}</td>
                           </tr>
                           {/loop}
                           <tr>

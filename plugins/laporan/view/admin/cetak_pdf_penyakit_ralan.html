@@ -32,10 +32,10 @@
 </head>
 <body>
     <div class="header">
-        <h2>{$settings.nama_instansi}</h2>
-        <p>{$settings.alamat} - {$settings.kota}</p>
+        <h2>{?=isset_or($settings.nama_instansi)?}</h2>
+        <p>{?=isset_or($settings.alamat)?} - {?=isset_or($settings.kota)?}</p>
         <h3>Laporan 10 Besar Penyakit Rawat Jalan</h3>
-        <p>Periode: {$tgl_awal} s/d {$tgl_akhir}</p>
+        <p>Periode: {?=isset_or($tgl_awal)?} s/d {?=isset_or($tgl_akhir)?}</p>
     </div>
 
     <table>
@@ -51,9 +51,9 @@
             {loop: $laporan}
             <tr>
                 <td align="center">{?=$key+1?}</td>
-                <td>{$value.kd_penyakit}</td>
-                <td>{$value.nm_penyakit}</td>
-                <td align="center">{$value.jumlah}</td>
+                <td>{?=isset_or($value.kd_penyakit)?}</td>
+                <td>{?=isset_or($value.nm_penyakit)?}</td>
+                <td align="center">{?=isset_or($value.jumlah)?}</td>
             </tr>
             {/loop}
         </tbody>

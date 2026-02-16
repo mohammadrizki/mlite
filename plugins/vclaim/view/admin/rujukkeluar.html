@@ -128,13 +128,13 @@
   $("#form_skontrol").on("click", "#load_kontrol", function (event) {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
     $("#hapus_kontrol").hide();
   });
 
   $(document).ready(function () {
     var baseURL = mlite.url + '/' + mlite.admin;
-    $("#rujukdisplay").show().load(baseURL + '/vclaim/rujukkeluardisplay/{$no_kartu}?t=' + mlite.token);
+    $("#rujukdisplay").show().load(baseURL + '/vclaim/rujukkeluardisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
   });
 
   $("#form_rujuk").on("click", "#simpan_rujuk", function (event) {
@@ -171,7 +171,7 @@
     }, function (data) {
       alert(data);
       console.log(data);
-      $("#kontroldisplay").show().load(baseURL + '/vclaim/rujukkeluardisplay/{$no_kartu}?t=' + mlite.token);
+      $("#kontroldisplay").show().load(baseURL + '/vclaim/rujukkeluardisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">" +
         "Data Rujukan telah disimpan!" +
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +
@@ -200,7 +200,7 @@
       poli: poli
     }, function (data) {
       alert(data);
-      $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+      $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">" +
         "Data Kontrol VClaim telah disimpan!" +
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +

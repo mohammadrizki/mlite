@@ -12,7 +12,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Nomor SEP</label>
-                <input type="text" name="no_sep" id="no_sep" class="form-control" value="{$no_sep}" />
+                <input type="text" name="no_sep" id="no_sep" class="form-control" value="{?=isset_or($no_sep)?}" />
                 <input type="text" style="display: none;" name="no_surkon" id="no_surkon" class="form-control" />
               </div>
             </div>
@@ -20,7 +20,7 @@
               <div class="form-group">
                 <label for="" class="">No Peserta</label>
                 <input type="text" name="no_peserta" id="no_peserta" class="form-control"
-                  value="{$no_kartu}">
+                  value="{?=isset_or($no_kartu)?}">
               </div>
             </div>
             <div class="col-md-6">
@@ -38,7 +38,7 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label>Alamat</label>
-                <input type="text" name="alamat" id="alamat" class="form-control" value="{$alamat}" />
+                <input type="text" name="alamat" id="alamat" class="form-control" value="{?=isset_or($alamat)?}" />
               </div>
             </div>
             <div class="col-md-6">
@@ -58,14 +58,14 @@
               <div class="form-group">
                 <label for="" class="">Kode DPJP</label>
                 <input type="text" name="dpjp" id="dpjp" class="form-control"
-                  value="{$kddpjp}">
+                  value="{?=isset_or($kddpjp)?}">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="" class="">Nama DPJP</label>
                 <input type="text" name="nm_dpjp" id="nm_dpjp" class="form-control"
-                  value="{$nmdpjp}">
+                  value="{?=isset_or($nmdpjp)?}">
               </div>
             </div>
             <div class="col-md-6">
@@ -145,13 +145,13 @@
   $("#form_skontrol").on("click", "#load_kontrol", function (event) {
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+    $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
     $("#hapus_kontrol").hide();
   });
 
   $(document).ready(function () {
     var baseURL = mlite.url + '/' + mlite.admin;
-    $("#srbdisplay").show().load(baseURL + '/vclaim/srbdisplay/{$no_kartu}?t=' + mlite.token);
+    $("#srbdisplay").show().load(baseURL + '/vclaim/srbdisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
   });
 
   $("#form_srb").on("click", "#simpan_srb", function (event) {
@@ -195,7 +195,7 @@
     }, function (data) {
       alert(data);
       console.log(data);
-      $("#srbdisplay").show().load(baseURL + '/vclaim/srbdisplay/{$no_kartu}?t=' + mlite.token);
+      $("#srbdisplay").show().load(baseURL + '/vclaim/srbdisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">" +
         "Data SRB telah disimpan!" +
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +
@@ -224,7 +224,7 @@
       poli: poli
     }, function (data) {
       alert(data);
-      $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{$no_kartu}?t=' + mlite.token);
+      $("#kontroldisplay").show().load(baseURL + '/vclaim/kontroldisplay/{?=isset_or($no_kartu)?}?t=' + mlite.token);
       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">" +
         "Data Kontrol VClaim telah disimpan!" +
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>" +

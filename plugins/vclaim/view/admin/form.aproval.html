@@ -72,7 +72,7 @@
     var bln_aproval = tgl_aproval.substring(5,7);
     var tahun_aproval = tgl_aproval.substring(0,4);
     event.preventDefault();
-    var noKartu          = '{$no_kartu}';
+    var noKartu          = '{?=isset_or($no_kartu)?}';
     var tglSep           = $('#aproval_tglSep').val();
     var keterangan     = $('#aproval_keterangan').val();
     var jnsPelayanan    = $('#aproval_jnsPelayanan').val();

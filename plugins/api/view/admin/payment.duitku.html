@@ -24,15 +24,15 @@
               {if: $paymentduitku.list}
               {loop: $paymentduitku.list}
               <tr>
-                <td>{$value.id}</td>
-                <td>{$value.tanggal}</td>
-                <td>{$value.no_rkm_medis}</td>
-                <td>{$value.nm_pasien}</td>
-                <td>{$value.reference}</td>
-                <td>{$value.vaNumber}</td>
-                <td><button type="button" class="btn btn-xs btn-info"><a href="{$value.paymentUrl}" target="_blank">Open <i class="fa fa-money"></i></a></button></td>
+                <td>{?=isset_or($value.id)?}</td>
+                <td>{?=isset_or($value.tanggal)?}</td>
+                <td>{?=isset_or($value.no_rkm_medis)?}</td>
+                <td>{?=isset_or($value.nm_pasien)?}</td>
+                <td>{?=isset_or($value.reference)?}</td>
+                <td>{?=isset_or($value.vaNumber)?}</td>
+                <td><button type="button" class="btn btn-xs btn-info"><a href="{?=isset_or($value.paymentUrl)?}" target="_blank">Open <i class="fa fa-money"></i></a></button></td>
                 <td>Rp. {?= number_format($value.amount,2,',','.')?}</td>
-                <td>{$value.statusMessage}</td>
+                <td>{?=isset_or($value.statusMessage)?}</td>
               </tr>
               {/loop}
               {else}

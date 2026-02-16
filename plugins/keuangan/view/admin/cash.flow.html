@@ -18,7 +18,7 @@
         <tbody>
           {loop: $aruskas}
           <tr>
-            <td><b>{$value.nomor}</b></td>
+            <td><b>{?=isset_or($value.nomor)?}</b></td>
             <td colspan="3"><b>
               {?=strtoupper($value.arus_kas)?}
             </b></td>
@@ -30,7 +30,7 @@
             {loop: $value.jurnal_masuk as $data}
             <tr>
               <td></td>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;{$data.nm_rek}</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;{?=isset_or($data.nm_rek)?}</td>
               <td><span class="pull-right">{?= number_format($data.kredit_all,2,',','.')?}</span></td>
               <td><span class="pull-right">{?= number_format($data.saldo_awal,2,',','.')?}</span></td>
             </tr>
@@ -48,7 +48,7 @@
             {loop: $value.jurnal_keluar as $data}
             <tr>
               <td></td>
-              <td>&nbsp;&nbsp;&nbsp;&nbsp;{$data.nm_rek}</td>
+              <td>&nbsp;&nbsp;&nbsp;&nbsp;{?=isset_or($data.nm_rek)?}</td>
               <td><span class="pull-right">{?= number_format($data.debet_all,2,',','.')?}</span></td>
               <td><span class="pull-right">{?= number_format($data.saldo_awal,2,',','.')?}</span></td>
             </tr>
@@ -61,7 +61,7 @@
             </tr>
             <tr>
               <td></td>
-              <td align="right"><b>Netto {$value.arus_kas} ({$value.nomor})</b></td>
+              <td align="right"><b>Netto {?=isset_or($value.arus_kas)?} ({?=isset_or($value.nomor)?})</b></td>
               <td><span class="pull-right">{?= number_format($value.total_masuk - $value.total_keluar,2,',','.')?}</span></td>
               <td><span class="pull-right">{?= number_format($value.total_saldo_awal_masuk - $value.total_saldo_awal_keluar,2,',','.')?}</span></td>
             </tr>

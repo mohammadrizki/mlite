@@ -7,7 +7,7 @@
   <div id="icd10dan9">
     <div class="panel panel-default">
       <div class="panel-body">
-        <input type="hidden" name="no_rawat" value="{$no_rawat}">
+        <input type="hidden" name="no_rawat" value="{?=isset_or($no_rawat)?}">
         <div class="form-group">
           <div class="row">
             <div class="col-sm-12">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="input-group">
                   <input type="text" name="icd10" id="icd10" class="form-control" />
-                  <input type="hidden" name="status" class="form-control" value="{$status_lanjut}" />
+                  <input type="hidden" name="status" class="form-control" value="{?=isset_or($status_lanjut)?}" />
                   <ul class="list-group" id="icd10List" style="z-index:1000;position:absolute;width:100%;"></ul>
                   <span class="input-group-btn">
                     <button id="simpan_icd10" class="btn btn-primary btn-block">
@@ -62,10 +62,10 @@
       <tbody>
         {loop: $diagnosa_pasien}
         <tr>
-          <td>{$value.kd_penyakit}</td>
-          <td>{$value.nm_penyakit}</td>
-          <td contenteditable="true" data-old_value="{$value.prioritas}" onBlur="savePrioritas(this,'prioritas','{$value.no_rawat}','{$value.kd_penyakit}','{$status_lanjut}')" onClick="highlightEdit(this);">{$value.prioritas}</td>
-          <td><a href="" class="btn btn-xs btn-danger fa fa-trash hapus_diagnosa" data-no_rawat="{$value.no_rawat}" data-kd_penyakit="{$value.kd_penyakit}" data-prioritas="{$value.prioritas}"></a></td>
+          <td>{?=isset_or($value.kd_penyakit)?}</td>
+          <td>{?=isset_or($value.nm_penyakit)?}</td>
+          <td contenteditable="true" data-old_value="{?=isset_or($value.prioritas)?}" onBlur="savePrioritas(this,'prioritas','{?=isset_or($value.no_rawat)?}','{?=isset_or($value.kd_penyakit)?}','{?=isset_or($status_lanjut)?}')" onClick="highlightEdit(this);">{?=isset_or($value.prioritas)?}</td>
+          <td><a href="" class="btn btn-xs btn-danger fa fa-trash hapus_diagnosa" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-kd_penyakit="{?=isset_or($value.kd_penyakit)?}" data-prioritas="{?=isset_or($value.prioritas)?}"></a></td>
         </tr>
         {/loop}
       </tbody>

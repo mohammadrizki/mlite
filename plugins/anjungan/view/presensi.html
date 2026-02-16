@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>{$title} - {$settings.nama_instansi}</title>
+    <title>{?=isset_or($title)?} - {?=isset_or($settings.nama_instansi)?}</title>
     <link rel="icon" href="{?=url()?}/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="{?=url()?}/assets/css/bootstrap.min.css">
     <link href="{?=url()?}/assets/css/font-awesome.css" rel="stylesheet">
@@ -22,7 +22,7 @@
       body:before {
         content: "";
         position: absolute;
-        background: url('{?=url()?}/{$wallpaper}');
+        background: url('{?=url()?}/{?=isset_or($wallpaper)?}');
         background-size: cover;
         z-index: -1; /* Keep the background behind the content */
         height: 20%; width: 20%; /* Using Glen Maddern's trick /via @mente */
@@ -36,7 +36,7 @@
           text-align: center;
       }
       .text_color {
-        color: {$text_color} !important;
+        color: {?=isset_or($text_color)?} !important;
       }
       .button {
           position: absolute;
@@ -63,31 +63,31 @@
 </head>
 <body>
 <div class="container-fluid">
-  <h1 class="display-3 text-center m-3 text_color"><img class="logo" src="{?=url()?}/{$logo}" alt="" width="60px"> Presensi Pegawai {$settings.nama_instansi}</h1>
+  <h1 class="display-3 text-center m-3 text_color"><img class="logo" src="{?=url()?}/{?=isset_or($logo)?}" alt="" width="60px"> Presensi Pegawai {?=isset_or($settings.nama_instansi)?}</h1>
   <div class="btn-group">
     <button class="btn btn-lg btn-danger btn-fab" id="main" data-toggle="modal" data-target="#myModal">
         <i class="fa fa-plus"></i> Presensi
     </button>
   </div>
   {if: $notify}
-  <div id="notify" class="alert alert-{$notify.type} alert-dismissible fade in" role="alert">
-      {$notify.text}
+  <div id="notify" class="alert alert-{?=isset_or($notify.type)?} alert-dismissible fade in" role="alert">
+      {?=isset_or($notify.text)?}
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
           <span aria-hidden="true">&times;</span>
       </button>
   </div>
   {/if}
   <!--<div class="row" style="bottom:0;position:absolute;width:100%;background-color:#fff;color:#ff0000;margin-top:20px;margin-bottom:40px;">
-    <h3 class="display-6"><marquee>{$running_text}</marquee></h3>
+    <h3 class="display-6"><marquee>{?=isset_or($running_text)?}</marquee></h3>
   </div>-->
 </div>
 <footer class="visible-lg visible-md bg-primary" style="padding:10px;z-index:1000;">
   <div class="canvas">
     <p class="pull-right">
       Made with <i class="fa fa-heart text-danger"></i> by <a href="https://basoro.id/" target="_blank"><b>drg. F. Basoro</b>.</a>
-      {$powered}.
+      {?=isset_or($powered)?}.
     </p>
-    <p><i class="fa fa-fw fa-calendar"></i> <span>{$tanggal}</span> <i class="fa fa-fw fa-clock-o"></i><span id="clock"></span></p>
+    <p><i class="fa fa-fw fa-calendar"></i> <span>{?=isset_or($tanggal)?}</span> <i class="fa fa-fw fa-clock-o"></i><span id="clock"></span></p>
   </div>
 </footer>
 <!-- The Modal -->
@@ -104,7 +104,7 @@
           <select class="form-control input-lg" id="shift" style="width:160px;">
             <option value="">Jam Masuk</option>
             {loop: $jam_jaga}
-            <option value="{$value.shift}">{$value.jam_masuk} - {$value.jam_pulang}</option>
+            <option value="{?=isset_or($value.shift)?}">{?=isset_or($value.jam_masuk)?} - {?=isset_or($value.jam_pulang)?}</option>
             {/loop}
           </select><br>
           <div class="row" style="margin-bottom:30px;">

@@ -22,16 +22,16 @@
             						{if: !empty($pendaftaran.jadwal)}
     							{loop: $pendaftaran.jadwal}
     							<tr>
-    								<td>{$value.nm_dokter}</td>
-    								<td>{$value.hari_kerja}</td>
-                      <td>{$value.jam_mulai} - {$value.jam_selesai}</td>
-                      <td>{$value.nm_poli}</td>
-                      <td>{$value.kuota}</td>
+    								<td>{?=isset_or($value.nm_dokter)?}</td>
+    								<td>{?=isset_or($value.hari_kerja)?}</td>
+                      <td>{?=isset_or($value.jam_mulai)?} - {?=isset_or($value.jam_selesai)?}</td>
+                      <td>{?=isset_or($value.nm_poli)?}</td>
+                      <td>{?=isset_or($value.kuota)?}</td>
     								<td class="text-right">
-    									<a href="{$value.editURL}" class="btn btn-success btn-xs">
+    									<a href="{?=isset_or($value.editURL)?}" class="btn btn-success btn-xs">
     										<i class="fa fa-pencil"></i> <span class="hidden-xs">Ganti</span>
     									</a>
-    									<a href="{$value.delURL}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
+    									<a href="{?=isset_or($value.delURL)?}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
     										<i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>
     									</a>
     								</td>
