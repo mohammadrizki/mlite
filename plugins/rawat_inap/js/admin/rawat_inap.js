@@ -1645,6 +1645,13 @@ function createVitalSignsChart(chartData) {
   if (vitalSignsChart && typeof vitalSignsChart.destroy === 'function') {
     vitalSignsChart.destroy();
   }
+
+  // Filter out Height and Weight datasets (which use yAxisID: 'y1')
+  if (chartData.datasets) {
+    chartData.datasets = chartData.datasets.filter(function(dataset) {
+      return dataset.yAxisID !== 'y1';
+    });
+  }
   
   vitalSignsChart = new Chart(ctx, {
     type: 'line',
@@ -1697,18 +1704,6 @@ function createVitalSignsChart(chartData) {
             text: 'Nilai Tanda Vital'
           },
           beginAtZero: false
-        },
-        y1: {
-          type: 'linear',
-          display: true,
-          position: 'right',
-          title: {
-            display: true,
-            text: 'Tinggi/Berat'
-          },
-          grid: {
-            drawOnChartArea: false,
-          },
         }
       }
     }
