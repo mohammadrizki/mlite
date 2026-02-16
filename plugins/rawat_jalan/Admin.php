@@ -59,6 +59,7 @@ class Admin extends AdminModule
         $igd = $this->settings('settings', 'igd');
 
         // Base Query
+        $params = [];
         if ($tgl_awal > date('Y-m-d')) {
             $sql = "SELECT booking_registrasi.no_reg, booking_registrasi.jam_booking as jam_reg, 
                 booking_registrasi.no_rkm_medis, booking_registrasi.kd_poli, booking_registrasi.kd_dokter,
@@ -70,8 +71,11 @@ class Admin extends AdminModule
                 JOIN dokter ON booking_registrasi.kd_dokter = dokter.kd_dokter 
                 JOIN poliklinik ON booking_registrasi.kd_poli = poliklinik.kd_poli 
                 JOIN penjab ON booking_registrasi.kd_pj = penjab.kd_pj 
-                WHERE booking_registrasi.kd_poli != '$igd' 
-                AND booking_registrasi.tanggal_periksa BETWEEN '$tgl_awal' AND '$tgl_akhir'";
+                WHERE booking_registrasi.kd_poli != ? 
+                AND booking_registrasi.tanggal_periksa BETWEEN ? AND ?";
+            $params[] = $igd;
+            $params[] = $tgl_awal;
+            $params[] = $tgl_akhir;
 
             if ($this->core->getUserInfo('role', $user_id, true) != 'admin') {
                 $sql .= " AND booking_registrasi.kd_poli IN ('$poliklinik')";
@@ -85,7 +89,11 @@ class Admin extends AdminModule
 
             // Search
             if (!empty($searchValue)) {
-                $sql .= " AND (booking_registrasi.no_rkm_medis LIKE '%$searchValue%' OR pasien.nm_pasien LIKE '%$searchValue%' OR dokter.nm_dokter LIKE '%$searchValue%' OR poliklinik.nm_poli LIKE '%$searchValue%')";
+                $sql .= " AND (booking_registrasi.no_rkm_medis LIKE ? OR pasien.nm_pasien LIKE ? OR dokter.nm_dokter LIKE ? OR poliklinik.nm_poli LIKE ?)";
+                $params[] = "%$searchValue%";
+                $params[] = "%$searchValue%";
+                $params[] = "%$searchValue%";
+                $params[] = "%$searchValue%";
             }
         } else {
             $sql = "SELECT reg_periksa.*, pasien.nm_pasien, dokter.nm_dokter, poliklinik.nm_poli, penjab.png_jawab 
@@ -94,8 +102,11 @@ class Admin extends AdminModule
                     JOIN dokter ON reg_periksa.kd_dokter = dokter.kd_dokter 
                     JOIN poliklinik ON reg_periksa.kd_poli = poliklinik.kd_poli 
                     JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj 
-                    WHERE reg_periksa.kd_poli != '$igd' 
-                    AND reg_periksa.tgl_registrasi BETWEEN '$tgl_awal' AND '$tgl_akhir'";
+                    WHERE reg_periksa.kd_poli != ? 
+                    AND reg_periksa.tgl_registrasi BETWEEN ? AND ?";
+            $params[] = $igd;
+            $params[] = $tgl_awal;
+            $params[] = $tgl_akhir;
 
             if ($this->core->getUserInfo('role', $user_id, true) != 'admin') {
                 $sql .= " AND reg_periksa.kd_poli IN ('$poliklinik')";
@@ -112,21 +123,36 @@ class Admin extends AdminModule
 
             // Search
             if (!empty($searchValue)) {
-                $sql .= " AND (reg_periksa.no_rawat LIKE '%$searchValue%' OR reg_periksa.no_rkm_medis LIKE '%$searchValue%' OR pasien.nm_pasien LIKE '%$searchValue%' OR dokter.nm_dokter LIKE '%$searchValue%' OR poliklinik.nm_poli LIKE '%$searchValue%')";
+                $sql .= " AND (reg_periksa.no_rawat LIKE ? OR reg_periksa.no_rkm_medis LIKE ? OR pasien.nm_pasien LIKE ? OR dokter.nm_dokter LIKE ? OR poliklinik.nm_poli LIKE ?)";
+                $params[] = "%$searchValue%";
+                $params[] = "%$searchValue%";
+                $params[] = "%$searchValue%";
+                $params[] = "%$searchValue%";
+                $params[] = "%$searchValue%";
             }
         }
 
         // Count Total (filtered)
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $totalRecords = $stmt->rowCount();
 
         // Order and Limit
         $sql .= " ORDER BY $columnName $columnSortOrder LIMIT $start, $length";
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // XSS Prevention: Sanitize output
+        foreach ($rows as &$row) {
+            foreach ($row as $key => $value) {
+                if (is_string($value)) {
+                    $row[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                }
+            }
+        }
+        unset($row);
 
         $data = [];
         foreach ($rows as $row) {

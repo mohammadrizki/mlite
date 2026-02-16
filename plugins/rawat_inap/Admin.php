@@ -87,8 +87,9 @@ class Admin extends AdminModule
         $this->assign['penjab']       = $this->db('penjab')->where('status', '1')->toArray();
         $this->assign['no_rawat'] = '';
 
-        $bangsal = str_replace(",","','", $this->core->getUserInfo('cap', null, true));
-
+        $bangsal_list = str_replace(",","','", $this->core->getUserInfo('cap', null, true));
+        
+        $params = [];
         $sql = "SELECT
             kamar_inap.*,
             reg_periksa.*,
@@ -115,27 +116,45 @@ class Admin extends AdminModule
             reg_periksa.kd_pj=penjab.kd_pj";
 
         if ($this->core->getUserInfo('role') != 'admin') {
-          $sql .= " AND bangsal.kd_bangsal IN ('$bangsal')";
+          $sql .= " AND bangsal.kd_bangsal IN ('$bangsal_list')";
         }
         if($status_pulang == '') {
           $sql .= " AND kamar_inap.stts_pulang = '-'";
         }
         if($status_pulang == 'all' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.stts_pulang = '-' AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.stts_pulang = '-' AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_pulang == 'masuk' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_pulang == 'pulang' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.tgl_keluar BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.tgl_keluar BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_periksa == 'lunas' && $status_pulang == '-' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND reg_periksa.status_bayar = 'Sudah Bayar' AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND reg_periksa.status_bayar = 'Sudah Bayar' AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
+
+        // XSS Prevention: Sanitize output
+        foreach ($rows as &$row) {
+            foreach ($row as $key => $value) {
+                if (is_string($value)) {
+                    $row[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                }
+            }
+        }
+        unset($row);
 
         $this->assign['list'] = [];
         foreach ($rows as $row) {

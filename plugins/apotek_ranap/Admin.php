@@ -66,6 +66,7 @@ class Admin extends AdminModule
 
         $bangsal = str_replace(",","','", $this->core->getUserInfo('cap', null, true));
 
+        $params = [];
         $sql = "SELECT
             kamar_inap.*,
             reg_periksa.*,
@@ -98,17 +99,23 @@ class Admin extends AdminModule
           $sql .= " AND kamar_inap.stts_pulang = '-'";
         }
         if($status_pulang == 'all' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.stts_pulang = '-' AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.stts_pulang = '-' AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_pulang == 'masuk' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_pulang == 'pulang' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.tgl_keluar BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.tgl_keluar BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
 
         $this->assign['list'] = [];

@@ -218,7 +218,7 @@ class Admin extends AdminModule
 
         if($query) {
           if($manual == '0') {
-            $this->db()->pdo()->exec("UPDATE set_no_rkm_medis SET no_rkm_medis='$_POST[no_rkm_medis]'");
+            $this->db()->pdo()->prepare("UPDATE set_no_rkm_medis SET no_rkm_medis=?")->execute([$_POST['no_rkm_medis']]);
           }
           $data['status'] = 'success';
           echo json_encode($data);
@@ -321,7 +321,7 @@ class Admin extends AdminModule
         }
 
         if ($personal_pasien == 0) {
-          $this->db()->pdo()->exec("INSERT INTO `personal_pasien` (`no_rkm_medis`, `gambar`, `password`) VALUES ('{$_POST['no_rkm_medis']}', '$gambar', AES_ENCRYPT('{$_POST['no_rkm_medis']}','windi'))");
+          $this->db()->pdo()->prepare("INSERT INTO `personal_pasien` (`no_rkm_medis`, `gambar`, `password`) VALUES (?, ?, AES_ENCRYPT(?,'windi'))")->execute([$_POST['no_rkm_medis'], $gambar, $_POST['no_rkm_medis']]);
         } else{
           $this->db('personal_pasien')->where('no_rkm_medis', $_POST['no_rkm_medis'])->update(['gambar' => $gambar]);
         }
@@ -459,9 +459,17 @@ class Admin extends AdminModule
 
         $id = convertNorawat($_POST['no_rawat']);
         $temp = explode(".", $_FILES["file"]["name"]);
+        $extension = strtolower(end($temp));
+        $allowed_extensions = ['jpg', 'jpeg', 'png', 'pdf'];
+        
+        if (!in_array($extension, $allowed_extensions)) {
+            echo 'Format file tidak diizinkan';
+            exit();
+        }
+
         $imgName = time().$cntr++;
-        $lokasi_file = 'pages/upload/'.$id.'_'.$imgName.'.'.end($temp);
-        $FileName = $id.'_'.$imgName.'.'.end($temp);
+        $lokasi_file = 'pages/upload/'.$id.'_'.$imgName.'.'.$extension;
+        $FileName = $id.'_'.$imgName.'.'.$extension;
         $tmpFileName = $_FILES['file']['tmp_name'];
         $uploaded = move_uploaded_file($tmpFileName, $dir.'/'.$FileName);
         if($uploaded) {
@@ -1081,7 +1089,8 @@ class Admin extends AdminModule
       $cari = isset_or($_POST['cari'], '');
       $tgl_awal = isset_or($_POST['tgl_awal'], date('Y-m-d'));
       $tgl_akhir = isset_or($_POST['tgl_akhir'], date('Y-m-d'));
-      $this->db()->pdo()->exec("INSERT INTO `mlite_temporary` (
+      
+      $stmt = $this->db()->pdo()->prepare("INSERT INTO `mlite_temporary` (
         `temp1`,
         `temp2`,
         `temp3`,
@@ -1121,9 +1130,10 @@ class Admin extends AdminModule
       )
       SELECT *
       FROM `pasien`
-      WHERE (`no_rkm_medis` LIKE '%$cari%' OR `nm_pasien` LIKE '%$cari%' OR `alamat` LIKE '%$cari%')
-      AND `tgl_daftar` BETWEEN '$tgl_awal' AND '$tgl_akhir'
+      WHERE (`no_rkm_medis` LIKE ? OR `nm_pasien` LIKE ? OR `alamat` LIKE ?)
+      AND `tgl_daftar` BETWEEN ? AND ?
       ");
+      $stmt->execute(['%'.$cari.'%', '%'.$cari.'%', '%'.$cari.'%', $tgl_awal, $tgl_akhir]);
 
       exit();
     }
@@ -1142,7 +1152,7 @@ class Admin extends AdminModule
             $output = '';
             if(count($rows)){
               foreach ($rows as $row) {
-                $output .= '<li class="list-group-item link-class">'.$row["kd_prop"].': '.$row["nm_prop"].'</li>';
+                $output .= '<li class="list-group-item link-class">'.htmlspecialchars($row["kd_prop"]).': '.htmlspecialchars($row["nm_prop"]).'</li>';
               }
             }
             echo $output;
@@ -1156,7 +1166,7 @@ class Admin extends AdminModule
             $output = '';
             if(count($rows)){
               foreach ($rows as $row) {
-                $output .= '<li class="list-group-item link-class">'.$row["kd_kab"].': '.$row["nm_kab"].'</li>';
+                $output .= '<li class="list-group-item link-class">'.htmlspecialchars($row["kd_kab"]).': '.htmlspecialchars($row["nm_kab"]).'</li>';
               }
             }
             echo $output;
@@ -1170,7 +1180,7 @@ class Admin extends AdminModule
             $output = '';
             if(count($rows)){
               foreach ($rows as $row) {
-                $output .= '<li class="list-group-item link-class">'.$row["kd_kec"].': '.$row["nm_kec"].'</li>';
+                $output .= '<li class="list-group-item link-class">'.htmlspecialchars($row["kd_kec"]).': '.htmlspecialchars($row["nm_kec"]).'</li>';
               }
             }
             echo $output;
@@ -1184,7 +1194,7 @@ class Admin extends AdminModule
             $output = '';
             if(count($rows)){
               foreach ($rows as $row) {
-                $output .= '<li class="list-group-item link-class">'.$row["kd_kel"].': '.$row["nm_kel"].'</li>';
+                $output .= '<li class="list-group-item link-class">'.htmlspecialchars($row["kd_kel"]).': '.htmlspecialchars($row["nm_kel"]).'</li>';
               }
             }
             echo $output;

@@ -82,6 +82,7 @@ class Admin extends AdminModule
         $user_role = $this->core->getUserInfo('role', null, true);
         $username = $this->core->getUserInfo('username', null, true);
 
+        $params = [];
         $sql = "SELECT
             operasi.*,
             reg_periksa.*,
@@ -97,17 +98,20 @@ class Admin extends AdminModule
           AND
             reg_periksa.no_rkm_medis=pasien.no_rkm_medis
           AND
-            operasi.tgl_operasi BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'
+            operasi.tgl_operasi BETWEEN ? AND ?
           AND
             reg_periksa.kd_pj=penjab.kd_pj";
+        $params[] = $tgl_masuk;
+        $params[] = $tgl_masuk_akhir;
 
         // Add condition for medical role users
         if ($user_role == 'medis') {
-            $sql .= " AND operasi.operator1 = '$username'";
+            $sql .= " AND operasi.operator1 = ?";
+            $params[] = $username;
         }
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
 
         $this->assign['list'] = [];

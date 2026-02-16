@@ -94,6 +94,7 @@ class Admin extends AdminModule
 
         $poliklinik = str_replace(",","','", $this->core->getUserInfo('cap', null, true));
         $igd = $this->settings('settings', 'igd');
+        $params = [];
         $sql = "SELECT reg_periksa.*,
             pasien.*,
             dokter.*,
@@ -101,15 +102,19 @@ class Admin extends AdminModule
             penjab.*
           FROM reg_periksa, pasien, dokter, poliklinik, penjab
           WHERE reg_periksa.no_rkm_medis = pasien.no_rkm_medis
-          AND reg_periksa.kd_poli != '$igd'
-          AND reg_periksa.tgl_registrasi BETWEEN '$tgl_kunjungan' AND '$tgl_kunjungan_akhir'
+          AND reg_periksa.kd_poli != ?
+          AND reg_periksa.tgl_registrasi BETWEEN ? AND ?
           AND reg_periksa.kd_dokter = dokter.kd_dokter
           AND reg_periksa.kd_poli = poliklinik.kd_poli
           AND reg_periksa.kd_pj = penjab.kd_pj";
+        $params[] = $igd;
+        $params[] = $tgl_kunjungan;
+        $params[] = $tgl_kunjungan_akhir;
 
         if ($this->core->getUserInfo('role') != 'admin') {
           if($this->settings->get('settings.dokter_ralan_per_dokter') == 'true') {
-            $sql .= " AND reg_periksa.kd_dokter = '$username'";
+            $sql .= " AND reg_periksa.kd_dokter = ?";
+            $params[] = $username;
           } else {
             $sql .= " AND reg_periksa.kd_poli IN ('$poliklinik')";
           }
@@ -125,7 +130,7 @@ class Admin extends AdminModule
         }
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
 
         $this->assign['list'] = [];
@@ -142,6 +147,7 @@ class Admin extends AdminModule
         }
 
         // Query untuk rujukan internal
+        $params_rujukan = [];
         $sql_rujukan_internal = "SELECT 
             reg_periksa.no_rkm_medis,
             pasien.nm_pasien,
@@ -163,12 +169,16 @@ class Admin extends AdminModule
           INNER JOIN dokter d1 ON reg_periksa.kd_dokter = d1.kd_dokter
           INNER JOIN dokter d2 ON mlite_rujukan_internal_poli.kd_dokter = d2.kd_dokter
           INNER JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj
-          WHERE reg_periksa.kd_poli != '$igd'
-          AND reg_periksa.tgl_registrasi BETWEEN '$tgl_kunjungan' AND '$tgl_kunjungan_akhir'";
+          WHERE reg_periksa.kd_poli != ?
+          AND reg_periksa.tgl_registrasi BETWEEN ? AND ?";
+        $params_rujukan[] = $igd;
+        $params_rujukan[] = $tgl_kunjungan;
+        $params_rujukan[] = $tgl_kunjungan_akhir;
 
         if ($this->core->getUserInfo('role') != 'admin') {
           if($this->settings->get('settings.dokter_ralan_per_dokter') == 'true') {
-            $sql_rujukan_internal .= " AND reg_periksa.kd_dokter = '$username'";
+            $sql_rujukan_internal .= " AND reg_periksa.kd_dokter = ?";
+            $params_rujukan[] = $username;
           } else {
             $sql_rujukan_internal .= " AND reg_periksa.kd_poli IN ('$poliklinik')";
           }
@@ -184,7 +194,7 @@ class Admin extends AdminModule
         }
 
         $stmt = $this->db()->pdo()->prepare($sql_rujukan_internal);
-        $stmt->execute();
+        $stmt->execute($params_rujukan);
         $rows_rujukan = $stmt->fetchAll();
 
         $this->assign['list_rujukan_internal'] = [];

@@ -859,6 +859,12 @@ class Admin extends AdminModule
     {
         $file_name = $_GET['filename'];
 
+        // Security: Prevent path traversal
+        if (strpos($file_name, '..') !== false || strpos($file_name, '/') !== false) {
+             $this->notify('failure', 'Invalid filename.');
+             exit();
+        }
+
         define("BACKUP_FILE", $file_name); // Script will autodetect if backup file is gzipped based on .gz extension
         // Report all errors
         error_reporting(E_ALL);
@@ -882,7 +888,16 @@ class Admin extends AdminModule
     public function getDeleteDatabase()
     {
         $file_name = $_GET['filename'];
-        unlink('../backups/' . $file_name);
+
+        // Security: Prevent path traversal
+        if (strpos($file_name, '..') !== false || strpos($file_name, '/') !== false) {
+             $this->notify('failure', 'Invalid filename.');
+             exit();
+        }
+
+        if (file_exists('../backups/' . $file_name)) {
+            unlink('../backups/' . $file_name);
+        }
         exit();
     }
 

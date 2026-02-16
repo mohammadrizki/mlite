@@ -48,16 +48,24 @@ class Admin extends AdminModule
             $backURL = url([ADMIN, 'modules', 'upload']);
             $file = $_FILES['zip_module']['tmp_name'];
 
-            // Verify ZIP
+            // Verify ZIP and check for malicious files
             $zip = zip_open($file);
             $modules = array();
             while ($entry = zip_read($zip)) {
-                $entry = zip_entry_name($entry);
-                if (preg_match('/^(.*?)\/Info.php$/', $entry, $matches)) {
+                $entryName = zip_entry_name($entry);
+                
+                // Security check: Prevent path traversal and malicious file extensions
+                if (strpos($entryName, '..') !== false || 
+                    preg_match('/\.(php|phtml|php3|php4|php5|phps|exe|sh|bash)$/i', $entryName) && !preg_match('/^(.*?)\/(Info\.php|Admin\.php|Site\.php|index\.html)$/', $entryName)) {
+                    $this->notify('failure', 'Modul mengandung file yang tidak diizinkan atau path traversal.');
+                    redirect($backURL);
+                }
+
+                if (preg_match('/^(.*?)\/Info.php$/', $entryName, $matches)) {
                     $modules[] = ['path' => $matches[0], 'name' => $matches[1]];
                 }
 
-                if (strpos($entry, '/') === false) {
+                if (strpos($entryName, '/') === false) {
                     $this->notify('failure', 'Modul tidak benar atau rusak.');
                     redirect($backURL);
                 }
@@ -67,6 +75,12 @@ class Admin extends AdminModule
             $zip = new \ZipArchive;
             if ($zip->open($file) === true) {
                 foreach ($modules as $module) {
+                    // Security check: Validate module name
+                    if (!preg_match('/^[a-zA-Z0-9_]+$/', $module['name'])) {
+                         $this->notify('failure', 'Nama modul tidak valid.');
+                         continue;
+                    }
+
                     if (file_exists(MODULES.'/'.$module['name'])) {
                         $tmpName = md5(time().rand(1, 9999));
                         file_put_contents('tmp/'.$tmpName, $zip->getFromName($module['path']));
@@ -151,6 +165,12 @@ class Admin extends AdminModule
 
     public function getRemove($dir)
     {
+        // Security: Prevent path traversal
+        if (strpos($dir, '..') !== false || strpos($dir, '/') !== false) {
+             $this->notify('failure', 'Invalid module directory.');
+             redirect(url([ADMIN, 'modules', 'manage', 'inactive']));
+        }
+
         // Ensure BASIC_MODULES unserialize returns an array
         $basicModules = unserialize(BASIC_MODULES);
         if (!is_array($basicModules)) {

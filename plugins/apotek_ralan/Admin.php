@@ -67,6 +67,7 @@ class Admin extends AdminModule
         $this->assign['tgl_registrasi']= date('Y-m-d');
         $this->assign['jam_reg']= date('H:i:s');
 
+        $params = [];
         $sql = "SELECT reg_periksa.*,
             pasien.*,
             dokter.*,
@@ -74,10 +75,12 @@ class Admin extends AdminModule
             penjab.*
           FROM reg_periksa, pasien, dokter, poliklinik, penjab
           WHERE reg_periksa.no_rkm_medis = pasien.no_rkm_medis
-          AND reg_periksa.tgl_registrasi BETWEEN '$tgl_kunjungan' AND '$tgl_kunjungan_akhir'
+          AND reg_periksa.tgl_registrasi BETWEEN ? AND ?
           AND reg_periksa.kd_dokter = dokter.kd_dokter
           AND reg_periksa.kd_poli = poliklinik.kd_poli
           AND reg_periksa.kd_pj = penjab.kd_pj";
+        $params[] = $tgl_kunjungan;
+        $params[] = $tgl_kunjungan_akhir;
 
         if($status_periksa == 'belum') {
           $sql .= " AND reg_periksa.stts = 'Belum'";
@@ -90,7 +93,7 @@ class Admin extends AdminModule
         }
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
 
         $this->assign['list'] = [];

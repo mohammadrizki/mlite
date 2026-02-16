@@ -3005,7 +3005,7 @@ class Site extends SiteModule
                 'prb' => $_POST['prolanis_prb']
               ]);
             }
-            echo $_POST['sep_no_sep'];
+            echo htmlspecialchars($_POST['sep_no_sep']);
           } else {
             $simpan_sep = $this->db('bridging_sep_internal')->save([
               'no_sep' => $_POST['sep_no_sep'],

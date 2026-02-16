@@ -73,7 +73,7 @@ class Admin extends AdminModule
         $username = $this->core->getUserInfo('username', null, true);
 
         $bangsal = str_replace(",","','", $this->core->getUserInfo('cap', null, true));
-
+        $params = [];
         $sql = "SELECT DISTINCT
             reg_periksa.no_rawat,
             reg_periksa.no_rkm_medis,
@@ -177,27 +177,36 @@ class Admin extends AdminModule
             reg_periksa.kd_pj=penjab.kd_pj";
 
         if ($this->core->getUserInfo('role') != 'admin') {
-          $sql .= " AND dpjp_ranap.kd_dokter = '$username'";
+          $sql .= " AND dpjp_ranap.kd_dokter = ?";
+          $params[] = $username;
         }
         if($status_pulang == '') {
           $sql .= " AND kamar_inap.stts_pulang = '-'";
         }
         if($status_pulang == 'all' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.stts_pulang = '-' AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.stts_pulang = '-' AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_pulang == 'masuk' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_pulang == 'pulang' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND kamar_inap.tgl_keluar BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND kamar_inap.tgl_keluar BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         if($status_periksa == 'lunas' && $status_pulang == '-' && $tgl_masuk !== '' && $tgl_masuk_akhir !== '') {
-          $sql .= " AND reg_periksa.status_bayar = 'Sudah Bayar' AND kamar_inap.tgl_masuk BETWEEN '$tgl_masuk' AND '$tgl_masuk_akhir'";
+          $sql .= " AND reg_periksa.status_bayar = 'Sudah Bayar' AND kamar_inap.tgl_masuk BETWEEN ? AND ?";
+          $params[] = $tgl_masuk;
+          $params[] = $tgl_masuk_akhir;
         }
         // Removed GROUP BY clause since we're using DISTINCT
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
 
         $this->assign['list'] = [];

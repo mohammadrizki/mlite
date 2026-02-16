@@ -88,6 +88,7 @@ class Admin extends AdminModule
         $this->assign['jam_reg']= date('H:i:s');
 
         $igd = $this->settings('settings', 'igd');
+        $params = [];
         $sql = "SELECT reg_periksa.*,
             pasien.*,
             dokter.*,
@@ -95,11 +96,14 @@ class Admin extends AdminModule
             penjab.*
           FROM reg_periksa, pasien, dokter, poliklinik, penjab
           WHERE reg_periksa.no_rkm_medis = pasien.no_rkm_medis
-          AND reg_periksa.kd_poli = '$igd'
-          AND reg_periksa.tgl_registrasi BETWEEN '$tgl_kunjungan' AND '$tgl_kunjungan_akhir'
+          AND reg_periksa.kd_poli = ?
+          AND reg_periksa.tgl_registrasi BETWEEN ? AND ?
           AND reg_periksa.kd_dokter = dokter.kd_dokter
           AND reg_periksa.kd_poli = poliklinik.kd_poli
           AND reg_periksa.kd_pj = penjab.kd_pj";
+        $params[] = $igd;
+        $params[] = $tgl_kunjungan;
+        $params[] = $tgl_kunjungan_akhir;
 
         if($status_periksa == 'belum') {
           $sql .= " AND reg_periksa.stts = 'Belum'";
@@ -112,8 +116,18 @@ class Admin extends AdminModule
         }
 
         $stmt = $this->db()->pdo()->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
         $rows = $stmt->fetchAll();
+
+        // XSS Prevention: Sanitize output
+        foreach ($rows as &$row) {
+            foreach ($row as $key => $value) {
+                if (is_string($value)) {
+                    $row[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                }
+            }
+        }
+        unset($row);
 
         $this->assign['list'] = [];
         foreach ($rows as $row) {

@@ -158,7 +158,7 @@ class Admin extends AdminModule
                 'jam' => $_POST['jam'], 
                 'id_user' => $this->core->getUserInfo('username', null, true) 
             ]);
-            echo $_POST['id'];
+            echo htmlspecialchars($_POST['id']);
             if($detail) {
                 $mlite_penjualan_barang = $this->db('mlite_penjualan_barang')->where('id', $_POST['id_barang'])->oneArray();
                 if($mlite_penjualan_barang) {
