@@ -953,7 +953,7 @@
               <td valign="top">
                 {if: $data.gcs_e || $data.gcs_v || $data.gcs_m}
                 E: {?=isset_or($data.gcs_e)?} | V: {?=isset_or($data.gcs_v)?} | M: {?=isset_or($data.gcs_m)?}
-                <br><strong>Total: {$data.gcs_e + $data.gcs_v + $data.gcs_m}</strong>
+                <br><strong>Total: {?=(isset_or($data.gcs_e) + isset_or($data.gcs_v) + isset_or($data.gcs_m))?}</strong>
                 {else}
                 -
                 {/if}
