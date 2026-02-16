@@ -2279,7 +2279,7 @@ INSERT INTO `mlite_settings` VALUES ("1","settings","logo","uploads/settings/log
 ("60","anjungan","text_laboratorium","Running text display antrian laboratorium....."),
 ("61","anjungan","text_apotek","Running text display antrian apotek....."),
 ("62","anjungan","text_farmasi","Running text display antrian farmasi....."),
-("63","anjungan","vidio","G4im8_n0OoI"),
+("63","anjungan","vidio","PLFtgYUkJmfyx7rESNFuRDUmhtkzSeFPQo"),
 ("64","api","apam_key","qtbexUAxzqO3M8dCOo2vDMFvgYjdUEdMLVo341"),
 ("65","api","apam_status_daftar","Terdaftar"),
 ("66","api","apam_status_dilayani","Anda siap dilayani"),
