@@ -1027,6 +1027,16 @@
               </td>
             </tr>
             
+            <!-- Lokalis -->
+             {if: $value.lokalis}
+            <tr>
+              <td colspan="4" bgcolor="#d9edf7" style="font-weight: bold; text-align: center;">STATUS LOKALIS</td>
+            </tr>
+            <tr>
+              <td valign="top" colspan="4" style="text-align: center;"><img src="{?=isset_or($value.lokalis)?}" alt="Lokalis" style="max-width: 100%; height: auto;"></td>
+            </tr>
+            {/if}
+
             <!-- Waktu -->
             <tr>
               <td colspan="4" bgcolor="#d9edf7" style="font-weight: bold; text-align: center;">WAKTU PENCATATAN</td>

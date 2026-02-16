@@ -1016,6 +1016,12 @@ class Admin extends AdminModule
           ->desc('tgl_triase')
           ->toArray();
 
+        if(file_exists(UPLOADS . '/lokalis/lokalis_' . convertNoRawat($row['no_rawat']) . '.png')) {
+          $row['lokalis'] = url(UPLOADS . '/lokalis/lokalis_' . convertNoRawat($row['no_rawat']) . '.png');
+        } else {
+          $row['lokalis'] = '';
+        }
+
         $row['penilaian_keperawatan_igd'] = $this->db('penilaian_awal_keperawatan_igd')
           ->join('petugas', 'petugas.nip=penilaian_awal_keperawatan_igd.nip')
           ->where('no_rawat', $row['no_rawat'])
