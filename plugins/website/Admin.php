@@ -141,13 +141,13 @@ class Admin extends AdminModule
             $this->assign['form']['content'] =  $this->tpl->noParse($this->assign['form']['content']);
             $this->assign['form']['date'] = date("Y-m-d\TH:i", $news['published_at']);
 
-            $tags_array = $this->db('mlite_news_tags')->leftJoin('mlite_news_tags_relationship', 'mlite_news_tags.id = mlite_news_tags_relationship.tag_id')->where('mlite_news_tags_relationship.news_id', $news['id'])->select(['mlite_news_tags.name'])->toArray();
+            $tags_array = (!empty($news['tags'])) ? $this->db('mlite_news_tags')->leftJoin('mlite_news_tags_relationship', 'mlite_news_tags.id = mlite_news_tags_relationship.tag_id')->where('mlite_news_tags_relationship.news_id', $news['id'])->select(['mlite_news_tags.name'])->toArray() : [];
 
             $this->assign['form']['tags'] = $tags_array;
             $this->assign['users'] = $this->db('mlite_users')->toArray();
             $this->assign['author'] = $this->core->getUserInfo('id', $news['user_id'], true);
 
-            $this->assign['title'] = ($news['id'] === null) ? 'Tambah baru' : 'Sunting Artikel';
+            $this->assign['title'] = (!empty($news['title'])) ? 'Sunting Artikel' : 'Tambah baru';
 
             return $this->draw('form.html', ['news' => $this->assign]);
         } else {
