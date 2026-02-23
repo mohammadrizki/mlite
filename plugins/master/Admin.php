@@ -1350,23 +1350,34 @@ class Admin extends AdminModule
 
         $csvData = file_get_contents($filename);
         if (!$csvData) {
-            echo '['.date('d-m-Y H:i:s').'][error] File '.$filename.' tidak ditemukan<br>';
+            echo '['.date('d-m-Y H:i:s').'][error] File tidak ditemukan<br>';
             exit();
         }
 
         echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan<br>';
+        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
 
         $pdo = $this->core->db()->pdo();
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-        $lines = array_filter(explode(PHP_EOL, $csvData));
-        $value_query = [];
+        $lines = explode(PHP_EOL, $csvData);
+
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("
+            REPLACE INTO kecamatan (kd_kec, nm_kec)
+            VALUES (?, ?)
+        ");
+
+        $total = 0;
 
         foreach ($lines as $line) {
+
+            if (empty(trim($line))) continue;
+
             $delimiter = str_contains($line, ';') ? ';' : ',';
             $data = str_getcsv($line, $delimiter, '"', '\\');
 
-            // districts.csv: kd_kec ada di kolom 0, nama di kolom 2
             if (count($data) < 3) continue;
 
             $kode = trim($data[0]);
@@ -1375,40 +1386,17 @@ class Admin extends AdminModule
             if ($kode === '' || $nama === '') continue;
             if (!is_numeric($kode)) continue;
 
-            // ✅ ESCAPE PALING BENAR
-            $value_query[] = '(' .
-                $pdo->quote($kode) . ',' .
-                $pdo->quote($nama) .
-            ')';
+            try {
+                $stmt->execute([$kode, $nama]);
+                $total++;
+            } catch (\Exception $e) {
+                echo '['.date('d-m-Y H:i:s').'][error] '.$e->getMessage().'<br>';
+            }
         }
 
-        if (!$value_query) {
-            echo '['.date('d-m-Y H:i:s').'][error] Data CSV kosong<br>';
-            exit();
-        }
+        $pdo->commit();
 
-        $str = implode(',', $value_query);
-        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data<br>';
-
-        $sql = "
-            REPLACE INTO kecamatan (kd_kec, nm_kec)
-            VALUES $str
-        ";
-
-        try {
-            $pdo->beginTransaction();
-            $pdo->exec($sql);
-            $pdo->commit();
-        } catch (\PDOException $e) {
-            $pdo->rollBack();
-            echo '<pre>';
-            echo "SQL ERROR:\n".$e->getMessage()."\n\n";
-            echo "SQL:\n".$sql;
-            echo '</pre>';
-            exit();
-        }
-
-        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai<br>';
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai. Total: '.$total.' data<br>';
         exit();
     }
     /* End Kecamatan Section */    
@@ -1459,52 +1447,59 @@ class Admin extends AdminModule
 
     public function getImportKelurahan()
     {
-      $filename = 'https://basoro.id/downloads/villages.csv';
-      echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv'."<br>";
+        $filename = 'https://basoro.id/downloads/villages.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv<br>';
 
-      $csvData = file_get_contents($filename);
-      if($csvData) {
-        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan'."<br>";
-      } else {
-        echo '['.date('d-m-Y H:i:s').'][error] File '.$filename.' tidak ditemukan'."<br>";
+        $csvData = file_get_contents($filename);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] File tidak ditemukan<br>';
+            exit();
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan<br>';
+        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
+
+        $pdo = $this->core->db()->pdo();
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        $lines = explode(PHP_EOL, $csvData);
+
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("
+            REPLACE INTO kelurahan (kd_kel, nm_kel)
+            VALUES (?, ?)
+        ");
+
+        $total = 0;
+
+        foreach ($lines as $line) {
+
+            if (empty(trim($line))) continue;
+
+            $delimiter = str_contains($line, ';') ? ';' : ',';
+            $data = str_getcsv($line, $delimiter, '"', '\\');
+
+            if (!isset($data[0], $data[2])) continue;
+
+            $kode = trim($data[0]);
+            $nama = trim($data[2]);
+
+            if ($kode === '' || $nama === '') continue;
+
+            try {
+                $stmt->execute([$kode, $nama]);
+                $total++;
+            } catch (\Exception $e) {
+                echo '['.date('d-m-Y H:i:s').'][error] '.$e->getMessage().'<br>';
+            }
+        }
+
+        $pdo->commit();
+
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai. Total: '.$total.' data<br>';
         exit();
-      }
-
-      $lines = explode(PHP_EOL, $csvData);
-      $total_lines = count($lines);
-      $chunk_size = 500;
-      $chunks = array_chunk($lines, $chunk_size);
-      
-      echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
-
-      foreach ($chunks as $chunk) {
-          $value_query = [];
-          foreach ($chunk as $line) {
-              if (empty(trim($line))) continue;
-              $delimiter = str_contains($line, ';') ? ';' : ',';
-              $data = str_getcsv($line, $delimiter, '"', '\\');
-              
-              if (isset($data[0]) && isset($data[2])) {
-                  $kode = trim($data[0]);
-                  $nama = trim($data[2]);
-                  
-                  $kode = addslashes($kode);
-                  $nama = addslashes($nama);
-                  
-                  $value_query[] = "('$kode','$nama')";
-              }
-          }
-
-          if (!empty($value_query)) {
-              $str = implode(",", $value_query);
-              $this->core->db()->pdo()->exec("REPLACE INTO kelurahan (kd_kel, nm_kel) VALUES $str");
-          }
-      }
-
-      echo '['.date('d-m-Y H:i:s').'][info] Impor selesai'."<br>";
-      exit();
     }
-
     /* End Kelurahan Section */   
 
     /* Start Cacat Fisik Section */
@@ -2762,55 +2757,55 @@ class Admin extends AdminModule
 
     public function getImportICD10()
     {
-      $filename = 'https://basoro.id/downloads/icd10.csv';
-      echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv'."<br>";
+        $filename = 'https://basoro.id/downloads/icd10.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv<br>';
 
-      $csvData = file_get_contents($filename);
-      if($csvData) {
-        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan'."<br>";
-      } else {
-        echo '['.date('d-m-Y H:i:s').'][error] File '.$filename.' tidak ditemukan'."<br>";
+        $csvData = file_get_contents($filename);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] File tidak ditemukan<br>';
+            exit();
+        }
+
+        $lines = explode(PHP_EOL, $csvData);
+        $chunk_size = 500;
+        $chunks = array_chunk($lines, $chunk_size);
+
+        $pdo = $this->core->db()->pdo();
+        $pdo->beginTransaction();
+
+        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
+
+        $stmt = $pdo->prepare("
+            REPLACE INTO penyakit 
+            (kd_penyakit, nm_penyakit, ciri_ciri, keterangan, kd_ktg, status) 
+            VALUES (?, ?, '', '', '-', 'Tidak Menular')
+        ");
+
+        foreach ($chunks as $chunk) {
+
+            foreach ($chunk as $line) {
+                if (empty(trim($line))) continue;
+
+                $delimiter = str_contains($line, ';') ? ';' : ',';
+                $data = str_getcsv($line, $delimiter);
+
+                if (!isset($data[0])) continue;
+
+                $kode = trim($data[0]);
+                $nama = trim($data[1] ?? '');
+
+                try {
+                    $stmt->execute([$kode, $nama]);
+                } catch (\Exception $e) {
+                    echo '['.date('d-m-Y H:i:s').'][error] '.$e->getMessage().'<br>';
+                }
+            }
+        }
+
+        $pdo->commit();
+
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai<br>';
         exit();
-      }
-
-      $lines = explode(PHP_EOL, $csvData);
-      $total_lines = count($lines);
-      $chunk_size = 500;
-      $chunks = array_chunk($lines, $chunk_size);
-      
-      echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
-
-      foreach ($chunks as $chunk) {
-          $value_query = [];
-          foreach ($chunk as $line) {
-              if (empty(trim($line))) continue;
-              $delimiter = str_contains($line, ';') ? ';' : ',';
-              $data = str_getcsv($line, $delimiter);
-              
-              if (isset($data[0])) {
-                  $kode = trim($data[0]);
-                  $nama = trim(isset($data[1]) ? $data[1] : '');
-                  $nama = str_replace('"', '', $nama);
-                  
-                  $kode = addslashes($kode);
-                  $nama = addslashes($nama);
-                  
-                  $value_query[] = "('$kode','$nama','','','-','Tidak Menular')";
-              }
-          }
-
-          if (!empty($value_query)) {
-              $str = implode(",", $value_query);
-              try {
-                  $this->core->db()->pdo()->exec("REPLACE INTO penyakit (kd_penyakit, nm_penyakit, ciri_ciri, keterangan, kd_ktg, status) VALUES $str");
-              } catch (\Exception $e) {
-                  echo '['.date('d-m-Y H:i:s').'][error] Gagal insert chunk: '.$e->getMessage().'<br>';
-              }
-          }
-      }
-
-      echo '['.date('d-m-Y H:i:s').'][info] Impor selesai'."<br>";
-      exit();
     }
 
     public function getPenyakitJS()
@@ -2861,54 +2856,55 @@ class Admin extends AdminModule
 
     public function getImportICD9()
     {
-      $filename = 'https://basoro.id/downloads/icd9cm.csv';
-      echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv'."<br>";
+        $filename = 'https://basoro.id/downloads/icd9cm.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv<br>';
 
-      $csvData = file_get_contents($filename);
-      if($csvData) {
-        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan'."<br>";
-      } else {
-        echo '['.date('d-m-Y H:i:s').'][error] File '.$filename.' tidak ditemukan'."<br>";
+        $csvData = file_get_contents($filename);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] File tidak ditemukan<br>';
+            exit();
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan<br>';
+        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
+
+        $lines = explode(PHP_EOL, $csvData);
+        $pdo = $this->core->db()->pdo();
+
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("
+            REPLACE INTO icd9 
+            (kode, deskripsi_panjang, deskripsi_pendek) 
+            VALUES (?, ?, '')
+        ");
+
+        $total = 0;
+
+        foreach ($lines as $line) {
+
+            if (empty(trim($line))) continue;
+
+            $delimiter = str_contains($line, ';') ? ';' : ',';
+            $data = str_getcsv($line, $delimiter);
+
+            if (!isset($data[0])) continue;
+
+            $kode = trim($data[0]);
+            $nama = trim($data[1] ?? '');
+
+            try {
+                $stmt->execute([$kode, $nama]);
+                $total++;
+            } catch (\Exception $e) {
+                echo '['.date('d-m-Y H:i:s').'][error] '.$e->getMessage().'<br>';
+            }
+        }
+
+        $pdo->commit();
+
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai. Total: '.$total.' data<br>';
         exit();
-      }
-
-      $lines = explode(PHP_EOL, $csvData);
-      $chunk_size = 500;
-      $chunks = array_chunk($lines, $chunk_size);
-      
-      echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
-
-      foreach ($chunks as $chunk) {
-          $value_query = [];
-          foreach ($chunk as $line) {
-              if (empty(trim($line))) continue;
-              $delimiter = str_contains($line, ';') ? ';' : ',';
-              $data = str_getcsv($line, $delimiter);
-              
-              if (isset($data[0])) {
-                  $kode = trim($data[0]);
-                  $nama = trim(isset($data[1]) ? $data[1] : '');
-                  $nama = str_replace('"', '', $nama);
-                  
-                  $kode = addslashes($kode);
-                  $nama = addslashes($nama);
-                  
-                  $value_query[] = "('$kode','$nama','')";
-              }
-          }
-
-          if (!empty($value_query)) {
-              $str = implode(",", $value_query);
-              try {
-                  $this->core->db()->pdo()->exec("REPLACE INTO icd9 (kode, deskripsi_panjang, deskripsi_pendek) VALUES $str");
-              } catch (\Exception $e) {
-                  echo '['.date('d-m-Y H:i:s').'][error] Gagal insert chunk: '.$e->getMessage().'<br>';
-              }
-          }
-      }
-
-      echo '['.date('d-m-Y H:i:s').'][info] Impor selesai<br>';
-      exit();
     }
 
     public function getIcd9JS()
