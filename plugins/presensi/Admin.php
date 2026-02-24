@@ -95,10 +95,9 @@ class Admin extends AdminModule
             }
         }
 
-        $this->assign['getStatus'] = isset($_GET['status']);
         $this->assign['addURL'] = url([ADMIN, 'presensi', 'jagaadd']);
 
-        return $this->draw('index.html', ['jamjaga' => $this->assign]);
+        return $this->draw('jam_jaga.html', ['jamjaga' => $this->assign]);
     }
 
     public function getJagaAdd()
@@ -119,7 +118,6 @@ class Admin extends AdminModule
 
         $this->assign['dep_id'] = $this->db('departemen')->toArray();
         $this->assign['shift'] = $this->db('jam_masuk')->toArray();
-        $this->assign['getStatus'] = isset($_GET['status']);
         $this->assign['addURL'] = url([ADMIN, 'presensi', 'jagaadd']);
 
         return $this->draw('jagaadd.form.html', ['jagaadd' => $this->assign]);
@@ -159,6 +157,24 @@ class Admin extends AdminModule
         }
 
         redirect($location, $_POST);
+    }
+
+    public function getJagaDel($id = null)
+    {
+        $this->_addHeaderFiles();
+        if (!$id) {
+            $this->notify('failure', 'ID tidak ditemukan');
+            redirect(url([ADMIN, 'presensi', 'jamjaga']));
+        }
+
+        $query = $this->db('jam_jaga')->where('no_id', $id)->delete();
+        if ($query) {
+            $this->notify('success', 'Hapus sukses');
+        } else {
+            $this->notify('failure', 'Hapus gagal');
+        }
+
+        redirect(url([ADMIN, 'presensi', 'jamjaga']));
     }
 
     public function getJadwal($page = 1)
@@ -795,18 +811,14 @@ class Admin extends AdminModule
                     'Sat' => 'SABTU'
                 );
 
-                $jam_datang = $this->db('rekap_presensi')
-                    ->select([
-                        'EXTRACT(MONTH FROM rekap_presensi.jam_datang) as month',
-                        'EXTRACT(YEAR FROM rekap_presensi.jam_datang) as year',
-                        'EXTRACT(DAY FROM rekap_presensi.jam_datang) as day',
-                        'shift' => 'rekap_presensi.shift'
-                    ])
-                    ->join('pegawai', 'pegawai.id = rekap_presensi.id')
-                    ->where('rekap_presensi.id', $row['id'])
-                    ->where('rekap_presensi.jam_datang', $row['jam_datang'])
-                    ->asc('jam_datang')
-                    ->oneArray();
+                // Optimized: removed redundant DB query for date parts and shift
+                $jam_datang_timestamp = strtotime($row['jam_datang']);
+                $jam_datang = [
+                    'year' => date('Y', $jam_datang_timestamp),
+                    'month' => date('m', $jam_datang_timestamp),
+                    'day' => date('d', $jam_datang_timestamp),
+                    'shift' => $row['shift']
+                ];
                 $stts1 = '';
                 $stts2 = '';
 
@@ -1400,14 +1412,27 @@ class Admin extends AdminModule
                         break;
                 }
 
-                $row['efektif'] = $this->db('rekap_presensi')
-                    ->select([
-                        'efektif' => 'CAST(rekap_presensi.durasi as TIME) - ' . $efektif,
-                        'kurang' => 'CAST(rekap_presensi.durasi as TIME) - ' . $interval
-                    ])
-                    ->where('rekap_presensi.id', $row['id'])
-                    ->where('rekap_presensi.jam_datang', $row['jam_datang'])
-                    ->oneArray();
+                // Optimized: removed redundant DB query and replaced MySQL-specific INTERVAL with PHP calculation
+                $durasiSeconds = !empty($row['durasi']) ? strtotime($row['durasi']) - strtotime('TODAY') : 0;
+                $efektifSeconds = $this->parseInterval($efektif);
+                $intervalSeconds = $this->parseInterval($interval);
+
+                // Calculate efektif (durasi - efektif_interval)
+                $diffEfektif = $durasiSeconds - $efektifSeconds;
+                $signEfektif = ($diffEfektif < 0) ? '-' : '';
+                $diffEfektifAbs = (int) abs($diffEfektif);
+                $efektifTime = $signEfektif . sprintf('%02d:%02d:%02d', floor($diffEfektifAbs / 3600), floor($diffEfektifAbs / 60) % 60, $diffEfektifAbs % 60);
+
+                // Calculate kurang (durasi - interval)
+                $diffKurang = $durasiSeconds - $intervalSeconds;
+                $signKurang = ($diffKurang < 0) ? '-' : '';
+                $diffKurangAbs = (int) abs($diffKurang);
+                $kurangTime = $signKurang . sprintf('%02d:%02d:%02d', floor($diffKurangAbs / 3600), floor($diffKurangAbs / 60) % 60, $diffKurangAbs % 60);
+
+                $row['efektif'] = [
+                    'efektif' => $efektifTime,
+                    'kurang' => $kurangTime
+                ];
                 $row['stts1'] = $stts1;
                 $row['stts2'] = $stts2;
                 $this->assign['list'][] = $row;
@@ -1880,7 +1905,7 @@ class Admin extends AdminModule
         redirect($location, $_POST);
     }
 
-    public function postJamMasukHapus($shift)
+    public function getJamMasukHapus($shift)
     {
         if ($this->db('jam_masuk')->where('shift', $shift)->delete()) {
             $this->notify('success', 'Hapus sukses');
@@ -1929,6 +1954,19 @@ class Admin extends AdminModule
 
         // MODULE SCRIPTS
         $this->core->addJS(url([ADMIN, 'presensi', 'javascript']), 'footer');
+    }
+
+    private function parseInterval($intervalStr)
+    {
+        $seconds = 0;
+        if (preg_match('/INTERVAL (\d+) \* 60 \+ (\d+) MINUTE/', $intervalStr, $matches)) {
+            $seconds = ($matches[1] * 60 + $matches[2]) * 60;
+        } elseif (preg_match('/INTERVAL (\d+) HOUR/', $intervalStr, $matches)) {
+            $seconds = $matches[1] * 3600;
+        } elseif (preg_match('/INTERVAL (\d+) MINUTE/', $intervalStr, $matches)) {
+            $seconds = $matches[1] * 60;
+        }
+        return $seconds;
     }
 
 }

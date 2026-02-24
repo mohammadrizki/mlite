@@ -139,7 +139,7 @@ class Admin extends AdminModule
         $barcode        = $this->core->getUserInfo('username', null, true);
 
         $bulan = date('m');
-        $tahun = date('y');
+        $tahun = date('Y');
         $hari = date('j');
         $shift = $_GET['shift'];
 

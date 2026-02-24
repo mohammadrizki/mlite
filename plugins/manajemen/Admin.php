@@ -296,14 +296,15 @@ class Admin extends AdminModule
 
     public function KunjunganTahunChartByDateRange($start_date, $end_date)
     {
+        $monthSql = $this->monthSql('tgl_registrasi');
         $query = $this->db('reg_periksa')
             ->select([
                 'count' => 'COUNT(DISTINCT no_rawat)',
-                'label' => 'EXTRACT(MONTH FROM tgl_registrasi)'
+                'label' => $monthSql
             ])
             ->where('tgl_registrasi', '>=', $start_date)
             ->where('tgl_registrasi', '<=', $end_date)
-            ->group('EXTRACT(MONTH FROM tgl_registrasi)');
+            ->group($monthSql);
 
         $data = $query->toArray();
         $return = [
@@ -451,13 +452,14 @@ class Admin extends AdminModule
     public function KunjunganTahunChart()
     {
 
+        $monthSql = $this->monthSql('tgl_registrasi');
         $query = $this->db('reg_periksa')
             ->select([
               'count'       => 'COUNT(DISTINCT no_rawat)',
-              'label'       => 'EXTRACT(MONTH FROM tgl_registrasi)'
+              'label'       => $monthSql
             ])
             ->like('tgl_registrasi', date('Y').'%')
-            ->group('EXTRACT(MONTH FROM tgl_registrasi)');
+            ->group($monthSql);
 
             $data = $query->toArray();
 
@@ -476,14 +478,15 @@ class Admin extends AdminModule
     public function RanapTahunChart()
     {
 
+        $monthSql = $this->monthSql('tgl_registrasi');
         $query = $this->db('reg_periksa')
             ->select([
               'count'       => 'COUNT(DISTINCT no_rawat)',
-              'label'       => 'EXTRACT(MONTH FROM tgl_registrasi)'
+              'label'       => $monthSql
             ])
             ->where('stts', 'Dirawat')
             ->like('tgl_registrasi', date('Y').'%')
-            ->group('EXTRACT(MONTH FROM tgl_registrasi)');
+            ->group($monthSql);
 
             $data = $query->toArray();
 
@@ -502,14 +505,15 @@ class Admin extends AdminModule
     public function RujukTahunChart()
     {
 
+        $monthSql = $this->monthSql('tgl_registrasi');
         $query = $this->db('reg_periksa')
             ->select([
               'count'       => 'COUNT(DISTINCT no_rawat)',
-              'label'       => 'EXTRACT(MONTH FROM tgl_registrasi)'
+              'label'       => $monthSql
             ])
             ->where('stts', 'Dirujuk')
             ->like('tgl_registrasi', date('Y').'%')
-            ->group('EXTRACT(MONTH FROM tgl_registrasi)');
+            ->group($monthSql);
 
             $data = $query->toArray();
 
@@ -934,7 +938,7 @@ class Admin extends AdminModule
         $end_ts = strtotime($end_date);
 
         $stmt = $this->db()->pdo()->prepare(
-            "SELECT COUNT(photo) as count, COUNT(IF(keterangan != '-', 1, NULL)) as count2, DATE(jam_datang) as jam
+            "SELECT COUNT(photo) as count, COUNT(CASE WHEN keterangan != '-' THEN 1 ELSE NULL END) as count2, DATE(jam_datang) as jam
              FROM rekap_presensi
              WHERE jam_datang >= :start AND jam_datang <= :end
              GROUP BY DATE(jam_datang)"
@@ -1985,7 +1989,7 @@ class Admin extends AdminModule
         $time = strtotime(date("Y-m-d", strtotime("-".($days + $offset)." days")));
         $date = date("Y-m-d", strtotime("-".($days + $offset)." days"));
 
-        $query = $this->db()->pdo()->prepare("SELECT COUNT(photo) as count,COUNT(IF(keterangan != '-', 1, NULL)) as count2, date(jam_datang) as jam FROM `rekap_presensi` WHERE jam_datang >= '$date 00:00:00' GROUP BY date(jam_datang)");
+        $query = $this->db()->pdo()->prepare("SELECT COUNT(photo) as count,COUNT(CASE WHEN keterangan != '-' THEN 1 ELSE NULL END) as count2, date(jam_datang) as jam FROM `rekap_presensi` WHERE jam_datang >= '$date 00:00:00' GROUP BY date(jam_datang)");
         $query->execute();
 
         $data = $query->fetchAll(\PDO::FETCH_ASSOC);
@@ -2025,7 +2029,7 @@ class Admin extends AdminModule
       $query = $this->db('rekap_presensi')
           ->select([
             'count' => 'COUNT(photo)',
-            'count2' => "COUNT(IF(keterangan = '', 1, NULL))",
+            'count2' => "COUNT(CASE WHEN keterangan = '' THEN 1 ELSE NULL END)",
           ])
           ->where('jam_datang', '>=', $date.' 00:00:00');
 
@@ -2178,6 +2182,15 @@ class Admin extends AdminModule
         }
         $this->notify('success', 'Pengaturan manajemen telah disimpan');
         redirect(url([ADMIN, 'manajemen', 'settings']));
+    }
+
+    protected function monthSql($column)
+    {
+        $driver = $this->db()->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        if ($driver === 'sqlite') {
+            return "strftime('%m', $column)";
+        }
+        return "EXTRACT(MONTH FROM $column)";
     }
 
 }

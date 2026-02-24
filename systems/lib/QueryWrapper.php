@@ -358,7 +358,9 @@ class QueryWrapper
 
     public function rand()
     {
-        array_push($this->orders, "RAND()");
+        $driver = $this->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $expr = ($driver === 'sqlite') ? 'RANDOM()' : 'RAND()';
+        array_push($this->orders, $expr);
         return $this;
     }
 

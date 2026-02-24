@@ -43,7 +43,7 @@
     								<th>Shift</th>
                                     <th>Jam Masuk</th>
                                     <th>Jam Pulang</th>
-    								<!-- <th class="text-right">Aksi</th> -->
+    								<th class="text-right">Aksi</th>
     							</tr>
     						</thead>
     						<tbody>
@@ -54,20 +54,11 @@
     									<td>{?=isset_or($value.shift)?}</td>
                                         <td>{?=isset_or($value.jam_masuk)?}</td>
                                         <td>{?=isset_or($value.jam_pulang)?}</td>
-    									<!-- <td class="text-right">
-    										<a href="{?=isset_or($value.editURL)?}" class="btn btn-success btn-xs">
-    											<i class="fa fa-pencil"></i> <span class="hidden-xs">Ganti</span>
-    										</a>
-                                        {if: $value.status == '1'}
-                                            <a href="{?=isset_or($value.delURL)?}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
+    									<td class="text-right">
+                                            <a href="{?=url([ADMIN, 'presensi', 'jagadel', isset_or($value.no_id, '')])?}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin menghapus?">
       											<i class="fa fa-trash-o"></i> <span class="hidden-xs">Hapus</span>
       										</a>
-                                        {else}
-                                            <a href="{?=isset_or($value.restoreURL)?}" class="btn btn-danger btn-xs" data-confirm="Yakin ingin merestore?">
-      											<i class="fa fa-trash-o"></i> <span class="hidden-xs">Restrore</span>
-      										</a>
-                                        {/if}
-    									</td> -->
+    									</td>
     								</tr>
     								{/loop}
     								{else}
