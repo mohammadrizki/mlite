@@ -10,11 +10,20 @@ jQuery(function($) {
             "url": "{?=url([ADMIN, 'farmasi', 'daruratstokdata'])?}",
             "type": "POST",
             "dataSrc": function(json){
+                // console.log('DataTables response:', json); // Debugging line
                 try {
+                    // Handle DataTables 1.10+ format
                     if (json && Array.isArray(json.data)) return json.data;
-                    if (json && Array.isArray(json.rows)) return json.rows;
+                    
+                    // Handle legacy DataTables format
                     if (json && Array.isArray(json.aaData)) return json.aaData;
+                    
+                    // Handle direct array response
                     if (Array.isArray(json)) return json;
+                    
+                    // Handle custom 'rows' property (common in some frameworks)
+                    if (json && Array.isArray(json.rows)) return json.rows;
+
                     console.error('Unexpected DataTables response shape:', json);
                     return [];
                 } catch(e) {

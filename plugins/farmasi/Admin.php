@@ -692,88 +692,112 @@ class Admin extends AdminModule
 
     public function postDaruratStokData()
     {
-        $draw           = $_POST['draw'] ?? 1;
-        $row1           = $_POST['start'] ?? 0;
-        $rowperpage     = $_POST['length'] ?? 10;
-        $columnIndex    = $_POST['order'][0]['column'] ?? 0;
-        $columnName     = $_POST['columns'][$columnIndex]['data'] ?? 'kode_brng';
-        $columnSortOrder= $_POST['order'][0]['dir'] ?? 'asc';
-        $search_text    = $_POST['search_text_databarang'] ?? '';
-        $search_field   = $_POST['search_field_databarang'] ?? '';
+        try {
+            $draw           = $_POST['draw'] ?? 1;
+            $row1           = $_POST['start'] ?? 0;
+            $rowperpage     = $_POST['length'] ?? 10;
+            $columnIndex    = $_POST['order'][0]['column'] ?? 0;
+            $columnName     = $_POST['columns'][$columnIndex]['data'] ?? 'kode_brng';
+            $columnSortOrder= $_POST['order'][0]['dir'] ?? 'asc';
+            $search_text    = $_POST['search_text_databarang'] ?? '';
+            $search_field   = $_POST['search_field_databarang'] ?? '';
 
-        // Validasi: mencegah SQL Injection via column name
-        $allowedColumns = [
-            'kode_brng','nama_brng','stokminimal','kode_satbesar',
-            'kode_sat','dasar','h_beli','isi','kapasitas','expire'
-        ];
+            // Validasi: mencegah SQL Injection via column name
+            $allowedColumns = [
+                'kode_brng','nama_brng','stokminimal','kode_satbesar',
+                'kode_sat','dasar','h_beli','isi','kapasitas','expire'
+            ];
 
-        if (!in_array($columnName, $allowedColumns)) {
-            $columnName = 'kode_brng';
+            if (!in_array($columnName, $allowedColumns)) {
+                $columnName = 'kode_brng';
+            }
+
+            // Build search query
+            $searchQuery = "";
+            $params = [];
+
+            if ($search_text !== '' && in_array($search_field, $allowedColumns)) {
+                $searchQuery = " AND d.$search_field LIKE :search_text ";
+                $params[':search_text'] = "%$search_text%";
+            }
+
+            // -------------------------
+            // Hitung total records
+            // -------------------------
+            $sqlTotal = "SELECT COUNT(*) AS allcount FROM databarang";
+            $stmt = $this->db()->pdo()->prepare($sqlTotal);
+            $stmt->execute();
+            $totalRecords = $stmt->fetch()['allcount'];
+
+            // -------------------------
+            // Hitung total filtered
+            // -------------------------
+            $sqlFiltered = "SELECT COUNT(*) AS allcount FROM databarang d WHERE 1 $searchQuery";
+            $stmt = $this->db()->pdo()->prepare($sqlFiltered);
+            if(!empty($params)){
+                foreach ($params as $key => $value) {
+                    $stmt->bindValue($key, $value);
+                }
+            }
+            $stmt->execute();
+            $totalRecordwithFilter = $stmt->fetch()['allcount'];
+
+            // -------------------------
+            // Ambil data JOIN stok gudang (1 kali query saja)
+            // -------------------------
+            // Use LIMIT length OFFSET start for better compatibility
+            $sqlData = "
+                SELECT d.kode_brng, d.nama_brng, d.stokminimal, d.kode_satbesar,
+                      d.kode_sat, d.dasar, d.h_beli, d.isi, d.kapasitas, d.expire,
+                      COALESCE(SUM(g.stok), 0) AS stok
+                FROM databarang d
+                LEFT JOIN gudangbarang g ON g.kode_brng = d.kode_brng
+                WHERE 1 $searchQuery
+                GROUP BY d.kode_brng
+                ORDER BY d.$columnName $columnSortOrder
+                LIMIT :length OFFSET :start
+            ";
+
+            $stmt = $this->db()->pdo()->prepare($sqlData);
+
+            // bind parameter
+            if(!empty($params)){
+                foreach ($params as $key => $value) {
+                    $stmt->bindValue($key, $value);
+                }
+            }
+
+            $stmt->bindValue(":start", intval($row1), \PDO::PARAM_INT);
+            $stmt->bindValue(":length", intval($rowperpage), \PDO::PARAM_INT);
+
+            $stmt->execute();
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            $data = [];
+            foreach ($result as $row) {
+                $data[] = $row;
+            }
+
+            // -------------------------
+            // Response JSON
+            // -------------------------
+            $response = [
+                "draw" => intval($draw),
+                "recordsTotal" => intval($totalRecords),
+                "recordsFiltered" => intval($totalRecordwithFilter),
+                "data" => $data
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                "draw" => intval($_POST['draw'] ?? 1),
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => [],
+                "error" => $e->getMessage()
+            ];
         }
 
-        // Build search query
-        $searchQuery = "";
-        $params = [];
-
-        if ($search_text !== '' && in_array($search_field, $allowedColumns)) {
-            $searchQuery = " AND $search_field LIKE :search_text ";
-            $params[':search_text'] = "%$search_text%";
-        }
-
-        // -------------------------
-        // Hitung total records
-        // -------------------------
-        $sqlTotal = "SELECT COUNT(*) AS allcount FROM databarang";
-        $stmt = $this->db()->pdo()->prepare($sqlTotal);
-        $stmt->execute();
-        $totalRecords = $stmt->fetch()['allcount'];
-
-        // -------------------------
-        // Hitung total filtered
-        // -------------------------
-        $sqlFiltered = "SELECT COUNT(*) AS allcount FROM databarang WHERE 1 $searchQuery";
-        $stmt = $this->db()->pdo()->prepare($sqlFiltered);
-        $stmt->execute($params);
-        $totalRecordwithFilter = $stmt->fetch()['allcount'];
-
-        // -------------------------
-        // Ambil data JOIN stok gudang (1 kali query saja)
-        // -------------------------
-        $sqlData = "
-            SELECT d.kode_brng, d.nama_brng, d.stokminimal, d.kode_satbesar,
-                  d.kode_sat, d.dasar, d.h_beli, d.isi, d.kapasitas, d.expire,
-                  COALESCE(SUM(g.stok), 0) AS stok
-            FROM databarang d
-            LEFT JOIN gudangbarang g ON g.kode_brng = d.kode_brng
-            WHERE 1 $searchQuery
-            GROUP BY d.kode_brng
-            ORDER BY $columnName $columnSortOrder
-            LIMIT :start, :length
-        ";
-
-        $stmt = $this->db()->pdo()->prepare($sqlData);
-
-        // bind parameter
-        foreach ($params as $key => $value) {
-            $stmt->bindValue($key, $value);
-        }
-
-        $stmt->bindValue(":start", intval($row1), \PDO::PARAM_INT);
-        $stmt->bindValue(":length", intval($rowperpage), \PDO::PARAM_INT);
-
-        $stmt->execute();
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-        // -------------------------
-        // Response JSON
-        // -------------------------
-        $response = [
-            "draw" => intval($draw),
-            "iTotalRecords" => $totalRecords,
-            "iTotalDisplayRecords" => $totalRecordwithFilter,
-            "aaData" => $result
-        ];
-
+        header('Content-Type: application/json');
         echo json_encode($response);
         exit();
     }
