@@ -47,6 +47,47 @@ class Admin extends AdminModule
         redirect(url([ADMIN, 'orthanc', 'manage']));
     }
 
+    public function postTestOpenai()
+    {
+      $orthanc['ai_api_key'] = $_POST['api_key'];
+      $orthanc['ai_api_url'] = $_POST['api_url'];
+      if($orthanc['ai_api_key'] != "" && $orthanc['ai_api_url'] != "") {
+        $result = true;
+      } else {
+        $result = false;
+      }
+
+      if($result) {
+        $curl = curl_init();
+        curl_setopt ($curl, CURLOPT_URL, $orthanc['ai_api_url']);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+          'Content-Type: application/json',
+          'Authorization: Bearer ' . $orthanc['ai_api_key']
+        ));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $resp = curl_exec($curl);
+        curl_close($curl);
+        $response = json_decode($resp, true);
+
+        if(isset($response['error'])) {
+          $message = 'error';
+          $code = '401';
+        } else {
+          $message = 'sukses';
+          $code = '200';
+        }
+      } else {
+        $message = 'error';
+        $code = '201';
+      }
+      $output = array(
+       'message' => $message,
+       'code'  => $code
+      );
+      echo json_encode($output);
+      exit();
+    }
+
     public function getBridgingOrthanc($no_rawat, $status='', $tgl_periksa='', $jam='')
     {
       $this->_addHeaderFiles();

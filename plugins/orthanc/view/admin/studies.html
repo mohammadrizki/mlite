@@ -302,7 +302,7 @@
                     <ul class="pagination pull-right" style="margin: 0;">
                       {if: $pagination.has_prev}
                         <li>
-                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}?limit={?=isset_or($pagination.limit)?}&since={?=isset_or($pagination.prev_offset)?}{if: $pagination.from_date}&from_date={?=isset_or($pagination.from_date)?}{/if}{if: $pagination.to_date}&to_date={?=isset_or($pagination.to_date)?}{/if}" 
+                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}&limit={?=isset_or($pagination.limit)?}&since={?=isset_or($pagination.prev_offset)?}{if: $pagination.from_date}&from_date={?=isset_or($pagination.from_date)?}{/if}{if: $pagination.to_date}&to_date={?=isset_or($pagination.to_date)?}{/if}" 
                              aria-label="Previous">
                             <span aria-hidden="true">&laquo; Previous</span>
                           </a>
@@ -319,7 +319,7 @@
                       
                       {if: $pagination.has_next}
                         <li>
-                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}?limit={?=isset_or($pagination.limit)?}&since={?=isset_or($pagination.next_offset)?}{if: $pagination.from_date}&from_date={?=isset_or($pagination.from_date)?}{/if}{if: $pagination.to_date}&to_date={?=isset_or($pagination.to_date)?}{/if}" 
+                          <a href="{?=url([ADMIN, 'orthanc', 'studies'])?}&limit={?=isset_or($pagination.limit)?}&since={?=isset_or($pagination.next_offset)?}{if: $pagination.from_date}&from_date={?=isset_or($pagination.from_date)?}{/if}{if: $pagination.to_date}&to_date={?=isset_or($pagination.to_date)?}{/if}" 
                              aria-label="Next">
                             <span aria-hidden="true">Next &raquo;</span>
                           </a>
