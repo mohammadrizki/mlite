@@ -834,7 +834,10 @@ class Admin extends AdminModule
           ->where('no_rawat', $row['no_rawat'])
           ->asc('prioritas')
           ->toArray();
-        $row['pemeriksaan_ralan'] = $this->db('pemeriksaan_ralan')->where('no_rawat', $row['no_rawat'])->toArray();
+        $row['pemeriksaan_ralan'] = $this->db('pemeriksaan_ralan')
+          ->join('pegawai', 'pegawai.nik=pemeriksaan_ralan.nip')
+          ->where('no_rawat', $row['no_rawat'])
+          ->toArray();
         $row['rawat_jl_dr'] = $this->db('rawat_jl_dr')
           ->join('jns_perawatan', 'jns_perawatan.kd_jenis_prw=rawat_jl_dr.kd_jenis_prw')
           ->join('dokter', 'dokter.kd_dokter=rawat_jl_dr.kd_dokter')
@@ -869,6 +872,7 @@ class Admin extends AdminModule
         $row['rawat_inap_drpr'] = [];
 
         $row['pemeriksaan_ranap'] = $this->db('pemeriksaan_ranap')
+          ->join('pegawai', 'pegawai.nik=pemeriksaan_ranap.nip')
           ->where('no_rawat', $row['no_rawat'])
           ->desc('tgl_perawatan')
         ->desc('jam_rawat')

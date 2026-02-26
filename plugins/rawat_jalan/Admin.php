@@ -53,6 +53,8 @@ class Admin extends AdminModule
         $tgl_akhir = $_GET['tgl_akhir'] ?? date('Y-m-d');
         $status_periksa = $_GET['status_periksa'] ?? '';
         $status_bayar = $_GET['status_bayar'] ?? '';
+        $rujukan_internal = $_GET['rujukan_internal'] ?? false;
+        $semua_poli = $_GET['semua_poli'] ?? false;
 
         $user_id = $this->db('mlite_users')->where('username', $username)->oneArray()['id'];
         $poliklinik = str_replace(",","','", (string)$this->core->getUserInfo('cap', $user_id, true));
@@ -77,7 +79,7 @@ class Admin extends AdminModule
             $params[] = $tgl_awal;
             $params[] = $tgl_akhir;
 
-            if ($this->core->getUserInfo('role', $user_id, true) != 'admin') {
+            if ($this->core->getUserInfo('role', $user_id, true) != 'admin' && !$semua_poli) {
                 $sql .= " AND booking_registrasi.kd_poli IN ('$poliklinik')";
             }
             if($status_periksa == 'belum') {
@@ -101,14 +103,19 @@ class Admin extends AdminModule
                     JOIN pasien ON reg_periksa.no_rkm_medis = pasien.no_rkm_medis 
                     JOIN dokter ON reg_periksa.kd_dokter = dokter.kd_dokter 
                     JOIN poliklinik ON reg_periksa.kd_poli = poliklinik.kd_poli 
-                    JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj 
-                    WHERE reg_periksa.kd_poli != ? 
+                    JOIN penjab ON reg_periksa.kd_pj = penjab.kd_pj ";
+
+            if($rujukan_internal) {
+                $sql .= " JOIN mlite_rujukan_internal_poli ON reg_periksa.no_rawat = mlite_rujukan_internal_poli.no_rawat ";
+            }
+            
+            $sql .= " WHERE reg_periksa.kd_poli != ? 
                     AND reg_periksa.tgl_registrasi BETWEEN ? AND ?";
             $params[] = $igd;
             $params[] = $tgl_awal;
             $params[] = $tgl_akhir;
 
-            if ($this->core->getUserInfo('role', $user_id, true) != 'admin') {
+            if ($this->core->getUserInfo('role', $user_id, true) != 'admin' && !$semua_poli) {
                 $sql .= " AND reg_periksa.kd_poli IN ('$poliklinik')";
             }
             if($status_periksa == 'belum') {

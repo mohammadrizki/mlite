@@ -294,11 +294,28 @@ abstract class Main
     }
 
     public function getEnum($table_name, $column_name) {
-      $result = $this->db()->pdo()->prepare("SHOW COLUMNS FROM $table_name LIKE '$column_name'");
-      $result->execute();
-      $result = $result->fetch();
-      $result = explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2", $result[1]));
-      return $result;
+      $driver = $this->db()->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+      if ($driver === 'sqlite') {
+          $sqlMaster = "SELECT sql FROM sqlite_master WHERE type='table' AND name='$table_name'";
+          $stmtMaster = $this->db()->pdo()->prepare($sqlMaster);
+          $stmtMaster->execute();
+          $tableDef = $stmtMaster->fetchColumn();
+          
+          if (preg_match("/CHECK\s*\(\s*`?$column_name`?\s+IN\s*\(([^)]+)\)\s*\)/i", $tableDef, $matches)) {
+               $enumStr = $matches[1];
+               $enumStr = str_replace("'", "", $enumStr);
+               return array_map('trim', explode(',', $enumStr));
+          }
+          return [];
+      } else {
+          $result = $this->db()->pdo()->prepare("SHOW COLUMNS FROM $table_name LIKE '$column_name'");
+          $result->execute();
+          $result = $result->fetch();
+          if ($result) {
+              return explode("','",preg_replace("/(enum|set)\('(.+?)'\)/","\\2", $result['Type']));
+          }
+          return [];
+      }
     }
 
     public function getDokterInfo($field, $kd_dokter)
