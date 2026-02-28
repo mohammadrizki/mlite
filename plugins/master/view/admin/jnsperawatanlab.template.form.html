@@ -28,31 +28,31 @@
       <div class="form-group">
         <label for="" class="col-sm-3 control-label">Satuan</label>
         <div class="col-sm-9">
-          <input type="text" name="satuan" class="form-control" value="{$template.satuan}">
+          <input type="text" name="satuan" class="form-control" value="{if: !empty($template.satuan)}{$template.satuan}{/if}">
         </div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-3 control-label">N. Rujukan. LD</label>
         <div class="col-sm-9">
-          <input type="text" name="nilai_rujukan_ld" class="form-control" value="{$template.nilai_rujukan_ld}">
+          <input type="text" name="nilai_rujukan_ld" class="form-control" value="{if: !empty($template.nilai_rujukan_ld)}{$template.nilai_rujukan_ld}{/if}">
         </div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-3 control-label">N. Rujukan LA</label>
         <div class="col-sm-9">
-          <input type="text" name="nilai_rujukan_la" class="form-control" value="{$template.nilai_rujukan_la}">
+          <input type="text" name="nilai_rujukan_la" class="form-control" value="{if: !empty($template.nilai_rujukan_la)}{$template.nilai_rujukan_la}{/if}">
         </div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-3 control-label">N. Rujukan PD</label>
         <div class="col-sm-9">
-          <input type="text" name="nilai_rujukan_pd" class="form-control" value="{$template.nilai_rujukan_pd}">
+          <input type="text" name="nilai_rujukan_pd" class="form-control" value="{if: !empty($template.nilai_rujukan_pd)}{$template.nilai_rujukan_pd}{/if}">
         </div>
       </div>
       <div class="form-group">
         <label for="" class="col-sm-3 control-label">N. Rujukan PA</label>
         <div class="col-sm-9">
-          <input type="text" name="nilai_rujukan_pa" class="form-control" value="{$template.nilai_rujukan_pa}">
+          <input type="text" name="nilai_rujukan_pa" class="form-control" value="{if: !empty($template.nilai_rujukan_pa)}{$template.nilai_rujukan_pa}{/if}">
         </div>
       </div>
       <div class="form-group hidden">
@@ -106,7 +106,7 @@
       <div class="form-group">
         <label for="" class="col-sm-3 control-label">No. Urut</label>
         <div class="col-sm-9">
-          <input type="text" name="urut" class="form-control" value="{$template.urut}">
+          <input type="text" name="urut" class="form-control" value="{if: !empty($template.urut)}{$template.urut}{/if}">
         </div>
       </div>
     </form>
