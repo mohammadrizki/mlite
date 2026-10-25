@@ -1,0 +1,49 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+          Data Pemeliharaan
+        </h3>
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="{?=url([ADMIN,'inventaris','pemeliharaan'])?}" role="tab">Data Pemeliharaan</a>
+            </li>
+            <li>
+                <a href="{?=url([ADMIN,'inventaris','pemeliharaanbaru'])?}" role="tab">Baru</a>
+            </li>
+        </ul>
+    </div>
+    <div class="panel-body">
+        <table class="table table-striped no-padding dataTables" width="100%">
+          <thead>
+            <tr>
+              <th>No. Inventaris</th>
+              <th>Kode Barang</th>
+              <th>Nama Barang</th>
+              <th>Tanggal</th>
+              <th>Uraian</th>
+              <th>NIP</th>
+              <th>Nama Petugas</th>
+              <th>Pelaksana</th>
+              <th>Biaya</th>
+              <th>Jenis</th>
+            </tr>
+          </thead>
+          <tbody>
+            {loop: $pemeliharaan}
+            <tr>
+              <td>{?=isset_or($value.no_inventaris)?}</td>
+              <td>{?=isset_or($value.kode_barang)?}</td>
+              <td>{?=isset_or($value.nama_barang)?}</td>
+              <td>{?=isset_or($value.tanggal)?}</td>
+              <td>{?=isset_or($value.uraian_kegiatan)?}</td>
+              <td>{?=isset_or($value.nip)?}</td>
+              <td>{?=isset_or($value.nama)?}</td>
+              <td>{?=isset_or($value.pelaksana)?}</td>
+              <td>{?=isset_or($value.biaya)?}</td>
+              <td>{?=isset_or($value.jenis_pemeliharaan)?}</td>
+            </tr>
+            {/loop}
+          </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,785 @@
+<?php
+
+namespace Systems\Lib;
+
+class QueryWrapper
+{
+    protected static $db = null;
+
+    protected static $last_sqls = [];
+
+    protected static $options = [];
+
+    protected $table = null;
+
+    protected $columns = [];
+
+    protected $joins = [];
+
+    protected $conditions = [];
+
+    protected $condition_binds = [];
+
+    protected $sets = [];
+
+    protected $set_binds = [];
+
+    protected $orders = [];
+
+    protected $group_by = [];
+
+    protected $having = [];
+
+    protected $limit = '';
+
+    protected $offset = '';
+
+    protected static $query_logs = [];
+
+    public function __construct($table = null)
+    {
+        if ($table) {
+            $this->table = $table;
+        }
+    }
+
+    public static function pdo()
+    {
+        return static::$db;
+    }
+
+    public static function lastSqls()
+    {
+        return static::$last_sqls;
+    }
+
+    public static function queryLogs()
+    {
+        return static::$query_logs;
+    }
+
+    public static function connect($dsn, $user = '', $pass = '', $options = [])
+    {
+        if (is_array($user)) {
+            $options = $user;
+            $user = '';
+            $pass = '';
+        } elseif (is_array($pass)) {
+            $options = $pass;
+            $pass = '';
+        }
+        static::$options = array_merge([
+            'primary_key'   => 'id',
+            'error_mode'    => \PDO::ERRMODE_EXCEPTION,
+            'json_options'  => JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT,
+            ], $options);
+        static::$db = new \PDO($dsn, $user, $pass);
+        static::$db->setAttribute(\PDO::ATTR_ERRMODE, static::$options['error_mode']);
+    }
+    
+    public static function close()
+    {
+        static::$db = null;
+    }
+
+    public static function config($name, $value = null)
+    {
+        if ($value === null) {
+            return static::$options[$name];
+        } else {
+            static::$options[$name] = $value;
+        }
+    }
+
+    public function select($columns)
+    {
+        if (!is_array($columns)) {
+            $columns = array($columns);
+        }
+        foreach ($columns as $alias => $column) {
+            if (!is_numeric($alias)) {
+                $column .= " AS $alias";
+            }
+            array_push($this->columns, $column);
+        }
+        return $this;
+    }
+
+    public function join($table, $condition)
+    {
+        array_push($this->joins, "INNER JOIN $table ON $condition");
+        return $this;
+    }
+
+    public function leftJoin($table, $condition)
+    {
+        array_push($this->joins, "LEFT JOIN $table ON $condition");
+        return $this;
+    }
+
+    public function having($aggregate_function, $operator, $value = null, $ao = 'AND')
+    {
+        if ($value === null) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        if (is_array($value) && !empty($value)) {
+            $valueCount = count($value);
+            $qs = '(' . implode(',', array_fill(0, $valueCount, '?')) . ')';
+            if (empty($this->having)) {
+                array_push($this->having, "$aggregate_function $operator $qs");
+            } else {
+                array_push($this->having, "$ao $aggregate_function $operator $qs");
+            }
+            foreach ($value as $v) {
+                array_push($this->condition_binds, $v);
+            }
+        } else {
+            if (empty($this->having)) {
+                array_push($this->having, "$aggregate_function $operator ?");
+            } else {
+                array_push($this->having, "$ao $aggregate_function $operator ?");
+            }
+            array_push($this->condition_binds, $value);
+        }
+        return $this;
+    }
+
+    public function orHaving($aggregate_function, $operator, $value = null)
+    {
+        return $this->having($aggregate_function, $operator, $value, 'OR');
+    }
+
+    public function where($column, $operator = null, $value = null, $ao = 'AND')
+    {
+        // Where group
+        if (!is_string($column) && is_callable($column)) {
+            if (empty($this->conditions) || strpos(end($this->conditions), '(') !== false) {
+                array_push($this->conditions, '(');
+            } else {
+                array_push($this->conditions, $ao.' (');
+            }
+
+            call_user_func($column, $this);
+            array_push($this->conditions, ')');
+
+            return $this;
+        }
+
+        if ($operator === null) {
+            $value = $column;
+            $column = static::$options['primary_key'];
+            $operator = '=';
+        } elseif ($value === null) {
+            $value = $operator;
+            $operator = '=';
+        }
+
+        if (is_array($value) && !empty($value)) {
+            foreach ($value as $v) {
+                array_push($this->condition_binds, $v);
+            }
+            $valueCount = count($value);
+            $value = '(' . implode(',', array_fill(0, $valueCount, '?')) . ')';
+        } else {
+            array_push($this->condition_binds, $value);
+            $value = "?";
+        }
+
+        if (empty($this->conditions) || strpos(end($this->conditions), '(') !== false) {
+            array_push($this->conditions, "$column $operator $value");
+        } else {
+            array_push($this->conditions, "$ao $column $operator $value");
+        }
+
+        return $this;
+    }
+
+    public function orWhere($column, $operator = null, $value = null)
+    {
+        return $this->where($column, $operator, $value, 'OR');
+    }
+
+    public function isNull($column, $ao = 'AND')
+    {
+        if (is_array($column)) {
+            foreach ($column as $c) {
+                $this->isNull($c, $ao);
+            }
+
+            return $this;
+        }
+
+        if (empty($this->conditions) || strpos(end($this->conditions), '(') !== false) {
+            array_push($this->conditions, "$column IS NULL");
+        } else {
+            array_push($this->conditions, "$ao $column IS NULL");
+        }
+
+        return $this;
+    }
+
+    public function isNotNull($column, $ao = 'AND')
+    {
+        if (is_array($column)) {
+            foreach ($column as $c) {
+                $this->isNotNull($c, $ao);
+            }
+
+            return $this;
+        }
+
+        if (empty($this->conditions) || strpos(end($this->conditions), '(') !== false) {
+            array_push($this->conditions, "$column IS NOT NULL");
+        } else {
+            array_push($this->conditions, "$ao $column IS NOT NULL");
+        }
+
+        return $this;
+    }
+
+    public function orIsNull($column)
+    {
+        return $this->isNull($column, 'OR');
+    }
+
+    public function orIsNotNull($column)
+    {
+        return $this->isNotNull($column, 'OR');
+    }
+
+    public function like($column, $value)
+    {
+        $this->where($column, 'LIKE', $value);
+        return $this;
+    }
+
+    public function orLike($column, $value)
+    {
+        $this->where($column, 'LIKE', $value, 'OR');
+        return $this;
+    }
+
+    public function notLike($column, $value)
+    {
+        $this->where($column, 'NOT LIKE', $value);
+        return $this;
+    }
+
+    public function orNotLike($column, $value)
+    {
+        $this->where($column, 'NOT LIKE', $value, 'OR');
+        return $this;
+    }
+
+    public function in($column, $values)
+    {
+        $this->where($column, 'IN', $values);
+        return $this;
+    }
+
+    public function orIn($column, $values)
+    {
+        $this->where($column, 'IN', $values, 'OR');
+        return $this;
+    }
+
+    public function notIn($column, $values)
+    {
+        $this->where($column, 'NOT IN', $values);
+        return $this;
+    }
+
+    public function orNotIn($column, $values)
+    {
+        $this->where($column, 'NOT IN', $values, 'OR');
+        return $this;
+    }
+
+    public function set($column, $value = null)
+    {
+        if (is_array($column)) {
+            $sets = $column;
+        } else {
+            $sets = [$column => $value];
+        }
+        $this->sets += $sets;
+        return $this;
+    }
+
+    public function save($column = null, $value = null)
+    {
+        if ($column) {
+            $this->set($column, $value);
+        }
+
+        // AUTO-ID HANDLING (MySQL + SQLite)
+        foreach (['id', 'kd', 'no_id', 'id_billing', 'id_template'] as $autoKey) {
+            if (
+                array_key_exists($autoKey, $this->sets) &&
+                $this->sets[$autoKey] === null &&
+                $this->isSqliteAutoId($autoKey)
+            ) {
+                unset($this->sets[$autoKey]);
+            }
+        }
+
+        $st = $this->_build();
+
+        $lid = static::$db->lastInsertId();
+        return $lid ?: $st;
+    }
+
+    public function lastId()
+    {
+        return static::$db->lastInsertId();
+    }
+
+    public function update($column = null, $value = null)
+    {
+        if ($column) {
+            $this->set($column, $value);
+        }
+        return $this->_build(['only_update' => true]);
+    }
+
+    public function asc($column)
+    {
+        array_push($this->orders, "$column ASC");
+        return $this;
+    }
+
+    public function desc($column)
+    {
+        array_push($this->orders, "$column DESC");
+        return $this;
+    }
+
+    public function rand()
+    {
+        $driver = $this->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $expr = ($driver === 'sqlite') ? 'RANDOM()' : 'RAND()';
+        array_push($this->orders, $expr);
+        return $this;
+    }
+
+    public function group($columns)
+    {
+        if (is_array($columns)) {
+            foreach ($columns as $column) {
+                array_push($this->group_by, "$column");
+            }
+        } else {
+            array_push($this->group_by, "$columns");
+        }
+        return $this;
+    }
+
+    public function limit($num)
+    {
+        $this->limit = " LIMIT $num";
+        return $this;
+    }
+
+    public function offset($num)
+    {
+        $this->offset = " OFFSET $num";
+        return $this;
+    }
+
+    public function toArray()
+    {
+        $st = $this->_build();
+        return $st->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function toObject()
+    {
+        $st = $this->_build();
+        return $st->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function toJson()
+    {
+        $rows = $this->toArray();
+        return json_encode($rows, static::$options['json_options']);
+    }
+
+    public function oneArray($column = null, $value = null)
+    {
+        if ($column !== null) {
+            $this->where($column, $value);
+        }
+        $st = $this->_build();
+        //return $st->fetch(\PDO::FETCH_ASSOC);
+        return $st->fetch(\PDO::FETCH_ASSOC) ? : [];
+    }
+
+    public function oneObject($column = null, $value = null)
+    {
+        if ($column !== null) {
+            $this->where($column, $value);
+        }
+        $st = $this->_build();
+        return $st->fetch(\PDO::FETCH_OBJ);
+    }
+
+    public function oneJson($column = null, $value = null)
+    {
+        if ($column !== null) {
+            $this->where($column, $value);
+        }
+        $row = $this->oneArray();
+        return json_encode($row, static::$options['json_options']);
+    }
+
+    public function count()
+    {
+        $st = $this->_build('count');
+        return $st->fetchColumn();
+    }
+
+    public function lastInsertId()
+    {
+        return static::$db->lastInsertId();
+    }
+
+    public function delete($column = null, $value = null)
+    {
+        if ($column !== null) {
+            $this->where($column, $value);
+        }
+        $st = $this->_build('delete');
+
+        $return = $st->rowCount();
+        if($st->rowCount() == 0) {
+            $return = $st;
+        }
+        return $return;
+    }
+
+    public function toSql($type = 'default')
+    {
+        $sql = '';
+        $sql_where = '';
+        $sql_having = '';
+
+        // build conditions
+        $conditions = implode(' ', $this->conditions);
+        $conditions = str_replace(['( ', ' )'], ['(', ')'], $conditions);
+        if ($conditions) {
+            $sql_where .= " WHERE $conditions";
+        }
+
+        // build having
+        $having = implode(' ', $this->having);
+        if ($having) {
+            $sql_having .= " HAVING $having";
+        }
+
+        // if some columns have set value then UPDATE or INSERT
+        if ($this->sets) {
+            // get table columns
+            $table_cols = $this->_getColumns();
+
+            // Update updated_at column if exists
+            if (in_array('updated_at', $table_cols) && !array_key_exists('updated_at', $this->sets)) {
+                $this->set('updated_at', time());
+            }
+
+            // if there are some conditions then UPDATE
+            if (!empty($this->conditions)) {
+                $insert = false;
+                $keys = array_keys($this->sets);
+                $quoted_columns = implode('=?,', array_map(function($c){ return "`$c`"; }, $keys)) . '=?';
+                $this->set_binds = array_values($this->sets);
+                $sql = "UPDATE `{$this->table}` SET $quoted_columns";
+                $sql .= $sql_where;
+
+                return $sql;
+            }
+            // if there aren't conditions, then INSERT
+            else {
+                // Update created_at column if exists
+                if (in_array('created_at', $table_cols) && !array_key_exists('created_at', $this->sets)) {
+                    $this->set('created_at', time());
+                }
+
+                $columns = implode(',', array_map(function($c){ return "`$c`"; }, array_keys($this->sets)));
+                $this->set_binds = array_values($this->sets);
+                $setsCount = is_array($this->sets) ? count($this->sets) : 0;
+                $qs = implode(',', array_fill(0, $setsCount, '?'));
+                $sql = "INSERT INTO `{$this->table}`($columns) VALUES($qs)";
+                $this->condition_binds = array();
+
+                return $sql;
+            }
+        } else {
+            if ($type == 'delete') {
+                // DELETE
+                $sql = "DELETE FROM $this->table";
+                $sql .= $sql_where;
+
+                return $sql;
+            } else {
+                // SELECT
+                $columns = implode(',', $this->columns);
+                if (!$columns) {
+                    $columns = '*';
+                }
+                if ($type == 'count') {
+                    $columns = "COUNT($columns) AS count";
+                }
+                $sql = "SELECT $columns FROM $this->table";
+                $joins = implode(' ', $this->joins);
+                if ($joins) {
+                    $sql .= " $joins";
+                }
+                $order = '';
+                if (is_array($this->orders) && count($this->orders) > 0) {
+                    $order = ' ORDER BY ' . implode(',', $this->orders);
+                }
+
+                $group_by = '';
+                if (is_array($this->group_by) && count($this->group_by) > 0) {
+                    $group_by = ' GROUP BY ' . implode(',', $this->group_by);
+                }
+
+                $sql .= $sql_where . $group_by . $order . $sql_having . $this->limit . $this->offset;
+
+                return $sql;
+            }
+        }
+
+        return null;
+    }
+
+    protected function _build($type = 'default')
+    {
+        return $this->_query($this->toSql($type));
+    }
+
+    protected function _query($sql)
+    {
+        $binds = array_merge($this->set_binds, $this->condition_binds);
+        $st = static::$db->prepare($sql);
+        foreach ($binds as $key => $bind) {
+            $pdo_param = \PDO::PARAM_STR;
+            if (is_int($bind)) {
+                $pdo_param = \PDO::PARAM_INT;
+            }
+            $st->bindValue($key + 1, $bind, $pdo_param);
+        }
+    
+        try {
+            $st->execute();
+        } catch (\PDOException $e) {
+            // Simpan log jika terjadi error
+            self::logQueryToDatabase($sql, $binds, $e->getMessage());
+            
+            // Check for integrity constraint violation
+            if ($e->getCode() == '23000') {
+                // Optionally append detailed info: $errorMessage .= " (" . $e->getMessage() . ")";
+                $errorMessage = $e->getMessage();
+                $errorMessage = preg_replace('/`[^`]+`\./', '', $errorMessage);
+
+                throw new \Exception($errorMessage, 23000);
+            }
+            
+            throw $e; // lempar ulang agar error tetap ditangani di luar
+        }
+
+        $settings = $this->pdo()->query("SELECT * FROM mlite_settings WHERE module = 'settings' AND field = 'log_query'")->fetchAll();
+
+        // Log hanya untuk INSERT / UPDATE / DELETE
+        if (preg_match('/^\s*(INSERT|UPDATE|DELETE)/i', $sql)) {
+            if(!empty($settings) && isset($settings[0]['value']) && $settings[0]['value'] == 'ya') {
+                self::logQueryToDatabase($sql, $binds);
+            }
+        }
+    
+        static::$last_sqls[] = $sql;
+        return $st;
+    } 
+    
+    protected static function logQueryToDatabase($sql, $binds = [], $error = null)
+    {
+
+        // Ambil username dari session login, default 'unknown'
+        $username = 'unknown';
+        if (!empty($_SESSION['mlite_user'])) {
+            try {
+                $user = (new self('mlite_users'))
+                    ->where('id', $_SESSION['mlite_user'])
+                    ->oneArray();
+                if (isset($user['username'])) {
+                    $username = $user['username'];
+                }
+            } catch (\Exception $e) {
+                error_log('Gagal mendapatkan username: ' . $e->getMessage());
+            }
+        }
+
+        try {
+            $driver = static::$db->getAttribute(\PDO::ATTR_DRIVER_NAME);
+            $now = ($driver == 'sqlite') ? "datetime('now')" : "NOW()";
+            
+            $log_stmt = static::$db->prepare("
+                INSERT INTO mlite_query_logs (sql_text, bindings, error_message, username, created_at)
+                VALUES (:sql_text, :bindings, :error_message, :username, $now)
+            ");
+            $log_stmt->execute([
+                ':sql_text' => $sql,
+                ':bindings' => json_encode($binds),
+                ':error_message' => $error,
+                ':username' => $username
+            ]);
+        } catch (\PDOException $e) {
+            // Optional fallback to file log
+            error_log("Failed to log query: " . $e->getMessage());
+        }
+    }        
+
+    protected function _getColumns()
+    {
+        $driver = $this->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        if ($driver === 'sqlite') {
+            $q = $this->pdo()->query("PRAGMA table_info($this->table)")->fetchAll();
+            return array_column($q, 'name');
+        }
+        $q = $this->pdo()->query("DESCRIBE $this->table;")->fetchAll();
+        return array_column($q, 'Field');
+    }
+
+    protected function driver(): string
+    {
+        return $this->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+    }
+
+    protected function isSQLite(): bool
+    {
+        return $this->driver() === 'sqlite';
+    }
+
+    public function maxRightInt(string $column, int $length = 6, int $default = 0): string
+    {
+        if ($this->isSQLite()) {
+            return "IFNULL(MAX(CAST(substr($column, -$length) AS INTEGER)),$default)";
+        }
+
+        return "IFNULL(MAX(CONVERT(RIGHT($column,$length), SIGNED)),$default)";
+    }
+
+    public function nextRightNumber(
+        string $column,
+        int $length = 6,
+        string $whereColumn = null,
+        $whereValue = null
+    ): int {
+        if ($whereColumn !== null) {
+            $this->where($whereColumn, $whereValue);
+        }
+
+        $row = $this->select([
+            'max' => $this->maxRightInt($column, $length)
+        ])->oneArray();
+
+        return ((int) $row['max']) + 1;
+    }
+
+    public function orderByRightNumber($field, $length, $dir = 'ASC')
+    {
+        $driver = $this->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+
+        if ($driver === 'sqlite') {
+            $expr = "CAST(substr($field, -$length) AS INTEGER)";
+        } else {
+            $expr = "CAST(RIGHT($field, $length) AS UNSIGNED)";
+        }
+
+        array_push($this->orders, "$expr $dir");
+        return $this;
+    }
+
+    protected function isAutoPrimaryKey(string $column = 'id'): bool
+    {
+        $driver = $this->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+
+        // SQLite: id INTEGER PRIMARY KEY
+        if ($driver === 'sqlite') {
+            return true;
+        }
+
+        // MySQL: AUTO_INCREMENT
+        if ($driver === 'mysql') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether a column acts as an auto-id under SQLite.
+     * For non-SQLite drivers, we return true early since auto-id is handled by the driver (e.g., MySQL AUTO_INCREMENT).
+     */
+    protected function isSqliteAutoId(string $column): bool
+    {
+        $driver = $this->pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        if ($driver !== 'sqlite') return true; // non-sqlite: nothing special to check here
+
+        // Quote the table identifier for SQLite PRAGMA to avoid issues with special chars
+        $table = str_replace('"', '""', (string) $this->table);
+        $stmt = $this->pdo()->query("PRAGMA table_info(\"{$table}\")");
+
+        foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $col) {
+            if (
+                $col['name'] === $column &&
+                stripos($col['type'], 'INTEGER') !== false &&
+                (int) $col['pk'] === 1
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static function logPdoQuery($sql, $bindings = [], $error = null)
+    {
+        if (!static::$db) return;
+
+        // Ambil username dari session login, default 'unknown'
+        $username = 'unknown';
+        if (!empty($_SESSION['mlite_user'])) {
+            try {
+                $user = (new self('mlite_users'))
+                    ->where('id', $_SESSION['mlite_user'])
+                    ->oneArray();
+                if (isset($user['username'])) {
+                    $username = $user['username'];
+                }
+            } catch (\Exception $e) {
+                error_log('Gagal mendapatkan username: ' . $e->getMessage());
+            }
+        }
+    
+        try {
+            $driver = static::$db->getAttribute(\PDO::ATTR_DRIVER_NAME);
+            $now = ($driver == 'sqlite') ? "datetime('now')" : "NOW()";
+            
+            $stmt = static::$db->prepare("
+                INSERT INTO mlite_query_logs (sql_text, bindings, error_message, username, created_at)
+                VALUES (:sql_text, :bindings, :error_message, :username, $now)
+            ");
+            $stmt->execute([
+                ':sql_text' => $sql,
+                ':bindings' => json_encode($bindings),
+                ':error_message' => $error,
+                ':username' => $username
+            ]);
+        } catch (\PDOException $e) {
+            error_log('Gagal menyimpan log query manual: ' . $e->getMessage());
+        }
+    }    
+
+}

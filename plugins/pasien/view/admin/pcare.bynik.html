@@ -1,0 +1,152 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Data Kepesertaan</h4>
+</div>
+<div class="modal-body">
+  <h4>Detail data kepesertan BPJS</h4>
+  <div id="success">
+      <table class="table">
+          <tbody>
+              <tr>
+                  <td width="200px;"><b>Nama Peserta</b></td>
+                  <td>: <span class="nama">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Nomor KTP</b></td>
+                  <td>: <span class="nik">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Nomor Kartu</b></td>
+                  <td>: <span class="noKartu">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Jenis Kelamin</b></td>
+                  <td>: <span class="sex">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Tanggal Lahir</b></td>
+                  <td>: <span class="tglLahir">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Hak Kelas</b></td>
+                  <td>:</td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Keterangan</span></td>
+                  <td>: <span class="hakKelas_keterangan">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Kode</span></td>
+                  <td>: <span class="hakKelas_kode">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Provider Umum</b></td>
+                  <td>:</td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Kode Provider</span></td>
+                  <td>: <span class="provUmum_kdProvider">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Nama Provider</span></td>
+                  <td>: <span class="provUmum_nmProvider">null</span></td>
+              </tr>
+              <tr>
+                <td width="200px;"><b>Provider Gigi</b></td>
+                <td>:</td>
+            </tr>
+            <tr>
+                <td width="200px;"><span style="margin-left:20px;">Kode Provider</span></td>
+                <td>: <span class="provGigi_kdProvider">null</span></td>
+            </tr>
+            <tr>
+                <td width="200px;"><span style="margin-left:20px;">Nama Provider</span></td>
+                <td>: <span class="provGigi_nmProvider">null</span></td>
+            </tr>
+            <tr>
+                  <td width="200px;"><b>Informasi</b></td>
+                  <td>:</td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Peserta Prb</span></td>
+                  <td>: <span class="prtPrb">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Peserta Prolanis</span></td>
+                  <td>: <span class="pstProlanis">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Jenis Peserta</b></td>
+                  <td>:</td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Keterangan</span></td>
+                  <td>: <span class="jenisPeserta_keterangan">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Kode</span></td>
+                  <td>: <span class="jenisPeserta_kode">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Nomor Telepon</b></td>
+                  <td>: <span class="noTelepon">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>COB</b></td>
+                  <td>:</td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Nama Asuransi</span></td>
+                  <td>: <span class="cob_nmAsuransi">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><span style="margin-left:20px;">Nomor Asuransi</span></td>
+                  <td>: <span class="cob_noAsuransi">null</span></td>
+              </tr>
+              <tr>
+                  <td width="200px;"><b>Tanggal TAT</b></td>
+                  <td>: <span class="tglTAT">null</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+  <pre id="error"></pre>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+</div>
+<script>
+$(document).ready(function(){
+    $.get("{?=isset_or($url)?}", function(data){
+      var data = JSON.parse(data);
+      var jsonPretty = JSON.stringify(data, null, '\t');
+      $("pre").text(jsonPretty);
+      if(data.metaData.message=='OK') {
+        $("#error").hide();
+        $("#success").show();
+      } else {
+        $("#error").show();
+        $("#success").hide();
+      }
+      $('.nama').text(data.response.nama);
+      $('.nik').text(data.response.noKTP);
+      $('.noKartu').text(data.response.noKartu);
+      $('.sex').text(data.response.sex);
+      $('.tglLahir').text(data.response.tglLahir);
+      $('.hakKelas_keterangan').text(data.response.jnsKelas.nama);
+      $('.hakKelas_kode').text(data.response.jnsKelas.kode);
+      $('.provUmum_kdProvider').text(data.response.kdProviderPst.kdProvider);
+      $('.provUmum_nmProvider').text(data.response.kdProviderPst.nmProvider);
+      $('.provGigi_kdProvider').text(data.response.kdProviderGigi.kdProvider);
+      $('.provGigi_nmProvider').text(data.response.kdProviderGigi.nmProvider);
+      $('.jenisPeserta_keterangan').text(data.response.jnsPeserta.nama);
+      $('.jenisPeserta_kode').text(data.response.jnsPeserta.kode);
+      $('.noTelepon').text(data.response.noHP);
+      $('.cob_nmAsuransi').text(data.response.asuransi.nmAsuransi);
+      $('.cob_noAsuransi').text(data.response.asuransi.noAsuransi);
+      $('.tglTAT').text(data.response.tglMulaiAktif);
+      $('.pstProlanis').text(data.response.pstProl);
+      $('.pstPrb').text(data.response.pstPrb);
+    });
+});
+</script>

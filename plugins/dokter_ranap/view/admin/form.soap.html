@@ -1,0 +1,759 @@
+<div id="form_soap">
+  {* FAB RME Nasional SATUSEHAT (tampil saat form SOAP rawat inap aktif) *}
+  <style>
+    .satusehat-fab { position: fixed; right: 24px; bottom: 64px; z-index: 1050; display: block; width: 200px; height: 64px; border-radius: 32px; overflow: hidden; background: #0d5c63; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .satusehat-fab:hover, .satusehat-fab:focus { transform: scale(1.08); box-shadow: 0 6px 14px rgba(0,0,0,0.4); }
+    .satusehat-fab img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .satusehat-fab.satusehat-fab-loading { pointer-events: none; opacity: 0.6; }
+    .satusehat-fab.satusehat-fab-loading::after { content: ""; position: absolute; top: 50%; left: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; border: 3px solid rgba(255,255,255,0.4); border-top-color: #ffffff; border-radius: 50%; animation: satusehat-fab-spin 0.8s linear infinite; }
+    @keyframes satusehat-fab-spin { to { transform: rotate(360deg); } }
+    #satusehat-fab-toast { position: fixed; right: 24px; bottom: 92px; z-index: 1050; max-width: 320px; margin-bottom: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; }
+  </style>
+  <a href="#" id="satusehat-fab" class="satusehat-fab" title="Buka RME Nasional SATUSEHAT">
+    <img src="{?=url('assets/img/satusehat-button-dark-color.png')?}" alt="SATUSEHAT">
+  </a>
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <div class="form-group">
+            <label for="tanggal">Tanggal</label>
+            <input type="text" id="soap_tgl_perawatan" name="tgl_perawatan" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+          </div>
+          <div class="form-group">
+            <label for="jam">Jam</label>
+            <input type="text" id="soap_jam_rawat" name="jam_rawat" class="form-control jam" value="{?=date('H:i:s')?}">
+          </div>
+          <div class="form-group">
+            <label for="id_pendaftaran">Id Rawat</label>
+            <input type="text" name="no_rawat" placeholder="ID Pendaftaran" class="form-control" value="" readonly>
+          </div>
+          <div class="form-group">
+            <label for="id_pasien">Nomor RM</label>
+            <input type="text" name="no_rkm_medis" class="form-control" placeholder="Nomor Rekam Medik" value="" readonly>
+          </div>
+          <div class="form-group">
+            <label for="nama_pasien">Nama Pasien</label>
+            <input type="text" name="nm_pasien" class="form-control" placeholder="Nama pasien" value="" readonly>
+          </div>
+          <div class="form-group">
+            <label for="nama_pasien">Umur</label>
+            <input type="text" name="umur" class="form-control" placeholder="Umur pasien" value="" readonly>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4>Pemeriksaan</h4>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="nama_pasien">Tensi(mmHg)</label>
+              <input type="text" name="tensi" class="form-control" placeholder="" value="-">
+            </div>
+            <div class="col-sm-2">
+              <label for="nama_pasien">Suhu(C)</label>
+              <input type="text" name="suhu_tubuh" class="form-control" placeholder="" value="">
+            </div>
+            <div class="col-sm-2">
+              <label for="nama_pasien">Nadi(/mnt)</label>
+              <input type="text" name="nadi" class="form-control" placeholder="" value="">
+            </div>
+            <div class="col-sm-2">
+              <label for="nama_pasien">RR(/mnt)</label>
+              <input type="text" name="respirasi" class="form-control" placeholder="" value="">
+            </div>
+            <div class="col-sm-2">
+              <label for="nama_pasien">Tinggi(cm)</label>
+              <input type="text" name="tinggi" class="form-control" placeholder="" value="">
+            </div>
+            <div class="col-sm-2">
+              <label for="nama_pasien">Berat(kg)</label>
+              <input type="text" name="berat" class="form-control" placeholder="" value="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-4">
+              <label for="nama_pasien">Kesadaran</label>
+              <input type="text" name="kesadaran" class="form-control" placeholder="" value="Compos Mentis">
+              <ul class="list-group" id="kesadaranList" style="z-index:1000;position:absolute;width:100%;"></ul>
+            </div>
+            <div class="col-sm-2">
+              <label for="nama_pasien">SPO2</label>
+              <input type="text" name="spo2" class="form-control" placeholder="" value="">
+            </div>
+            <div class="col-sm-2">
+              <label for="nama_pasien">GCS(E,V,M)</label>
+              <input type="text" name="gcs" class="form-control" placeholder="" value="">
+            </div>
+            <div class="col-sm-4">
+              <label for="nama_pasien">Alergi</label>
+              <input type="text" name="alergi" class="form-control" placeholder="" value="">
+            </div>
+          </div>
+        </div>
+        <h4>SOAP</h4>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis">Subyektif</label>
+              <textarea name="keluhan" id="keluhan" rows="2" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis">Obyektif</label>
+              <textarea name="pemeriksaan" id="pemeriksaan" rows="2" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis">Assesment</label>
+              <textarea name="penilaian" id="penilaian" rows="2" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis">Plan</label>
+              <textarea name="rtl" id="rtl" rows="2" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis">Instruksi</label>
+              <textarea name="instruksi" id="instruksi" rows="2" class="form-control" value="-"></textarea>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="jenis">Evaluasi</label>
+              <textarea name="evaluasi" id="evaluasi" rows="2" class="form-control" value="-"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="m-t-xl">
+          <button type="button" name="button" class="btn btn-primary" id="simpan_soap"><i class="fa fa-save"></i><span class="hidden-xs"> Simpan</span></button>
+          <button type="button" name="button" class="btn btn-danger" id="buka_icd10dan9"><i class="fa fa-download"></i><span class="hidden-xs"> ICD 10 & 9</span></button>
+          <button type="button" name="button" class="btn btn-info" id="buka_riwayat"><i class="fa fa-file-o"></i><span class="hidden-xs"> Riwayat</span></button>
+          <button type="button" name="button" class="btn btn-success" id="selesai_soap"><i class="fa fa-check"></i><span class="hidden-xs"> Selesai</span></button>
+          <span class="pull-right">
+            <a href="#" class="btn btn-warning resume"><i class="fa fa-file-text"></i><span class="hidden-xs"> Resume</span></a>
+            <a href="#" class="btn btn-warning" id="medisRanapBtn"><i class="fa fa-stethoscope"></i><span class="hidden-xs"> Assessment</span></a>
+            <a href="#" class="btn btn-info" id="assessmentNyeriBtn"><i class="fa fa-heartbeat"></i><span class="hidden-xs"> Assessment Nyeri</span></a>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div id="icd10dan9">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group icd10">
+                  <label for="">Diagnosa (ICD 10)</label>
+                  <button id="filter" class="btn btn-default">
+                      <span id="kode_icd10">kode</span>
+                  </button>
+                  <div class="btn-group">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                      <span data-bind="label" id="prioritas_icd10"></span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" style="min-width:0px;">
+                      <li><a>1</a></li>
+                      <li><a>2</a></li>
+                      <li><a>3</a></li>
+                      <li><a>4</a></li>
+                      <li><a>5</a></li>
+                      <li><a>6</a></li>
+                      <li><a>7</a></li>
+                      <li><a>8</a></li>
+                      <li><a>9</a></li>
+                    </ul>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" name="icd10" id="icd10" class="form-control" />
+                    <input type="hidden" name="status" class="form-control" value="Ranap" />
+                    <ul class="list-group" id="icd10List" style="z-index:1000;position:absolute;width:100%;"></ul>
+                    <span class="input-group-btn">
+                      <button id="simpan_icd10" class="btn btn-primary btn-block">
+                          <span class="glyphicon glyphicon-plus simpan_icd10"></span> Simpan
+                      </button>
+                    </span>
+                  </div>
+                  <div class="input-group" style="margin-top: 6px; position: relative;">
+                    <input type="text" name="snomed_search" id="snomed_search" class="form-control" placeholder="Cari SNOMED-CT..." autocomplete="off" />
+                    <input type="hidden" name="snomed_concept_id" id="snomed_concept_id" />
+                    <input type="hidden" name="snomed_term" id="snomed_term" />
+                    <ul class="list-group" id="snomedList" style="z-index:1000;position:absolute;width:100%;"></ul>
+                    <span class="input-group-btn">
+                      <button id="simpan_mapping_snomed" class="btn btn-info btn-block">
+                        <i class="fa fa-save"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group icd9">
+                  <label for="">Prosedur (ICD 9)</label>
+                  <button id="filter" class="btn btn-default">
+                      <span id="kode_icd9">kode</span>
+                  </button>
+                  <div class="btn-group">
+                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                          <span data-bind="label" id="prioritas_icd9"></span> <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" role="menu" style="min-width:0px;">
+                          <li><a>1</a></li>
+                          <li><a>2</a></li>
+                          <li><a>3</a></li>
+                          <li><a>4</a></li>
+                          <li><a>5</a></li>
+                          <li><a>6</a></li>
+                          <li><a>7</a></li>
+                          <li><a>8</a></li>
+                          <li><a>9</a></li>
+                      </ul>
+                  </div>
+                  <div class="input-group">
+                    <input type="text" name="icd9" id="icd9" class="form-control" />
+                    <input type="hidden" name="status" class="form-control" value="Ranap" />
+                    <ul class="list-group" id="icd9List" style="z-index:1000;position:absolute;width:100%;"></ul>
+                    <span class="input-group-btn">
+                        <button id="simpan_icd9" class="btn btn-primary btn-block">
+                            <span class="glyphicon glyphicon-plus"></span> Simpan
+                        </button>
+                    </span>
+                  </div>
+                  <div class="input-group" style="margin-top: 6px; position: relative;">
+                    <input type="text" name="snomed_search_icd9" id="snomed_search_icd9" class="form-control" placeholder="Cari SNOMED-CT..." autocomplete="off" />
+                    <input type="hidden" name="snomed_concept_id_icd9" id="snomed_concept_id_icd9" />
+                    <input type="hidden" name="snomed_term_icd9" id="snomed_term_icd9" />
+                    <ul class="list-group" id="snomedListIcd9" style="z-index:1000;position:absolute;width:100%;top:100%;left:0;"></ul>
+                    <span class="input-group-btn">
+                      <button id="simpan_mapping_snomed_icd9" class="btn btn-info btn-block">
+                        <i class="fa fa-save"></i>
+                      </button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="resumeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  $('input:text[name=kesadaran]').focus(function(){
+       var output='';
+       output+='<li class=\"list-group-item link-class\">Compos Mentis</li>';
+       output+='<li class=\"list-group-item link-class\">Somnolence</li>';
+       output+='<li class=\"list-group-item link-class\">Sopor</li>';
+       output+='<li class=\"list-group-item link-class\">Coma</li>';
+       output+='';
+       $('#kesadaranList').fadeIn();
+       $('#kesadaranList').html(output).show();
+  });
+  $('#kesadaranList').on('click', 'li', function(){
+    $('input:text[name=kesadaran]').val($(this).text());
+    $('#kesadaranList').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $("#icd10dan9").hide();
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".icd9 .dropdown-menu li a").click(function () {
+        var prioritas_icd9 = $(this).text();
+        $(this).closest('.form-group').find('#prioritas_icd9').text(prioritas_icd9);
+    });
+  });
+</script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".icd10 .dropdown-menu li a").click(function () {
+        var prioritas_icd10 = $(this).text();
+        $(this).closest('.form-group').find('#prioritas_icd10').text(prioritas_icd10);
+    });
+  });
+</script>
+<script>
+  $('#icd9').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: "{?=url([ADMIN, 'dokter_ranap', 'icd9'])?}",
+                 method:"POST",
+                 data:{query:query},
+                 success:function(data)
+                 {
+                      $('#icd9List').fadeIn();
+                      $('#icd9List').html(data);
+                 }
+            });
+       }
+       $('#icd9List').fadeIn();
+  });
+  $('#icd9List').on('click', 'li', function(){
+       $('#icd9').val($(this).text().split(': ')[1]);
+       $('#kode_icd9').text($(this).text().split(': ')[0]);
+       var kode_icd9 = $('#kode_icd9').val();
+       $('#icd9List').fadeOut();
+  });
+</script>
+<script>
+  $('#icd10').keyup(function(){
+       var query = $(this).val();
+       if(query != '')
+       {
+            $.ajax({
+                 url: "{?=url([ADMIN, 'dokter_ranap', 'icd10'])?}",
+                 method:"POST",
+                 data:{query:query},
+                 success:function(data)
+                 {
+                      $('#icd10List').fadeIn();
+                      $('#icd10List').html(data);
+                 }
+            });
+       }
+       $('#icd10List').fadeIn();
+  });
+  $('#icd10List').on('click', 'li', function(){
+       $('#icd10').val($(this).text().split(': ')[1]);
+       $('#kode_icd10').text($(this).text().split(': ')[0]);
+       var kode_icd10 = $('#kode_icd10').val();
+       $('#icd10List').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  // tombol simpan diklik
+  $("#form_soap").on("click", "#simpan_icd9", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rawat = $('input:text[name=no_rawat]').val();
+    var prioritas = $('#prioritas_icd9').text();
+    var nama = $('input:text[name=icd9]').val();
+    var kode = $('#kode_icd9').text();
+    var status = $('input:hidden[name=status]').val();
+    var snomed_concept_id = $('input[name=snomed_concept_id_icd9]').val();
+    var snomed_term = $('input[name=snomed_term_icd9]').val();
+
+    var url = baseURL + '/dokter_ranap/saveicd9?t=' + mlite.token;
+
+    $.post(url,{
+      no_rawat: no_rawat,
+      prioritas: prioritas,
+      nama: nama,
+      status: status,
+      kode: kode,
+      snomed_concept_id: snomed_concept_id,
+      snomed_term: snomed_term
+    } ,function(data) {
+      $("#display_icd").show().load(baseURL + '/dokter_ranap/displayicd?no_rawat=' + no_rawat + '&t=' + mlite.token);
+      //bersih();
+      $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+      "Data ICD 9 (Prosedur) pasien telah disimpan!"+
+      "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+      "</div>").show();
+    });
+  });
+</script>
+<script type="text/javascript">
+  // tombol simpan diklik
+  $("#form_soap").on("click", "#simpan_icd10", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rawat = $('input:text[name=no_rawat]').val();
+    var prioritas = $('#prioritas_icd10').text();
+    var nama = $('input:text[name=icd10]').val();
+    var kode = $('#kode_icd10').text();
+    var status = $('input:hidden[name=status]').val();
+    var snomed_concept_id = $('input[name=snomed_concept_id]').val();
+    var snomed_term = $('input[name=snomed_term]').val();
+
+    var url = baseURL + '/dokter_ranap/saveicd10?t=' + mlite.token;
+
+    $.post(url,{
+      no_rawat: no_rawat,
+      prioritas: prioritas,
+      nama: nama,
+      status: status,
+      kd_penyakit: kode,
+      snomed_concept_id: snomed_concept_id,
+      snomed_term: snomed_term
+    } ,function(data) {
+      $("#display_icd").show().load(baseURL + '/dokter_ranap/displayicd?no_rawat=' + no_rawat + '&t=' + mlite.token);
+      //bersih();
+      $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+      "Data ICD 10 (Diagnosa) pasien telah disimpan!"+
+      "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+      "</div>").show();
+    });
+  });
+</script>
+<script type="text/javascript">
+  $("#form_soap").on("click", "#simpan_mapping_snomed_icd9", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+
+    var no_rawat = $('input:text[name=no_rawat]').val();
+    var kd_tindakan = $('#kode_icd9').text();
+    var snomed_concept_id = $('input[name=snomed_concept_id_icd9]').val();
+    var snomed_term = $('input[name=snomed_term_icd9]').val();
+
+    var url = baseURL + '/dokter_ranap/savemappingsnomedicd9?t=' + mlite.token;
+
+    $.post(url, {
+      no_rawat: no_rawat,
+      kd_tindakan: kd_tindakan,
+      snomed_concept_id: snomed_concept_id,
+      snomed_term: snomed_term
+    }, function(response){
+      if(response === '1') {
+        $("#display_icd").show().load(baseURL + '/dokter_ranap/displayicd?no_rawat=' + no_rawat + '&t=' + mlite.token);
+        $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Mapping SNOMED-CT ICD 9 berhasil disimpan!"+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      } else {
+        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Gagal menyimpan mapping SNOMED-CT ICD 9. Pastikan prosedur ICD 9 sudah tersimpan."+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      }
+    });
+  });
+</script>
+<script type="text/javascript">
+  $(function() {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var snomedAjaxUrl = baseURL + '/dokter_ranap/ajax?t=' + mlite.token;
+
+    $('#snomed_search').keyup(function(){
+      var query = ($(this).val() || '').toString();
+      if (query.length < 3) {
+        $('#snomedList').fadeOut();
+        return;
+      }
+      $.ajax({
+        url: snomedAjaxUrl + '&show=snomed&s=' + encodeURIComponent(query),
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          var $list = $('#snomedList');
+          $list.empty();
+          (data || []).slice(0, 30).forEach(function (it) {
+            var $li = $('<li class="list-group-item link-class"></li>');
+            $li.text((it && it.text) ? it.text : '');
+            $li.data('kode', it && it.kode ? it.kode : '');
+            $li.data('istilah', it && it.istilah ? it.istilah : '');
+            $list.append($li);
+          });
+          $list.fadeIn();
+        },
+        error: function() {
+          $('#snomedList').fadeOut();
+        }
+      });
+    });
+
+    $('#snomedList').on('click', 'li', function(){
+      var kode = ($(this).data('kode') || '').toString();
+      var istilah = ($(this).data('istilah') || '').toString();
+      $('#snomed_search').val(istilah);
+      $('#snomed_concept_id').val(kode);
+      $('#snomed_term').val(istilah);
+      $('#snomedList').fadeOut();
+    });
+
+    $('#snomed_search_icd9').keyup(function(){
+      var query = ($(this).val() || '').toString();
+      if (query.length < 3) {
+        $('#snomedListIcd9').fadeOut();
+        return;
+      }
+      $.ajax({
+        url: snomedAjaxUrl + '&show=snomed&s=' + encodeURIComponent(query),
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          var $list = $('#snomedListIcd9');
+          $list.empty();
+          (data || []).slice(0, 30).forEach(function (it) {
+            var $li = $('<li class="list-group-item link-class"></li>');
+            $li.text((it && it.text) ? it.text : '');
+            $li.data('kode', it && it.kode ? it.kode : '');
+            $li.data('istilah', it && it.istilah ? it.istilah : '');
+            $list.append($li);
+          });
+          $list.fadeIn();
+        },
+        error: function() {
+          $('#snomedListIcd9').fadeOut();
+        }
+      });
+    });
+
+    $('#snomedListIcd9').on('click', 'li', function(){
+      var kode = ($(this).data('kode') || '').toString();
+      var istilah = ($(this).data('istilah') || '').toString();
+      $('#snomed_search_icd9').val(istilah);
+      $('#snomed_concept_id_icd9').val(kode);
+      $('#snomed_term_icd9').val(istilah);
+      $('#snomedListIcd9').fadeOut();
+    });
+  });
+</script>
+<script type="text/javascript">
+  $("#form_soap").on("click", "#simpan_mapping_snomed", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+
+    var no_rawat = $('input:text[name=no_rawat]').val();
+    var kd_penyakit = $('#kode_icd10').text();
+    var snomed_concept_id = $('input[name=snomed_concept_id]').val();
+    var snomed_term = $('input[name=snomed_term]').val();
+
+    var url = baseURL + '/dokter_ranap/savemappingsnomedicd?t=' + mlite.token;
+
+    $.post(url, {
+      no_rawat: no_rawat,
+      kd_penyakit: kd_penyakit,
+      snomed_concept_id: snomed_concept_id,
+      snomed_term: snomed_term,
+      status_penyakit: 'Baru'
+    }, function(response){
+      if(response === '1') {
+        $("#display_icd").show().load(baseURL + '/dokter_ranap/displayicd?no_rawat=' + no_rawat + '&t=' + mlite.token);
+        $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Mapping SNOMED-CT berhasil disimpan!"+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      } else {
+        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+        "Gagal menyimpan mapping SNOMED-CT. Pastikan diagnosa ICD 10 sudah tersimpan."+
+        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+        "</div>").show();
+      }
+    });
+  });
+</script>
+<script type="text/javascript">
+  $("#form_soap").on("click","#buka_riwayat", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rkm_medis = $('input:text[name=no_rkm_medis]').val();
+    var loadURL =  baseURL + '/pasien/riwayatperawatan/' + no_rkm_medis + '?t=' + mlite.token;
+
+    var modal = $('#resumeModal');
+    var modalContent = $('#resumeModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  // tombol buka form diklik
+  $("#form_soap").on('click', '#buka_icd10dan9', function(){
+    $("#icd10dan9").show();
+    $("#buka_icd10dan9").val("Tutup Form");
+    $("#buka_icd10dan9").attr("id", "tutup_icd10dan9");
+  });
+
+  // tombol tutup form diklik
+  $("#form_soap").on('click', '#tutup_icd10dan9', function(){
+    $("#icd10dan9").hide();
+    $("#tutup_icd10dan9").val("Buka Form");
+    $("#tutup_icd10dan9").attr("id", "buka_icd10dan9");
+  });
+</script>
+
+<script>
+$("#form_soap").on("click",".resume", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var no_rawat = $('input:text[name=no_rawat]').val().replace(/\//g, '');
+
+  var loadURL =  baseURL + '/dokter_ranap/resume/' + no_rawat + '?t=' + mlite.token;
+
+  var modal = $('#resumeModal');
+  var modalContent = $('#resumeModal .modal-content');
+
+  modal.off('show.bs.modal');
+  modal.on('show.bs.modal', function () {
+      modalContent.load(loadURL);
+  }).modal();
+  return false;
+});
+</script>
+
+<!-- Modal Assessment Medis Ranap -->
+<div class="modal fade" id="medisRanapModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <!-- Content will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Modal Assessment Nyeri -->
+<div class="modal fade" id="assessmentNyeriModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <!-- Content will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<script>
+$("#form_soap").on("click","#medisRanapBtn", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var no_rawat = $('input:text[name=no_rawat]').val().replace(/\//g, '');
+
+  var loadURL = baseURL + '/dokter_ranap/medisranap/' + no_rawat + '?t=' + mlite.token;
+
+  var modal = $('#medisRanapModal');
+  var modalContent = $('#medisRanapModal .modal-content');
+
+  modal.off('show.bs.modal');
+  modal.on('show.bs.modal', function () {
+      modalContent.load(loadURL);
+  }).modal();
+  return false;
+});
+
+$("#form_soap").on("click","#assessmentNyeriBtn", function(event){
+  var baseURL = mlite.url + '/' + mlite.admin;
+  event.preventDefault();
+  var no_rawat = $('input:text[name=no_rawat]').val().replace(/\//g, '');
+
+  var loadURL = baseURL + '/dokter_ranap/assessmentnyeri/' + no_rawat + '?t=' + mlite.token;
+
+  var modal = $('#assessmentNyeriModal');
+  var modalContent = $('#assessmentNyeriModal .modal-content');
+
+  modal.off('show.bs.modal');
+  modal.on('show.bs.modal', function () {
+      modalContent.load(loadURL);
+  }).modal();
+  return false;
+});
+</script>
+<script type="text/javascript">
+  // FAB SATUSEHAT: buka RME Nasional pasien rawat inap (SATUSEHAT RME).
+  // Halaman SATUSEHAT melarang iframe (X-Frame-Options: SAMEORIGIN), sehingga
+  // hasil URL dibuka di popup window tanpa bar (chromeless) agar terasa seperti
+  // modal. Window kosong dibuka saat klik (user gesture, lolos popup blocker),
+  // URL-nya diisi setelah respons AJAX diterima.
+  function satusehatWindow() {
+    var w = Math.min(screen.width * 0.85, 1600);
+    var h = Math.min(screen.height * 0.92, 1100);
+    var left = Math.max(0, Math.round((screen.width - w) / 2));
+    var top = Math.max(0, Math.round((screen.height - h) / 2));
+    var features = 'width=' + Math.round(w) + ',height=' + Math.round(h) +
+      ',left=' + left + ',top=' + top +
+      ',toolbar=no,menubar=no,location=no,status=no,directories=no' +
+      ',scrollbars=yes,resizable=yes';
+    return window.open('about:blank', 'satusehatRme', features);
+  }
+
+  $("#form_soap").on("click", "#satusehat-fab", function (event) {
+    event.preventDefault();
+    var $fab = $(this);
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var no_rawat = $('input:text[name=no_rawat]').val();
+
+    if (!no_rawat) {
+      alert('Pilih pasien terlebih dahulu.');
+      return;
+    }
+
+    // Pre-open popup saat klik agar tidak dianggap popup oleh browser.
+    var rmeWindow = satusehatWindow();
+
+    var $toast = $('#satusehat-fab-toast');
+    if (!$toast.length) {
+      $toast = $('<div id="satusehat-fab-toast" class="alert" role="alert"></div>');
+      $('body').append($toast);
+    }
+    // Tombol close notifikasi + auto-hide saat sukses.
+    function satusehatToast(type, content) {
+      var closeBtn = '<button type="button" class="close" aria-label="Close" style="margin-left:10px;">&times;</button>';
+      $toast.removeClass('alert-success alert-danger alert-info alert-warning')
+        .addClass('alert-' + type).html(closeBtn + '<div style="padding-right:20px;">' + content + '</div>').fadeIn();
+    }
+    $toast.off('click', '.close').on('click', '.close', function () {
+      $toast.fadeOut();
+    });
+
+    satusehatToast('info', 'Membuka RME Nasional SATUSEHAT&hellip;');
+
+    $fab.addClass('satusehat-fab-loading');
+
+    $.post(baseURL + '/satu_sehat/satusehatrme?t=' + mlite.token, { no_rawat: no_rawat, jenis: 'ranap' })
+      .done(function (result) {
+        result = result || { status: 'error', message: 'Response kosong.' };
+        var type = result.status === 'success' ? 'success' : (result.status === 'consent_required' ? 'warning' : 'danger');
+        var html = '<strong>' + $('<div></div>').text(result.message || '').html() + '</strong>';
+
+        // Prioritas jendela: URL RME bila sukses, jika belum ada consent tampilkan link consent.
+        var mainUrl = (result.status === 'success' && result.url) ? result.url : (result.consent_url || '');
+        if (mainUrl && rmeWindow && !rmeWindow.closed) {
+          rmeWindow.location.href = mainUrl;
+          rmeWindow.focus();
+        } else if (mainUrl) {
+          html += '<br><small><a href="' + mainUrl + '" target="_blank" rel="noopener">Buka di tab baru</a></small>';
+        }
+
+        if (result.status === 'success' && result.consent_url) {
+          html += '<br><small>Link persetujuan: <a href="' + result.consent_url + '" target="_blank" rel="noopener">buka inform consent</a></small>';
+        }
+        if (result.status === 'consent_required') {
+          html += '<br><small>Setelah persetujuan diberikan, klik tombol SATUSEHAT lagi untuk membuka RME.</small>';
+        }
+
+        satusehatToast(type, html);
+        if (result.status === 'success') {
+          // Notifikasi sukses menutup sendiri setelah beberapa detik.
+          setTimeout(function () { $toast.fadeOut(); }, 8000);
+        }
+      })
+      .fail(function (xhr) {
+        var response = xhr && xhr.responseJSON ? xhr.responseJSON : null;
+        var message = response && response.message ? response.message : 'Gagal menghubungi server (HTTP ' + xhr.status + ').';
+        satusehatToast('danger', message);
+        if (rmeWindow && !rmeWindow.closed) {
+          rmeWindow.close();
+        }
+      })
+      .always(function () {
+        $fab.removeClass('satusehat-fab-loading');
+      });
+  });
+</script>

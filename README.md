@@ -1,0 +1,192 @@
+<p align="right">
+    <b>Codename: Sabrina</b><br>
+</p>
+
+# mLITE
+
+mLITE adalah alternatif ringan dan aman untuk Sistem Informasi Kesehatan agar bisa dijalankan via Mobile / Browser. mLITE dibangun dari awal dengan berfokus pada kesederhanaan - programer pemula pun dapat membuat Module-Modul sendiri. Ini karena mLITE menerapkan sistem dan arsitektur aplikasi yang sangat mudah dalam bentuk Kerangka Kerja Mandiri (Independent Framework).
+
+Oh iya, mLITE memiliki panduan pemasangan yang sangat mudah juga. Hanya perlu 1 langkah penyesuaian. Segera setelah anda menyalin file-file ke komputer / server dan pengaturan selesai, mLITE siap digunakan! Proses pemasangan bahkan tidak membutuhkan waktu sebanyak yang diperlukan untuk menyalin file-filenya ;-)
+
+Panel kontrol dan tampilan default sepenuhnya responsif, yang membuatnya dapat diakses dari perangkat mobile apa pun, bahkan di ponsel, berkat kerangka kerja CSS yang digunakan - Bootstrap. Setiap modul dapat menyesuaikan dengan CSS nya sendiri.
+
+Masih banyak fitur-fitur tersembunyi untuk kebutuhan pengembangan. Silahkan jelajahi!!
+
+## Kebutuhan Sistem
+
+Persyaratan sistem untuk mLITE  sangat sederhana, sehingga setiap server modern sudah cukup. Berikut persyaratan minimal yang diperlukan
+
+- Apache 2.2+ dengan `mod_rewrite` atau Nginx
+- PHP versi 7.4 - 8.3+
+- MySQL atau MariaDB
+
+Konfigurasi PHP harus memiliki ekstensi berikut:
+
+- dom
+- gd
+- mbstring
+- pdo
+- zip
+- cURL
+
+## Pemasangan
+
+### Pemasangan menggunakan composer.
+
+1. Install composer di server/PC dan jalankan perintah composer untuk pemasangan paket utama dan independensi
+
+```
+$ composer create-project basoro/mlite
+```
+
+1. Buat folder `uploads`, `tmp/` dan `admin/tmp`. Beberapa server mungkin memerlukan izin tambahan `chmod 777` untuk direktori dan file tersebut.
+2. Sesuaikan pengaturan di .env
+3. Buat database baru di MySQL/MariaDB dan import file `mlite_db.sql`
+4. Buka browser Anda dan navigasikan ke alamat tempat file mLITE berada.
+5. Silahkan login dengan Username: admin dan Password: admin
+
+### Pemasangan Manual
+
+1. Unduh versi terbaru \[mLITE] (<https://github.com/basoro/mlite>).
+2. Ekstrak semua file dari paket terkompresi dan kemudian transfer ke direktori lokal atau server. Biasanya, file diunggah ke `www`, ` htdocs` atau `public_html`.
+3. Install composer di server/PC dan jalankan perintah composer untuk pemasangan independensi
+
+```
+$ composer install
+```
+
+1. Buat folder `uploads`, `tmp/` dan `admin/tmp`. Beberapa server mungkin memerlukan izin tambahan `chmod 777` untuk direktori dan file tersebut.
+2. Sesuaikan pengaturan di .env
+3. Buat database baru di MySQL/MariaDB dan import file `mlite_db.sql` (tambahkan sql-mode = '' pada my.cnf atau jalankan perintah berikut)
+
+```
+$ sed -i "/user=mysql/a sql-mode = ''" /etc/my.cnf
+```
+
+1. Buka browser Anda dan navigasikan ke alamat tempat file mLITE berada.
+2. Silahkan login dengan Username: admin dan Password: admin
+
+### Pemasangan menggunakan docker.
+
+1. Download file release terbaru \[mLITE] atau lakukan git clone.
+
+```
+$ git clone https://github.com/basoro/mlite.git
+```
+
+Sesuaikan environment variable di .env seperti port APP dan MySQL dari default ke port yang anda inginkan (atau biarkan defautl saja).
+
+1. Jalankan perintah docker-compose
+
+```
+$ cd mlite/docker && docker-compose build && docker-compose up -d
+```
+
+1. Buka browser Anda dan navigasikan ke alamat URL\_ADDRESS:8088.
+2. Silahkan login dengan Username: admin dan Password: admin
+
+## Catatan:
+
+Untuk setiap kali update, silahkan jalankan perintah
+
+```
+$ composer update
+```
+
+Ini untuk menambahkan dependensi baru pada aplikasi
+
+## Peringatan!
+
+- Untuk pengguna Apache, pastikan file `.htaccess` juga ada di server. Tanpanya mLITE tidak akan berfungsi.
+- Untuk pengguna Nginx, tambahkan konfigurasi berikut di pengaturan nginx.conf (atau sejenisnya)
+
+```bash
+location  / {
+    index  index.php;
+    if (!-e $request_filename) {
+        rewrite / /index.php last;
+    }
+}
+
+location ^~ /systems/data/ {
+    deny all;
+    return 403;
+}
+
+location ~* \.(sdb|txt|env|md)$ {
+    deny all;
+    return 403;
+}
+
+location  /admin {
+    index index.php;
+    try_files $uri $uri/ /admin/index.php?$args;
+}
+```
+
+Jika ada didalam folder, misalnya `lite`
+
+```bash
+location  /lite {
+    index  index.php;
+    if (!-e $request_filename) {
+        rewrite / /lite/index.php last;
+    }
+}
+
+location ^~ /lite/systems/data/ {
+    deny all;
+    return 403;
+}
+
+location ~* \.(sdb|txt|env|md)$ {
+    deny all;
+    return 403;
+}
+
+location  /lite/admin {
+    index index.php;
+    try_files $uri $uri/ /lite/admin/index.php?$args;
+}
+```
+
+Untuk masuk ke panel administrasi, tambahkan `/admin/` di akhir URL.
+
+#### Login: `admin` Kata sandi: `admin`
+
+Ini harus diubah segera setelah login untuk alasan keamanan. Juga dapat mengganti nama direktori dengan panel administrasi.  (Anda perlu mengubahnya pada `config.php` atau `.env`)
+
+## Demo
+
+Untuk Demo dan Info lebih lanjut di <https://mlite.id>
+
+## Prosedur Rilis Versi Baru (untuk maintainer)
+
+Versi rilis GitHub **mengikuti persis** `settings.version` yang dideklarasikan di `mlite_db.sql` (record id 34). Tidak ada auto-increment: workflow `.github/workflows/release.yml` hanya me-release jika versi tersebut belum pernah ditandai, dan push biasa tanpa bump versi **tidak** menghasilkan rilis baru.
+
+Untuk merilis versi baru (contoh: dari `6.4.1` ke `6.4.2`):
+
+1. **Naikkan versi database** di `mlite_db.sql`:
+
+   ```sql
+   ("34","settings","version","6.4.2"),
+   ```
+
+2. **Tambahkan jalur upgrade** di `systems/upgrade.php` agar instalasi lama ikut naik:
+
+   ```php
+   case '6.4.1':
+       // migrasi DB untuk v6.4.2 (jika ada)
+       $return = '6.4.2';
+       break;
+   ```
+
+   Perhatikan juga `case` terakhir dan fallback `if (!isset($return) || !$return)` di akhir file — keduanya harus dikembalikan ke versi terbaru.
+
+3. **Commit dan push ke `master`.** Workflow otomatis akan membuat tag `6.4.1` dan GitHub Release `v6.4.1`.
+
+### Aturan penting
+
+- Jangan pernah me-release versi yang tag-nya sudah ada. Jika workflow mendeteksi `settings.version` sudah dipakai tag, CI akan **gagal** dengan pesan perbaikan.
+- `6.3.9` dan `6.3.10` sudah terlanjur dipakai oleh workflow lama (auto-increment), sehingga tidak boleh dipakai lagi — penyelarasan dilanjutkan dari versi berikutnya yang belum pernah ditandai.
+- Instalasi yang menjalankan menu *Pembaruan* akan mengeksekusi `systems/upgrade.php` berdasarkan versi di database mereka, sehingga setiap versi harus punya `case` yang mengembalikan versi berikutnya.

@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="table-responsive no-margin">
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th>ID Tindakan</th>
+            <th>Nama Tindakan</th>
+            <th>Tarif</th>
+          </tr>
+        </thead>
+        <tbody>
+          {if: $layanan}
+          {loop: $layanan}
+          <tr class="pilih_layanan" data-kd_jenis_prw="{?=isset_or($value.kd_jenis_prw)?}" data-nm_perawatan="{?=isset_or($value.nm_perawatan)?}" data-biaya="{?=isset_or($value.total_byr)?}" data-kat="radiologi">
+            <td>{?=isset_or($value.kd_jenis_prw)?}</td>
+            <td>{?=isset_or($value.nm_perawatan)?}</td>
+            <td>Rp. <span class="pull-right">{?= number_format($value.total_byr,2,',','.')?}</span></td>
+          </tr>
+          {/loop}
+          {else}
+          <tr>
+            <td colspan="3"class="text-center">Data layanan tidak ditemukan.</td>
+          </tr>
+          {/if}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

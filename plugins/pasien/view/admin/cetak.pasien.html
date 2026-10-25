@@ -1,0 +1,26 @@
+<h3>Data Pasien</h3>
+<table class="table" style="margin-top:2cm;" width="100%">
+    <thead>
+        <tr>
+        <th>Nomor RM</th>
+        <th>Nama Pasien</th>
+        <th>Tgl. Lahir</th>
+        <th>Jenis Kelamin</th>
+        <th>Alamat</th>
+        <th>No. Telepon</th>
+        </tr>
+    </thead>
+    <tbody>
+        {loop: $cetak}
+        <tr>
+        <td>{?=isset_or($value.temp1)?}</td>
+        <td>{?=isset_or($value.temp2)?}</td>
+        <td>{?=isset_or($value.temp3)?}</td>
+        <td>{if: $value.temp4 == 'L'}Laki-Laki{else}Perempuan{/if}</td>
+        <td>{?=isset_or($value.temp8)?}</td>
+        <td>{?=isset_or($value.temp6)?}</td>
+        </tr>
+        {/loop}
+    </tbody>
+</table>
+    

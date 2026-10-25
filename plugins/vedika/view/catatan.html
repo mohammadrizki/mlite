@@ -1,0 +1,55 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Catatan Verifikator</h4>
+</div>
+<div class="modal-body">
+  <form name="pasien" action="" method="POST">
+      <div class="form-group">
+          <div class="row">
+              <div class="col-md-4">
+                  <div>No SEP</div>
+                  <input type="text" name="nosep" value="{?=isset_or($set_status.no_sep)?}">
+              </div>
+              <div class="col-md-4">
+                  <div>No Rekam Medis</div>
+                  <input type="text" name="no_rkm_medis" value="{?=isset_or($set_status.nomr)?}">
+              </div>
+              <div class="col-md-4">
+                  <div>Nomor Rawat</div>
+                  <input type="text" name="no_rawat" value="{?=isset_or($set_status.no_rawat)?}">
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label>Catatan Dan Umpan Balik</label>
+          <textarea class="form-control" name="catatan" placeholder="Catatan dan umpan balik Verifikator (optional)" rows="6"></textarea>
+      </div>
+      <input type="submit" name="perbaiki" class="btn btn-danger" value="Perbaiki"/>
+  </form>
+  <br><br>
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Feedback</h4>
+      <div class="comments-list">
+        {loop: $vedika_feedback}
+        <div class="media">
+          <p class="pull-right"><small>
+            {if: $value.deleteUrl != ''}
+            <a href="{?=isset_or($value.deleteUrl)?}" onclick="return  confirm('Apakah anda yakin ingin menghapus ?')" class="btn btn-danger btn-sm" style="font-size: 10px;border-radius: 4px;padding: 16px;">Hapus</a><br>{/if}
+            {?=isset_or($value.tanggal)?}</small></p>
+          <a class="media-left" href="#">
+            <img src="{?=isset_or($value.logo)?}" width="30px">
+          </a>
+          <div class="media-body">
+            <h4 class="media-heading user_name">{?=isset_or($value.fullname)?}</h4>
+            <div style="font-size:14px;">{?=isset_or($value.catatan)?}</div>
+          </div>
+        </div>
+        {/loop}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+</div>

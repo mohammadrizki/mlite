@@ -1,0 +1,38 @@
+<h4>Data Pendaftaran Tampil</h4>
+<div class="table-responsive">
+<table class="table table-bordered table-striped table-hover display nowrap datatabletampilpendaftaran" width="100%">
+  <thead>
+    <tr>
+      <th>Tgl. Daftar</th>
+      <th>ID. Rawat</th>
+      <th>No. Urut</th>
+      <th>No. RM</th>
+      <th>Nama Pasien</th>
+      <th>No. Kartu</th>
+      <th>Nama Poli</th>
+      <th>Keluhan</th>
+      <th>Jenis Kunjungan</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loop: $bridging_pcare}
+    <tr>
+      <td>{?=isset_or($value.tgl_daftar)?}</td>
+      <td>{?=isset_or($value.no_rawat)?}</td>
+      <td>{?=isset_or($value.nomor_urut)?}</td>
+      <td>{?=isset_or($value.no_rkm_medis)?}</td>
+      <td>{?=isset_or($value.nm_pasien)?}</td>
+      <td>{?=isset_or($value.nomor_jaminan)?}</td>
+      <td>{?=isset_or($value.nama_poli)?}</td>
+      <td>{?=isset_or($value.subyektif)?}</td>
+      <td>{?=($value.kunjungan_sakit === 'true') ? 'Kunjungan Sakit' : 'Kunjungan Sehat'?}</td>
+      <td>{?=isset_or($value.status_kirim)?}</td>
+    </tr>
+    {/loop}
+  </tbody>
+</table>
+</div>
+<script type="text/javascript">
+  $('.datatabletampilpendaftaran').DataTable();
+</script>

@@ -1,0 +1,26 @@
+  <table class="table">
+    <thead>
+      <tr>
+        <th>No Rawat</th>
+        <th>No SEP</th>
+        <th>No Surat</th>
+        <th>Nama Program</th>
+        <th>Dokter</th>
+        <th>Keterangan</th>
+        <th>Saran</th>
+      </tr>
+    </thead>
+    <tbody>
+      {loop: $rujuk_keluar}
+      <tr>
+        <td>{?=isset_or($value.no_rawat)?}</td>
+        <td>{?=isset_or($value.no_sep)?}</td>
+        <td class="pilih_nosurat" data-no_surat="{?=isset_or($value.no_sep)?}">{?=isset_or($value.no_srb)?}</td>
+        <td>{?=isset_or($value.namaprogram)?}</td>
+        <td>{?=isset_or($value.nmdpjp)?}</td>
+        <td>{?=isset_or($value.keterangan)?}</td>
+        <td>{?=isset_or($value.saran)?}</td>
+      </tr>
+      {/loop}
+    </tbody>
+  </table>

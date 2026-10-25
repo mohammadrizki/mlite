@@ -1,0 +1,71 @@
+<div class="table-responsive no-margin">
+  <table class="table table-striped no-margin">
+    <thead>
+      <tr>
+        <th>Kode</th>
+        <th>Nama KTPL</th>
+        <th>Status</th>
+        <th>Modifier</th>
+        <th>Jumlah Modifier</th>
+        <th class="text-right">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {if: !empty($ktpl.list)}
+      {loop: $ktpl.list}
+      <tr>
+        <td>{$value.kode_ktpl}</td>
+        <td>{$value.nama_ktpl}</td>
+        <td>{$value.status}</td>
+        <td>{if: $value.has_modifier == 1}Ya{Telse}Tidak{/if}</td>
+        <td>{$value.modifier_count}</td>
+        <td class="text-right">
+          <div class="btn-group">
+            <button class="btn btn-default btn-xs edit" data-kode_ktpl="{$value.kode_ktpl}">Edit</button>
+            <button class="btn btn-danger btn-xs hapus" data-kode_ktpl="{$value.kode_ktpl}">Hapus</button>
+          </div>
+        </td>
+      </tr>
+      {/loop}
+      {else}
+      <tr>
+        <td colspan="6" class="text-center">Data tidak ditemukan</td>
+      </tr>
+      {/if}
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="padding-top-md">
+      Total Data: {$ktpl.jumlah_data}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <nav class="pull-right">
+      <ul class="pagination no-margin">
+        {if: $ktpl.halaman == 1}
+        <li class="disabled"><a href="#">&laquo;</a></li>
+        {else}
+        <li class="halaman" data-halaman="1"><a href="#">&laquo;</a></li>
+        {/if}
+        {if: $ktpl.halaman > 1}
+        <li class="halaman" data-halaman="{?=$ktpl.halaman - 1?}"><a href="#">&larr;</a></li>
+        {else}
+        <li class="disabled"><a href="#">&larr;</a></li>
+        {/if}
+        <li class="disabled"><a href="#">Hal : {$ktpl.halaman} dari {$ktpl.jml_halaman} Hal</a></li>
+        {if: $ktpl.halaman < $ktpl.jml_halaman}
+        <li class="halaman" data-halaman="{?=$ktpl.halaman + 1?}"><a href="#">&rarr;</a></li>
+        {else}
+        <li class="disabled"><a href="#">&rarr;</a></li>
+        {/if}
+        {if: $ktpl.halaman == $ktpl.jml_halaman}
+        <li class="disabled"><a href="#">&raquo;</a></li>
+        {else}
+        <li class="halaman" data-halaman="{$ktpl.jml_halaman}"><a href="#">&raquo;</a></li>
+        {/if}
+      </ul>
+    </nav>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="id">
+	<head>
+		<title>Laporan</title>
+		<meta charset="UTF-8">
+    <link href="{?=url()?}/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<style>
+	body { max-width:1600px; margin-left: 20px; margin-right: 20px; }
+	table, tr, td, th { border-collapse:collapse; border:1px solid black;}
+	th,td {padding:0px 10px 0px 10px;}
+  table th {white-space: nowrap;font-size:12px;}
+  table td {font-size:11px;}
+	.float{
+		position:fixed;
+		width:120px;
+		height:40px;
+		bottom:40px;
+		right:40px;
+		background-color:#4C9A2A;
+		color:#FFF;
+		text-align:center;
+		box-shadow: 2px 2px 3px #999;
+	}
+	</style>
+
+	<script>
+	function printContent(el){
+	var restorepage = document.body.innerHTML;
+	var printcontent = document.getElementById(el).innerHTML;
+	document.body.innerHTML = printcontent;
+	window.print();
+	document.body.innerHTML = restorepage; window.close();
+	}
+	</script>
+	</head>
+
+	<body>
+		<div id="laporan">
+			<center>
+				<header>
+					<h3>{?=isset_or($settings.nama_instansi)?}</h3>
+					<p style="margin-top:-10px;">{?=isset_or($settings.alamat)?}</p>
+					<hr style="margin-top:0;">
+					<p>
+            <b>Laporan Buku Besar</b><br>
+            Periode {?=date('d-m-Y', strtotime($_GET['tgl_awal'] ?? date('Y-m-d')))?} s/d {?=date('d-m-Y', strtotime($_GET['tgl_akhir'] ?? date('Y-m-d')))?}
+          </p>
+				</header>
+				<div class="">
+          <table class="table table-striped no-margin dataTables" width="100%">
+            <thead>
+              <tr>
+								<th>No. Jurnal</th>
+                <th>Tanggal</th>
+                {if: empty($kd_rek_filter)}
+                <th>Akun</th>
+                {/if}
+                <th>Keterangan</th>
+                <th>Debet</th>
+                <th>Kredit</th>
+                <th>Saldo</th>
+                <th>Saldo Normal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {loop: $bukubesar}
+              <tr>
+								<td>{?=isset_or($value.no_jurnal)?}</td>
+                <td>{?=isset_or($value.tgl_jurnal)?}</td>
+                {if: empty($kd_rek_filter)}
+                <td>{?=isset_or($value.kd_rek)?} - {?=isset_or($value.nm_rek)?}</td>
+                {/if}
+                <td>
+                  {if: isset($value.row_type) && ($value.row_type == 'saldo_awal' || $value.row_type == 'saldo_akhir')}
+                  <strong>{?=isset_or($value.keterangan)?}</strong>
+                  {else}
+                  {?=isset_or($value.keterangan)?}
+                  {/if}
+                </td>
+								<td><span class="pull-right">{?= number_format($value.debet,2,',','.')?}</span></td>
+                <td><span class="pull-right">{?= number_format($value.kredit,2,',','.')?}</span></td>
+                <td><span class="pull-right">{?= number_format($value.saldo,2,',','.')?}</span></td>
+                <td><span class="pull-right">{?=isset_or($value.saldo_sisi)?} {?= number_format((float) isset_or($value.saldo_normal),2,',','.')?}</span></td>
+              </tr>
+              {/loop}
+            </tbody>
+          </table>
+        </div>
+        {if: isset($summary)}
+        <div style="margin-top:10px; text-align:left;">
+          <div><strong>Ringkasan Buku Besar</strong></div>
+          <div>Jumlah rekening: {?= (int) isset_or($summary.rekening_count)?}</div>
+          <div>Total debet: {?= number_format((float) isset_or($summary.total_debet),2,',','.')?}</div>
+          <div>Total kredit: {?= number_format((float) isset_or($summary.total_kredit),2,',','.')?}</div>
+          {if: $show_saldo_akhir == 1}
+          {if: empty($kd_rek_filter)}
+          <div>Total saldo akhir (D): {?= number_format((float) isset_or($summary.saldo_akhir_d),2,',','.')?}</div>
+          <div>Total saldo akhir (K): {?= number_format((float) isset_or($summary.saldo_akhir_k),2,',','.')?}</div>
+          <div>Saldo akhir (net): {?=isset_or($summary.saldo_akhir_net_side)?} {?= number_format((float) isset_or($summary.saldo_akhir_net_amount),2,',','.')?}</div>
+          {else}
+          <div>Saldo akhir: {?=isset_or($summary.saldo_akhir_side)?} {?= number_format((float) isset_or($summary.saldo_akhir_amount),2,',','.')?}</div>
+          {/if}
+          {/if}
+        </div>
+        {/if}
+      </center>
+		</div>
+
+	 	<button onclick="printContent('laporan')" type="button" class="btn btn-danger center-block float"><span class="glyphicon glyphicon-print"></span> Cetak</button>
+
+  </body>
+</html>

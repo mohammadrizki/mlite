@@ -1,0 +1,264 @@
+<style>
+  table.icd th,
+  table.icd td {
+    padding: 5px;
+  }
+</style>
+<script type="text/javascript" src="{?=url()?}/assets/jscripts/jquery.qrcode.js"></script>
+<script type="text/javascript" src="{?=url()?}/assets/jscripts/qrcode.js"></script>
+<div class="{if: $admin_mode == 'simple'}hidden{/if}">
+<div id="display_icd">
+  {include: ../plugins/rawat_jalan/view/admin/display.icd.html}
+</div>
+</div>
+<h4>Rincian Riwayat</h4>
+<div class="table-responsive no-margin">
+  <table class="table table-bordered no-padding" width="100%">
+    <thead>
+      <tr>
+        <th width="20">No</th>
+        <th width="200">Tanggal</th>
+        {if: $admin_mode == 'complex'}
+        <th>Suhu(C)</th>
+        <th>Tensi(mmHg)</th>
+        <th>Nadi(/menit)</th>
+        <th>RR(/menit)</th>
+        <th>Tinggi(cm)</th>
+        <th>Berat(Kg)</th>
+        <th>GCS(E,V,M)</th>
+        <th>SPO2</th>
+        <th>Alergi</th>
+        <th>Instruksi & Evaluasi</th>
+        {else}
+        <th colspan="3">SOAP</th>
+        {/if}
+      </tr>
+    </thead>
+    <tbody>
+      {loop: $pemeriksaan}
+      <tr>
+        {if: $admin_mode == 'complex'}
+        <td rowspan="7" style="vertical-align:top;">{?=isset_or($value.nomor)?}</td>
+        <td rowspan="6" style="vertical-align:top;white-space: nowrap;">
+          <b>Rawat Jalan</b><br>
+          {?=isset_or($value.tgl_perawatan)?} {?=isset_or($value.jam_rawat)?}<br>
+          {?=isset_or($value.departemen_petugas)?}
+        </td>
+        <td>{?=isset_or($value.suhu_tubuh)?}</td>
+        <td>{?=isset_or($value.tensi)?}</td>
+        <td>{?=isset_or($value.nadi)?}</td>
+        <td>{?=isset_or($value.respirasi)?}</td>
+        <td>{?=isset_or($value.tinggi)?}</td>
+        <td>{?=isset_or($value.berat)?}</td>
+        <td>{?=isset_or($value.gcs)?}</td>
+        <td>{?=isset_or($value.spo2)?}</td>
+        <td>{?=isset_or($value.alergi)?}</td>
+        <td rowspan="7" style="vertical-align:top;">
+          Instruksi: {?=isset_or($value.instruksi)?}<br><br>
+          Evaluasi: {?=isset_or($value.evaluasi)?}<br><br>
+          <div class="qrcodePetugas{?=isset_or($value.nomor)?}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
+          {?=isset_or($value.nama_petugas)?}
+          <script>
+          	jQuery('.qrcodePetugas{?=isset_or($value.nomor)?}').qrcode({
+              width: 64,
+              height: 64,
+          		text	: "Petugas: {?=isset_or($value.nama_petugas)?}"
+          	});
+          </script>
+        </td>
+        {else}
+        <td rowspan="5" style="vertical-align:top;">{?=isset_or($value.nomor)?}</td>
+        <td rowspan="4" style="vertical-align:top;white-space: nowrap;">
+          <b>Rawat Jalan</b><br>
+          {?=isset_or($value.tgl_perawatan)?} {?=isset_or($value.jam_rawat)?}<br>
+          {?=isset_or($value.departemen_petugas)?}
+        </td>
+        {/if}
+      </tr>
+      {if: $admin_mode == 'complex'}
+      <tr>
+        <th colspan="2">Kesadaran</th>
+        <td colspan="7">{?=isset_or($value.kesadaran)?}</td>
+      </tr>
+      <tr>
+        <th colspan="2">Lingkar Perut</th>
+        <td colspan="7">{?=isset_or($value.lingkar_perut)?}</td>
+      </tr>
+      {/if}
+      <tr>
+        <th colspan="2">Subyektif</th>
+        <td colspan="7">{?=isset_or($value.keluhan)?}</td>
+      </tr>
+      <tr>
+        <th colspan="2">Obyektif</th>
+        <td colspan="7">{?=isset_or($value.pemeriksaan)?}</td>
+      </tr>
+      <tr>
+        <th colspan="2">Assesment</th>
+        <td colspan="7">{?=isset_or($value.penilaian)?}</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="">
+            <button type="button" name="button" class="btn btn-primary btn-xs copy_soap"
+              data-suhu_tubuh="{?=isset_or($value.suhu_tubuh)?}"
+              data-tensi="{?=isset_or($value.tensi)?}"
+              data-nadi="{?=isset_or($value.nadi)?}"
+              data-respirasi="{?=isset_or($value.respirasi)?}"
+              data-tinggi="{?=isset_or($value.tinggi)?}"
+              data-berat="{?=isset_or($value.berat)?}"
+              data-gcs="{?=isset_or($value.gcs)?}"
+              data-kesadaran="{?=isset_or($value.kesadaran)?}"
+              data-alergi="{?=isset_or($value.alergi)?}"
+              data-lingkar_perut="{?=isset_or($value.lingkar_perut)?}"
+              data-keluhan="{?=isset_or($value.keluhan)?}"
+              data-pemeriksaan="{?=isset_or($value.pemeriksaan)?}"
+              data-penilaian="{?=isset_or($value.penilaian)?}"
+              data-rtl="{?=isset_or($value.rtl)?}"
+              data-instruksi="{?=isset_or($value.instruksi)?}"
+              data-evaluasi="{?=isset_or($value.evaluasi)?}"
+              data-spo2="{?=isset_or($value.spo2)?}"
+              ><span class="fa fa-copy"></span><span class="hidden-xs"> Copy</span></button>
+            <button type="button" name="button" class="btn btn-success btn-xs edit_soap"
+              data-no_rawat="{?=isset_or($value.no_rawat)?}"
+              data-tgl_perawatan="{?=isset_or($value.tgl_perawatan)?}"
+              data-jam_rawat="{?=isset_or($value.jam_rawat)?}"
+              data-suhu_tubuh="{?=isset_or($value.suhu_tubuh)?}"
+              data-tensi="{?=isset_or($value.tensi)?}"
+              data-nadi="{?=isset_or($value.nadi)?}"
+              data-respirasi="{?=isset_or($value.respirasi)?}"
+              data-tinggi="{?=isset_or($value.tinggi)?}"
+              data-berat="{?=isset_or($value.berat)?}"
+              data-gcs="{?=isset_or($value.gcs)?}"
+              data-kesadaran="{?=isset_or($value.kesadaran)?}"
+              data-alergi="{?=isset_or($value.alergi)?}"
+              data-lingkar_perut="{?=isset_or($value.lingkar_perut)?}"
+              data-keluhan="{?=isset_or($value.keluhan)?}"
+              data-pemeriksaan="{?=isset_or($value.pemeriksaan)?}"
+              data-penilaian="{?=isset_or($value.penilaian)?}"
+              data-rtl="{?=isset_or($value.rtl)?}"
+              data-instruksi="{?=isset_or($value.instruksi)?}"
+              data-evaluasi="{?=isset_or($value.evaluasi)?}"
+              data-spo2="{?=isset_or($value.spo2)?}"
+              {if: $this->core->getUserInfo('username', $_SESSION['mlite_user']) != $value.nip}disabled{/if}
+              ><span class="fa fa-edit"></span><span class="hidden-xs"> Edit</span></button>
+            <button type="button" name="button" class="btn btn-danger btn-xs hapus_soap"
+              data-no_rawat="{?=isset_or($value.no_rawat)?}"
+              data-tgl_perawatan="{?=isset_or($value.tgl_perawatan)?}"
+              data-jam_rawat="{?=isset_or($value.jam_rawat)?}"
+              {if: $this->core->getUserInfo('username', $_SESSION['mlite_user']) != $value.nip}disabled{/if}
+              ><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
+          </div>
+        </td>
+        <th colspan="2">Plan</th>
+        <td colspan="7">{?=isset_or($value.rtl)?}</td>
+      </tr>
+      {/loop}
+      {if: $admin_mode == 'complex'}
+      {loop: $pemeriksaan_ranap as $data}
+      <tr>
+        <td rowspan="6" style="vertical-align:top;">{?=isset_or($data.nomor)?}</td>
+        <td rowspan="5" style="vertical-align:top;white-space: nowrap;">
+          <b>Rawat Inap</b><br>
+          {?=isset_or($data.tgl_perawatan)?} {?=isset_or($data.jam_rawat)?}<br>
+          {?=isset_or($data.departemen_petugas)?}
+        </td>
+        <td>{?=isset_or($data.suhu_tubuh)?}</td>
+        <td>{?=isset_or($data.tensi)?}</td>
+        <td>{?=isset_or($data.nadi)?}</td>
+        <td>{?=isset_or($data.respirasi)?}</td>
+        <td>{?=isset_or($data.tinggi)?}</td>
+        <td>{?=isset_or($data.berat)?}</td>
+        <td>{?=isset_or($data.gcs)?}</td>
+        <td>{?=isset_or($data.spo2)?}</td>
+        <td>{?=isset_or($data.alergi)?}</td>
+        <td rowspan="6" style="vertical-align:top;">
+          Instruksi: {?=isset_or($data.instruksi)?}<br><br>
+          Evaluasi: {?=isset_or($data.evaluasi)?}<br><br>
+          <div class="qrcodePetugas{?=isset_or($data.nomor)?}" style="margin-top:10px;width:40px;margin-right: 120px;"></div>
+          {?=isset_or($data.nama_petugas)?}
+          <script>
+          	jQuery('.qrcodePetugas{?=isset_or($data.nomor)?}').qrcode({
+              width: 64,
+              height: 64,
+          		text	: "Petugas: {?=isset_or($data.nama_petugas)?}"
+          	});
+          </script>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2">Kesadaran</th>
+        <td colspan="7">{?=isset_or($data.kesadaran)?}</td>
+      </tr>
+      <tr>
+        <th colspan="2">Subyektif</th>
+        <td colspan="7">{?=isset_or($data.keluhan)?}</td>
+      </tr>
+      <tr>
+        <th colspan="2">Obyektif</th>
+        <td colspan="7">{?=isset_or($data.pemeriksaan)?}</td>
+      </tr>
+      <tr>
+        <th colspan="2">Assesment</th>
+        <td colspan="7">{?=isset_or($data.penilaian)?}</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="">
+            <button type="button" name="button" class="btn btn-primary btn-xs copy_soap"
+              data-suhu_tubuh="{?=isset_or($data.suhu_tubuh)?}"
+              data-tensi="{?=isset_or($data.tensi)?}"
+              data-nadi="{?=isset_or($data.nadi)?}"
+              data-respirasi="{?=isset_or($data.respirasi)?}"
+              data-tinggi="{?=isset_or($data.tinggi)?}"
+              data-berat="{?=isset_or($data.berat)?}"
+              data-gcs="{?=isset_or($data.gcs)?}"
+              data-alergi="{?=isset_or($data.alergi)?}"
+              data-keluhan="{?=isset_or($data.keluhan)?}"
+              data-pemeriksaan="{?=isset_or($data.pemeriksaan)?}"
+              data-penilaian="{?=isset_or($data.penilaian)?}"
+              data-rtl="{?=isset_or($data.rtl)?}"
+              data-instruksi="{?=isset_or($data.instruksi)?}"
+              data-evaluasi="{?=isset_or($data.evaluasi)?}"
+              data-spo2="{?=isset_or($data.spo2)?}"
+              ><span class="fa fa-copy"></span><span class="hidden-xs"> Copy</span></button>
+            <button type="button" name="button" class="btn btn-success btn-xs edit_soap"
+              data-no_rawat="{?=isset_or($data.no_rawat)?}"
+              data-tgl_perawatan="{?=isset_or($data.tgl_perawatan)?}"
+              data-jam_rawat="{?=isset_or($data.jam_rawat)?}"
+              data-suhu_tubuh="{?=isset_or($data.suhu_tubuh)?}"
+              data-tensi="{?=isset_or($data.tensi)?}"
+              data-nadi="{?=isset_or($data.nadi)?}"
+              data-respirasi="{?=isset_or($data.respirasi)?}"
+              data-tinggi="{?=isset_or($data.tinggi)?}"
+              data-berat="{?=isset_or($data.berat)?}"
+              data-gcs="{?=isset_or($data.gcs)?}"
+              data-alergi="{?=isset_or($data.alergi)?}"
+              data-keluhan="{?=isset_or($data.keluhan)?}"
+              data-pemeriksaan="{?=isset_or($data.pemeriksaan)?}"
+              data-penilaian="{?=isset_or($data.penilaian)?}"
+              data-rtl="{?=isset_or($data.rtl)?}"
+              data-instruksi="{?=isset_or($data.instruksi)?}"
+              data-evaluasi="{?=isset_or($data.evaluasi)?}"
+              data-spo2="{?=isset_or($data.spo2)?}"
+              {if: $this->core->getUserInfo('username', $_SESSION['mlite_user']) != $value.nip}disabled{/if}
+              ><span class="fa fa-edit"></span><span class="hidden-xs"> Edit</span></button>
+            <button type="button" name="button" class="btn btn-danger btn-xs hapus_soap"
+              data-no_rawat="{?=isset_or($data.no_rawat)?}"
+              data-tgl_perawatan="{?=isset_or($data.tgl_perawatan)?}"
+              data-jam_rawat="{?=isset_or($data.jam_rawat)?}"
+              {if: $this->core->getUserInfo('username', $_SESSION['mlite_user']) != $value.nip}disabled{/if}
+              ><span class="fa fa-trash"></span><span class="hidden-xs"> Hapus</span></button>
+          </div>
+        </td>
+        <th colspan="2">Plan</th>
+        <td colspan="7">{?=isset_or($data.rtl)?}</td>
+      </tr>
+      {/loop}
+      {/if}
+    </tbody>
+  </table>
+</div>
+<script type="text/javascript">
+  $(".alert-dismissible").fadeTo(3000, 500).slideUp(500);
+</script>

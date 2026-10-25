@@ -1,0 +1,3 @@
+.nowrap th, .nowrap td { 
+  white-space: nowrap;
+}

@@ -1,0 +1,262 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span> Tutup</button>
+    <h4 class="modal-title">Ubah Diagnosa</h4>
+</div>
+<div class="modal-body">
+
+  <div id="icd10dan9">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <input type="hidden" name="no_rawat" value="{?=isset_or($no_rawat)?}">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group icd10">
+                <label for="">Diagnosa (ICD 10)</label>
+                <button id="filter" class="btn btn-default">
+                    <span id="kode_icd10">kode</span>
+                </button>
+                <div class="btn-group">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span data-bind="label" id="prioritas_icd10"></span> <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" style="min-width:0px;">
+                    <li><a>1</a></li>
+                    <li><a>2</a></li>
+                    <li><a>3</a></li>
+                    <li><a>4</a></li>
+                    <li><a>5</a></li>
+                    <li><a>6</a></li>
+                    <li><a>7</a></li>
+                    <li><a>8</a></li>
+                    <li><a>9</a></li>
+                  </ul>
+                </div>
+                <div class="input-group">
+                  <input type="text" name="icd10" id="icd10" class="form-control" />
+                  <input type="hidden" name="status" class="form-control" value="{?=isset_or($status_lanjut)?}" />
+                  <ul class="list-group" id="icd10List" style="z-index:1000;position:absolute;width:100%;"></ul>
+                  <span class="input-group-btn">
+                    <button id="simpan_icd10" class="btn btn-primary btn-block">
+                      Simpan
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="table-responsive no-margin" id="data_diagnosa">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Kode</th>
+          <th>Nama Diagnosa</th>
+          <th>Prioritas</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {loop: $diagnosa_pasien}
+        <tr>
+          <td>{?=isset_or($value.kd_penyakit)?}</td>
+          <td>{?=isset_or($value.nm_penyakit)?}</td>
+          <td contenteditable="true" data-old_value="{?=isset_or($value.prioritas)?}" onBlur="savePrioritas(this,'prioritas','{?=isset_or($value.no_rawat)?}','{?=isset_or($value.kd_penyakit)?}','{?=isset_or($status_lanjut)?}')" onClick="highlightEdit(this);">{?=isset_or($value.prioritas)?}</td>
+          <td><a href="" class="btn btn-xs btn-danger fa fa-trash hapus_diagnosa" data-no_rawat="{?=isset_or($value.no_rawat)?}" data-kd_penyakit="{?=isset_or($value.kd_penyakit)?}" data-prioritas="{?=isset_or($value.prioritas)?}"></a></td>
+        </tr>
+        {/loop}
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">Tutup</button>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".icd10 .dropdown-menu li a").click(function () {
+        var prioritas_icd10 = $(this).text();
+        $(this).closest('.form-group').find('#prioritas_icd10').text(prioritas_icd10);
+    });
+  });
+</script>
+<style>
+  /* Styling item diagnosis tidak valid */
+  #icd10List li.invalid-diagnosis {
+    background: #f2dede;
+    cursor: not-allowed;
+  }
+  #icd10List li.invalid-diagnosis:hover {
+    background: #f8d7da;
+  }
+  /* Styling hover item valid untuk konsistensi */
+  #icd10List li.valid-diagnosis:hover {
+    background: #f5f5f5;
+  }
+</style>
+<script>
+  $('#icd10').keyup(function () {
+    var query = $(this).val();
+    if (query != '') {
+      $.ajax({
+        url: "{?=url([ADMIN, 'vedika', 'icd10'])?}",
+        method: "POST",
+        data: { query: query },
+        success: function (data) {
+          $('#icd10List').fadeIn();
+          $('#icd10List').html(data);
+        }
+      });
+    }
+    $('#icd10List').fadeIn();
+  });
+
+  $('#icd10List').on('click', 'li', function () {
+    var codeVal =
+      $(this).attr('data-display-code') ||
+      $(this).attr('data-code') ||
+      $(this).find('.selectator_option_title').clone().children().remove().end().text().trim();
+
+    var code = codeVal;
+    var name =
+      $(this).attr('data-display-name') ||
+      $(this).attr('data-name') ||
+      $(this).find('.selectator_option_subtitle').text().trim();
+
+    $('#icd10').val(name);
+    $('#kode_icd10').text(code);
+    $('#icd10List').fadeOut();
+  });
+</script>
+<script type="text/javascript">
+  // tombol simpan diklik
+  $("#icd10dan9").on("click", "#simpan_icd10", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rawat = $('input:hidden[name=no_rawat]').val();
+    var prioritas = $('#prioritas_icd10').text();
+    var nama = $('input:text[name=icd10]').val();
+    var kode = $('#kode_icd10').text();
+    var status = $('input:hidden[name=status]').val();
+
+    var url = baseURL + '/vedika/saveicd10?t=' + mlite.token;
+
+    $.post(url,{
+      no_rawat: no_rawat,
+      prioritas: prioritas,
+      nama: nama,
+      status: status,
+      kd_penyakit: kode
+    } ,function(data) {
+      alert('Data diagnosa ' + kode + ' telah disimpan!!');
+      // Kumpulkan seluruh kode diagnosa dari tabel saat ini
+      var codes = [];
+      $('#data_diagnosa table tbody tr').each(function(){
+        var c = $(this).find('td').eq(0).text().trim();
+        if (c) { codes.push(c); }
+      });
+      // Tambahkan kode baru dan hilangkan duplikasi
+      codes.push(kode);
+      var uniqueCodes = [];
+      $.each(codes, function(i, c){ if (c && uniqueCodes.indexOf(c) === -1) uniqueCodes.push(c); });
+      var joinedCodes = uniqueCodes.join('#');
+
+      // Update nilai input diagnosa di dalam modal INACBGs dengan format kode1#kode2#kode3
+      var inacbgsModal = $('#inacbgsModal');
+      if (inacbgsModal.length) {
+        inacbgsModal.find('input#diagnosa, input[name="diagnosa"]').val(joinedCodes);
+      }
+      // Refresh tabel diagnosa dan tutup modal status
+      $("#data_diagnosa").show().load(baseURL + '/vedika/displaydiagnosa/' + status + '/{?=convertNoRawat($no_rawat)?}/?t=' + mlite.token);
+      // Clear input dan fokus kembali untuk input diagnosa berikutnya
+      $('#icd10').val('');
+      $('#kode_icd10').text('kode');
+      $('#icd10').focus();
+      $('#icd10List').fadeOut();
+      //bersih();
+      //$('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+      //"Data ICD 10 (Diagnosa) pasien telah disimpan!"+
+      //"<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+      //"</div>").show();
+    });
+  });
+</script>
+<script type="text/javascript">
+
+  // ketika tombol hapus ditekan
+  $("#data_diagnosa").on("click",".hapus_diagnosa", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var url = baseURL + '/vedika/hapusdiagnosa?t=' + mlite.token;
+    var no_rawat = $(this).attr("data-no_rawat");
+    var kd_penyakit = $(this).attr("data-kd_penyakit");
+    var prioritas = $(this).attr("data-prioritas");
+
+    // tampilkan dialog konfirmasi
+    bootbox.confirm("Apakah Anda yakin ingin menghapus data ini?", function(result){
+      // ketika ditekan tombol ok
+      if (result){
+        // mengirimkan perintah penghapusan
+        $.post(url, {
+          no_rawat: no_rawat,
+          kd_penyakit: kd_penyakit,
+          prioritas: prioritas
+        } ,function(data) {
+          // tampilkan notif
+          alert('Data diagnosa ' + kd_penyakit + ' telah dihapus!!');
+
+          // Kumpulkan seluruh kode diagnosa yang tersisa dari tabel, kecuali yang dihapus
+          var remainingCodes = [];
+          $('#data_diagnosa table tbody tr').each(function(){
+            var c = $(this).find('td').eq(0).text().trim();
+            if (c && c !== kd_penyakit) { remainingCodes.push(c); }
+          });
+          // Hilangkan duplikasi dan gabungkan dengan pemisah '#'
+          var uniqueRemaining = [];
+          $.each(remainingCodes, function(i, c){ if (c && uniqueRemaining.indexOf(c) === -1) uniqueRemaining.push(c); });
+          var joinedRemaining = uniqueRemaining.join('#');
+
+          // Update nilai input diagnosa di dalam modal INACBGs dengan sisa kode
+          var inacbgsModal = $('#inacbgsModal');
+          if (inacbgsModal.length) {
+            inacbgsModal.find('input#diagnosa, input[name="diagnosa"]').val(joinedRemaining);
+          }
+
+          // Refresh tabel diagnosa
+          var status = $('input:hidden[name=status]').val();
+          $("#data_diagnosa").show().load(baseURL + '/vedika/displaydiagnosa/' + status + '/{?=convertNoRawat($no_rawat)?}/?t=' + mlite.token);
+
+        });
+      }
+    });
+  });
+</script>
+<script>
+  function highlightEdit(editableObj) {
+  	$(editableObj).css("background","#FFF");
+  }
+  function savePrioritas(editableObj,column,no_rawat,kd_penyakit,status) {
+  	// no change change made then return false
+  	if($(editableObj).attr('data-old_value') === editableObj.innerHTML)
+  	return false;
+  	// send ajax to update value
+  	$(editableObj).css("background","#FFF url({?=url()?}/assets/img/loader.gif) no-repeat right");
+  	$.ajax({
+  		url: "{?=url([ADMIN,'vedika','saveprioritas'])?}",
+  		cache: false,
+  		data:'column='+column+'&prioritas='+editableObj.innerHTML+'&no_rawat='+no_rawat+'&kd_penyakit='+kd_penyakit+'&status='+status,
+  		success: function(response)  {
+  			console.log(response);
+  			// set updated value as old value
+  			$(editableObj).attr('data-old_value',editableObj.innerHTML);
+  			$(editableObj).css("background","#FDFDFD");
+  		}
+     });
+  }
+</script>

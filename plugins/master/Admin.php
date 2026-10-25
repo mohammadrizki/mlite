@@ -1,0 +1,3746 @@
+<?php
+namespace Plugins\Master;
+
+use Systems\AdminModule;
+
+use Plugins\Master\Src\Dokter;
+use Plugins\Master\Src\Petugas;
+use Plugins\Master\Src\Poliklinik;
+use Plugins\Master\Src\Bangsal;
+use Plugins\Master\Src\Kamar;
+use Plugins\Master\Src\DataBarang;
+use Plugins\Master\Src\JnsPerawatan;
+use Plugins\Master\Src\JnsPerawatanInap;
+use Plugins\Master\Src\JnsPerawatanLab;
+use Plugins\Master\Src\JnsPerawatanRadiologi;
+use Plugins\Master\Src\Bahasa;
+use Plugins\Master\Src\Propinsi;
+use Plugins\Master\Src\Kabupaten;
+use Plugins\Master\Src\Kecamatan;
+use Plugins\Master\Src\Kelurahan;
+use Plugins\Master\Src\Cacat;
+use Plugins\Master\Src\Suku;
+use Plugins\Master\Src\Perusahaan;
+use Plugins\Master\Src\Penjab;
+use Plugins\Master\Src\GolonganBarang;
+use Plugins\Master\Src\IndustriFarmasi;
+use Plugins\Master\Src\Jenis;
+use Plugins\Master\Src\KategoriBarang;
+use Plugins\Master\Src\KategoriPenyakit;
+use Plugins\Master\Src\KategoriPerawatan;
+use Plugins\Master\Src\KodeSatuan;
+use Plugins\Master\Src\MasterAturanPakai;
+use Plugins\Master\Src\MasterBerkasDigital;
+use Plugins\Master\Src\Spesialis;
+use Plugins\Master\Src\Bank;
+use Plugins\Master\Src\Bidang;
+use Plugins\Master\Src\Departemen;
+use Plugins\Master\Src\EmergencyIndex;
+use Plugins\Master\Src\Jabatan;
+use Plugins\Master\Src\JenjangJabatan;
+use Plugins\Master\Src\KelompokJabatan;
+use Plugins\Master\Src\Pendidikan;
+use Plugins\Master\Src\ResikoKerja;
+use Plugins\Master\Src\StatusKerja;
+use Plugins\Master\Src\StatusWP;
+use Plugins\Master\Src\MetodeRacik;
+use Plugins\Master\Src\RuangOk;
+use Plugins\Master\Src\Penyakit;
+use Plugins\Master\Src\Icd9;
+use Plugins\Master\Src\PersonalPasien;
+use Plugins\Master\Src\LoincLab;
+use Plugins\Master\Src\LoincRad;
+use Plugins\Master\Src\Kfa;
+use Plugins\Master\Src\Ktpl;
+use Plugins\Master\Src\Snomed;
+use Plugins\Master\Src\MliteNotifications;
+
+class Admin extends AdminModule
+{
+
+  protected $dokter;
+  protected $petugas;
+  protected $poliklinik;
+  protected $bangsal;
+  protected $kamar;
+  protected $databarang;
+  protected $jnsperawatan;
+  protected $jnsperawataninap;
+  protected $jnsperawatanlab;
+  protected $jnsperawatanradiologi;
+  protected $bahasa;
+  protected $propinsi;
+  protected $kabupaten;
+  protected $kecamatan;
+  protected $kelurahan;
+  protected $cacat;
+  protected $suku;
+  protected $perusahaan;
+  protected $penjab;
+  protected $golonganbarang;
+  protected $industrifarmasi;
+  protected $jenis;
+  protected $kategoribarang;
+  protected $kategoripenyakit;
+  protected $kategoriperawatan;
+  protected $masteraturanpakai;
+  protected $masterberkasdigital;
+  protected $kodesatuan;
+  protected $spesialis;
+  protected $bank;
+  protected $bidang;
+  protected $departemen;
+  protected $emergencyindex;
+  protected $jabatan;
+  protected $jenjangjabatan;
+  protected $kelompokjabatan;
+  protected $pendidikan;
+  protected $resikokerja;
+  protected $statuskerja;
+  protected $statuswp;
+  protected $metoderacik;
+  protected $ruangok;
+  protected $penyakit;
+  protected $icd9;
+  protected $personalpasien;
+  protected $snomed;
+  protected $loinclab;
+  protected $loincrad;
+  protected $kfa;
+  protected $ktpl;
+  protected $mlitenotifications;
+
+    public function init()
+    {
+        $this->dokter = new Dokter();
+        $this->petugas = new Petugas();
+        $this->poliklinik = new Poliklinik($this->core);
+        $this->bangsal = new Bangsal();
+        $this->kamar = new Kamar();
+        $this->databarang = new DataBarang();
+        $this->jnsperawatan = new JnsPerawatan();
+        $this->jnsperawataninap = new JnsPerawatanInap();
+        $this->jnsperawatanlab = new JnsPerawatanLab();
+        $this->jnsperawatanradiologi = new JnsPerawatanRadiologi();
+        $this->bahasa = new Bahasa();
+        $this->propinsi = new Propinsi();
+        $this->kabupaten = new Kabupaten();
+        $this->kecamatan = new Kecamatan();
+        $this->kelurahan = new Kelurahan();
+        $this->cacat = new Cacat();
+        $this->suku = new Suku();
+        $this->perusahaan = new Perusahaan();
+        $this->penjab = new Penjab();
+        $this->golonganbarang = new GolonganBarang();
+        $this->industrifarmasi = new IndustriFarmasi();
+        $this->jenis = new Jenis();
+        $this->kategoribarang = new KategoriBarang();
+  	    $this->kategoripenyakit = new KategoriPenyakit();
+  	    $this->kategoriperawatan = new KategoriPerawatan();
+  	    $this->masteraturanpakai = new MasterAturanPakai();
+  	    $this->masterberkasdigital = new MasterBerkasDigital();
+  	    $this->kodesatuan = new KodeSatuan();
+        $this->spesialis = new Spesialis();
+        $this->bank = new Bank();
+        $this->bidang = new Bidang();
+        $this->departemen = new Departemen();
+        $this->emergencyindex = new EmergencyIndex();
+        $this->jabatan = new Jabatan();
+        $this->jenjangjabatan = new JenjangJabatan();
+        $this->kelompokjabatan = new KelompokJabatan();
+        $this->pendidikan = new Pendidikan();
+        $this->resikokerja = new ResikoKerja();
+        $this->statuskerja = new StatusKerja();
+        $this->statuswp = new StatusWP();
+        $this->metoderacik = new MetodeRacik();
+        $this->ruangok = new RuangOk();
+        $this->penyakit = new Penyakit();
+        $this->icd9 = new Icd9();
+        $this->personalpasien = new PersonalPasien();
+        $this->snomed = new Snomed();
+        $this->loinclab = new LoincLab();
+        $this->loincrad = new LoincRad();
+        $this->kfa = new Kfa();
+        $this->ktpl = new Ktpl();
+        $this->mlitenotifications = new MliteNotifications();
+    }
+
+    public function navigation()
+    {
+        return [
+            'Manage' => 'manage',
+            'Dokter' => 'dokter',
+            'Petugas' => 'petugas',
+            'Poliklinik' => 'poliklinik',
+            'Bangsal' => 'bangsal',
+            'Kamar' => 'kamar',
+            'Data Barang' => 'databarang',
+            'Perawatan Ralan' => 'jnsperawatan',
+            'Perawatan Ranap' => 'jnsperawataninap',
+            'Perawatan Laboratorium' => 'jnsperawatanlab',
+            'Perawatan Radiologi' => 'jnsperawatanradiologi',
+            'Bahasa' => 'bahasa',
+            'Propinsi' => 'propinsi',
+            'Kabupaten' => 'kabupaten',
+            'Kecamatan' => 'kecamatan',
+            'Kelurahan' => 'kelurahan',
+            'Cacat Fisik' => 'cacat',
+            'Suku Bangsa' => 'suku',
+            'Perusahaan Pasien' => 'perusahaan',
+            'Penanggung Jawab' => 'penjab',
+            'Golongan Barang' => 'golonganbarang',
+            'Industri Farmasi' => 'industrifarmasi',
+            'Jenis Barang' => 'jenis',
+            'Kategori Barang' => 'kategoribarang',
+            'Kategori Penyakit' => 'kategoripenyakit',
+            'ICD 10' => 'penyakit',
+            'ICD 9' => 'icd9',
+            'SNOMED CT' => 'snomed',
+            'LOINC Lab' => 'loinclab',
+            'LOINC Radiologi' => 'loincrad',
+            'KFA' => 'kfa',
+            'KTPL' => 'ktpl',
+            'Kategori Perawatan' => 'kategoriperawatan',
+            'Kode Satuan' => 'kodesatuan',
+            'Master Aturan Pakai' => 'masteraturanpakai',
+            'Master Berkas Digital' => 'masterberkasdigital',
+            'Spesialis' => 'spesialis',
+            'Bank' => 'bank',
+            'Bidang' => 'bidang',
+            'Departemen' => 'departemen',
+            'Emergency Index' => 'emergencyindex',
+            'Jabatan' => 'jabatan',
+            'Jenjang Jabatan' => 'jenjangjabatan',
+            'Kelompok Jabatan' => 'kelompokjabatan',
+            'Pendidikan' => 'pendidikan',
+            'Resiko Kerja' => 'resikokerja',
+            'Status Kerja' => 'statuskerja',
+            'Status WP' => 'statuswp',
+            'Metode Racik' => 'metoderacik',
+            'Ruang OK' => 'ruangok',
+        ];
+    }
+
+    public function apiList($table)
+    {
+        $username = $this->core->checkAuth('GET');
+        if (!$this->core->checkPermission($username, 'can_read', 'master')) {
+            return ['status' => 'error', 'message' => 'Invalid User Permission Credentials'];
+        }
+
+        $allowed_tables = $this->_getAllowedTables();
+        
+        if (!in_array($table, $allowed_tables)) {
+             return ['status' => 'error', 'message' => 'Table not allowed or not found'];
+        }
+
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $per_page = isset($_GET['per_page']) ? (int)$_GET['per_page'] : 10;
+        $offset = ($page - 1) * $per_page;
+        
+        // Count Query
+        $q_count = $this->db($table);
+        if ($table == 'gudangbarang') {
+            $q_count->join('databarang', 'databarang.kode_brng = gudangbarang.kode_brng');
+            $q_count->join('bangsal', 'bangsal.kd_bangsal = gudangbarang.kd_bangsal');
+        }
+
+        if (!empty($_GET['s'])) {
+            if ($table == 'gudangbarang') {
+                $q_count->like('gudangbarang.kode_brng', '%'.$_GET['s'].'%')
+                    ->orLike('databarang.nama_brng', '%'.$_GET['s'].'%')
+                    ->orLike('gudangbarang.no_batch', '%'.$_GET['s'].'%')
+                    ->orLike('gudangbarang.no_faktur', '%'.$_GET['s'].'%')
+                    ->orLike('bangsal.nm_bangsal', '%'.$_GET['s'].'%');
+            } elseif (!empty($_GET['col'])) {
+                $q_count->like($_GET['col'], '%'.$_GET['s'].'%');
+            }
+        }
+
+        if ($table == 'riwayat_barang_medis') {
+            $q_count->join('databarang', 'databarang.kode_brng = riwayat_barang_medis.kode_brng');
+            $q_count->join('bangsal', 'bangsal.kd_bangsal = riwayat_barang_medis.kd_bangsal');
+            if (isset($_GET['tgl_awal']) && isset($_GET['tgl_akhir'])) {
+                $q_count->where('riwayat_barang_medis.tanggal', '>=', $_GET['tgl_awal']);
+                $q_count->where('riwayat_barang_medis.tanggal', '<=', $_GET['tgl_akhir']);
+            }
+        }
+
+        if ($table == 'diagnosa_pasien') {
+            $q_count->join('penyakit', 'penyakit.kd_penyakit = diagnosa_pasien.kd_penyakit');
+            $q_count->join('reg_periksa', 'reg_periksa.no_rawat = diagnosa_pasien.no_rawat');
+            if (isset($_GET['tgl_awal']) && isset($_GET['tgl_akhir'])) {
+                $q_count->where('reg_periksa.tgl_registrasi', '>=', $_GET['tgl_awal']);
+                $q_count->where('reg_periksa.tgl_registrasi', '<=', $_GET['tgl_akhir']);
+            }
+        }
+
+
+        if (!empty($_GET['s'])) {
+            if ($table == 'riwayat_barang_medis') {
+                $q_count->like('riwayat_barang_medis.kode_brng', '%'.$_GET['s'].'%')
+                    ->orLike('databarang.nama_brng', '%'.$_GET['s'].'%')
+                    ->orLike('riwayat_barang_medis.no_batch', '%'.$_GET['s'].'%')
+                    ->orLike('riwayat_barang_medis.no_faktur', '%'.$_GET['s'].'%') 
+                    ->orLike('bangsal.nm_bangsal', '%'.$_GET['s'].'%');
+            } elseif (!empty($_GET['col'])) {
+                $q_count->like($_GET['col'], '%'.$_GET['s'].'%');
+            }
+        }
+
+        if (isset($_GET['status'])) {
+            $q_count->where('status', $_GET['status']);
+        }
+        $totalRecords = $q_count->count();
+
+        // Data Query
+        $q_data = $this->db($table);
+        if ($table == 'gudangbarang') {
+            $q_data->select('gudangbarang.*, databarang.nama_brng, databarang.kode_sat, databarang.kapasitas, databarang.h_beli, bangsal.nm_bangsal');
+            $q_data->join('databarang', 'databarang.kode_brng = gudangbarang.kode_brng');
+            $q_data->join('bangsal', 'bangsal.kd_bangsal = gudangbarang.kd_bangsal');
+        }
+
+        if (!empty($_GET['s'])) {
+            if ($table == 'gudangbarang') {
+                $q_data->like('gudangbarang.kode_brng', '%'.$_GET['s'].'%')
+                    ->orLike('databarang.nama_brng', '%'.$_GET['s'].'%')
+                    ->orLike('gudangbarang.no_batch', '%'.$_GET['s'].'%')
+                    ->orLike('gudangbarang.no_faktur', '%'.$_GET['s'].'%')
+                    ->orLike('bangsal.nm_bangsal', '%'.$_GET['s'].'%');
+            } elseif (!empty($_GET['col'])) {
+                $q_data->like($_GET['col'], '%'.$_GET['s'].'%');
+            }
+        }
+
+        if ($table == 'riwayat_barang_medis') {
+            $q_data->select('riwayat_barang_medis.*, databarang.nama_brng, databarang.h_beli, bangsal.nm_bangsal');
+            $q_data->join('databarang', 'databarang.kode_brng = riwayat_barang_medis.kode_brng');
+            $q_data->join('bangsal', 'bangsal.kd_bangsal = riwayat_barang_medis.kd_bangsal');
+            if (isset($_GET['tgl_awal']) && isset($_GET['tgl_akhir'])) {
+                $q_data->where('riwayat_barang_medis.tanggal', '>=', $_GET['tgl_awal']);
+                $q_data->where('riwayat_barang_medis.tanggal', '<=', $_GET['tgl_akhir']);
+            }
+        }
+
+        if ($table == 'diagnosa_pasien') {
+            $q_data->join('penyakit', 'penyakit.kd_penyakit = diagnosa_pasien.kd_penyakit');
+            $q_data->join('reg_periksa', 'reg_periksa.no_rawat = diagnosa_pasien.no_rawat');
+            
+            if (isset($_GET['tgl_awal']) && isset($_GET['tgl_akhir'])) {
+                $q_data->select('diagnosa_pasien.kd_penyakit, penyakit.nm_penyakit, COUNT(diagnosa_pasien.kd_penyakit) as jumlah');
+                $q_data->where('reg_periksa.tgl_registrasi', '>=', $_GET['tgl_awal']);
+                $q_data->where('reg_periksa.tgl_registrasi', '<=', $_GET['tgl_akhir']);
+                $q_data->group('diagnosa_pasien.kd_penyakit');
+                $q_data->desc('jumlah');
+            } else {
+                $q_data->select('diagnosa_pasien.*, penyakit.nm_penyakit');
+            }
+        }
+
+
+        if (!empty($_GET['s'])) {
+            if ($table == 'riwayat_barang_medis') {
+                $q_data->like('riwayat_barang_medis.kode_brng', '%'.$_GET['s'].'%')
+                    ->orLike('databarang.nama_brng', '%'.$_GET['s'].'%')
+                    ->orLike('riwayat_barang_medis.no_batch', '%'.$_GET['s'].'%')
+                    ->orLike('riwayat_barang_medis.no_faktur', '%'.$_GET['s'].'%')
+                    ->orLike('bangsal.nm_bangsal', '%'.$_GET['s'].'%');
+            } elseif (!empty($_GET['col'])) {
+                $q_data->like($_GET['col'], '%'.$_GET['s'].'%');
+            }
+        }
+
+        if (isset($_GET['status'])) {
+            $q_data->where('status', $_GET['status']);
+        }
+        $rows = $q_data->offset($offset)->limit($per_page)->toArray();
+
+        return [
+            "status" => "success",
+            "data" => $rows,
+            "meta" => [
+                "page" => $page,
+                "per_page" => $per_page,
+                "total" => $totalRecords
+            ]
+        ];
+    }
+
+    public function apiSave($table)
+    {
+        $username = $this->core->checkAuth('POST');
+        if (!$this->core->checkPermission($username, 'can_create', 'master') && !$this->core->checkPermission($username, 'can_update', 'master')) {
+            return ['status' => 'error', 'message' => 'Invalid User Permission Credentials'];
+        }
+
+        $property = $this->getTableProperty($table);
+        if (!$property) {
+             return ['status' => 'error', 'message' => 'Table not allowed or not found'];
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (!is_array($input)) $input = $_POST;
+        
+        // Populate $_POST for the model to use
+        foreach ($input as $key => $value) {
+            $_POST[$key] = $value;
+        }
+
+        try {
+            $result = $this->{$property}->postSave();
+            if ($result) {
+                return ['status' => 'success', 'message' => 'Data saved successfully'];
+            } else {
+                return ['status' => 'error', 'message' => 'Failed to save data'];
+            }
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            $message = preg_replace('/`[^`]+`\./', '', $message);
+            return ['status' => 'error', 'message' => htmlspecialchars_array($message)];
+        }
+    }
+
+    public function apiDelete($table)
+    {
+        $username = $this->core->checkAuth('DELETE');
+        if (!$this->core->checkPermission($username, 'can_delete', 'master')) {
+            return ['status' => 'error', 'message' => 'Invalid User Permission Credentials'];
+        }
+
+        $property = $this->getTableProperty($table);
+        if (!$property) {
+             return ['status' => 'error', 'message' => 'Table not allowed or not found'];
+        }
+
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (!is_array($input)) $input = $_REQUEST;
+
+        // Populate $_POST for the model to use
+        foreach ($input as $key => $value) {
+            $_POST[$key] = $value;
+        }
+
+        try {
+            $result = $this->{$property}->postHapus();
+            if ($result) {
+                return ['status' => 'success', 'message' => 'Data deleted successfully'];
+            } else {
+                return ['status' => 'error', 'message' => 'Failed to delete data'];
+            }
+        } catch (\Exception $e) {
+            $message = $e->getMessage();
+            $message = preg_replace('/`[^`]+`\./', '', $message);
+            return ['status' => 'error', 'message' => htmlspecialchars_array($message)];
+        }
+    }
+
+    private function _getAllowedTables()
+    {
+        if (DBDRIVER == 'sqlite') {
+            $allowed_tables = $this->db()->pdo()->query("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")->fetchAll(\PDO::FETCH_COLUMN);
+        } else {
+            $allowed_tables = $this->db()->pdo()->query("SHOW TABLES")->fetchAll(\PDO::FETCH_COLUMN);
+        }
+        return array_filter($allowed_tables, fn($t) => $t !== 'mlite_api_key');
+    }
+
+    private function getTableProperty($table)
+    {
+        // Special mappings
+        $map = [
+            'cacat_fisik' => 'cacat',
+            'suku_bangsa' => 'suku',
+            'perusahaan_pasien' => 'perusahaan',
+            'jns_perawatan_inap' => 'jnsperawataninap',
+            'jns_perawatan_lab' => 'jnsperawatanlab',
+            'jns_perawatan_radiologi' => 'jnsperawatanradiologi'
+        ];
+
+        if (isset($map[$table])) {
+            $prop = $map[$table];
+        } else {
+            $prop = str_replace('_', '', $table);
+        }
+
+        if (property_exists($this, $prop)) {
+            return $prop;
+        }
+        
+        return false;
+    }
+
+    public function getManage()
+    {
+      $sub_modules = [
+        ['name' => 'Dokter', 'url' => url([ADMIN, 'master', 'dokter']), 'icon' => 'cubes', 'desc' => 'Master dokter'],
+        ['name' => 'Petugas', 'url' => url([ADMIN, 'master', 'petugas']), 'icon' => 'cubes', 'desc' => 'Master petugas'],
+        ['name' => 'Poliklinik', 'url' => url([ADMIN, 'master', 'poliklinik']), 'icon' => 'cubes', 'desc' => 'Master poliklinik'],
+        ['name' => 'Bangsal', 'url' => url([ADMIN, 'master', 'bangsal']), 'icon' => 'cubes', 'desc' => 'Master bangsal'],
+        ['name' => 'Kamar', 'url' => url([ADMIN, 'master', 'kamar']), 'icon' => 'cubes', 'desc' => 'Master kamar'],
+        ['name' => 'Data Barang', 'url' => url([ADMIN, 'master', 'databarang']), 'icon' => 'cubes', 'desc' => 'Master data barang'],
+        ['name' => 'Perawatan Rawat Jalan', 'url' => url([ADMIN, 'master', 'jnsperawatan']), 'icon' => 'cubes', 'desc' => 'Master jenis perawatan rawat jalan'],
+        ['name' => 'Perawatan Rawat Inap', 'url' => url([ADMIN, 'master', 'jnsperawataninap']), 'icon' => 'cubes', 'desc' => 'Master jenis perawatan rawat inap'],
+        ['name' => 'Perawatan Laboratorium', 'url' => url([ADMIN, 'master', 'jnsperawatanlab']), 'icon' => 'cubes', 'desc' => 'Master jenis perawatan laboratorium'],
+        ['name' => 'Perawatan Radiologi', 'url' => url([ADMIN, 'master', 'jnsperawatanradiologi']), 'icon' => 'cubes', 'desc' => 'Master jenis perawatan radiologi'],
+        ['name' => 'Bahasa', 'url' => url([ADMIN, 'master', 'bahasa']), 'icon' => 'cubes', 'desc' => 'Master bahasa'],
+        ['name' => 'Propinsi', 'url' => url([ADMIN, 'master', 'propinsi']), 'icon' => 'cubes', 'desc' => 'Master propinsi'],
+        ['name' => 'Kabupaten', 'url' => url([ADMIN, 'master', 'kabupaten']), 'icon' => 'cubes', 'desc' => 'Master kabupaten'],
+        ['name' => 'Kecamatan', 'url' => url([ADMIN, 'master', 'kecamatan']), 'icon' => 'cubes', 'desc' => 'Master kecamatan'],
+        ['name' => 'Kelurahan', 'url' => url([ADMIN, 'master', 'kelurahan']), 'icon' => 'cubes', 'desc' => 'Master kelurahan'],
+        ['name' => 'Cacat Fisik', 'url' => url([ADMIN, 'master', 'cacat']), 'icon' => 'cubes', 'desc' => 'Master cacat fisik'],
+        ['name' => 'Suku Bangsa', 'url' => url([ADMIN, 'master', 'suku']), 'icon' => 'cubes', 'desc' => 'Master suku bangsa'],
+        ['name' => 'Perusahaan Pasien', 'url' => url([ADMIN, 'master', 'perusahaan']), 'icon' => 'cubes', 'desc' => 'Master perusahaan pasien'],
+        ['name' => 'Penanggung Jawab', 'url' => url([ADMIN, 'master', 'penjab']), 'icon' => 'cubes', 'desc' => 'Master penanggung jawab'],
+        ['name' => 'Golongan Barang', 'url' => url([ADMIN, 'master', 'golonganbarang']), 'icon' => 'cubes', 'desc' => 'Master golongan barang'],
+        ['name' => 'Industri Farmasi', 'url' => url([ADMIN, 'master', 'industrifarmasi']), 'icon' => 'cubes', 'desc' => 'Master industri farmasi'],
+        ['name' => 'Jenis Barang', 'url' => url([ADMIN, 'master', 'jenis']), 'icon' => 'cubes', 'desc' => 'Master jenis barang'],
+        ['name' => 'Kategori Barang', 'url' => url([ADMIN, 'master', 'kategoribarang']), 'icon' => 'cubes', 'desc' => 'Master kategori barang'],
+        ['name' => 'Kategori Penyakit', 'url' => url([ADMIN, 'master', 'kategoripenyakit']), 'icon' => 'cubes', 'desc' => 'Master kategori penyakit'],
+        ['name' => 'ICD 10', 'url' => url([ADMIN, 'master', 'penyakit']), 'icon' => 'cubes', 'desc' => 'Master ICD 10 penyakit'],
+        ['name' => 'ICD 9', 'url' => url([ADMIN, 'master', 'icd9']), 'icon' => 'cubes', 'desc' => 'Master ICD 9'],
+        ['name' => 'Kategori Perawatan', 'url' => url([ADMIN, 'master', 'kategoriperawatan']), 'icon' => 'cubes', 'desc' => 'Master kategori perawatan'],
+        ['name' => 'Kode Satuan', 'url' => url([ADMIN, 'master', 'kodesatuan']), 'icon' => 'cubes', 'desc' => 'Master kode satuan'],
+        ['name' => 'Master Aturan Pakai', 'url' => url([ADMIN, 'master', 'masteraturanpakai']), 'icon' => 'cubes', 'desc' => 'Master aturan pakai'],
+        ['name' => 'Master Berkas Digital', 'url' => url([ADMIN, 'master', 'masterberkasdigital']), 'icon' => 'cubes', 'desc' => 'Master berkas digital'],
+        ['name' => 'Spesialis', 'url' => url([ADMIN, 'master', 'spesialis']), 'icon' => 'cubes', 'desc' => 'Master spesialis'],
+        ['name' => 'Bank', 'url' => url([ADMIN, 'master', 'bank']), 'icon' => 'cubes', 'desc' => 'Master bank'],
+        ['name' => 'Bidang', 'url' => url([ADMIN, 'master', 'bidang']), 'icon' => 'cubes', 'desc' => 'Master bidang'],
+        ['name' => 'Departemen', 'url' => url([ADMIN, 'master', 'departemen']), 'icon' => 'cubes', 'desc' => 'Master departemen'],
+        ['name' => 'Emergency Index', 'url' => url([ADMIN, 'master', 'emergencyindex']), 'icon' => 'cubes', 'desc' => 'Master emergency index'],
+        ['name' => 'Jabatan', 'url' => url([ADMIN, 'master', 'jabatan']), 'icon' => 'cubes', 'desc' => 'Master jabatan'],
+        ['name' => 'Jenjang Jabatan', 'url' => url([ADMIN, 'master', 'jenjangjabatan']), 'icon' => 'cubes', 'desc' => 'Master jenjang jabatan'],
+        ['name' => 'Kelompok Jabatan', 'url' => url([ADMIN, 'master', 'kelompokjabatan']), 'icon' => 'cubes', 'desc' => 'Master kelompok jabatan'],
+        ['name' => 'Pendidikan', 'url' => url([ADMIN, 'master', 'pendidikan']), 'icon' => 'cubes', 'desc' => 'Master pendidikan'],
+        ['name' => 'Resiko Kerja', 'url' => url([ADMIN, 'master', 'resikokerja']), 'icon' => 'cubes', 'desc' => 'Master resiko kerja'],
+        ['name' => 'Status Kerja', 'url' => url([ADMIN, 'master', 'statuskerja']), 'icon' => 'cubes', 'desc' => 'Master status kerja'],
+        ['name' => 'Status Wajib Pajak', 'url' => url([ADMIN, 'master', 'statuswp']), 'icon' => 'cubes', 'desc' => 'Master status wajib pajak'],
+        ['name' => 'Metode Racik', 'url' => url([ADMIN, 'master', 'metoderacik']), 'icon' => 'cubes', 'desc' => 'Master metode racik'],
+        ['name' => 'Ruang OK', 'url' => url([ADMIN, 'master', 'ruangok']), 'icon' => 'cubes', 'desc' => 'Master ruang OK'],
+        ['name' => 'SNOMED CT', 'url' => url([ADMIN, 'master', 'snomed']), 'icon' => 'cubes', 'desc' => 'Master SNOMED CT'],
+        ['name' => 'LOINC Lab', 'url' => url([ADMIN, 'master', 'loinclab']), 'icon' => 'cubes', 'desc' => 'Master LOINC Lab'],
+        ['name' => 'LOINC Radiologi', 'url' => url([ADMIN, 'master', 'loincrad']), 'icon' => 'cubes', 'desc' => 'Master LOINC Radiologi'],
+        ['name' => 'KFA', 'url' => url([ADMIN, 'master', 'kfa']), 'icon' => 'cubes', 'desc' => 'Master KFA'],
+        ['name' => 'KTPL', 'url' => url([ADMIN, 'master', 'ktpl']), 'icon' => 'cubes', 'desc' => 'Master KTPL'],
+      ];
+      return $this->draw('manage.html', ['sub_modules' => htmlspecialchars_array($sub_modules)]);
+    }
+
+    /* Start Dokter Section */
+    public function getDokter()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'dokterjs']), 'footer');
+      $return = $this->dokter->getIndex();
+      return $this->draw('dokter.html', [
+        'dokter' => $return
+      ]);
+
+    }
+
+    public function anyDokterForm()
+    {
+        $return = $this->dokter->anyForm();
+        echo $this->draw('dokter.form.html', ['dokter' => $return]);
+        exit();
+    }
+
+    public function anyDokterDisplay()
+    {
+        $return = $this->dokter->anyDisplay();
+        echo $this->draw('dokter.display.html', ['dokter' => $return]);
+        exit();
+    }
+
+    public function postDokterSave()
+    {
+      $this->dokter->postSave();
+      exit();
+    }
+
+    public function postDokterHapus()
+    {
+      $this->dokter->postHapus();
+      exit();
+    }
+
+    public function getDokterJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/dokter.js');
+        exit();
+    }
+    /* End Dokter Section */
+
+    /* Start Petugas Section */
+    public function getPetugas()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'petugasjs']), 'footer');
+      $return = $this->petugas->getIndex();
+      return $this->draw('petugas.html', [
+        'petugas' => $return
+      ]);
+
+    }
+
+    public function anyPetugasForm()
+    {
+        $return = $this->petugas->anyForm();
+        echo $this->draw('petugas.form.html', ['petugas' => $return]);
+        exit();
+    }
+
+    public function anyPetugasDisplay()
+    {
+        $return = $this->petugas->anyDisplay();
+        echo $this->draw('petugas.display.html', ['petugas' => $return]);
+        exit();
+    }
+
+    public function postPetugasSave()
+    {
+      $this->petugas->postSave();
+      exit();
+    }
+
+    public function postPetugasHapus()
+    {
+      $this->petugas->postHapus();
+      exit();
+    }
+
+    public function getPetugasJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/petugas.js');
+        exit();
+    }
+    /* End Petugas Section */
+
+    /* Start Poliklinik Section */
+    public function getPoliklinik()
+    {
+        $this->_addHeaderFiles();
+        $this->core->addJS(url([ADMIN, 'master', 'poliklinikjs']), 'footer');
+        $return = $this->poliklinik->getIndex();
+        return $this->draw('poliklinik.html', [
+          'poliklinik' => $return
+        ]);
+    }
+
+    public function anyPoliklinikForm()
+    {
+        $return = $this->poliklinik->anyForm();
+        echo $this->draw('poliklinik.form.html', ['poliklinik' => $return]);
+        exit();
+    }
+
+    public function anyPoliklinikDisplay()
+    {
+        $return = $this->poliklinik->anyDisplay();
+        echo $this->draw('poliklinik.display.html', ['poliklinik' => $return]);
+        exit();
+    }
+
+    public function postPoliklinikSave()
+    {
+      $this->poliklinik->postSave();
+      exit();
+    }
+
+    public function postPoliklinikHapus()
+    {
+      $this->poliklinik->postHapus();
+      exit();
+    }
+
+    public function getPoliklinikJS()
+    {
+        header('Content-type: text/javascript');
+        $settings = $this->settings('settings');
+        echo $this->draw(MODULES.'/master/js/admin/poliklinik.js', ['settings' => $settings]);
+        exit();
+    }
+
+    public function postPoliklinikData()
+    {
+      echo $this->poliklinik->postData();
+    }
+
+    public function postPoliklinikAksi()
+    {
+      echo $this->poliklinik->postAksi();
+    }
+
+    public function getPoliklinikDetail($kd_poli)
+    {
+      $detail = $this->db('poliklinik')->where('kd_poli', $kd_poli)->toArray();
+      $settings =  $this->settings('settings');
+      echo $this->draw('poliklinik.detail.html', ['detail' => $detail, 'settings' => $settings]);
+      exit();
+    }
+    
+    public function getPoliklinikChart($type = '', $column = '')
+    {
+      $data = $this->poliklinik->getChart($type, $column);
+      echo $this->draw('poliklinik.chart.html', $data);
+      exit();
+
+    }
+    
+    public function getPoliklinikCSS()
+    {
+        header('Content-type: text/css');
+        echo $this->draw(MODULES.'/master/css/admin/poliklinik.css');
+        exit();
+    }
+
+    /* End Poliklinik Section */
+
+    /* Start Bangsal Section */
+    public function getBangsal()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'bangsaljs']), 'footer');
+      $return = $this->bangsal->getIndex();
+      return $this->draw('bangsal.html', [
+        'bangsal' => $return
+      ]);
+
+    }
+
+    public function anyBangsalForm()
+    {
+        $return = $this->bangsal->anyForm();
+        echo $this->draw('bangsal.form.html', ['bangsal' => $return]);
+        exit();
+    }
+
+    public function anyBangsalDisplay()
+    {
+        $return = $this->bangsal->anyDisplay();
+        echo $this->draw('bangsal.display.html', ['bangsal' => $return]);
+        exit();
+    }
+
+    public function postBangsalSave()
+    {
+      $this->bangsal->postSave();
+      exit();
+    }
+
+    public function postBangsalHapus()
+    {
+      $this->bangsal->postHapus();
+      exit();
+    }
+
+    public function getBangsalJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/bangsal.js');
+        exit();
+    }
+    /* End Bangsal Section */
+
+    /* Start Kamar Section */
+    public function getKamar()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kamarjs']), 'footer');
+      $return = $this->kamar->getIndex();
+      return $this->draw('kamar.html', [
+        'kamar' => $return
+      ]);
+
+    }
+
+    public function anyKamarForm()
+    {
+        $return = $this->kamar->anyForm();
+        echo $this->draw('kamar.form.html', ['kamar' => $return]);
+        exit();
+    }
+
+    public function anyKamarDisplay()
+    {
+        $return = $this->kamar->anyDisplay();
+        echo $this->draw('kamar.display.html', ['kamar' => $return]);
+        exit();
+    }
+
+    public function postKamarSave()
+    {
+      $this->kamar->postSave();
+      exit();
+    }
+
+    public function postKamarHapus()
+    {
+      $this->kamar->postHapus();
+      exit();
+    }
+
+    public function getKamarJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kamar.js');
+        exit();
+    }
+    /* End Kamar Section */
+
+    /* Start DataBarang Section */
+    public function getDataBarang()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'databarangjs']), 'footer');
+      $return = $this->databarang->getIndex();
+      return $this->draw('databarang.html', [
+        'databarang' => $return
+      ]);
+
+    }
+
+    public function anyDataBarangForm()
+    {
+        $return = $this->databarang->anyForm();
+        echo $this->draw('databarang.form.html', ['databarang' => $return]);
+        exit();
+    }
+
+    public function anyDataBarangDisplay()
+    {
+        $return = $this->databarang->anyDisplay();
+        echo $this->draw('databarang.display.html', ['databarang' => $return]);
+        exit();
+    }
+
+    public function postDataBarangSave()
+    {
+      $query = $this->databarang->postSave();
+      
+      if($query) {
+        $data['status'] = 'success';
+        echo json_encode(htmlspecialchars_array($data));
+      } else {
+        $data['status'] = 'error';
+        $data['msg'] = $query->errorInfo()['2'];
+        echo json_encode(htmlspecialchars_array($data));
+      }
+
+      exit();
+    }
+
+    public function postDataBarangHapus()
+    {
+      $this->databarang->postHapus();
+      exit();
+    }
+
+    public function postDataBarangMaxId()
+    {
+      $this->databarang->postMaxId();
+      exit();
+    }
+
+    public function getDataBarangJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/databarang.js');
+        exit();
+    }
+    /* End DataBarang Section */
+
+    /* Start JnsPerawatan Section */
+    public function getJnsPerawatan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'jnsperawatanjs']), 'footer');
+      $return = $this->jnsperawatan->getIndex();
+      return $this->draw('jnsperawatan.html', [
+        'jnsperawatan' => $return
+      ]);
+
+    }
+
+    public function anyJnsPerawatanForm()
+    {
+        $return = $this->jnsperawatan->anyForm();
+        echo $this->draw('jnsperawatan.form.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function anyJnsPerawatanDisplay()
+    {
+        $return = $this->jnsperawatan->anyDisplay();
+        echo $this->draw('jnsperawatan.display.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function postJnsPerawatanSave()
+    {
+      $this->jnsperawatan->postSave();
+      exit();
+    }
+
+    public function postJnsPerawatanHapus()
+    {
+      $this->jnsperawatan->postHapus();
+      exit();
+    }
+
+    public function postJnsPerawatanMaxId()
+    {
+      $this->jnsperawatan->postMaxId();
+      exit();
+    }
+
+    public function getJnsPerawatanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/jnsperawatan.js');
+        exit();
+    }
+    /* End JnsPerawatan Section */
+
+    /* Start JnsPerawatanInap Section */
+    public function getJnsPerawatanInap()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'jnsperawataninapjs']), 'footer');
+      $return = $this->jnsperawataninap->getIndex();
+      return $this->draw('jnsperawataninap.html', [
+        'jnsperawatan' => $return
+      ]);
+
+    }
+
+    public function anyJnsPerawatanInapForm()
+    {
+        $return = $this->jnsperawataninap->anyForm();
+        echo $this->draw('jnsperawataninap.form.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function anyJnsPerawatanInapDisplay()
+    {
+        $return = $this->jnsperawataninap->anyDisplay();
+        echo $this->draw('jnsperawataninap.display.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function postJnsPerawatanInapSave()
+    {
+      $this->jnsperawataninap->postSave();
+      exit();
+    }
+
+    public function postJnsPerawatanInapHapus()
+    {
+      $this->jnsperawataninap->postHapus();
+      exit();
+    }
+
+    public function postJnsPerawatanInapMaxId()
+    {
+      $this->jnsperawataninap->postMaxId();
+      exit();
+    }
+
+    public function getJnsPerawatanInapJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/jnsperawataninap.js');
+        exit();
+    }
+    /* End JnsPerawatanInap Section */
+
+    /* Start JnsPerawatanLab Section */
+    public function getJnsPerawatanLab()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'jnsperawatanlabjs']), 'footer');
+      $return = $this->jnsperawatanlab->getIndex();
+      return $this->draw('jnsperawatanlab.html', [
+        'jnsperawatan' => $return
+      ]);
+
+    }
+
+    public function anyJnsPerawatanLabForm()
+    {
+        $return = $this->jnsperawatanlab->anyForm();
+        echo $this->draw('jnsperawatanlab.form.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function anyTemplateLaboratorium()
+    {
+        $return = $this->jnsperawatanlab->anyTemplateLaboratorium();
+        echo $this->draw('jnsperawatanlab.template.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function anyJnsPerawatanLabDisplay()
+    {
+        $return = $this->jnsperawatanlab->anyDisplay();
+        echo $this->draw('jnsperawatanlab.display.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function postJnsPerawatanLabSave()
+    {
+      $this->jnsperawatanlab->postSave();
+      exit();
+    }
+
+    public function postJnsPerawatanLabHapus()
+    {
+      $this->jnsperawatanlab->postHapus();
+      exit();
+    }
+
+    public function anyTemplateLaboratoriumForm($kd_jenis_prw, $id_template='')
+    {
+      $template = [];
+      if($id_template !='') {
+        $template = $this->db('template_laboratorium')->where('id_template', $id_template)->oneArray();
+      }
+      echo $this->draw('jnsperawatanlab.template.form.html', ['kd_jenis_prw' => $kd_jenis_prw, 'id_template' => $id_template, 'template' => $template]);
+      exit();
+    }
+
+    public function postJnsPerawatanLabTemplateSave()
+    {
+      if($_POST['id_template'] !='') {
+        $this->db('template_laboratorium')->where('id_template', $_POST['id_template'])->save($_POST);
+      } else {
+        $this->db('template_laboratorium')->save($_POST);
+      }
+      exit();
+    }
+
+    public function postJnsPerawatanLabTemplateHapus()
+    {
+      $query = $this->db('template_laboratorium')->where('id_template', $_POST['id_template'])->delete();
+      if($query == 1) {
+        $data['status'] = 'success';
+        echo json_encode(htmlspecialchars_array($data));
+      } else {
+        $data['status'] = 'error';
+        $data['msg'] = htmlspecialchars($query->errorInfo()['2'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        echo json_encode(htmlspecialchars_array($data));
+      }
+      exit();
+    }
+
+    public function postJnsPerawatanLabMaxId()
+    {
+      $this->jnsperawatanlab->postMaxId();
+      exit();
+    }
+
+    public function getJnsPerawatanLabJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/jnsperawatanlab.js');
+        exit();
+    }
+    /* End JnsPerawatanLab Section */
+
+    /* Start JnsPerawatanRadiologi Section */
+    public function getJnsPerawatanRadiologi()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'jnsperawatanradiologijs']), 'footer');
+      $return = $this->jnsperawatanradiologi->getIndex();
+      return $this->draw('jnsperawatanradiologi.html', [
+        'jnsperawatan' => $return
+      ]);
+
+    }
+
+    public function anyJnsPerawatanRadiologiForm()
+    {
+        $return = $this->jnsperawatanradiologi->anyForm();
+        echo $this->draw('jnsperawatanradiologi.form.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function anyJnsPerawatanRadiologiDisplay()
+    {
+        $return = $this->jnsperawatanradiologi->anyDisplay();
+        echo $this->draw('jnsperawatanradiologi.display.html', ['jnsperawatan' => $return]);
+        exit();
+    }
+
+    public function postJnsPerawatanRadiologiSave()
+    {
+      $this->jnsperawatanradiologi->postSave();
+      exit();
+    }
+
+    public function postJnsPerawatanRadiologiHapus()
+    {
+      $this->jnsperawatanradiologi->postHapus();
+      exit();
+    }
+
+    public function postJnsPerawatanRadiologiMaxId()
+    {
+      $this->jnsperawatanradiologi->postMaxId();
+      exit();
+    }
+
+    public function getJnsPerawatanRadiologiJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/jnsperawatanradiologi.js');
+        exit();
+    }
+    /* End JnsPerawatanRadiologi Section */
+
+    /* Start Bahasa Section */
+    public function getBahasa()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'bahasajs']), 'footer');
+      $return = $this->bahasa->getIndex();
+      return $this->draw('bahasa.html', [
+        'bahasa' => $return
+      ]);
+
+    }
+
+    public function anyBahasaForm()
+    {
+        $return = $this->bahasa->anyForm();
+        echo $this->draw('bahasa.form.html', ['bahasa' => $return]);
+        exit();
+    }
+
+    public function anyBahasaDisplay()
+    {
+        $return = $this->bahasa->anyDisplay();
+        echo $this->draw('bahasa.display.html', ['bahasa' => $return]);
+        exit();
+    }
+
+    public function postBahasaSave()
+    {
+      $this->bahasa->postSave();
+      exit();
+    }
+
+    public function postBahasaHapus()
+    {
+      $this->bahasa->postHapus();
+      exit();
+    }
+
+    public function getBahasaJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/bahasa.js');
+        exit();
+    }
+    /* End Bahasa Section */
+
+    /* Start Propinsi Section */
+    public function getPropinsi()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'propinsijs']), 'footer');
+      $return = $this->propinsi->getIndex();
+      return $this->draw('propinsi.html', [
+        'propinsi' => $return
+      ]);
+
+    }
+
+    public function anyPropinsiForm()
+    {
+        $return = $this->propinsi->anyForm();
+        echo $this->draw('propinsi.form.html', ['propinsi' => $return]);
+        exit();
+    }
+
+    public function anyPropinsiDisplay()
+    {
+        $return = $this->propinsi->anyDisplay();
+        echo $this->draw('propinsi.display.html', ['propinsi' => $return]);
+        exit();
+    }
+
+    public function postPropinsiSave()
+    {
+      $this->propinsi->postSave();
+      exit();
+    }
+
+    public function postPropinsiHapus()
+    {
+      $this->propinsi->postHapus();
+      exit();
+    }
+
+    public function getPropinsiJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/propinsi.js');
+        exit();
+    }
+
+    public function getImportPropinsi()
+    {
+        $filename = 'https://basoro.id/downloads/provinces.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv<br>';
+
+        $csvData = file_get_contents($filename);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] File tidak ditemukan<br>';
+            exit();
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan<br>';
+
+        $lines = array_filter(explode(PHP_EOL, $csvData));
+        $value_query = [];
+
+        foreach ($lines as $line) {
+            $delimiter = str_contains($line, ';') ? ';' : ',';
+            $data = str_getcsv($line, $delimiter, '"', '\\');
+
+            if (empty($data[0])) continue;
+
+            $kode = trim($data[0]);
+            $nama = trim($data[1] ?? '');
+
+            // escape aman
+            $kode = addslashes($kode);
+            $nama = addslashes($nama);
+
+            $value_query[] = "('$kode','$nama')";
+        }
+
+        if (!$value_query) {
+            echo '['.date('d-m-Y H:i:s').'][error] Data CSV kosong<br>';
+            exit();
+        }
+
+        $str = implode(',', $value_query);
+        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data<br>';
+
+        $sql = "
+            REPLACE INTO propinsi (kd_prop, nm_prop)
+            VALUES $str
+        ";
+
+        $result = $this->core->db()->pdo()->exec($sql);
+
+        if ($result === false) {
+            echo '['.date('d-m-Y H:i:s').'][error] Gagal import<br>';
+            exit();
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai<br>';
+        exit();
+    }
+
+
+    /* End Propinsi Section */    
+
+    /* Start Kabupaten Section */
+    public function getKabupaten()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kabupatenjs']), 'footer');
+      $return = $this->kabupaten->getIndex();
+      return $this->draw('kabupaten.html', [
+        'kabupaten' => $return
+      ]);
+
+    }
+
+    public function anyKabupatenForm()
+    {
+        $return = $this->kabupaten->anyForm();
+        echo $this->draw('kabupaten.form.html', ['kabupaten' => $return]);
+        exit();
+    }
+
+    public function anyKabupatenDisplay()
+    {
+        $return = $this->kabupaten->anyDisplay();
+        echo $this->draw('kabupaten.display.html', ['kabupaten' => $return]);
+        exit();
+    }
+
+    public function postKabupatenSave()
+    {
+      $this->kabupaten->postSave();
+      exit();
+    }
+
+    public function postKabupatenHapus()
+    {
+      $this->kabupaten->postHapus();
+      exit();
+    }
+
+    public function getKabupatenJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kabupaten.js');
+        exit();
+    }
+
+    public function getImportKabupaten()
+    {
+      $filename = 'https://basoro.id/downloads/regencies.csv';
+      echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv'."<br>";
+
+      $csvData = file_get_contents($filename);
+      if($csvData) {
+        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan'."<br>";
+      } else {
+        echo '['.date('d-m-Y H:i:s').'][error] File '.$filename.' tidak ditemukan'."<br>";
+        exit();
+      }
+
+      $lines = explode(PHP_EOL, $csvData);
+      $array = array();
+      foreach ($lines as $line) {
+          $delimiter = str_contains($line, ';') ? ';' : ',';
+          $array[] = str_getcsv($line, $delimiter, '"', '\\');
+      }
+
+      foreach ($array as $data){   
+        $kode = $data[0];
+        $nama = $data[2];
+        $value_query[] = "('".$kode."','".str_replace("'","\'",$nama)."')";
+      }
+      $str = implode(",", $value_query);
+      echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data'."<br>";
+      $result = $this->core->db()->pdo()->exec("REPLACE INTO kabupaten (kd_kab, nm_kab) VALUES $str");
+      if($result) {
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai'."<br>";
+      } else {
+        echo '['.date('d-m-Y H:i:s').'][error] kesalahan selama import : <pre>'.json_encode($str, JSON_PRETTY_PRINT).''."</pre><br>";
+        exit();
+      }
+
+      exit();
+    }
+
+    /* End Kabupaten Section */    
+
+    /* Start Kecamatan Section */
+    public function getKecamatan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kecamatanjs']), 'footer');
+      $return = $this->kecamatan->getIndex();
+      return $this->draw('kecamatan.html', [
+        'kecamatan' => $return
+      ]);
+
+    }
+
+    public function anyKecamatanForm()
+    {
+        $return = $this->kecamatan->anyForm();
+        echo $this->draw('kecamatan.form.html', ['kecamatan' => $return]);
+        exit();
+    }
+
+    public function anyKecamatanDisplay()
+    {
+        $return = $this->kecamatan->anyDisplay();
+        echo $this->draw('kecamatan.display.html', ['kecamatan' => $return]);
+        exit();
+    }
+
+    public function postKecamatanSave()
+    {
+      $this->kecamatan->postSave();
+      exit();
+    }
+
+    public function postKecamatanHapus()
+    {
+      $this->kecamatan->postHapus();
+      exit();
+    }
+
+    public function getKecamatanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kecamatan.js');
+        exit();
+    }
+
+    public function getImportKecamatan()
+    {
+        $filename = 'https://basoro.id/downloads/districts.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv<br>';
+
+        $csvData = file_get_contents($filename);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] File tidak ditemukan<br>';
+            exit();
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan<br>';
+        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
+
+        $pdo = $this->core->db()->pdo();
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        $lines = explode(PHP_EOL, $csvData);
+
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("
+            REPLACE INTO kecamatan (kd_kec, nm_kec)
+            VALUES (?, ?)
+        ");
+
+        $total = 0;
+
+        foreach ($lines as $line) {
+
+            if (empty(trim($line))) continue;
+
+            $delimiter = str_contains($line, ';') ? ';' : ',';
+            $data = str_getcsv($line, $delimiter, '"', '\\');
+
+            if (count($data) < 3) continue;
+
+            $kode = trim($data[0]);
+            $nama = trim($data[2]);
+
+            if ($kode === '' || $nama === '') continue;
+            if (!is_numeric($kode)) continue;
+
+            try {
+                $stmt->execute([$kode, $nama]);
+                $total++;
+            } catch (\Exception $e) {
+                echo '['.date('d-m-Y H:i:s').'][error] '.$e->getMessage().'<br>';
+            }
+        }
+
+        $pdo->commit();
+
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai. Total: '.$total.' data<br>';
+        exit();
+    }
+    /* End Kecamatan Section */    
+
+    /* Start Kelurahan Section */
+    public function getKelurahan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kelurahanjs']), 'footer');
+      $return = $this->kelurahan->getIndex();
+      return $this->draw('kelurahan.html', [
+        'kelurahan' => $return
+      ]);
+
+    }
+
+    public function anyKelurahanForm()
+    {
+        $return = $this->kelurahan->anyForm();
+        echo $this->draw('kelurahan.form.html', ['kelurahan' => $return]);
+        exit();
+    }
+
+    public function anyKelurahanDisplay()
+    {
+        $return = $this->kelurahan->anyDisplay();
+        echo $this->draw('kelurahan.display.html', ['kelurahan' => $return]);
+        exit();
+    }
+
+    public function postKelurahanSave()
+    {
+      $this->kelurahan->postSave();
+      exit();
+    }
+
+    public function postKelurahanHapus()
+    {
+      $this->kelurahan->postHapus();
+      exit();
+    }
+
+    public function getKelurahanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kelurahan.js');
+        exit();
+    }
+
+    public function getImportKelurahan()
+    {
+        $filename = 'https://basoro.id/downloads/villages.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor file csv<br>';
+
+        $csvData = file_get_contents($filename);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] File tidak ditemukan<br>';
+            exit();
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Berkas ditemukan<br>';
+        echo '['.date('d-m-Y H:i:s').'][info] Memasukkan data...<br>';
+
+        $pdo = $this->core->db()->pdo();
+        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+        $lines = explode(PHP_EOL, $csvData);
+
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("
+            REPLACE INTO kelurahan (kd_kel, nm_kel)
+            VALUES (?, ?)
+        ");
+
+        $total = 0;
+
+        foreach ($lines as $line) {
+
+            if (empty(trim($line))) continue;
+
+            $delimiter = str_contains($line, ';') ? ';' : ',';
+            $data = str_getcsv($line, $delimiter, '"', '\\');
+
+            if (!isset($data[0], $data[2])) continue;
+
+            $kode = trim($data[0]);
+            $nama = trim($data[2]);
+
+            if ($kode === '' || $nama === '') continue;
+
+            try {
+                $stmt->execute([$kode, $nama]);
+                $total++;
+            } catch (\Exception $e) {
+                echo '['.date('d-m-Y H:i:s').'][error] '.$e->getMessage().'<br>';
+            }
+        }
+
+        $pdo->commit();
+
+        echo '['.date('d-m-Y H:i:s').'][info] Impor selesai. Total: '.$total.' data<br>';
+        exit();
+    }
+    /* End Kelurahan Section */   
+
+    /* Start Cacat Fisik Section */
+    public function getCacat()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'cacatjs']), 'footer');
+      $return = $this->cacat->getIndex();
+      return $this->draw('cacat.html', [
+        'cacat' => $return
+      ]);
+
+    }
+
+    public function anyCacatForm()
+    {
+        $return = $this->cacat->anyForm();
+        echo $this->draw('cacat.form.html', ['cacat' => $return]);
+        exit();
+    }
+
+    public function anyCacatDisplay()
+    {
+        $return = $this->cacat->anyDisplay();
+        echo $this->draw('cacat.display.html', ['cacat' => $return]);
+        exit();
+    }
+
+    public function postCacatSave()
+    {
+      $this->cacat->postSave();
+      exit();
+    }
+
+    public function postCacatHapus()
+    {
+      $this->cacat->postHapus();
+      exit();
+    }
+
+    public function getCacatJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/cacat.js');
+        exit();
+    }
+    /* End Cacat Section */
+
+    /* Start Suku Section */
+    public function getSuku()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'sukujs']), 'footer');
+      $return = $this->suku->getIndex();
+      return $this->draw('suku.html', [
+        'suku' => $return
+      ]);
+
+    }
+
+    public function anySukuForm()
+    {
+        $return = $this->suku->anyForm();
+        echo $this->draw('suku.form.html', ['suku' => $return]);
+        exit();
+    }
+
+    public function anySukuDisplay()
+    {
+        $return = $this->suku->anyDisplay();
+        echo $this->draw('suku.display.html', ['suku' => $return]);
+        exit();
+    }
+
+    public function postSukuSave()
+    {
+      $this->suku->postSave();
+      exit();
+    }
+
+    public function postSukuHapus()
+    {
+      $this->suku->postHapus();
+      exit();
+    }
+
+    public function getSukuJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/suku.js');
+        exit();
+    }
+    /* End Suku Section */
+
+    /* Start Perusahaan Section */
+    public function getPerusahaan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'perusahaanjs']), 'footer');
+      $return = $this->perusahaan->getIndex();
+      return $this->draw('perusahaan.html', [
+        'perusahaan' => $return
+      ]);
+
+    }
+
+    public function anyPerusahaanForm()
+    {
+        $return = $this->perusahaan->anyForm();
+        echo $this->draw('perusahaan.form.html', ['perusahaan' => $return]);
+        exit();
+    }
+
+    public function anyPerusahaanDisplay()
+    {
+        $return = $this->perusahaan->anyDisplay();
+        echo $this->draw('perusahaan.display.html', ['perusahaan' => $return]);
+        exit();
+    }
+
+    public function postPerusahaanSave()
+    {
+      $this->perusahaan->postSave();
+      exit();
+    }
+
+    public function postPerusahaanHapus()
+    {
+      $this->perusahaan->postHapus();
+      exit();
+    }
+
+    public function getPerusahaanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/perusahaan.js');
+        exit();
+    }
+    /* End Perusahaan Section */
+
+    /* Start Penjab Section */
+    public function getPenjab()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'penjabjs']), 'footer');
+      $return = $this->penjab->getIndex();
+      return $this->draw('penjab.html', [
+        'penjab' => $return
+      ]);
+
+    }
+
+    public function anyPenjabForm()
+    {
+        $return = $this->penjab->anyForm();
+        echo $this->draw('penjab.form.html', ['penjab' => $return]);
+        exit();
+    }
+
+    public function anyPenjabDisplay()
+    {
+        $return = $this->penjab->anyDisplay();
+        echo $this->draw('penjab.display.html', ['penjab' => $return]);
+        exit();
+    }
+
+    public function postPenjabSave()
+    {
+      $this->penjab->postSave();
+      exit();
+    }
+
+    public function postPenjabHapus()
+    {
+      $this->penjab->postHapus();
+      exit();
+    }
+
+    public function getPenjabJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/penjab.js');
+        exit();
+    }
+    /* End Penjab Section */
+
+    /* Start GolonganBarang Section */
+    public function getGolonganBarang()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'golonganbarangjs']), 'footer');
+      $return = $this->golonganbarang->getIndex();
+      return $this->draw('golonganbarang.html', [
+        'golonganbarang' => $return
+      ]);
+
+    }
+
+    public function anyGolonganBarangForm()
+    {
+        $return = $this->golonganbarang->anyForm();
+        echo $this->draw('golonganbarang.form.html', ['golonganbarang' => $return]);
+        exit();
+    }
+
+    public function anyGolonganBarangDisplay()
+    {
+        $return = $this->golonganbarang->anyDisplay();
+        echo $this->draw('golonganbarang.display.html', ['golonganbarang' => $return]);
+        exit();
+    }
+
+    public function postGolonganBarangSave()
+    {
+      $this->golonganbarang->postSave();
+      exit();
+    }
+
+    public function postGolonganBarangHapus()
+    {
+      $this->golonganbarang->postHapus();
+      exit();
+    }
+
+    public function getGolonganBarangJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/golonganbarang.js');
+        exit();
+    }
+    /* End GolonganBarang Section */
+
+    /* Start IndustriFarmasi Section */
+    public function getIndustriFarmasi()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'industrifarmasijs']), 'footer');
+      $return = $this->industrifarmasi->getIndex();
+      return $this->draw('industrifarmasi.html', [
+        'industrifarmasi' => $return
+      ]);
+
+    }
+
+    public function anyIndustriFarmasiForm()
+    {
+        $return = $this->industrifarmasi->anyForm();
+        echo $this->draw('industrifarmasi.form.html', ['industrifarmasi' => $return]);
+        exit();
+    }
+
+    public function anyIndustriFarmasiDisplay()
+    {
+        $return = $this->industrifarmasi->anyDisplay();
+        echo $this->draw('industrifarmasi.display.html', ['industrifarmasi' => $return]);
+        exit();
+    }
+
+    public function postIndustriFarmasiSave()
+    {
+      $this->industrifarmasi->postSave();
+      exit();
+    }
+
+    public function postIndustriFarmasiHapus()
+    {
+      $this->industrifarmasi->postHapus();
+      exit();
+    }
+
+    public function getIndustriFarmasiJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/industrifarmasi.js');
+        exit();
+    }
+    /* End IndustriFarmasi Section */
+
+    /* Start Jenis Section */
+    public function getJenis()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'jenisjs']), 'footer');
+      $return = $this->jenis->getIndex();
+      return $this->draw('jenis.html', [
+        'jenis' => $return
+      ]);
+
+    }
+
+    public function anyJenisForm()
+    {
+        $return = $this->jenis->anyForm();
+        echo $this->draw('jenis.form.html', ['jenis' => $return]);
+        exit();
+    }
+
+    public function anyJenisDisplay()
+    {
+        $return = $this->jenis->anyDisplay();
+        echo $this->draw('jenis.display.html', ['jenis' => $return]);
+        exit();
+    }
+
+    public function postJenisSave()
+    {
+      $this->jenis->postSave();
+      exit();
+    }
+
+    public function postJenisHapus()
+    {
+      $this->jenis->postHapus();
+      exit();
+    }
+
+    public function getJenisJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/jenis.js');
+        exit();
+    }
+    /* End Jenis Section */
+
+    /* Start KategoriBarang Section */
+    public function getKategoriBarang()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kategoribarangjs']), 'footer');
+      $return = $this->kategoribarang->getIndex();
+      return $this->draw('kategoribarang.html', [
+        'kategoribarang' => $return
+      ]);
+
+    }
+
+    public function anyKategoriBarangForm()
+    {
+        $return = $this->kategoribarang->anyForm();
+        echo $this->draw('kategoribarang.form.html', ['kategoribarang' => $return]);
+        exit();
+    }
+
+    public function anyKategoriBarangDisplay()
+    {
+        $return = $this->kategoribarang->anyDisplay();
+        echo $this->draw('kategoribarang.display.html', ['kategoribarang' => $return]);
+        exit();
+    }
+
+    public function postKategoriBarangSave()
+    {
+      $this->kategoribarang->postSave();
+      exit();
+    }
+
+    public function postKategoriBarangHapus()
+    {
+      $this->kategoribarang->postHapus();
+      exit();
+    }
+
+    public function getKategoriBarangJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kategoribarang.js');
+        exit();
+    }
+    /* End KategoriBarang Section */
+
+/* Start KategoriPenyakit Section */
+    public function getKategoriPenyakit()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kategoripenyakitjs']), 'footer');
+      $return = $this->kategoripenyakit->getIndex();
+      return $this->draw('kategoripenyakit.html', [
+        'kategoripenyakit' => $return
+      ]);
+
+    }
+
+    public function anyKategoriPenyakitForm()
+    {
+        $return = $this->kategoripenyakit->anyForm();
+        echo $this->draw('kategoripenyakit.form.html', ['kategoripenyakit' => $return]);
+        exit();
+    }
+
+    public function anyKategoriPenyakitDisplay()
+    {
+        $return = $this->kategoripenyakit->anyDisplay();
+        echo $this->draw('kategoripenyakit.display.html', ['kategoripenyakit' => $return]);
+        exit();
+    }
+
+    public function postKategoriPenyakitSave()
+    {
+      $this->kategoripenyakit->postSave();
+      exit();
+    }
+
+    public function postKategoriPenyakitHapus()
+    {
+      $this->kategoripenyakit->postHapus();
+      exit();
+    }
+
+    public function getKategoriPenyakitJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kategoripenyakit.js');
+        exit();
+    }
+    /* End KategoriPenyakit Section */
+
+/* Start KategoriPerawatan Section */
+    public function getKategoriPerawatan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kategoriperawatanjs']), 'footer');
+      $return = $this->kategoriperawatan->getIndex();
+      return $this->draw('kategoriperawatan.html', [
+        'kategoriperawatan' => $return
+      ]);
+
+    }
+
+    public function anyKategoriPerawatanForm()
+    {
+        $return = $this->kategoriperawatan->anyForm();
+        echo $this->draw('kategoriperawatan.form.html', ['kategoriperawatan' => $return]);
+        exit();
+    }
+
+    public function anyKategoriPerawatanDisplay()
+    {
+        $return = $this->kategoriperawatan->anyDisplay();
+        echo $this->draw('kategoriperawatan.display.html', ['kategoriperawatan' => $return]);
+        exit();
+    }
+
+    public function postKategoriPerawatanSave()
+    {
+      $this->kategoriperawatan->postSave();
+      exit();
+    }
+
+    public function postKategoriPerawatanHapus()
+    {
+      $this->kategoriperawatan->postHapus();
+      exit();
+    }
+
+    public function getKategoriPerawatanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kategoriperawatan.js');
+        exit();
+    }
+    /* End KategoriPerawatan Section */
+
+/* Start KodeSatuan Section */
+    public function getKodeSatuan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kodesatuanjs']), 'footer');
+      $return = $this->kodesatuan->getIndex();
+      return $this->draw('kodesatuan.html', [
+        'kodesatuan' => $return
+      ]);
+
+    }
+
+    public function anyKodeSatuanForm()
+    {
+        $return = $this->kodesatuan->anyForm();
+        echo $this->draw('kodesatuan.form.html', ['kodesatuan' => $return]);
+        exit();
+    }
+
+    public function anyKodeSatuanDisplay()
+    {
+        $return = $this->kodesatuan->anyDisplay();
+        echo $this->draw('kodesatuan.display.html', ['kodesatuan' => $return]);
+        exit();
+    }
+
+    public function postKodeSatuanSave()
+    {
+      $this->kodesatuan->postSave();
+      exit();
+    }
+
+    public function postKodeSatuanHapus()
+    {
+      $this->kodesatuan->postHapus();
+      exit();
+    }
+
+    public function getKodeSatuanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kodesatuan.js');
+        exit();
+    }
+    /* End KodeSatuan Section */
+
+/* Start MasterAturanPakai Section */
+    public function getMasterAturanPakai()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'masteraturanpakaijs']), 'footer');
+      $return = $this->masteraturanpakai->getIndex();
+      return $this->draw('masteraturanpakai.html', [
+        'masteraturanpakai' => $return
+      ]);
+
+    }
+
+    public function anyMasterAturanPakaiForm()
+    {
+        $return = $this->masteraturanpakai->anyForm();
+        echo $this->draw('masteraturanpakai.form.html', ['masteraturanpakai' => $return]);
+        exit();
+    }
+
+    public function anyMasterAturanPakaiDisplay()
+    {
+        $return = $this->masteraturanpakai->anyDisplay();
+        echo $this->draw('masteraturanpakai.display.html', ['masteraturanpakai' => $return]);
+        exit();
+    }
+
+    public function postMasterAturanPakaiSave()
+    {
+      $this->masteraturanpakai->postSave();
+      exit();
+    }
+
+    public function postMasterAturanPakaiHapus()
+    {
+      $this->masteraturanpakai->postHapus();
+      exit();
+    }
+
+    public function getMasterAturanPakaiJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/masteraturanpakai.js');
+        exit();
+    }
+    /* End MasterAturanPakai Section */
+
+/* Start MasterBerkasDigital Section */
+    public function getMasterBerkasDigital()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'masterberkasdigitaljs']), 'footer');
+      $return = $this->masterberkasdigital->getIndex();
+      return $this->draw('masterberkasdigital.html', [
+        'masterberkasdigital' => $return
+      ]);
+
+    }
+
+    public function anyMasterBerkasDigitalForm()
+    {
+        $return = $this->masterberkasdigital->anyForm();
+        echo $this->draw('masterberkasdigital.form.html', ['masterberkasdigital' => $return]);
+        exit();
+    }
+
+    public function anyMasterBerkasDigitalDisplay()
+    {
+        $return = $this->masterberkasdigital->anyDisplay();
+        echo $this->draw('masterberkasdigital.display.html', ['masterberkasdigital' => $return]);
+        exit();
+    }
+
+    public function postMasterBerkasDigitalSave()
+    {
+      $this->masterberkasdigital->postSave();
+      exit();
+    }
+
+    public function postMasterBerkasDigitalHapus()
+    {
+      $this->masterberkasdigital->postHapus();
+      exit();
+    }
+
+    public function getMasterBerkasDigitalJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/masterberkasdigital.js');
+        exit();
+    }
+    /* End MasterBerkasDigital Section */
+
+    /* Start Spesialis Section */
+    public function getSpesialis()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'spesialisjs']), 'footer');
+      $return = $this->spesialis->getIndex();
+      return $this->draw('spesialis.html', [
+        'spesialis' => $return
+      ]);
+
+    }
+
+    public function anySpesialisForm()
+    {
+        $return = $this->spesialis->anyForm();
+        echo $this->draw('spesialis.form.html', ['spesialis' => $return]);
+        exit();
+    }
+
+    public function anySpesialisDisplay()
+    {
+        $return = $this->spesialis->anyDisplay();
+        echo $this->draw('spesialis.display.html', ['spesialis' => $return]);
+        exit();
+    }
+
+    public function postSpesialisSave()
+    {
+      $this->spesialis->postSave();
+      exit();
+    }
+
+    public function postSpesialisHapus()
+    {
+      $this->spesialis->postHapus();
+      exit();
+    }
+
+    public function getSpesialisJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/spesialis.js');
+        exit();
+    }
+    /* End Spesialis Section */
+
+/* Start Bank Section */
+    public function getBank()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'bankjs']), 'footer');
+      $return = $this->bank->getIndex();
+      return $this->draw('bank.html', [
+        'bank' => $return
+      ]);
+
+    }
+
+    public function anyBankForm()
+    {
+        $return = $this->bank->anyForm();
+        echo $this->draw('bank.form.html', ['bank' => $return]);
+        exit();
+    }
+
+    public function anyBankDisplay()
+    {
+        $return = $this->bank->anyDisplay();
+        echo $this->draw('bank.display.html', ['bank' => $return]);
+        exit();
+    }
+
+    public function postBankSave()
+    {
+      $this->bank->postSave();
+      exit();
+    }
+
+    public function postBankHapus()
+    {
+      $this->bank->postHapus();
+      exit();
+    }
+
+    public function getBankJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/bank.js');
+        exit();
+    }
+    /* End Bank Section */
+
+/* Start Bidang Section */
+    public function getBidang()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'bidangjs']), 'footer');
+      $return = $this->bidang->getIndex();
+      return $this->draw('bidang.html', [
+        'bidang' => $return
+      ]);
+
+    }
+
+    public function anyBidangForm()
+    {
+        $return = $this->bidang->anyForm();
+        echo $this->draw('bidang.form.html', ['bidang' => $return]);
+        exit();
+    }
+
+    public function anyBidangDisplay()
+    {
+        $return = $this->bidang->anyDisplay();
+        echo $this->draw('bidang.display.html', ['bidang' => $return]);
+        exit();
+    }
+
+    public function postBidangSave()
+    {
+      $this->bidang->postSave();
+      exit();
+    }
+
+    public function postBidangHapus()
+    {
+      $this->bidang->postHapus();
+      exit();
+    }
+
+    public function getBidangJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/bidang.js');
+        exit();
+    }
+    /* End Bidang Section */
+
+/* Start Departemen Section */
+    public function getDepartemen()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'departemenjs']), 'footer');
+      $return = $this->departemen->getIndex();
+      return $this->draw('departemen.html', [
+        'departemen' => $return
+      ]);
+
+    }
+
+    public function anyDepartemenForm()
+    {
+        $return = $this->departemen->anyForm();
+        echo $this->draw('departemen.form.html', ['departemen' => $return]);
+        exit();
+    }
+
+    public function anyDepartemenDisplay()
+    {
+        $return = $this->departemen->anyDisplay();
+        echo $this->draw('departemen.display.html', ['departemen' => $return]);
+        exit();
+    }
+
+    public function postDepartemenSave()
+    {
+      $this->departemen->postSave();
+      exit();
+    }
+
+    public function postDepartemenHapus()
+    {
+      $this->departemen->postHapus();
+      exit();
+    }
+
+    public function getDepartemenJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/departemen.js');
+        exit();
+    }
+    /* End Departemen Section */
+
+/* Start EmergencyIndex Section */
+    public function getEmergencyIndex()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'emergencyindexjs']), 'footer');
+      $return = $this->emergencyindex->getIndex();
+      return $this->draw('emergencyindex.html', [
+        'emergencyindex' => $return
+      ]);
+
+    }
+
+    public function anyEmergencyIndexForm()
+    {
+        $return = $this->emergencyindex->anyForm();
+        echo $this->draw('emergencyindex.form.html', ['emergencyindex' => $return]);
+        exit();
+    }
+
+    public function anyEmergencyIndexDisplay()
+    {
+        $return = $this->emergencyindex->anyDisplay();
+        echo $this->draw('emergencyindex.display.html', ['emergencyindex' => $return]);
+        exit();
+    }
+
+    public function postEmergencyIndexSave()
+    {
+      $this->emergencyindex->postSave();
+      exit();
+    }
+
+    public function postEmergencyIndexHapus()
+    {
+      $this->emergencyindex->postHapus();
+      exit();
+    }
+
+    public function getEmergencyIndexJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/emergencyindex.js');
+        exit();
+    }
+    /* End EmergencyIndex Section */
+
+    /* Start Jabatan Section */
+    public function getJabatan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'jabatanjs']), 'footer');
+      $return = $this->jabatan->getIndex();
+      return $this->draw('jabatan.html', [
+        'jabatan' => $return
+      ]);
+
+    }
+
+    public function anyJabatanForm()
+    {
+        $return = $this->jabatan->anyForm();
+        echo $this->draw('jabatan.form.html', ['jabatan' => $return]);
+        exit();
+    }
+
+    public function anyJabatanDisplay()
+    {
+        $return = $this->jabatan->anyDisplay();
+        echo $this->draw('jabatan.display.html', ['jabatan' => $return]);
+        exit();
+    }
+
+    public function postJabatanSave()
+    {
+      $this->jabatan->postSave();
+      exit();
+    }
+
+    public function postJabatanHapus()
+    {
+      $this->jabatan->postHapus();
+      exit();
+    }
+
+    public function getJabatanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/jabatan.js');
+        exit();
+    }
+    /* End Jabatan Section */
+
+    /* Start JenjangJabatan Section */
+    public function getJenjangJabatan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'jenjangjabatanjs']), 'footer');
+      $return = $this->jenjangjabatan->getIndex();
+      return $this->draw('jenjangjabatan.html', [
+        'jenjangjabatan' => $return
+      ]);
+
+    }
+
+    public function anyJenjangJabatanForm()
+    {
+        $return = $this->jenjangjabatan->anyForm();
+        echo $this->draw('jenjangjabatan.form.html', ['jenjangjabatan' => $return]);
+        exit();
+    }
+
+    public function anyJenjangJabatanDisplay()
+    {
+        $return = $this->jenjangjabatan->anyDisplay();
+        echo $this->draw('jenjangjabatan.display.html', ['jenjangjabatan' => $return]);
+        exit();
+    }
+
+    public function postJenjangJabatanSave()
+    {
+      $this->jenjangjabatan->postSave();
+      exit();
+    }
+
+    public function postJenjangJabatanHapus()
+    {
+      $this->jenjangjabatan->postHapus();
+      exit();
+    }
+
+    public function getJenjangJabatanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/jenjangjabatan.js');
+        exit();
+    }
+    /* End JenjangJabatan Section */
+
+    /* Start KelompokJabatan Section */
+    public function getKelompokJabatan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'kelompokjabatanjs']), 'footer');
+      $return = $this->kelompokjabatan->getIndex();
+      return $this->draw('kelompokjabatan.html', [
+        'kelompokjabatan' => $return
+      ]);
+
+    }
+
+    public function anyKelompokJabatanForm()
+    {
+        $return = $this->kelompokjabatan->anyForm();
+        echo $this->draw('kelompokjabatan.form.html', ['kelompokjabatan' => $return]);
+        exit();
+    }
+
+    public function anyKelompokJabatanDisplay()
+    {
+        $return = $this->kelompokjabatan->anyDisplay();
+        echo $this->draw('kelompokjabatan.display.html', ['kelompokjabatan' => $return]);
+        exit();
+    }
+
+    public function postKelompokJabatanSave()
+    {
+      $this->kelompokjabatan->postSave();
+      exit();
+    }
+
+    public function postKelompokJabatanHapus()
+    {
+      $this->kelompokjabatan->postHapus();
+      exit();
+    }
+
+    public function getKelompokJabatanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kelompokjabatan.js');
+        exit();
+    }
+    /* End KelompokJabatan Section */
+
+    /* Start Pendidikan Section */
+    public function getPendidikan()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'pendidikanjs']), 'footer');
+      $return = $this->pendidikan->getIndex();
+      return $this->draw('pendidikan.html', [
+        'pendidikan' => $return
+      ]);
+
+    }
+
+    public function anyPendidikanForm()
+    {
+        $return = $this->pendidikan->anyForm();
+        echo $this->draw('pendidikan.form.html', ['pendidikan' => $return]);
+        exit();
+    }
+
+    public function anyPendidikanDisplay()
+    {
+        $return = $this->pendidikan->anyDisplay();
+        echo $this->draw('pendidikan.display.html', ['pendidikan' => $return]);
+        exit();
+    }
+
+    public function postPendidikanSave()
+    {
+      $this->pendidikan->postSave();
+      exit();
+    }
+
+    public function postPendidikanHapus()
+    {
+      $this->pendidikan->postHapus();
+      exit();
+    }
+
+    public function getPendidikanJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/pendidikan.js');
+        exit();
+    }
+    /* End Pendidikan Section */
+
+    /* Start Resiko Kerja Section */
+    public function getResikoKerja()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'resikokerjajs']), 'footer');
+      $return = $this->resikokerja->getIndex();
+      return $this->draw('resiko.kerja.html', [
+        'resikokerja' => $return
+      ]);
+
+    }
+
+    public function anyResikoKerjaForm()
+    {
+        $return = $this->resikokerja->anyForm();
+        echo $this->draw('resiko.kerja.form.html', ['resikokerja' => $return]);
+        exit();
+    }
+
+    public function anyResikoKerjaDisplay()
+    {
+        $return = $this->resikokerja->anyDisplay();
+        echo $this->draw('resiko.kerja.display.html', ['resikokerja' => $return]);
+        exit();
+    }
+
+    public function postResikoKerjaSave()
+    {
+      $this->resikokerja->postSave();
+      exit();
+    }
+
+    public function postResikoKerjaHapus()
+    {
+      $this->resikokerja->postHapus();
+      exit();
+    }
+
+    public function getResikoKerjaJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/resikokerja.js');
+        exit();
+    }
+    /* End Pendidikan Section */
+
+    /* Start Status Kerja Section */
+    public function getStatusKerja()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'statuskerjajs']), 'footer');
+      $return = $this->statuskerja->getIndex();
+      return $this->draw('status.kerja.html', [
+        'statuskerja' => $return
+      ]);
+
+    }
+
+    public function anyStatusKerjaForm()
+    {
+        $return = $this->statuskerja->anyForm();
+        echo $this->draw('status.kerja.form.html', ['statuskerja' => $return]);
+        exit();
+    }
+
+    public function anyStatusKerjaDisplay()
+    {
+        $return = $this->statuskerja->anyDisplay();
+        echo $this->draw('status.kerja.display.html', ['statuskerja' => $return]);
+        exit();
+    }
+
+    public function postStatusKerjaSave()
+    {
+      $this->statuskerja->postSave();
+      exit();
+    }
+
+    public function postStatusKerjaHapus()
+    {
+      $this->statuskerja->postHapus();
+      exit();
+    }
+
+    public function getStatusKerjaJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/statuskerja.js');
+        exit();
+    }
+    /* End Pendidikan Section */
+
+    /* Start Status WP Section */
+    public function getStatusWP()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'statuswpjs']), 'footer');
+      $return = $this->statuswp->getIndex();
+      return $this->draw('status.wp.html', [
+        'statuswp' => $return
+      ]);
+
+    }
+
+    public function anyStatusWPForm()
+    {
+        $return = $this->statuswp->anyForm();
+        echo $this->draw('status.wp.form.html', ['statuswp' => $return]);
+        exit();
+    }
+
+    public function anyStatusWPDisplay()
+    {
+        $return = $this->statuswp->anyDisplay();
+        echo $this->draw('status.wp.display.html', ['statuswp' => $return]);
+        exit();
+    }
+
+    public function postStatusWPSave()
+    {
+      $this->statuswp->postSave();
+      exit();
+    }
+
+    public function postStatusWPHapus()
+    {
+      $this->statuswp->postHapus();
+      exit();
+    }
+
+    public function getStatusWPJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/statuswp.js');
+        exit();
+    }
+    /* End Pendidikan Section */
+
+    /* Start MetodeRacik Section */
+    public function getMetodeRacik()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'metoderacikjs']), 'footer');
+      $return = $this->metoderacik->getIndex();
+      return $this->draw('metoderacik.html', [
+        'metoderacik' => $return
+      ]);
+
+    }
+
+    public function anyMetodeRacikForm()
+    {
+        $return = $this->metoderacik->anyForm();
+        echo $this->draw('metoderacik.form.html', ['metoderacik' => $return]);
+        exit();
+    }
+
+    public function anyMetodeRacikDisplay()
+    {
+        $return = $this->metoderacik->anyDisplay();
+        echo $this->draw('metoderacik.display.html', ['metoderacik' => $return]);
+        exit();
+    }
+
+    public function postMetodeRacikSave()
+    {
+      $this->metoderacik->postSave();
+      exit();
+    }
+
+    public function postMetodeRacikHapus()
+    {
+      $this->metoderacik->postHapus();
+      exit();
+    }
+
+    public function getMetodeRacikJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/metoderacik.js');
+        exit();
+    }
+    /* End MetodeRacik Section */
+
+    /* Start Ruang OK Section */
+    public function getRuangOk()
+    {
+      $this->core->addJS(url([ADMIN, 'master', 'ruangokjs']), 'footer');
+      $return = $this->ruangok->getIndex();
+      return $this->draw('ruangok.html', [
+        'ruangok' => $return
+      ]);
+
+    }
+
+    public function anyRuangOkForm()
+    {
+        $return = $this->ruangok->anyForm();
+        echo $this->draw('ruangok.form.html', ['ruangok' => $return]);
+        exit();
+    }
+
+    public function anyRuangOkDisplay()
+    {
+        $return = $this->ruangok->anyDisplay();
+        echo $this->draw('ruangok.display.html', ['ruangok' => $return]);
+        exit();
+    }
+
+    public function postRuangOkSave()
+    {
+      $this->ruangok->postSave();
+      exit();
+    }
+
+    public function postRuangOkHapus()
+    {
+      $this->ruangok->postHapus();
+      exit();
+    }
+
+    public function getRuangOkJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/ruangok.js');
+        exit();
+    }
+    /* End Ruang OK Section */
+
+    /* Start Penyakit Section */
+    public function getPenyakit()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'penyakitjs']), 'footer');
+      $return = $this->penyakit->getIndex();
+      return $this->draw('penyakit.html', [
+        'penyakit' => $return
+      ]);
+
+    }
+
+    public function anyPenyakitForm()
+    {
+        $return = $this->penyakit->anyForm();
+        echo $this->draw('penyakit.form.html', ['penyakit' => $return]);
+        exit();
+    }
+
+    public function anyPenyakitDisplay()
+    {
+        $return = $this->penyakit->anyDisplay();
+        echo $this->draw('penyakit.display.html', ['penyakit' => $return]);
+        exit();
+    }
+
+    public function postPenyakitSave()
+    {
+      $this->penyakit->postSave();
+      exit();
+    }
+
+    public function postPenyakitHapus()
+    {
+      $this->penyakit->postHapus();
+      exit();
+    }
+
+    public function getImportICD10()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+
+        $url = 'https://basoro.id/downloads/mlite_inacbg_codes.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor ICD-10 dari ' . $url . '<br>';
+
+        $csvData = file_get_contents($url);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] Gagal mendownload file CSV.<br>';
+            exit();
+        }
+
+        $lines = explode(PHP_EOL, $csvData);
+        $pdo = $this->core->db()->pdo();
+        
+        $count = 0;
+        $batchSize = 1000;
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("REPLACE INTO penyakit 
+            (kd_penyakit, nm_penyakit, ciri_ciri, keterangan, kd_ktg, status) 
+            VALUES (?, ?, '', '', '-', 'Tidak Menular')");
+
+        foreach ($lines as $line) {
+            if (empty(trim($line))) continue;
+            $data = str_getcsv($line);
+            
+            // Index 4 is the system type
+            if (isset($data[4]) && strpos($data[4], 'ICD_10') !== false) {
+                $kode = trim($data[1] ?? '');
+                $nama = trim($data[3] ?? '');
+
+                if ($kode === '') continue;
+
+                $stmt->execute([$kode, $nama]);
+                $count++;
+
+                if ($count % $batchSize === 0) {
+                    $pdo->commit();
+                    $pdo->beginTransaction();
+                    echo '['.date('d-m-Y H:i:s').'][info] Berhasil mengimpor ' . $count . ' data ICD-10...<br>';
+                    if (ob_get_level() > 0) ob_flush();
+                    flush();
+                }
+            }
+        }
+
+        if ($pdo->inTransaction()) {
+            $pdo->commit();
+        }
+        echo '['.date('d-m-Y H:i:s').'][info] Impor ICD-10 selesai! Total: ' . $count . ' data.<br>';
+        exit();
+    }
+
+    public function getPenyakitJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/penyakit.js');
+        exit();
+    }
+    /* End Penyakit Section */
+
+    /* Start ICD 9 Section */
+    public function getIcd9()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'icd9js']), 'footer');
+      $return = $this->icd9->getIndex();
+      return $this->draw('icd9.html', [
+        'icd9' => $return
+      ]);
+
+    }
+
+    public function anyIcd9Form()
+    {
+        $return = $this->icd9->anyForm();
+        echo $this->draw('icd9.form.html', ['icd9' => $return]);
+        exit();
+    }
+
+    public function anyIcd9Display()
+    {
+        $return = $this->icd9->anyDisplay();
+        echo $this->draw('icd9.display.html', ['icd9' => $return]);
+        exit();
+    }
+
+    public function postIcd9Save()
+    {
+      $this->icd9->postSave();
+      exit();
+    }
+
+    public function postIcd9Hapus()
+    {
+      $this->icd9->postHapus();
+      exit();
+    }
+
+    public function getImportICD9()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+
+        $url = 'https://basoro.id/downloads/mlite_inacbg_codes.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor ICD-9 dari ' . $url . '<br>';
+
+        $csvData = file_get_contents($url);
+        if (!$csvData) {
+            echo '['.date('d-m-Y H:i:s').'][error] Gagal mendownload file CSV.<br>';
+            exit();
+        }
+
+        $lines = explode(PHP_EOL, $csvData);
+        $pdo = $this->core->db()->pdo();
+        
+        $count = 0;
+        $batchSize = 1000;
+        $pdo->beginTransaction();
+
+        $stmt = $pdo->prepare("REPLACE INTO icd9 
+            (kode, deskripsi_panjang, deskripsi_pendek) 
+            VALUES (?, ?, '')");
+
+        foreach ($lines as $line) {
+            if (empty(trim($line))) continue;
+            $data = str_getcsv($line);
+            
+            // Index 4 is the system type
+            if (isset($data[4]) && strpos($data[4], 'ICD_9') !== false) {
+                $kode = trim($data[1] ?? '');
+                $nama = trim($data[3] ?? '');
+
+                if ($kode === '') continue;
+
+                $stmt->execute([$kode, $nama]);
+                $count++;
+
+                if ($count % $batchSize === 0) {
+                    $pdo->commit();
+                    $pdo->beginTransaction();
+                    echo '['.date('d-m-Y H:i:s').'][info] Berhasil mengimpor ' . $count . ' data ICD-9...<br>';
+                    if (ob_get_level() > 0) ob_flush();
+                    flush();
+                }
+            }
+        }
+
+        if ($pdo->inTransaction()) {
+            $pdo->commit();
+        }
+        echo '['.date('d-m-Y H:i:s').'][info] Impor ICD-9 selesai! Total: ' . $count . ' data.<br>';
+        exit();
+    }
+
+    public function getIcd9JS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/icd9.js');
+        exit();
+    }
+    /* End ICD 9 Section */
+
+    /* Start SNOMED Section */
+    public function getSnomed()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'snomedjs']), 'footer');
+      $return = $this->snomed->getIndex();
+      return $this->draw('snomed.html', [
+        'snomed' => $return
+      ]);
+    }
+
+    public function anySnomedForm()
+    {
+        $return = $this->snomed->anyForm();
+        echo $this->draw('snomed.form.html', ['snomed' => $return]);
+        exit();
+    }
+
+    public function anySnomedDisplay()
+    {
+        $return = $this->snomed->anyDisplay();
+        echo $this->draw('snomed.display.html', ['snomed' => $return]);
+        exit();
+    }
+
+    public function postSnomedSave()
+    {
+      $this->snomed->postSave();
+      exit();
+    }
+
+    public function postSnomedHapus()
+    {
+      $this->snomed->postHapus();
+      exit();
+    }
+
+    public function getSnomedJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/snomed.js');
+        exit();
+    }
+
+    public function getImportSnomed()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+
+        $url = 'https://apimed.mlite.id/snomed.json';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor SNOMED CT dari ' . $url . '<br>';
+
+        $tempFile = sys_get_temp_dir() . '/snomed_temp.json';
+        
+        if (!file_exists($tempFile) || (time() - filemtime($tempFile) > 86400) || filesize($tempFile) == 0) {
+            echo '['.date('d-m-Y H:i:s').'][info] Mendownload file... (ini mungkin butuh waktu)<br>';
+            $fp = fopen($tempFile, 'w+');
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+            curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                echo '['.date('d-m-Y H:i:s').'][error] Download error: ' . curl_error($ch) . '<br>';
+            }
+
+            curl_close($ch);
+            fclose($fp);
+
+            if (filesize($tempFile) == 0) {
+                echo '['.date('d-m-Y H:i:s').'][error] File yang didownload kosong.<br>';
+                unlink($tempFile);
+                exit();
+            }
+
+            echo '['.date('d-m-Y H:i:s').'][info] File didownload (' . round(filesize($tempFile) / 1024 / 1024, 2) . ' MB).<br>';
+        } else {
+            echo '['.date('d-m-Y H:i:s').'][info] Menggunakan file cache lokal (' . round(filesize($tempFile) / 1024 / 1024, 2) . ' MB).<br>';
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Memulai proses import seamless...<br>';
+
+        try {
+            $items = \JsonMachine\Items::fromFile($tempFile, ['decoder' => new \JsonMachine\JsonDecoder\ExtJsonDecoder(true)]);
+            $pdo = $this->core->db()->pdo();
+            
+            $count = 0;
+            $batchSize = 1000;
+
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("REPLACE INTO mlite_snomed (kode, istilah) VALUES (?, ?)");
+
+            foreach ($items as $item) {
+                $kode = trim($item['c'] ?? '');
+                $istilah = trim($item['t'] ?? '');
+
+                if ($kode === '' || $istilah === '') continue;
+
+                $stmt->execute([$kode, $istilah]);
+                $count++;
+
+                if ($count % $batchSize === 0) {
+                    $pdo->commit();
+                    $pdo->beginTransaction();
+                    echo '['.date('d-m-Y H:i:s').'][info] Berhasil mengimpor ' . $count . ' data...<br>';
+                    if (ob_get_level() > 0) ob_flush();
+                    flush();
+                }
+            }
+
+            if ($pdo->inTransaction()) {
+                $pdo->commit();
+            }
+            echo '['.date('d-m-Y H:i:s').'][info] Impor selesai! Total: ' . $count . ' data.<br>';
+            
+            unlink($tempFile);
+
+        } catch (\Exception $e) {
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            echo '['.date('d-m-Y H:i:s').'][error] Terjadi kesalahan: ' . $e->getMessage() . '<br>';
+        }
+        exit();
+    }
+    /* End LOINC Lab Section */
+
+    /* Start LOINC Rad Section */
+    public function getLoincRad()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'loincradjs']), 'footer');
+      $return = $this->loincrad->getIndex();
+      return $this->draw('loincrad.html', [
+        'loincrad' => $return
+      ]);
+    }
+
+    public function anyLoincRadForm()
+    {
+        $return = $this->loincrad->anyForm();
+        echo $this->draw('loincrad.form.html', ['loincrad' => $return]);
+        exit();
+    }
+
+    public function anyLoincRadDisplay()
+    {
+        $return = $this->loincrad->anyDisplay();
+        echo $this->draw('loincrad.display.html', ['loincrad' => $return]);
+        exit();
+    }
+
+    public function postLoincRadSave()
+    {
+      $this->loincrad->postSave();
+      exit();
+    }
+
+    public function postLoincRadHapus()
+    {
+      $this->loincrad->postHapus();
+      exit();
+    }
+
+    public function getLoincRadJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/loincrad.js');
+        exit();
+    }
+
+    public function getImportLoincRad()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+
+        $url = 'https://apimed.mlite.id/loinc_rad.json';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor LOINC Radiologi dari ' . $url . '<br>';
+
+        $tempFile = sys_get_temp_dir() . '/loinc_rad_temp.json';
+        
+        if (!file_exists($tempFile) || (time() - filemtime($tempFile) > 86400) || filesize($tempFile) == 0) {
+            echo '['.date('d-m-Y H:i:s').'][info] Mendownload file... (ini mungkin butuh waktu)<br>';
+            $fp = fopen($tempFile, 'w+');
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+            curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                echo '['.date('d-m-Y H:i:s').'][error] Download error: ' . curl_error($ch) . '<br>';
+            }
+
+            curl_close($ch);
+            fclose($fp);
+
+            if (filesize($tempFile) == 0) {
+                echo '['.date('d-m-Y H:i:s').'][error] File yang didownload kosong.<br>';
+                unlink($tempFile);
+                exit();
+            }
+
+            echo '['.date('d-m-Y H:i:s').'][info] File didownload (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        } else {
+            echo '['.date('d-m-Y H:i:s').'][info] Menggunakan file cache lokal (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Memulai proses import seamless...<br>';
+
+        try {
+            $items = \JsonMachine\Items::fromFile($tempFile, ['decoder' => new \JsonMachine\JsonDecoder\ExtJsonDecoder(true)]);
+            $pdo = $this->core->db()->pdo();
+            
+            $count = 0;
+            $batchSize = 1000;
+
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("REPLACE INTO mlite_loinc_radiologi 
+                (No, Kategori, NamaPemeriksaan, PermintaanHasil, Code, Display, Component, Property, Timing, System, Scale, Method, UnitOfMeasure, CodeSystem, BodySiteCode, BodySiteDisplay, BodySiteCodeSystem) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            foreach ($items as $item) {
+                $no = $item['No'] ?? null;
+                $kategori = $item['Kategori'] ?? '';
+                $nama_pemeriksaan = $item['Nama_Pemeriksaan'] ?? '';
+                $permintaan_hasil = $item['Permintaan_Hasil'] ?? '';
+                $code = trim($item['Code'] ?? '');
+                $display = $item['Display'] ?? '';
+                $component = $item['Component'] ?? '';
+                $property = $item['Property'] ?? '';
+                $timing = $item['Timing'] ?? '';
+                $system = $item['System'] ?? '';
+                $scale = $item['Scale'] ?? '';
+                $method = $item['Method'] ?? '';
+                $unit_measure = $item['Unit_Of_Measure'] ?? '';
+                $code_system = $item['Code_System'] ?? '';
+                $body_site_code = $item['Body_Site_Code'] ?? '';
+                $body_site_display = $item['Body_Site_Display'] ?? '';
+                $body_site_code_system = $item['Body_Site_Code_System'] ?? '';
+
+                if ($code === '') continue;
+
+                $stmt->execute([
+                    $no, $kategori, $nama_pemeriksaan, $permintaan_hasil, 
+                    $code, $display, $component, $property, $timing, $system, $scale, $method, $unit_measure, $code_system,
+                    $body_site_code, $body_site_display, $body_site_code_system
+                ]);
+                $count++;
+
+                if ($count % $batchSize === 0) {
+                    $pdo->commit();
+                    $pdo->beginTransaction();
+                    echo '['.date('d-m-Y H:i:s').'][info] Berhasil mengimpor ' . $count . ' data...<br>';
+                    if (ob_get_level() > 0) ob_flush();
+                    flush();
+                }
+            }
+
+            if ($pdo->inTransaction()) {
+                $pdo->commit();
+            }
+            echo '['.date('d-m-Y H:i:s').'][info] Impor selesai! Total: ' . $count . ' data.<br>';
+            
+            unlink($tempFile);
+
+        } catch (\Exception $e) {
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            echo '['.date('d-m-Y H:i:s').'][error] Terjadi kesalahan: ' . $e->getMessage() . '<br>';
+        }
+        exit();
+    }
+    /* End LOINC Rad Section */
+
+    /* Start KTPL Section */
+    public function getKtpl()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'ktpljs']), 'footer');
+      $return = $this->ktpl->getIndex();
+      return $this->draw('ktpl.html', [
+        'ktpl' => $return
+      ]);
+    }
+
+    public function anyKtplForm()
+    {
+        $return = $this->ktpl->anyForm();
+        echo $this->draw('ktpl.form.html', ['ktpl' => $return]);
+        exit();
+    }
+
+    public function anyKtplDisplay()
+    {
+        $return = $this->ktpl->anyDisplay();
+        echo $this->draw('ktpl.display.html', ['ktpl' => $return]);
+        exit();
+    }
+
+    public function postKtplSave()
+    {
+      $this->ktpl->postSave();
+      exit();
+    }
+
+    public function postKtplHapus()
+    {
+      $this->ktpl->postHapus();
+      exit();
+    }
+
+    public function getKtplJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/ktpl.js');
+        exit();
+    }
+
+    public function getImportKtpl()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+
+        $url = 'https://basoro.id/downloads/kptl_codes.csv';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor KTPL dari ' . $url . '<br>';
+
+        $tempFile = sys_get_temp_dir() . '/ktpl_temp.csv';
+
+        if (!file_exists($tempFile) || (time() - filemtime($tempFile) > 86400) || filesize($tempFile) == 0) {
+            echo '['.date('d-m-Y H:i:s').'][info] Mendownload file... (ini mungkin butuh waktu)<br>';
+            $fp = fopen($tempFile, 'w+');
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+            curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                echo '['.date('d-m-Y H:i:s').'][error] Download error: ' . curl_error($ch) . '<br>';
+            }
+
+            curl_close($ch);
+            fclose($fp);
+
+            if (filesize($tempFile) == 0) {
+                echo '['.date('d-m-Y H:i:s').'][error] File yang didownload kosong.<br>';
+                unlink($tempFile);
+                exit();
+            }
+
+            echo '['.date('d-m-Y H:i:s').'][info] File didownload (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        } else {
+            echo '['.date('d-m-Y H:i:s').'][info] Menggunakan file cache lokal (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Memulai proses import...<br>';
+
+        try {
+            $pdo = $this->core->db()->pdo();
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            // Bersihkan data kosong dari import sebelumnya
+            $pdo->exec("DELETE FROM mlite_ktpl WHERE kode_ktpl = '' OR nama_ktpl = ''");
+            echo '['.date('d-m-Y H:i:s').'][info] Data kosong dari import sebelumnya telah dibersihkan.<br>';
+
+            $fp = fopen($tempFile, 'r');
+            if ($fp === false) {
+                echo '['.date('d-m-Y H:i:s').'][error] Gagal membuka file.<br>';
+                exit();
+            }
+
+            // Skip header
+            fgets($fp);
+
+            $count = 0;
+            $batchSize = 1000;
+
+            // Helper: parse CSV line, extract only first $maxFields fields
+            // This avoids binary embedding column breaking fgetcsv
+            $parseCsvFields = function($line, $maxFields = 6) {
+                $fields = [];
+                $field = '';
+                $inQuote = false;
+                $len = strlen($line);
+                for ($i = 0; $i < $len; $i++) {
+                    $ch = $line[$i];
+                    if ($inQuote) {
+                        if ($ch === '"') {
+                            if ($i + 1 < $len && $line[$i + 1] === '"') {
+                                $field .= '"';
+                                $i++;
+                            } else {
+                                $inQuote = false;
+                            }
+                        } else {
+                            $field .= $ch;
+                        }
+                    } else {
+                        if ($ch === '"') {
+                            $inQuote = true;
+                        } elseif ($ch === ',') {
+                            $fields[] = $field;
+                            $field = '';
+                            if (count($fields) >= $maxFields) break;
+                        } else {
+                            $field .= $ch;
+                        }
+                    }
+                }
+                $fields[] = $field;
+                return array_slice($fields, 0, $maxFields);
+            };
+
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("REPLACE INTO mlite_ktpl
+                (kode_ktpl, nama_ktpl, has_modifier, modifier_count, status)
+                VALUES (?, ?, ?, ?, ?)");
+
+            while (($line = fgets($fp)) !== false) {
+                $line = rtrim($line, "\r\n");
+                if ($line === '') continue;
+
+                // Skip lines that look like continuation of binary data (no comma = not a CSV row)
+                if (strpos($line, ',') === false) continue;
+
+                $row = $parseCsvFields($line, 6);
+                if (count($row) < 3) continue;
+
+                $base_code = trim((string) ($row[1] ?? ''));
+                $name = trim((string) ($row[2] ?? ''));
+                $status = trim((string) ($row[3] ?? 'Aktif'));
+                $has_modifier = (int) ($row[4] ?? 0);
+                $modifier_count = (int) ($row[5] ?? 0);
+
+                if ($base_code === '' || !is_numeric($base_code)) continue;
+
+                $stmt->execute([
+                    $base_code, $name, $has_modifier, $modifier_count, $status
+                ]);
+                $count++;
+
+                if ($count % $batchSize === 0) {
+                    $pdo->commit();
+                    $pdo->beginTransaction();
+                    echo '['.date('d-m-Y H:i:s').'][info] Berhasil mengimpor ' . $count . ' data...<br>';
+                    if (ob_get_level() > 0) ob_flush();
+                    flush();
+                }
+            }
+
+            fclose($fp);
+
+            if ($pdo->inTransaction()) {
+                $pdo->commit();
+            }
+
+            if ($count === 0) {
+                echo '['.date('d-m-Y H:i:s').'][warning] Total 0. File CSV mungkin kosong atau format tidak sesuai.<br>';
+            }
+            echo '['.date('d-m-Y H:i:s').'][info] Impor selesai! Total: ' . $count . ' data.<br>';
+
+        } catch (\Exception $e) {
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            echo '['.date('d-m-Y H:i:s').'][error] Terjadi kesalahan: ' . $e->getMessage() . '<br>';
+        }
+        exit();
+    }
+    /* End KTPL Section */
+
+    /* Start KFA Section */
+    public function getKfa()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'kfajs']), 'footer');
+      $return = $this->kfa->getIndex();
+      return $this->draw('kfa.html', [
+        'kfa' => $return
+      ]);
+    }
+
+    public function anyKfaForm()
+    {
+        $return = $this->kfa->anyForm();
+        echo $this->draw('kfa.form.html', ['kfa' => $return]);
+        exit();
+    }
+
+    public function anyKfaDisplay()
+    {
+        $return = $this->kfa->anyDisplay();
+        echo $this->draw('kfa.display.html', ['kfa' => $return]);
+        exit();
+    }
+
+    public function postKfaSave()
+    {
+      $this->kfa->postSave();
+      exit();
+    }
+
+    public function postKfaHapus()
+    {
+      $this->kfa->postHapus();
+      exit();
+    }
+
+    public function getKfaJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/kfa.js');
+        exit();
+    }
+
+    public function getImportKfa()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+
+        $url = 'https://apimed.mlite.id/kfa.json';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor KFA dari ' . $url . '<br>';
+
+        $tempFile = sys_get_temp_dir() . '/kfa_temp.json';
+        
+        if (!file_exists($tempFile) || (time() - filemtime($tempFile) > 86400) || filesize($tempFile) == 0) {
+            echo '['.date('d-m-Y H:i:s').'][info] Mendownload file... (ini mungkin butuh waktu)<br>';
+            $fp = fopen($tempFile, 'w+');
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+            curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                echo '['.date('d-m-Y H:i:s').'][error] Download error: ' . curl_error($ch) . '<br>';
+            }
+
+            curl_close($ch);
+            fclose($fp);
+
+            if (filesize($tempFile) == 0) {
+                echo '['.date('d-m-Y H:i:s').'][error] File yang didownload kosong.<br>';
+                unlink($tempFile);
+                exit();
+            }
+
+            echo '['.date('d-m-Y H:i:s').'][info] File didownload (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        } else {
+            echo '['.date('d-m-Y H:i:s').'][info] Menggunakan file cache lokal (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Memulai proses import seamless...<br>';
+
+        try {
+            $items = \JsonMachine\Items::fromFile($tempFile, ['decoder' => new \JsonMachine\JsonDecoder\ExtJsonDecoder(true)]);
+            $pdo = $this->core->db()->pdo();
+            
+            $count = 0;
+            $batchSize = 1000;
+
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("REPLACE INTO mlite_kfa 
+                (kode_kfa, nama_kfa, kode_bahan, nama_bahan, numerator, satuan_num, denominator, satuan_den, nama_satuan_den, kode_sediaan, nama_sediaan, type) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            foreach ($items as $item) {
+                $item = (array) $item;
+                $kode_kfa = trim((string) ($item['kode_kfa'] ?? $item['Kode_KFA'] ?? ''));
+                $nama_kfa = (string) ($item['nama_kfa'] ?? $item['Display_Name'] ?? '');
+                $kode_bahan = (string) ($item['kode_bahan'] ?? $item['Bahan_Baku_Aktif_Kode_KFA'] ?? '');
+                $nama_bahan = (string) ($item['nama_bahan'] ?? $item['Bahan_Baku_Aktif_Display_Name'] ?? '');
+                $numerator = (string) ($item['numerator'] ?? $item['Bahan_Baku_Aktif_Numerator'] ?? '');
+                $satuan_num = (string) ($item['satuan_num'] ?? $item['Bahan_Baku_Aktif_Satuan_Numerator'] ?? '');
+                $denominator = (string) ($item['denominator'] ?? $item['Bahan_Baku_Aktif_Denominator.1'] ?? $item['Bahan_Baku_Aktif_Denominator'] ?? '');
+                $satuan_den = (string) ($item['satuan_den'] ?? $item['Bahan_Baku_Aktif_Satuan_Denominator'] ?? '');
+                $nama_satuan_den = (string) ($item['nama_satuan_den'] ?? $item['Bahan_Baku_Aktif_Nama_Satuan_Denominator'] ?? '');
+                $kode_sediaan = (string) ($item['kode_sediaan'] ?? $item['Bentuk_Sediaan_Kode'] ?? '');
+                $nama_sediaan = (string) ($item['nama_sediaan'] ?? $item['Bentuk_Sediaan_Display_Name'] ?? '');
+                $type = (string) ($item['type'] ?? 'obat');
+
+                if ($kode_kfa === '') continue;
+
+                $stmt->execute([
+                    $kode_kfa, $nama_kfa, $kode_bahan, $nama_bahan, $numerator, $satuan_num, $denominator, $satuan_den, $nama_satuan_den, $kode_sediaan, $nama_sediaan, $type
+                ]);
+                $count++;
+
+                if ($count % $batchSize === 0) {
+                    $pdo->commit();
+                    $pdo->beginTransaction();
+                    echo '['.date('d-m-Y H:i:s').'][info] Berhasil mengimpor ' . $count . ' data...<br>';
+                    if (ob_get_level() > 0) ob_flush();
+                    flush();
+                }
+            }
+
+            if ($pdo->inTransaction()) {
+                $pdo->commit();
+            }
+            if ($count === 0) {
+                echo '['.date('d-m-Y H:i:s').'][warning] Total 0. Struktur field JSON KFA mungkin berbeda dari yang dipakai importer.<br>';
+            }
+            echo '['.date('d-m-Y H:i:s').'][info] Impor selesai! Total: ' . $count . ' data.<br>';
+
+        } catch (\Exception $e) {
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            echo '['.date('d-m-Y H:i:s').'][error] Terjadi kesalahan: ' . $e->getMessage() . '<br>';
+        }
+        exit();
+    }
+    /* End KFA Section */
+    /* End SNOMED Section */
+
+    /* Start LOINC Lab Section */
+    public function getLoincLab()
+    {
+      $this->_addHeaderFiles();
+      $this->core->addJS(url([ADMIN, 'master', 'loinclabjs']), 'footer');
+      $return = $this->loinclab->getIndex();
+      return $this->draw('loinclab.html', [
+        'loinclab' => $return
+      ]);
+    }
+
+    public function anyLoincLabForm()
+    {
+        $return = $this->loinclab->anyForm();
+        echo $this->draw('loinclab.form.html', ['loinclab' => $return]);
+        exit();
+    }
+
+    public function anyLoincLabDisplay()
+    {
+        $return = $this->loinclab->anyDisplay();
+        echo $this->draw('loinclab.display.html', ['loinclab' => $return]);
+        exit();
+    }
+
+    public function postLoincLabSave()
+    {
+      $this->loinclab->postSave();
+      exit();
+    }
+
+    public function postLoincLabHapus()
+    {
+      $this->loinclab->postHapus();
+      exit();
+    }
+
+    public function getLoincLabJS()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/loinclab.js');
+        exit();
+    }
+
+    public function getImportLoincLab()
+    {
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+
+        $url = 'https://apimed.mlite.id/loinc_lab.json';
+        echo '['.date('d-m-Y H:i:s').'][info] --- Mengimpor LOINC Lab dari ' . $url . '<br>';
+
+        $tempFile = sys_get_temp_dir() . '/loinc_lab_temp.json';
+        
+        if (!file_exists($tempFile) || (time() - filemtime($tempFile) > 86400) || filesize($tempFile) == 0) {
+            echo '['.date('d-m-Y H:i:s').'][info] Mendownload file... (ini mungkin butuh waktu)<br>';
+            $fp = fopen($tempFile, 'w+');
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_FILE, $fp);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 300);
+            curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                echo '['.date('d-m-Y H:i:s').'][error] Download error: ' . curl_error($ch) . '<br>';
+            }
+
+            curl_close($ch);
+            fclose($fp);
+
+            if (filesize($tempFile) == 0) {
+                echo '['.date('d-m-Y H:i:s').'][error] File yang didownload kosong.<br>';
+                unlink($tempFile);
+                exit();
+            }
+
+            echo '['.date('d-m-Y H:i:s').'][info] File didownload (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        } else {
+            echo '['.date('d-m-Y H:i:s').'][info] Menggunakan file cache lokal (' . round(filesize($tempFile) / 1024, 2) . ' KB).<br>';
+        }
+
+        echo '['.date('d-m-Y H:i:s').'][info] Memulai proses import seamless...<br>';
+
+        try {
+            $items = \JsonMachine\Items::fromFile($tempFile, ['decoder' => new \JsonMachine\JsonDecoder\ExtJsonDecoder(true)]);
+            $pdo = $this->core->db()->pdo();
+            
+            $count = 0;
+            $batchSize = 1000;
+
+            $pdo->beginTransaction();
+            $stmt = $pdo->prepare("REPLACE INTO mlite_loinc_lab 
+                (No, Kategori, NamaPemeriksaan, PermintaanHasil, Spesimen, TipeHasilPemeriksaan, Satuan, MetodeAnalisis, Code, Display, Component, Property, Timing, System, Scale, Method, UnitOfMeasure, CodeSystem) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+            foreach ($items as $item) {
+                $no = $item['No'] ?? null;
+                $kategori = $item['Kategori'] ?? '';
+                $nama_pemeriksaan = $item['Nama_Pemeriksaan'] ?? '';
+                $permintaan_hasil = $item['Permintaan_Hasil'] ?? '';
+                $spesimen = $item['Spesimen'] ?? '';
+                $tipe_hasil = $item['Tipe_Hasil_Pemeriksaan'] ?? '';
+                $satuan = $item['Satuan'] ?? '';
+                $metode_analisis = $item['Metode_Analisis'] ?? '';
+                $code = trim($item['Code'] ?? '');
+                $display = $item['Display'] ?? '';
+                $component = $item['Component'] ?? '';
+                $property = $item['Property'] ?? '';
+                $timing = $item['Timing'] ?? '';
+                $system = $item['System'] ?? '';
+                $scale = $item['Scale'] ?? '';
+                $method = $item['Method'] ?? '';
+                $unit_measure = $item['Unit_Of_Measure'] ?? '';
+                $code_system = $item['Code_System'] ?? '';
+
+                if ($code === '') continue;
+
+                $stmt->execute([
+                    $no, $kategori, $nama_pemeriksaan, $permintaan_hasil, $spesimen, $tipe_hasil, $satuan, $metode_analisis,
+                    $code, $display, $component, $property, $timing, $system, $scale, $method, $unit_measure, $code_system
+                ]);
+                $count++;
+
+                if ($count % $batchSize === 0) {
+                    $pdo->commit();
+                    $pdo->beginTransaction();
+                    echo '['.date('d-m-Y H:i:s').'][info] Berhasil mengimpor ' . $count . ' data...<br>';
+                    if (ob_get_level() > 0) ob_flush();
+                    flush();
+                }
+            }
+
+            if ($pdo->inTransaction()) {
+                $pdo->commit();
+            }
+            echo '['.date('d-m-Y H:i:s').'][info] Impor selesai! Total: ' . $count . ' data.<br>';
+            
+            unlink($tempFile);
+
+        } catch (\Exception $e) {
+            if (isset($pdo) && $pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            echo '['.date('d-m-Y H:i:s').'][error] Terjadi kesalahan: ' . $e->getMessage() . '<br>';
+        }
+        exit();
+    }
+
+    public function getCSS()
+    {
+        header('Content-type: text/css');
+        echo $this->draw(MODULES.'/master/css/admin/master.css');
+        exit();
+    }
+
+    public function getJavascript()
+    {
+        header('Content-type: text/javascript');
+        echo $this->draw(MODULES.'/master/js/admin/master.js');
+        exit();
+    }
+
+    private function _addHeaderFiles()
+    {
+        // CSS
+        $this->core->addCSS(url('assets/css/bootstrap-datetimepicker.css'));
+        $this->core->addJS(url('assets/jscripts/moment-with-locales.js'));
+        $this->core->addJS(url('assets/jscripts/bootstrap-datetimepicker.js'));
+
+        // MODULE SCRIPTS
+        $this->core->addCSS(url([ADMIN, 'master', 'css']));
+        $this->core->addJS(url([ADMIN, 'master', 'javascript']), 'footer');
+    }
+
+}

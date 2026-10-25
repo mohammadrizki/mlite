@@ -1,0 +1,48 @@
+<style>
+  table.icd th,
+  table.icd td {
+    padding: 5px;
+  }
+</style>
+{if: $booking_registrasi}
+<h4>Rincian Kontrol</h4>
+<div class="table-responsive no-margin">
+  <table class="table table-bordered no-padding" width="100%">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Tanggal Periksa</th>
+        <th>No. Antrian</th>
+        <th>Poliklinik</th>
+        <th>Dokter</th>
+        <th>Cara Bayar</th>
+        <th>Status Daftar</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {if: $booking_registrasi}
+      {loop: $booking_registrasi}
+      <tr>
+        <td>{?=isset_or($value.nomor)?}</td>
+        <td>{?=isset_or($value.tanggal_periksa)?}</td>
+        <td>{?=isset_or($value.no_reg)?}</td>
+        <td>{?=isset_or($value.nm_poli)?}</td>
+        <td>{?=isset_or($value.nm_dokter)?}</td>
+        <td>{?=isset_or($value.png_jawab)?}</td>
+        <td>{?=isset_or($value.status)?}</td>
+        <td><a href="#" class="hapus_kontrol" data-tanggal_periksa="{?=isset_or($value.tanggal_periksa)?}" data-no_reg="{?=isset_or($value.no_reg)?}" data-kd_dokter="{?=isset_or($value.kd_dokter)?}" data-kd_poli="{?=isset_or($value.kd_dokter)?}">Hapus</a></td>
+      </tr>
+      {/loop}
+      {else}
+      <tr>
+        <td colspan="7" align="center">Kosong</td>
+      </tr>
+      {/if}
+    </tbody>
+  </table>
+</div>
+{/if}
+<script type="text/javascript">
+  $(".alert-dismissible").fadeTo(3000, 500).slideUp(500);
+</script>

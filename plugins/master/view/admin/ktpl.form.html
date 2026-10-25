@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form id="ktpl_form">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Kode KTPL</label>
+                <input type="text" name="kode_ktpl" class="form-control" value="{$ktpl.form.kode_ktpl}" required {if: !empty($ktpl.form.kode_ktpl)}readonly{/if}>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="form-group">
+                <label>Nama KTPL</label>
+                <input type="text" name="nama_ktpl" class="form-control" value="{$ktpl.form.nama_ktpl}" required>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Status</label>
+                <select name="status" class="form-control">
+                  <option value="Aktif" {if: $ktpl.form.status == 'Aktif'}selected{/if}>Aktif</option>
+                  <option value="Tidak Aktif" {if: $ktpl.form.status == 'Tidak Aktif'}selected{/if}>Tidak Aktif</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Has Modifier</label>
+                <select name="has_modifier" class="form-control">
+                  <option value="0" {if: $ktpl.form.has_modifier == 0}selected{/if}>Tidak</option>
+                  <option value="1" {if: $ktpl.form.has_modifier == 1}selected{/if}>Ya</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Modifier Count</label>
+                <input type="number" name="modifier_count" class="form-control" value="{$ktpl.form.modifier_count}" min="0">
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-default" id="tutupform_btn">Batal</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

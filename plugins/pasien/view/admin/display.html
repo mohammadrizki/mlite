@@ -1,0 +1,178 @@
+<style>
+  .table th, .table td { white-space: nowrap; }
+</style>
+<div id="display">
+  <div class="table-responsive no-margin">
+    <table class="table table-striped no-padding" width="100%">
+      <thead>
+        <tr>
+          <th>No. RM</th>
+          <th>Nama Pasien</th>
+          <th>Tgl. Lahir</th>
+          <th>Jenis Kelamin</th>
+          {if: $admin_mode == 'complex'}
+          <th>Gol. Darah</th>
+          <th>Pekerjaan</th>
+          {/if}
+          <th>Alamat</th>
+          <th>Telepon</th>
+          <th>Tgl. Daftar</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {if: $pasien}
+        {loop: $pasien}
+        <tr>
+          <td>
+            <span class="dropdown-toggle" data-toggle="dropdown" data-disabled="true" aria-expanded="true"><button type="button" name="button" class="btn btn-sm btn-default">{?=isset_or($value.no_rkm_medis)?} <span class="caret"></span></button></span>
+            <ul class="dropdown-menu" role="menu">
+              {if: $cek_vclaim}
+                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynokartu', $value.no_peserta, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[VClaim] Cek Nomor Kartu</a></li>
+                <li><a href="{?=url([ADMIN, 'pasien', 'vclaim_bynik', $value.no_ktp, date('Y-m-d')])?}" data-toggle="modal" data-target="#asuransiModal">[VClaim] Cek Nomor KTP</a></li>
+              {/if}
+              {if: $cek_pcare}
+                <li><a href="{?=url([ADMIN, 'pasien', 'pcare_bynokartu', $value.no_peserta])?}" data-toggle="modal" data-target="#asuransiModal">[PCare] Cek Nomor Kartu</a></li>
+                <li><a href="{?=url([ADMIN, 'pasien', 'pcare_bynik', $value.no_ktp])?}" data-toggle="modal" data-target="#asuransiModal">[PCare] Cek Nomor KTP</a></li>
+              {/if}
+              <li class="dropdown-submenu">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Pendaftaran</a>
+                <ul class="dropdown-menu">
+                  {if: $this->core->ActiveModule('oral_diagnostic')}
+                  <li><a href="{?=url([ADMIN,'oral_diagnostic','manage'])?}&no_rkm_medis={?=isset_or($value.no_rkm_medis)?}">Oral Diagnostic</a></li>
+                  {/if} 
+                  {if: $this->core->ActiveModule('igd')}
+                  <li><a href="{?=url([ADMIN,'igd','manage'])?}&no_rkm_medis={?=isset_or($value.no_rkm_medis)?}">IGD / UGD</a></li>
+                  {/if}
+                  <li><a href="{?=url([ADMIN,'rawat_jalan','manage'])?}&no_rkm_medis={?=isset_or($value.no_rkm_medis)?}">Poliklinik / Rawat Jalan</a></li>
+                </ul>
+              </li>              
+              <li><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">Elektronik Rekam Medis</a></li>
+              <li><a href="{?=url([ADMIN, 'pasien', 'folder', $value.no_rkm_medis])?}">Folder Berkas Digital</a></li>
+            </ul>
+          </td>
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}"><a href="{?=url([ADMIN, 'pasien', 'riwayatperawatan', $value.no_rkm_medis])?}" data-toggle="modal" data-target="#riwayatModal">{?=isset_or($value.nm_pasien)?}</a></td>
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{?=isset_or($value.tgl_lahir)?}</td>
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{if: $value.jk == 'L'}Laki-Laki{else}Perempuan{/if}</td>
+          {if: $admin_mode == 'complex'}
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{?=isset_or($value.gol_darah)?}</td>
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{?=isset_or($value.pekerjaan)?}</td>
+          {/if}
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{?=isset_or($value.alamat)?}</td>
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{?=isset_or($value.no_tlp)?}</td>
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{?=isset_or($value.tgl_daftar)?}</td>
+          <td {if: $mlite_crud_permissions.can_update == 'true'}class="edit"{/if} data-no_rkm_medis="{?=isset_or($value.no_rkm_medis)?}">{?=isset_or($value.email)?}</td>
+        </tr>
+        {/loop}
+        {else}
+        <tr>
+          <td colspan="10" class="text-center">Tidak ada data pasien.</td>
+        </tr>
+        {/if}
+      </tbody>
+    </table>
+  </div>
+  <nav class="row clearfix">
+    <div class="col-md-6">
+      <b>Jumlah: {?=isset_or($jumlah_data)?}</b>
+    </div>
+    <div class="col-md-6">
+      <ul class="pagination no-margin pull-right">
+      {if: isset($halaman)}
+        {if: $halaman == 1}
+        <li class="disabled"><a href="#">&laquo;</a></li>
+        {else}
+        <li class="halaman" data-hal="1"><a href="#">&laquo;</a></li>
+        {/if}
+        {if: $halaman > 1}
+        <li class="halaman" data-hal="{?=$halaman - 1?}"><a href="#">‹</a></li>
+        {else}
+        <li class="disabled"><a href="#">‹</a></li>
+        {/if}
+        <li class="disabled"><a href="#">Hal : {?=isset_or($halaman)?} dari {?=isset_or($jml_halaman)?} Hal</a></li>
+        {if: $halaman < $jml_halaman}
+        <li class="halaman" data-hal="{?=$halaman + 1?}"><a href="#">›</a></li>
+        {else}
+        <li class="disabled"><a href="#">›</a></li>
+        {/if}
+        {if: $halaman == $jml_halaman}
+        <li class="disabled"><a href="#">&raquo;</a></li>
+        {else}
+        <li class="halaman" data-hal="{?=isset_or($jml_halaman)?}"><a href="#">&raquo;</a></li>
+        {/if}
+      {else}
+        {if: $halaman == 1}
+        <li class="disabled"><a href="#">&laquo;</a></li>
+        {else}
+        <li class="halaman" data-hal="1"><a href="#">&laquo;</a></li>
+        {/if}
+        {if: $halaman > 1}
+        <li class="halaman" data-hal="{?=$halaman - 1?}"><a href="#">‹</a></li>
+        {else}
+        <li class="disabled"><a href="#">‹</a></li>
+        {/if}
+        <li class="disabled"><a href="#">Hal : {?=isset_or($halaman)?} dari {?=isset_or($jml_halaman)?} Hal</a></li>
+        {if: $halaman < $jml_halaman}
+        <li class="halaman" data-hal="{?=$halaman + 1?}"><a href="#">›</a></li>
+        {else}
+        <li class="disabled"><a href="#">›</a></li>
+        {/if}
+        {if: $halaman == $jml_halaman}
+        <li class="disabled"><a href="#">&raquo;</a></li>
+        {else}
+        <li class="halaman" data-hal="{?=isset_or($jml_halaman)?}"><a href="#">&raquo;</a></li>
+        {/if}
+      {/if}
+      </ul>
+    </div>
+  </nav>
+</div>
+<div class="modal fade" id="asuransiModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="riwayatModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-full" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="printModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  $(".alert-dismissible").fadeTo(3000, 500).slideUp(500);
+  $(document).on('click', '#btn_cetak_pdf', function() {
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/pasien/cetak?t=' + mlite.token;
+    var cari = $('input:text[name=cari]').val();
+
+    $.post(url, {cari: cari} ,function(data) {
+      //window.open(baseURL + '/pasien/cetakpdf?t=' + mlite.token);
+      $("#printModal").modal('show').html('<div style="text-align:center;margin:20px auto;width:90%;height:95%;"><iframe src="' + baseURL + '/pasien/cetakmpdf?t=' + mlite.token + '" frameborder="no" width="100%" height="100%"></iframe></div>');
+    });
+
+		return false;
+  });
+  $(document).on('click', '#btn_export_xls', function() {
+    alert('btn_export_xls');
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var url    = baseURL + '/pasien/excel?t=' + mlite.token;
+    // var cari = $('input:text[name=cari]').val();
+
+    // $.post(url, {cari: cari} ,function(data) {
+    //   window.open(baseURL + '/pasien/excel?t=' + mlite.token);
+    // });
+    window.open(url);
+
+		return false;
+  });
+</script>

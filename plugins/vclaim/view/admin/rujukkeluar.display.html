@@ -1,0 +1,24 @@
+  <table class="table">
+    <thead>
+      <tr>
+        <th>No Rawat</th>
+        <th>No SEP</th>
+        <th>No Surat</th>
+        <th>Tgl. Rujukan</th>
+        <th>Tgl. Periksa</th>
+        <th>Poli</th>
+      </tr>
+    </thead>
+    <tbody>
+      {loop: $rujuk_keluar}
+      <tr>
+        <td>{?=isset_or($value.no_rawat)?}</td>
+        <td id="ubah_kontrol" data-no_surat="{?=isset_or($value.no_rujukan)?}" data-no_sep="{?=isset_or($value.no_sep)?}" data-kd_poli="{?=isset_or($value.kd_poli_bpjs)?}" data-kd_dokter="{?=isset_or($value.kd_dokter_bpjs)?}" data-tanggal_kontrol="{?=isset_or($value.tgl_rencana)?}" data-tanggal_surat="{?=isset_or($value.tgl_surat)?}">{?=isset_or($value.no_sep)?}</td>
+        <td class="pilih_nosurat" data-no_surat="{?=isset_or($value.no_rujukan)?}" data-no_sep="{?=isset_or($value.no_sep)?}">{?=isset_or($value.no_rujukan)?}</td>
+        <td>{?=isset_or($value.tglRujukan)?}</td>
+        <td>{?=isset_or($value.tglRencanaKunjungan)?}</td>
+        <td>{?=isset_or($value.nama_poliRujukan)?}</td>
+      </tr>
+      {/loop}
+    </tbody>
+  </table>

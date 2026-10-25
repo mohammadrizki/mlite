@@ -1,0 +1,50 @@
+<div class="row">
+    <form action="{?=url(ADMIN.'/keuangan/saveSettings')?}" method="POST">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{?=isset_or($settings.title)?}</h3>
+                </div>
+            	  <div class="panel-body">
+                    <div class="form-group">
+                        <label>Aktifkan Posting Jurnal di Kasir</label>
+                        <div class="radio">
+                            <label class="radio-inline">
+                               <input type="radio" name="keuangan[jurnal_kasir]" value="0" {if: $settings.keuangan.jurnal_kasir == '0'}checked{/if} /> Tidak
+                            </label>
+                            <label class="radio-inline">
+                               <input type="radio" name="keuangan[jurnal_kasir]" value="1" {if: $settings.keuangan.jurnal_kasir == '1'}checked{/if} /> Ya
+                            </label>
+                        </div>
+                    </div>
+                    <div style="{if: $settings.keuangan.jurnal_kasir == '0'}display:none;{/if}">
+                      {loop: $akunkegiatan}
+                      <div class="form-group">
+                          <label class="kegiatan">{?=ucwords(str_replace('_',' ',$value.field))?}</label>
+                          <select name="keuangan[{?=isset_or($value.field)?}]" class="form-control" data-use-search="true">
+                            {loop: $akunrekening as $data}
+                              <option value="{?=isset_or($data.kd_rek)?}" {if: $data.kd_rek == $value.value}selected{/if}>{?=isset_or($data.kd_rek)?} - {?=isset_or($data.nm_rek)?}</option>
+                            {/loop}
+                          </select>
+                      </div>
+                      {/loop}
+                    </div>
+                    <input type="submit" name="save" class="btn btn-success" value="Simpan" />
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Data Dummy Keuangan</h3>
+            </div>
+            <div class="panel-body">
+                <p>Insert data dummy keuangan tahun 2025 dan 2026 untuk tabel jurnal, detail jurnal, dan rekening tahun.</p>
+                <form action="{?=url(ADMIN.'/keuangan/insertDummyKeuangan')?}" method="POST">
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('Insert data dummy keuangan 2025 dan 2026?');">Data Dummy</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

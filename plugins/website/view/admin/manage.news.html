@@ -1,0 +1,81 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Kelola</h3>
+            </div>
+
+            <div class="panel-body">
+                <form method="post">
+                    <div class="clearfix">
+                        <h3 class="pull-left" style="margin-top:5px;">Jumlah: {?=isset_or($news.postCount)?}</h3>
+                        <button type="submit" title="Hapus" name="delete" class="btn btn-danger pull-right" data-confirm="akin ingin menghapus artikel terpilih?" disabled><i class="fa fa-trash"></i> Hapus (<span>0</span>)</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped no-margin">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" class="check-all" /></th>
+                                    <th>Judul</th>
+                                    <th>Status</th>
+                                    <th>Penulis</th>
+                                    <th>Komentar</th>
+                                    <th>Tanggal</th>
+                                    <th class="text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {if: !empty($news.posts)}
+                                {loop: $news.posts}
+                                <tr>
+                                    <td><input type="checkbox" name="post-list[]" class="list-item" value="{?=isset_or($value.id)?}" /></td>
+                                    <td><a href="{?=isset_or($value.editURL)?}">{?=isset_or($value.title)?}</a></td>
+                                    <td>
+                                        {if: $value.status >= 2}
+                                        <i class="fa fa-circle text-success" data-toggle="tooltip" data-placement="right" title="{?=isset_or($value.type)?}"></i>
+                                        {elseif: $value.status == 1}
+                                        <i class="fa fa-circle text-warning" data-toggle="tooltip" data-placement="right" title="{?=isset_or($value.type)?}"></i>
+                                        {else}
+                                        <i class="fa fa-circle text-danger" data-toggle="tooltip" data-placement="right" title="{?=isset_or($value.type)?}"></i>
+                                        {/if}
+                                    </td>
+                                    <td>{?=isset_or($value.user)?}</td>
+                                    <td>{?=isset_or($value.comments)?}</td>
+                                    <td>{?=isset_or($value.published_at)?}</td>
+                                    <td class="text-right">
+                                        <a href="{?=isset_or($value.viewURL)?}" target="_blank" class="btn btn-primary btn-xs">
+                                            <i class="fa fa-search"></i> <span class="hidden-xs">Lihat</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {/loop}
+                                {else}
+                                <tr><td colspan="7" class="text-center">Kosong</td></tr>
+								{/if}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                {?=isset_or($news.pagination)?}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(".list-item").change(function() {
+    if($('.list-item:checked').length > 0)
+        $('button[name="delete"]').prop("disabled", false)
+    else
+        $('button[name="delete"]').prop("disabled", true)
+    $('button[name="delete"] span').text($(".list-item:checked").length);
+}).change();
+$(".check-all").change(function(e) {
+    if($(this).is(":checked"))
+        $('.list-item').prop('checked', true);
+    else
+        $('.list-item').prop('checked', false);
+
+    $('.list-item').change();
+});
+</script>

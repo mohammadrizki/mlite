@@ -1,0 +1,1903 @@
+<div id="form_sep">
+  <div class="col-md-3">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="panel-title text-center">
+              <img src="{?=url()?}/plugins/vclaim/img/default.png" alt="" style="border-radius: 50%;width:150px;">
+              <h5 class="nama_peserta"></h5>
+              <h5 id="no_kartu_peserta"></h5>
+              <h4 style="color:red;"><span class="prolainis_peserta"></span></h4>
+            </div>
+          </div>
+          <div class="panel-body">
+            <h5>NIK: <span id="nik_peserta"></span></h5>
+            <h5>No. MR: <span id="no_mr_peserta"></span></h5>
+            <h5>Tgl. Lahir: <span id="tgl_lahir_peserta"></span></h5>
+            <h5>Peserta: <span id="jenis_peserta"></span></h5>
+            <h5>Prov Umum: <span id="prov_umum_peserta"></span></h5>
+            <h5>Status: <span id="status_peserta"></span></h5>
+          </div>
+        </div>
+        <div class="panel-group" id="accordion">
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Nomor Rujukan</a>
+                  </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse">
+                  <div class="panel-body">
+                      <ul class="nav nav-pills">
+                          <li class="active">
+                              <a href="#pcare-pills" data-toggle="tab">PCare</a>
+                          </li>
+                          <li>
+                              <a href="#rs-pills" data-toggle="tab">Rumah Sakit</a>
+                          </li>
+                      </ul>
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                          <div class="tab-pane fade in active" id="pcare-pills">
+                              <div class="form-group">
+                                <label for="poli">Nomor Rujukan PCare</label>
+                                <input type="text" id="no_rujukan_pcare" name="no_rujukan_pcare" class="form-control" value="">
+                              </div>
+                              <button type="submit" class="btn btn-danger" id="parameter_no_rujukan_pcare">
+                                  Kirim Parameter
+                              </button>
+                          </div>
+                          <div class="tab-pane fade" id="rs-pills">
+                              <div class="form-group">
+                                <label for="poli">Nomor Rujukan RS</label>
+                                <input type="text" id="no_rujukan_rs" name="no_rujukan_rs" class="form-control" value="">
+                              </div>
+                              <button type="submit" class="btn btn-danger" id="parameter_no_rujukan_rs">
+                                  Kirim Parameter
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Nomor Kartu</a>
+                  </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse">
+                  <div class="panel-body">
+                      <ul class="nav nav-pills">
+                          <li class="active">
+                              <a href="#pcare2-pills" data-toggle="tab">Pcare</a>
+                          </li>
+                          <li>
+                              <a href="#rs2-pills" data-toggle="tab">Rumah Sakit</a>
+                          </li>
+                      </ul>
+                      <!-- Tab panes -->
+                      <div class="tab-content">
+                          <div class="tab-pane fade in active" id="pcare2-pills">
+                              <div class="form-group">
+                                <label for="poli">Nomor Kartu</label>
+                                <input type="text" id="no_kartu_pcare" name="no_kartu_pcare" class="form-control" value="" readonly>
+                              </div>
+                              <button type="submit" class="btn btn-danger" id="parameter_no_kartu_pcare">
+                                  Kirim Parameter
+                              </button>
+                          </div>
+                          <div class="tab-pane fade" id="rs2-pills">
+                              <div class="form-group">
+                                <label for="poli">Nomor Kartu</label>
+                                <input type="text" id="no_kartu_rs" name="no_kartu_rs" class="form-control" value="" readonly>
+                              </div>
+                              <button type="submit" class="btn btn-danger" id="parameter_no_kartu_rs">
+                                  Kirim Parameter
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Histori Pelayanan</a>
+                  </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label for="poli">Nomor Kartu</label>
+                      <input type="text" id="nomor_asuransi" name="nomor_asuransi" class="form-control" value="" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="poli">Tanggal Awal</label>
+                      <input type="text" id="tanggal_awal" name="tanggal_awal" class="form-control tanggal  " value="{?=date('Y-m-d', strtotime('-90 days'))?}">
+                    </div>
+                    <div class="form-group">
+                      <label for="poli">Tanggal Akhir</label>
+                      <input type="text" id="tanggal_akhir" name="tanggal_akhir" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+                    </div>
+                    <button type="submit" class="btn btn-danger" id="parameter_histori_pelayanan">
+                        Kirim Parameter
+                    </button>
+                    <div id="histori_pelayanan"></div>
+                  </div>
+              </div>
+          </div>
+          <div class="panel panel-default">
+              <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">SEP Internal</a>
+                  </h4>
+              </div>
+              <div id="collapseFour" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label for="poli">Nomor SEP Internal</label>
+                      <input type="text" id="nomor_sep_internal" name="nomor_sep_internal" class="form-control" value="" readonly>
+                    </div>
+                    <button type="submit" class="btn btn-danger" id="parameter_sep_internal">
+                        Kirim Parameter
+                    </button>
+                    <div id="sep_internal"></div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+    <div id="data_sep">
+      <div class="panel panel-default">
+        <div class="form-horizontal">
+          <div class="panel-body">
+            <ul class="nav nav-tabs m-b-xl" role="tablist">
+                <li role="presentation" class="active"><a href="#satu" aria-controls="satu" role="tab" data-toggle="tab">Informasi Rujukan</a></li>
+                <li role="presentation"><a href="#dua" aria-controls="dua" role="tab" data-toggle="tab">Informasi Tambahan</a></li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="satu">
+                <div class="form-group clearfix" id="no_sep_input" hidden="true">
+                  <label for="" class="col-sm-3 control-label">Nomor SEP</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="get_no_sep" id="get_no_sep" class="form-control" value="" readonly>
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Jenis Peserta</label>
+                  <div class="col-sm-6">
+                    <input type="text" id="sep_jenis_peserta" name="sep_jenis_peserta" class="form-control" value="" readonly>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">NoKa</label>
+                  <div class="col-sm-2">
+                    <input type="text" id="sep_no_kartu" name="sep_no_kartu" class="form-control" value="" readonly>
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Tanggal Lahir</label>
+                  <div class="col-sm-6">
+                    <input type="text" id="sep_tanggal_lahir" name="sep_tanggal_lahir" class="form-control tanggal" value="">
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Sex</label>
+                  <div class="col-sm-2">
+                    <select name="sep_jenis_kelamin_nama" id="sep_jenis_kelamin_nama" class="form-control" data-kode="sep_jenis_kelamin_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="L">Laki-Laki</option>
+                      <option value="P">Perempuan</option>
+                    </select>
+                    <input type="hidden" name="sep_jenis_kelamin_kode" id="sep_jenis_kelamin_kode" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">ID Pendaftaran</label>
+                  <div class="col-sm-6">
+                    <input type="text" id="sep_no_rawat" name="sep_no_rawat" class="form-control" value="" readonly>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">RM</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_norm" id="sep_norm" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Eksekutif</label>
+                  <div class="col-sm-6">
+                    <select name="sep_eksekutif_nama" id="sep_eksekutif_nama" class="form-control" data-kode="sep_eksekutif_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Tidak</option>
+                      <option value="1">Ya</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_eksekutif_kode" id="sep_eksekutif_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Asal Rujukan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_asal_faskes_nama" id="sep_asal_faskes_nama" class="form-control" data-kode="sep_asal_faskes_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="1">Faskes 1</option>
+                      <option value="2">Faskes 2 (RS)</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_asal_faskes_kode" id="sep_asal_faskes_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Jenis Layanan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_pelayanan_nama" id="sep_pelayanan_nama" class="form-control" data-kode="sep_pelayanan_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="1">Rawat Inap</option>
+                      <option value="2">Rawat Jalan</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_pelayanan_kode" id="sep_pelayanan_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Hak Kelas Rawat</label>
+                  <div class="col-sm-6">
+                    <select name="sep_kelas_nama" id="sep_kelas_nama" class="form-control" data-kode="sep_kelas_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="1">KELAS 1</option>
+                      <option value="2">KELAS 2</option>
+                      <option value="3">KELAS 3</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_kelas_kode" id="sep_kelas_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">PPK Rujukan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_asal_rujukan_nama" id="sep_asal_rujukan_nama" class="form-control" data-kode="sep_asal_rujukan_kode">
+                      <option value="">-- Ketik untuk mencari PPK Rujukan --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_asal_rujukan_kode" id="sep_asal_rujukan_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Nomor Rujukan</label>
+                  <div class="col-sm-6">
+                    <input type="text" name="sep_nomor_rujukan" id="sep_nomor_rujukan" class="form-control" value="">
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Tanggal</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_tanggal_rujukan" id="sep_tanggal_rujukan" class="form-control tanggal" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Spesialis</label>
+                  <div class="col-sm-6">
+                    <select name="sep_spesialis_nama" id="sep_spesialis_nama" class="form-control" data-kode="sep_spesialis_kode">
+                      <option value="">-- Ketik untuk mencari Spesialis --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_spesialis_kode" id="sep_spesialis_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">DPJP</label>
+                  <div class="col-sm-6">
+                    <select name="sep_dpjp_yang_melayani_nama" id="sep_dpjp_yang_melayani_nama" class="form-control" data-kode="sep_dpjp_yang_melayani_kode">
+                      <option value="">-- Ketik untuk mencari DPJP --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_dpjp_yang_melayani_kode" id="sep_dpjp_yang_melayani_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">DPJP Pelayanan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_dpjp_pelayanan_nama" id="sep_dpjp_pelayanan_nama" class="form-control" data-kode="sep_dpjp_pelayanan_kode">
+                      <option value="">-- Ketik untuk mencari DPJP Pelayanan --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_dpjp_pelayanan_kode" id="sep_dpjp_pelayanan_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Tanggal SEP</label>
+                  <div class="col-sm-6">
+                    <input type="text" name="sep_tanggal_sep" id="sep_tanggal_sep" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+                  </div>
+                  <label for="" class="col-sm-1 control-label">SKDP</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_nomor_skdp" id="sep_nomor_skdp" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label control-label">Tanggal Pulang</label>
+                  <div class="col-sm-6">
+                    <input type="text" name="sep_tanggal_pulang" id="sep_tanggal_pulang" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+                  </div>
+                  <label for="" class="col-sm-1 control-label">No. Tlp</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_nomor_telepon" id="sep_nomor_telepon" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Diagnosa</label>
+                  <div class="col-sm-6">
+                    <select name="sep_diagnosa_nama" id="sep_diagnosa_nama" class="form-control" data-kode="sep_diagnosa_kode">
+                      <option value="">-- Ketik untuk mencari Diagnosa --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_diagnosa_kode" id="sep_diagnosa_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Catatan</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="sep_catatan" id="sep_catatan" class="form-control" value="">
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade in" id="dua">
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Naik Kelas Rawat</label>
+                  <div class="col-sm-6">
+                    <select name="sep_naik_kelas_nama" id="sep_naik_kelas_nama" class="form-control" data-kode="sep_naik_kelas_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="1">VVIP</option>
+                      <option value="2">VIP</option>
+                      <option value="3">KELAS 1</option>
+                      <option value="4">KELAS 2</option>
+                      <option value="5">KELAS 3</option>
+                      <option value="6">ICCU</option>
+                      <option value="7">ICU</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_naik_kelas_kode" id="sep_naik_kelas_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">PJ Pembiayaan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_pembiayaan_nama" id="sep_pembiayaan_nama" class="form-control" data-kode="sep_pembiayaan_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="1">Pribadi</option>
+                      <option value="2">Pemberi Kerja</option>
+                      <option value="3">Asuransi Tambahan</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_pembiayaan_kode" id="sep_pembiayaan_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Tujuan Kunjungan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_kunjungan_nama" id="sep_kunjungan_nama" class="form-control" data-kode="sep_kunjungan_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Normal</option>
+                      <option value="1">Prosedur</option>
+                      <option value="2">Konsul Dokter</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_kunjungan_kode" id="sep_kunjungan_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Flag Prosedur</label>
+                  <div class="col-sm-6">
+                    <select name="sep_prosedur_nama" id="sep_prosedur_nama" class="form-control" data-kode="sep_prosedur_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Prosedur Tidak Berkelanjutan</option>
+                      <option value="1">Prosedur dan Terapi Berkelanjutan</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_prosedur_kode" id="sep_prosedur_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Pelayanan Penunjang</label>
+                  <div class="col-sm-6">
+                    <select name="sep_penunjang_nama" id="sep_penunjang_nama" class="form-control" data-kode="sep_penunjang_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="1">Radioterapi</option>
+                      <option value="2">Kemoterapi</option>
+                      <option value="3">Rehabilitasi Medik</option>
+                      <option value="4">Rehabilitasi Psikososial</option>
+                      <option value="5">Transfusi Darah</option>
+                      <option value="6">Pelayanan Gigi</option>
+                      <option value="7">Laboratorium</option>
+                      <option value="8">USG</option>
+                      <option value="9">Kemoterapi</option>
+                      <option value="10">Lain-Lain</option>
+                      <option value="11">MRI</option>
+                      <option value="12">HEMODIALISA</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_penunjang_kode" id="sep_penunjang_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Assesment Pelayanan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_assesment_nama" id="sep_assesment_nama" class="form-control" data-kode="sep_assesment_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="1">Poli spesialis tidak tersedia pada hari sebelumnya</option>
+                      <option value="2">Jam Poli telah berakhir pada hari sebelumnya</option>
+                      <option value="3">Dokter Spesialis yang dimaksud tidak praktek pada hari sebelumnya</option>
+                      <option value="4">Atas Instruksi RS</option>
+                      <option value="5">Tujuan Kontrol</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_assesment_kode" id="sep_assesment_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">COB</label>
+                  <div class="col-sm-6">
+                    <select name="sep_cob_nama" id="sep_cob_nama" class="form-control" data-kode="sep_cob_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Tidak</option>
+                      <option value="1">Ya</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_cob_kode" id="sep_cob_kode" class="form-control" value="" />
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Katarak</label>
+                  <div class="col-sm-6">
+                    <select name="sep_katarak_nama" id="sep_katarak_nama" class="form-control" data-kode="sep_katarak_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Tidak</option>
+                      <option value="1">Ya</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_katarak_kode" id="sep_katarak_kode" class="form-control" value="" />
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Status Kecelakaan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_status_kecelakaan_nama" id="sep_status_kecelakaan_nama" class="form-control" data-kode="sep_status_kecelakaan_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Tidak</option>
+                      <option value="1">Ya</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_status_kecelakaan_kode" id="sep_status_kecelakaan_kode" class="form-control" value="" />
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Nomor Laporan Polisi</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="sep_nomor_laporan_polisi" id="sep_nomor_laporan_polisi" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Penjamin Kecelakaan</label>
+                  <div class="col-sm-6">
+                    <select name="sep_penjamin_kecelakaan_nama" id="sep_penjamin_kecelakaan_nama" class="form-control" data-kode="sep_penjamin_kecelakaan_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Tidak</option>
+                      <option value="1">Ya</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_penjamin_kecelakaan_kode" id="sep_penjamin_kecelakaan_kode" class="form-control" value="" />
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Keterangan Kecelakaan</label>
+                  <div class="col-sm-6">
+                    <input type="text" name="sep_keterangan_kecelakaan" id="sep_keterangan_kecelakaan" class="form-control" value="">
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Tanggal</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_tanggal_kecelakaan" id="sep_tanggal_kecelakaan" class="form-control tanggal" value="{?=date('Y-m-d')?}">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Suplesi</label>
+                  <div class="col-sm-6">
+                    <select name="sep_suplesi_nama" id="sep_suplesi_nama" class="form-control" data-kode="sep_suplesi_kode">
+                      <option value="">-- Pilih --</option>
+                      <option value="0">Tidak</option>
+                      <option value="1">Ya</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="sep_suplesi_kode" id="sep_suplesi_kode" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Nomor Suplesi</label>
+                  <div class="col-sm-9">
+                    <input type="text" name="sep_nomor_suplesi" id="sep_nomor_suplesi" class="form-control" value="">
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Propinsi</label>
+                  <div class="col-sm-6">
+                    <select name="provinsi" id="provinsi" class="form-control" data-kode="id_provinsi">
+                      <option value="">-- Pilih Propinsi --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="id_provinsi" id="id_provinsi" class="form-control" value="" />
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Kabupaten</label>
+                  <div class="col-sm-6">
+                    <select name="kabupaten" id="kabupaten" class="form-control" data-kode="id_kabupaten" disabled>
+                      <option value="">-- Pilih Propinsi terlebih dahulu --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="id_kabupaten" id="id_kabupaten" class="form-control" value="" />
+                  </div>
+                </div>
+                <div class="form-group clearfix">
+                  <label for="" class="col-sm-3 control-label">Kecamatan</label>
+                  <div class="col-sm-6">
+                    <select name="kecamatan" id="kecamatan" class="form-control" data-kode="id_kecamatan" disabled>
+                      <option value="">-- Pilih Kabupaten terlebih dahulu --</option>
+                    </select>
+                  </div>
+                  <label for="" class="col-sm-1 control-label">Kode</label>
+                  <div class="col-sm-2">
+                    <input type="text" name="id_kecamatan" id="id_kecamatan" class="form-control" value="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-footer">
+            <input type="submit" id="simpan" class="btn btn-primary" name="" value="Simpan">
+            <!-- <button type="button" name="button" class="btn btn-success" id="finger">Cek Finger</button> -->
+            <div class="btn-group">
+              <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Biometrik <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#" class="" id="finger">Finger Print</a></li>
+                <li><a href="#" class="" id="frista">Face Recognition</a></li>
+              </ul>
+            </div>
+            <!--<button type="button" name="button" class="btn btn-warning" id="sync_sep">Sync SEP</button>-->
+            <button type="button" name="button" class="btn btn-warning" id="aproval_sep">Aproval</button>            
+            <div class="btn-group">
+              <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Antrian <span class="caret"></span></button>
+              <ul class="dropdown-menu">
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="1">Rujukan FKTP</a></li>
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="2">Rujukan Internal</a></li>
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="3">Kontrol</a></li>
+                <li><a href="#" class="add_antrian" data-jenis_kunjungan="4">Rujukan Antar RS</a></li>
+              </ul>
+            </div>
+            <button type="button" name="button" class="btn btn-warning" id="kontrol">Kontrol</button>
+            <button type="button" name="button" class="btn btn-warning" id="spri">SPRI</button>
+            <button type="button" name="button" class="btn btn-warning" id="rujukkeluar">Rujuk Keluar</button>
+            <button type="button" name="button" class="btn btn-warning" id="prb">PRB</button>
+            <input type="submit" id="selesai" class="btn btn-danger pull-right" name="" value="Selesai">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="syncsepModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="spriModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="pulangModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add_antrianModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="kontrolModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            ...
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="rujukkeluarModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="prbModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          ...
+      </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $("#sep_norm").on("focus click",function(event){
+    event.preventDefault();
+    var no_mr = $('#sep_norm').val();
+    if (no_mr && no_mr.trim() !== '') {
+      return;
+    }
+    var no_mr_span = $('#no_mr_peserta').text();
+    if (no_mr_span && no_mr_span.trim() !== '') {
+      $('#sep_norm').val(no_mr_span.trim());
+    }
+  });
+  $("#sep_asal_rujukan_nama").on("focus",function(event){
+    event.preventDefault();
+    var sep_asal_rujukan_kode = $('#sep_asal_rujukan_kode').val();
+    if (sep_asal_rujukan_kode && sep_asal_rujukan_kode.trim() !== '') {
+      return;
+    }
+    var prov_umum_peserta_text = $('#prov_umum_peserta').text();
+    if (prov_umum_peserta_text && prov_umum_peserta_text.trim() !== '') {
+      $('#sep_asal_rujukan_nama').val(prov_umum_peserta_text.trim());
+    }
+  });
+  $("#sep_nomor_rujukan").on("focus click",function(event){
+    event.preventDefault();
+    var no_rujukan = $('#sep_nomor_rujukan').val();
+    var kode_pelayanan = $('#sep_pelayanan_kode').val();
+    if (no_rujukan && no_rujukan.trim() !== '') {
+      return;
+    }
+    if (kode_pelayanan == '1') {
+      var now = new Date();
+      var ymdhms = now.getFullYear().toString() +
+                   ('0' + (now.getMonth() + 1)).slice(-2) +
+                   ('0' + now.getDate()).slice(-2) +
+                   ('0' + now.getHours()).slice(-2);
+      var nomr = $('#sep_norm').val().trim();
+      // var number = ymdhms + (nomr || '000000');
+      var number =  $('input:text[name=sep_nomor_skdp]').val();
+      console.log(number);
+      $('#sep_nomor_rujukan').val(number);
+    }
+  });
+  $("#form_sep").on("click",".sep_pulang", function(event){
+    event.preventDefault();
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var modal = $('#pulangModal');
+    var modalContent = $('#pulangModal .modal-content');
+    var no_sep = $(this).data('no_sep');
+    var loadURL =  baseURL + '/vclaim/seppulang/' + no_sep + '?t=' + mlite.token;
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+  });
+  $("#form_sep").on("click","#sync_sep", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var loadURL =  baseURL + '/vclaim/sync_sep/' + no_peserta + '/' + no_rawat + '?t=' + mlite.token;
+
+    var modal = $('#syncsepModal');
+    var modalContent = $('#syncsepModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click","#aproval_sep", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var loadURL =  baseURL + '/vclaim/aproval_sep/' + no_peserta + '/' + no_rawat + '?t=' + mlite.token;
+
+    var modal = $('#syncsepModal');
+    var modalContent = $('#syncsepModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click",".add_antrian", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_rkm_medis = $('input:text[name=no_rkm_medis]').val();
+    var no_rujukan = $('input:text[name=sep_nomor_rujukan]').val();
+    var no_skpd = $('input:text[name=sep_nomor_skdp]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var jenis_kunjungan = $(this).attr("data-jenis_kunjungan");
+    var nomor_rujukan = '';
+    if (jenis_kunjungan == '1') {
+      nomor_rujukan = no_rujukan
+    } else {
+      nomor_rujukan = no_skpd
+    }
+
+    var loadURL =  baseURL + '/vclaim/addantrian/' + no_rkm_medis + '/' + no_rawat + '/' + nomor_rujukan + '/' + jenis_kunjungan + '?t=' + mlite.token;
+    // alert(loadURL);
+
+    var modal = $('#add_antrianModal');
+    var modalContent = $('#add_antrianModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click","#spri", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var loadURL =  baseURL + '/vclaim/spri/' + no_peserta + '/' + no_rawat + '?t=' + mlite.token;
+
+    var modal = $('#spriModal');
+    var modalContent = $('#spriModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click","#kontrol", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var loadURL =  baseURL + '/vclaim/kontrol/' + no_peserta + '?t=' + mlite.token;
+
+    var modal = $('#kontrolModal');
+    var modalContent = $('#kontrolModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click","#rujukkeluar", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var loadURL =  baseURL + '/vclaim/rujukkeluar/' + no_peserta + '?t=' + mlite.token;
+
+    var modal = $('#rujukkeluarModal');
+    var modalContent = $('#rujukkeluarModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+
+  $("#form_sep").on("click","#prb", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_peserta = $('input:text[name=sep_no_kartu]').val();
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    var loadURL =  baseURL + '/vclaim/srb/' + no_peserta + '/'+no_rawat+'?t=' + mlite.token;
+
+    var modal = $('#prbModal');
+    var modalContent = $('#prbModal .modal-content');
+
+    modal.off('show.bs.modal');
+    modal.on('show.bs.modal', function () {
+        modalContent.load(loadURL);
+    }).modal();
+    return false;
+  });
+</script>
+<script type="text/javascript">
+   $(function () {
+       $('.tanggal').datetimepicker({
+         format: 'YYYY-MM-DD',
+         locale: 'id'
+       });
+   });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click","#selesai", function(event){
+    bersih();
+    $("#form_rincian").hide();
+    $("#form_soap").hide();
+    $("#form").show();
+    $("#display").show();
+    $("#rincian").hide();
+    $("#soap").hide();
+    $("#form_sep").hide();
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click",".print_sep", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_sep = $(this).attr("data-no_sep");
+    var find_no_rawat = $('input:text[name=sep_no_rawat]').val();
+    var no_rawat = find_no_rawat.replace(/\//g,'');
+    window.open(baseURL + '/vclaim/cetaksep/' + no_sep + '/' + no_rawat + '?t=' + mlite.token);
+  });
+  $("#form_sep").on("click",".print_sep_internal", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_sep = $(this).attr("data-no_sep");
+    window.open(baseURL + '/vclaim/cetaksepinternal/' + no_sep + '?t=' + mlite.token);
+  });
+  $("#form_sep").on("click","#finger", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_kartu = $('#sep_no_kartu').val();
+    var url = baseURL + '/vclaim/finger/' + no_kartu + '?t=' + mlite.token
+    $.get(url,function (data) {
+      var data = JSON.parse(data);
+      if(data.response.status == 'Peserta belum melakukan validasi finger print') {
+        openFingerprint(no_kartu);
+      } else {
+        alert(data.response.status)
+      }
+    })
+  });
+  $("#form_sep").on("click","#frista", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_kartu = $('#sep_no_kartu').val();
+    var url = baseURL + '/vclaim/frista/' + no_kartu + '?t=' + mlite.token
+    $.get(url,function (data) {
+      var data = JSON.parse(data);
+      if(data.response.status == 'Peserta belum melakukan validasi finger print') {
+        openFrista(no_kartu);
+      } else {
+        alert(data.response.status)
+      }
+    })
+  });
+  $("#form_sep").on("click","#approvefinger", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_kartu = $('#sep_no_kartu').val();
+    var url = baseURL + '/vclaim/approvefinger/' + no_kartu + '?t=' + mlite.token
+    $.get(url,function (data) {
+      // var data = JSON.parse(data);
+      alert(data)
+    })
+  });
+</script>
+<script>
+async function openFingerprint(noka) {
+	const response = await fetch(`http://localhost:3000/?app=finger`, {
+		method: 'POST',
+		body: new URLSearchParams({
+			username: "{?=isset_or($username_fp, '')?}",
+			password: "{?=isset_or($password_fp, '')?}",
+			card_number: noka,
+			exit: true, // wait window for exit (optional, default false)
+			wait: 2_000 // wait for login to completed (optional, default 3_593)
+		})
+	});
+
+	if (response.ok) {
+		// Response OK setelah jendela aplikasi sidik jari ditutup
+	} else {
+		const result = await response.json();
+		alert(result.message);
+	}
+} 
+async function openFrista(noka) {
+	const response = await fetch(`http://localhost:3000/?app=frista`, {
+		method: 'POST',
+		body: new URLSearchParams({
+			username: "{?=isset_or($username_frista, '')?}",
+			password: "{?=isset_or($password_frista, '')?}",
+			card_number: noka,
+			exit: true, // wait window for exit (optional, default false)
+			wait: 2_000 // wait for login to completed (optional, default 3_593)
+		})
+	});
+
+	if (response.ok) {
+		// Response OK setelah jendela aplikasi sidik jari ditutup
+	} else {
+		const result = await response.json();
+		alert(result.message);
+	}
+} 
+</script>
+<script type="text/javascript">
+  // ketika tombol hapus ditekan
+  $("#form_sep").on("click",".hapus_sep", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var url = baseURL + '/vclaim/hapussep?t=' + mlite.token;
+    var no_sep = $(this).attr("data-no_sep");
+    //console.log(no_sep);
+
+    $.post(url, {
+      no_sep: no_sep
+    } ,function(data) {
+      alert(data);
+      $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
+      "Data rincian SEP telah dihapus!"+
+      "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
+      "</div>").show();
+    });
+  });
+</script>
+<script type="text/javascript">
+  $("#form_sep").on("click",".ubah_sep", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+    var no_sep = $(this).attr("data-no_sep");
+    var no_rujukan = $(this).attr("data-no_rujukan");
+    var poli = $(this).attr("data-poli");
+    var diagnosa = $(this).attr("data-diagnosa");
+    var tgl_sep = $(this).attr("data-tgl_sep");
+    console.log(diagnosa);
+    $('input:text[name=get_no_sep]').val(no_sep);
+    $('input:text[name=sep_nomor_rujukan]').val(no_rujukan);
+    if(poli == 'null') {
+      $('#sep_spesialis_nama').val('');
+    } else {
+      $('#sep_spesialis_nama').append('<option value="' + poli + '" selected>' + poli + '</option>');
+      if ($('#sep_spesialis_nama').data('selectator')) {
+        try { $('#sep_spesialis_nama').selectator('destroy'); } catch(e) {}
+      }
+      $('#sep_spesialis_nama').selectator({ useSearch: true });
+    }
+    $('#sep_diagnosa_kode').val(diagnosa);
+    $('input:text[name=sep_tanggal_sep]').val(tgl_sep);
+
+    $("#no_sep_input").removeAttr('hidden');
+  });
+</script>
+<script type="text/javascript">
+  // ketika tombol antrian ditekan
+  $("#form_sep").on("click","#simpan", function(event){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    event.preventDefault();
+
+    var url = baseURL + '/vclaim/savesep?t=' + mlite.token;
+
+    var no_rawat = $('#sep_no_rawat').val();
+    var tglsep = $('#sep_tanggal_sep').val();
+    var tglrujukan = $('#sep_tanggal_rujukan').val();
+    var norujukan = $('#sep_nomor_rujukan').val();
+    var kdppkrujukan = $('#sep_asal_rujukan_kode').val();
+    var nmppkrujukan = $('#sep_asal_rujukan_nama').val();
+    var jnspelayanan = $('#sep_pelayanan_kode').val();
+    var catatan = $('#sep_catatan').val();
+    var diagawal = $('#sep_diagnosa_kode').val();
+    var nmdiagnosaawal = $('#sep_diagnosa_nama').val();
+    var kdpolitujuan = $('#sep_spesialis_kode').val();
+    var nmpolitujuan = $('#sep_spesialis_nama').val();
+    var klsrawat = $('#sep_kelas_kode').val();
+    var lakalantas = $('#sep_status_kecelakaan_kode').val();
+    var noLp = $('#sep_nomor_laporan_polisi').val();
+    var pembiayaan = $('#sep_pembiayaan_kode').val();
+    var klsnaik = $('#sep_naik_kelas_kode').val();
+    var pjnaikkelas = $('#sep_penjamin_kecelakaan_kode').val();
+    var tujuanKunj = $('#sep_kunjungan_kode').val();
+    var prosedur = $('#sep_prosedur_kode').val();
+    var penunjang = $('#sep_penunjang_kode').val();
+    var assesment = $('#sep_assesment_kode').val();
+    var nama_peserta = $('.nama_peserta').text();
+    var nomr = $('#sep_norm').val();
+    if (!nomr || nomr.trim() === '') {
+      nomr = $('#no_mr_peserta').text().trim();
+      if (nomr !== '') {
+        $('#sep_norm').val(nomr);
+      }
+    }
+    var tanggal_lahir = $('#sep_tanggal_lahir').val();
+    var peserta = $('#sep_jenis_peserta').val();
+    var jenis_kelamin = $('#sep_jenis_kelamin_kode').val();
+    var no_kartu = $('#sep_no_kartu').val();
+    var tglpulang = $('#sep_tanggal_pulang').val();
+    var asal_rujukan = $('#sep_asal_faskes_kode').val();
+    var eksekutif = $('#sep_eksekutif_kode').val();
+    var cob = $('#sep_cob_kode').val();
+    var penjamin = $('#sep_penjamin_kecelakaan_kode').val();
+    var notelep = $('#sep_nomor_telepon').val();
+    var katarak = $('#sep_katarak_kode').val();
+    var tglkkl = $('#sep_tanggal_kecelakaan').val();
+    var keterangankkl = $('#sep_keterangan_kecelakaan').val();
+    var suplesi = $('#sep_suplesi_kode').val();
+    var no_sep_suplesi = $('#sep_nomor_suplesi').val();
+    var kdprop = $('#id_provinsi').val();
+    var nmprop = $('#provinsi').val();
+    var kdkab = $('#id_kabupaten').val();
+    var nmkab = $('#kabupaten').val();
+    var kdkec = $('#id_kecamatan').val();
+    var nmkec = $('#kecamatan').val();
+    var noskdp = $('#sep_nomor_skdp').val();
+    var kddpjp = $('#sep_dpjp_yang_melayani_kode').val();
+    var nmdpdjp = $('#sep_dpjp_yang_melayani_nama').val();
+    var kddpjppelayanan = $('#sep_dpjp_pelayanan_kode').val();
+    var nmdpjppelayanan = $('#sep_dpjp_pelayanan_nama').val();
+    var prolanis_prb = $('.prolainis_peserta').text();
+    var no_sep = $('#get_no_sep').val();
+    $.ajax({
+      type: "POST",
+      url: "{?=url([ADMIN,'vclaim','savesep'])?}",
+      data: {
+        no_sep:no_sep,
+        no_rawat : no_rawat,
+        tglsep: tglsep,
+        tglrujukan: tglrujukan,
+        norujukan: norujukan,
+        kdppkrujukan: kdppkrujukan,
+        nmppkrujukan: nmppkrujukan,
+        jnspelayanan: jnspelayanan,
+        catatan: catatan,
+        diagawal: diagawal,
+        nmdiagnosaawal: nmdiagnosaawal,
+        kdpolitujuan: kdpolitujuan,
+        nmpolitujuan: nmpolitujuan,
+        klsrawat: klsrawat,
+        klsnaik: klsnaik,
+        pjnaikkelas: pjnaikkelas,
+        lakalantas: lakalantas,
+        noLp: noLp,
+        tujuanKunj: tujuanKunj,
+        flagProcedure: prosedur,
+        kdPenunjang: penunjang,
+        assesmentPel: assesment,
+        nama_pasien: nama_peserta,
+        nomr: nomr,
+        tanggal_lahir: tanggal_lahir,
+        peserta: peserta,
+        jenis_kelamin: jenis_kelamin,
+        no_kartu: no_kartu,
+        tglpulang: tglpulang,
+        asal_rujukan: asal_rujukan,
+        eksekutif: eksekutif,
+        cob: cob,
+        pembiayaan: pembiayaan,
+        notelep: notelep,
+        katarak: katarak,
+        tglkkl: tglkkl,
+        keterangankkl: keterangankkl,
+        suplesi: suplesi,
+        no_sep_suplesi: no_sep_suplesi,
+        kdprop : kdprop,
+        nmprop : nmprop,
+        kdkab : kdkab,
+        nmkab : nmkab,
+        kdkec : kdkec,
+        nmkec : nmkec,
+        noskdp: noskdp,
+        kddpjp: kddpjp,
+        nmdpdjp: nmdpdjp,
+        kddpjppelayanan: kddpjppelayanan,
+        nmdpjppelayanan: nmdpjppelayanan,
+        prolanis_prb: prolanis_prb
+      },
+      success: function(result){
+        var messages = result.split(' ');
+        if (messages.length == 1) {
+          window.open(baseURL + '/vclaim/cetaksep/' + result + '?t=' + mlite.token);
+        } else if(messages.length > 1) {
+          alert(result)
+        } else {
+          alert('Gagal menyimpan data ke database SIMRS');
+        }
+      }
+    });
+  });
+</script>
+<script type="text/javascript">
+  // ketika inputbox pencarian diisi
+  $('#parameter_no_rujukan_pcare').on('click',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var no_rujukan_pcare = $('input:text[name=no_rujukan_pcare]').val();
+    var url_vclaim    = baseURL + '/vclaim/caribynorujukan/PCare/' + no_rujukan_pcare + '/?t=' + mlite.token;
+
+    if(no_rujukan_pcare!="") {
+        // tampilkan data yang sudah di perbaharui
+        $.get(url_vclaim,function(data) {
+          var data = JSON.parse(data);
+          var json_obj = [data];
+          if(!json_obj[0]) {
+            alert('Koneksi ke server BPJS terputus. Silahkan ulangi lagi!');
+          } else if(json_obj[0].metaData.code == 200) {
+            var asalFaskes_nama = 'Faskes 1';
+            if(json_obj[0].response.asalFaskes == 2) {
+              var asalFaskes_nama = 'Faskes 2 (RS)';
+            }
+            var jenis_kelamin = 'Laki-Laki';
+            if(json_obj[0].response.rujukan.peserta.sex == 'P') {
+              var jenis_kelamin = 'Perempuan';
+            }
+            $('#sep_jenis_kelamin_nama').val(jenis_kelamin);
+            $('#sep_jenis_kelamin_kode').val(json_obj[0].response.rujukan.peserta.sex);
+            $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
+            $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
+            $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
+            $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+            $('#sep_eksekutif_kode').val("0");
+            $('#sep_eksekutif_nama').val("Tidak");
+            $('#sep_kunjungan_kode').val("0");
+            $('#sep_kunjungan_nama').val("Normal");
+            $('#sep_cob_kode').val("0");
+            $('#sep_cob_nama').val("Tidak");
+            $('#sep_katarak_kode').val("0");
+            $('#sep_katarak_nama').val("Tidak");
+            $('#sep_status_kecelakaan_kode').val("0");
+            $('#sep_status_kecelakaan_nama').val("Tidak");
+            $('#sep_penjamin_kecelakaan_kode').val("0");
+            $('#sep_penjamin_kecelakaan_nama').val("Tidak");
+            $('#sep_suplesi_kode').val("0");
+            $('#sep_suplesi_nama').val("Tidak");
+            $('#sep_pelayanan_kode').val(json_obj[0].response.rujukan.pelayanan.kode);
+            $('#sep_pelayanan_nama').val(json_obj[0].response.rujukan.pelayanan.nama);
+            $('#sep_kelas_kode').val(json_obj[0].response.rujukan.peserta.hakKelas.kode);
+            $('#sep_kelas_nama').val(json_obj[0].response.rujukan.peserta.hakKelas.keterangan);
+            $('#sep_asal_faskes_kode').val(json_obj[0].response.asalFaskes);
+            $('#sep_asal_faskes_nama').val(asalFaskes_nama);
+            $('#sep_asal_rujukan_nama').val(json_obj[0].response.rujukan.provPerujuk.nama);
+            $('#sep_asal_rujukan_kode').val(json_obj[0].response.rujukan.provPerujuk.kode);
+            $('input:text[name=sep_tanggal_rujukan]').val(json_obj[0].response.rujukan.tglKunjungan);
+            $('input:text[name=sep_nomor_rujukan]').val(json_obj[0].response.rujukan.noKunjungan);
+            $('#sep_spesialis_kode').val(json_obj[0].response.rujukan.poliRujukan.kode);
+            $('#sep_spesialis_nama').val(json_obj[0].response.rujukan.poliRujukan.nama);
+            $('#sep_diagnosa_kode').val(json_obj[0].response.rujukan.diagnosa.kode);
+            $('#sep_diagnosa_nama').val(json_obj[0].response.rujukan.diagnosa.nama);
+            $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
+          } else {
+            alert(json_obj[0].metaData.message);
+          }
+        });
+    }
+
+  });
+  // end pencarian
+  // ketika inputbox pencarian diisi
+  $('#parameter_no_rujukan_rs').on('click',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var no_rujukan_rs = $('input:text[name=no_rujukan_rs]').val();
+    var url_vclaim    = baseURL + '/vclaim/caribynorujukan/RS/' + no_rujukan_rs + '/?t=' + mlite.token;
+
+    if(no_rujukan_rs!="") {
+        // tampilkan data yang sudah di perbaharui
+        $.get(url_vclaim,function(data) {
+          var data = JSON.parse(data);
+          var json_obj = [data];
+
+          if(!json_obj[0]) {
+            alert('Koneksi ke server BPJS terputus. Silahkan ulangi lagi!');
+          } else if(json_obj[0].metaData.code == 200) {
+            var asalFaskes_nama = 'Faskes 1';
+            if(json_obj[0].response.asalFaskes == 2) {
+              var asalFaskes_nama = 'Faskes 2 (RS)';
+            }
+            var jenis_kelamin = 'Laki-Laki';
+            if(json_obj[0].response.rujukan.peserta.sex == 'P') {
+              var jenis_kelamin = 'Perempuan';
+            }
+            $('#sep_jenis_kelamin_nama').val(jenis_kelamin);
+            $('#sep_jenis_kelamin_kode').val(json_obj[0].response.rujukan.peserta.sex);
+            $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
+            $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
+            $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
+            $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+            $('#sep_eksekutif_kode').val("0");
+            $('#sep_eksekutif_nama').val("Tidak");
+            $('#sep_kunjungan_kode').val("0");
+            $('#sep_kunjungan_nama').val("Normal");
+            $('#sep_cob_kode').val("0");
+            $('#sep_cob_nama').val("Tidak");
+            $('#sep_katarak_kode').val("0");
+            $('#sep_katarak_nama').val("Tidak");
+            $('#sep_status_kecelakaan_kode').val("0");
+            $('#sep_status_kecelakaan_nama').val("Tidak");
+            $('#sep_penjamin_kecelakaan_kode').val("0");
+            $('#sep_penjamin_kecelakaan_nama').val("Tidak");
+            $('#sep_suplesi_kode').val("0");
+            $('#sep_suplesi_nama').val("Tidak");
+            $('#sep_pelayanan_kode').val(json_obj[0].response.rujukan.pelayanan.kode);
+            $('#sep_pelayanan_nama').val(json_obj[0].response.rujukan.pelayanan.nama);
+            $('#sep_kelas_kode').val(json_obj[0].response.rujukan.peserta.hakKelas.kode);
+            $('#sep_kelas_nama').val(json_obj[0].response.rujukan.peserta.hakKelas.keterangan);
+            $('#sep_asal_faskes_kode').val(json_obj[0].response.asalFaskes);
+            $('#sep_asal_faskes_nama').val(asalFaskes_nama);
+            $('#sep_asal_rujukan_nama').val(json_obj[0].response.rujukan.provPerujuk.nama);
+            $('#sep_asal_rujukan_kode').val(json_obj[0].response.rujukan.provPerujuk.kode);
+            $('input:text[name=sep_tanggal_rujukan]').val(json_obj[0].response.rujukan.tglKunjungan);
+            $('input:text[name=sep_nomor_rujukan]').val(json_obj[0].response.rujukan.noKunjungan);
+            $('#sep_spesialis_kode').val(json_obj[0].response.rujukan.poliRujukan.kode);
+            $('#sep_spesialis_nama').val(json_obj[0].response.rujukan.poliRujukan.nama);
+            $('#sep_diagnosa_kode').val(json_obj[0].response.rujukan.diagnosa.kode);
+            $('#sep_diagnosa_nama').val(json_obj[0].response.rujukan.diagnosa.nama);
+            $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
+          } else {
+            alert(json_obj[0].metaData.message);
+          }
+
+        });
+    }
+
+  });
+  // end pencarian
+  // ketika inputbox pencarian diisi
+  $('#parameter_no_kartu_pcare').on('click',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var no_kartu_pcare = $('input:text[name=no_kartu_pcare]').val();
+    var url_vclaim    = baseURL + '/vclaim/caribynokartu/PCare/' + no_kartu_pcare + '/?t=' + mlite.token;
+
+    if(no_kartu_pcare!="") {
+        // tampilkan data yang sudah di perbaharui
+        $.get(url_vclaim,function(data) {
+          var data = JSON.parse(data);
+          var json_obj = [data];
+
+          if(!json_obj[0]) {
+            alert('Koneksi ke server BPJS terputus. Silahkan ulangi lagi!');
+          } else if(json_obj[0].metaData.code == 200) {
+            var kode_pelayanan = $('#sep_pelayanan_kode').val();
+            var asalFaskes_nama = 'Faskes 1';
+            if(json_obj[0].response.asalFaskes == 2) {
+              var asalFaskes_nama = 'Faskes 2 (RS)';
+            }
+            var jenis_kelamin = 'Laki-Laki';
+            if(json_obj[0].response.rujukan.peserta.sex == 'P') {
+              var jenis_kelamin = 'Perempuan';
+            }
+            if(kode_pelayanan == '1') {
+              $('#sep_asal_rujukan_nama').val(json_obj[0].response.rujukan.provPerujuk.nama);
+              $('#sep_asal_rujukan_kode').val(json_obj[0].response.rujukan.provPerujuk.kode);
+            } else {
+              $('#sep_jenis_kelamin_nama').val(jenis_kelamin);
+              $('#sep_jenis_kelamin_kode').val(json_obj[0].response.rujukan.peserta.sex);
+              $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
+              $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
+              $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
+              $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+              $('#sep_eksekutif_kode').val("0");
+              $('#sep_eksekutif_nama').val("Tidak");
+              $('#sep_kunjungan_kode').val("0");
+              $('#sep_kunjungan_nama').val("Normal");
+              $('#sep_cob_kode').val("0");
+              $('#sep_cob_nama').val("Tidak");
+              $('#sep_katarak_kode').val("0");
+              $('#sep_katarak_nama').val("Tidak");
+              $('#sep_status_kecelakaan_kode').val("0");
+              $('#sep_status_kecelakaan_nama').val("Tidak");
+              $('#sep_penjamin_kecelakaan_kode').val("0");
+              $('#sep_penjamin_kecelakaan_nama').val("Tidak");
+              $('#sep_suplesi_kode').val("0");
+              $('#sep_suplesi_nama').val("Tidak");
+              $('#sep_pelayanan_kode').val(json_obj[0].response.rujukan.pelayanan.kode);
+              $('#sep_pelayanan_nama').val(json_obj[0].response.rujukan.pelayanan.nama);
+              $('#sep_kelas_kode').val(json_obj[0].response.rujukan.peserta.hakKelas.kode);
+              $('#sep_kelas_nama').val(json_obj[0].response.rujukan.peserta.hakKelas.keterangan);
+              $('#sep_asal_faskes_kode').val(json_obj[0].response.asalFaskes);
+              $('#sep_asal_faskes_nama').val(asalFaskes_nama);
+              $('#sep_asal_rujukan_nama').val(json_obj[0].response.rujukan.provPerujuk.nama);
+              $('#sep_asal_rujukan_kode').val(json_obj[0].response.rujukan.provPerujuk.kode);
+              $('input:text[name=sep_tanggal_rujukan]').val(json_obj[0].response.rujukan.tglKunjungan);
+              $('input:text[name=sep_nomor_rujukan]').val(json_obj[0].response.rujukan.noKunjungan);
+              $('#sep_spesialis_kode').val(json_obj[0].response.rujukan.poliRujukan.kode);
+              $('#sep_spesialis_nama').val(json_obj[0].response.rujukan.poliRujukan.nama);
+              $('#sep_diagnosa_kode').val(json_obj[0].response.rujukan.diagnosa.kode);
+              $('#sep_diagnosa_nama').val(json_obj[0].response.rujukan.diagnosa.nama);
+              $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
+            }
+          } else {
+            alert(json_obj[0].metaData.message);
+          }
+
+        });
+    }
+
+  });
+  // end pencarian
+  // ketika inputbox pencarian diisi
+  $('#parameter_no_kartu_rs').on('click',function(e){
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var no_kartu_rs = $('input:text[name=no_kartu_rs]').val();
+    var url_vclaim    = baseURL + '/vclaim/caribynokartu/RS/' + no_kartu_rs + '/?t=' + mlite.token;
+
+    if(no_kartu_rs!="") {
+        // tampilkan data yang sudah di perbaharui
+        $.get(url_vclaim,function(data) {
+          var data = JSON.parse(data);
+          var json_obj = [data];
+
+          if(!json_obj[0]) {
+            alert('Koneksi ke server BPJS terputus. Silahkan ulangi lagi!');
+          } else if(json_obj[0].metaData.code == 200) {
+            var asalFaskes_nama = 'Faskes 1';
+            if(json_obj[0].response.asalFaskes == 2) {
+              var asalFaskes_nama = 'Faskes 2 (RS)';
+            }
+            var jenis_kelamin = 'Laki-Laki';
+            if(json_obj[0].response.rujukan.peserta.sex == 'P') {
+              var jenis_kelamin = 'Perempuan';
+            }
+            $('#sep_jenis_kelamin_nama').val(jenis_kelamin);
+            $('#sep_jenis_kelamin_kode').val(json_obj[0].response.rujukan.peserta.sex);
+            $('input:text[name=sep_tanggal_lahir]').val(json_obj[0].response.rujukan.peserta.tglLahir);
+            $('input:text[name=sep_jenis_peserta]').val(json_obj[0].response.rujukan.peserta.jenisPeserta.keterangan);
+            $('input:text[name=sep_no_kartu]').val(json_obj[0].response.rujukan.peserta.noKartu);
+            $('input:text[name=sep_norm]').val(json_obj[0].response.rujukan.peserta.mr.noMR);
+            $('#sep_eksekutif_kode').val("0");
+            $('#sep_eksekutif_nama').val("Tidak");
+            $('#sep_kunjungan_kode').val("0");
+            $('#sep_kunjungan_nama').val("Normal");
+            $('#sep_cob_kode').val("0");
+            $('#sep_cob_nama').val("Tidak");
+            $('#sep_katarak_kode').val("0");
+            $('#sep_katarak_nama').val("Tidak");
+            $('#sep_status_kecelakaan_kode').val("0");
+            $('#sep_status_kecelakaan_nama').val("Tidak");
+            $('#sep_penjamin_kecelakaan_kode').val("0");
+            $('#sep_penjamin_kecelakaan_nama').val("Tidak");
+            $('#sep_suplesi_kode').val("0");
+            $('#sep_suplesi_nama').val("Tidak");
+            $('#sep_pelayanan_kode').val(json_obj[0].response.rujukan.pelayanan.kode);
+            $('#sep_pelayanan_nama').val(json_obj[0].response.rujukan.pelayanan.nama);
+            $('#sep_kelas_kode').val(json_obj[0].response.rujukan.peserta.hakKelas.kode);
+            $('#sep_kelas_nama').val(json_obj[0].response.rujukan.peserta.hakKelas.keterangan);
+            $('#sep_asal_faskes_kode').val(json_obj[0].response.asalFaskes);
+            $('#sep_asal_faskes_nama').val(asalFaskes_nama);
+            $('#sep_asal_rujukan_nama').val(json_obj[0].response.rujukan.provPerujuk.nama);
+            $('#sep_asal_rujukan_kode').val(json_obj[0].response.rujukan.provPerujuk.kode);
+            $('input:text[name=sep_tanggal_rujukan]').val(json_obj[0].response.rujukan.tglKunjungan);
+            $('input:text[name=sep_nomor_rujukan]').val(json_obj[0].response.rujukan.noKunjungan);
+            $('#sep_spesialis_kode').val(json_obj[0].response.rujukan.poliRujukan.kode);
+            $('#sep_spesialis_nama').val(json_obj[0].response.rujukan.poliRujukan.nama);
+            $('#sep_diagnosa_kode').val(json_obj[0].response.rujukan.diagnosa.kode);
+            $('#sep_diagnosa_nama').val(json_obj[0].response.rujukan.diagnosa.nama);
+            $('input:text[name=sep_nomor_telepon]').val(json_obj[0].response.rujukan.peserta.mr.noTelepon);
+          } else {
+            alert(json_obj[0].metaData.message);
+          }
+
+        });
+    }
+
+  });
+  // end pencarian
+  // ketika inputbox pencarian diisi
+  $('#parameter_histori_pelayanan').on('click',function(e){
+    e.preventDefault();
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var nomor_asuransi = $('input:text[name=nomor_asuransi]').val();
+    var tanggal_awal = $('input:text[name=tanggal_awal]').val();
+    var tanggal_akhir = $('input:text[name=tanggal_akhir]').val();
+    var url_vclaim    = baseURL + '/vclaim/historipelayanan/' + nomor_asuransi + '/' + tanggal_awal + '/' + tanggal_akhir + '/?t=' + mlite.token;
+
+    if(nomor_asuransi!="") {
+        // tampilkan data yang sudah di perbaharui
+        $.get(url_vclaim,function(data) {
+          var data = JSON.parse(data);
+          //var data = JSON.stringify(data, null, '\t');
+          var json_obj = [data];
+          if(!json_obj[0]) {
+            alert('Koneksi ke server BPJS terputus. Silahkan ulangi lagi!');
+          } else if(json_obj[0].metaData.code == 200) {
+            var histori = json_obj[0].response.histori;
+            console.log(histori);
+            var output="<div class=\"panel panel-default m-t-xl\">";
+            for (var i in histori) {
+                var jnsPelayanan = "Rawat Inap";
+                var poli = "null";
+                if(histori[i].jnsPelayanan == 2) {
+                  var jnsPelayanan = "Rawat Jalan";
+                  var poli = histori[i].poli;
+                }
+                output+="<div class=\"panel-body\">";
+                output+="Diagnosa : " + histori[i].diagnosa + "<br/>";
+                output+="Jenis : " + jnsPelayanan + "<br/>";
+                output+="Kelas : " + histori[i].kelasRawat + "<br/>";
+                output+="Poli : " + poli + "<br/>";
+                output+="Tgl. SEP : " + histori[i].tglSep + "<br/>";
+                output+="No. SEP : <span id=\"sep_no_sep\" class=\"text-info\" role=\"button\" data-jenis=" + histori[i].jnsPelayanan + ">" + histori[i].noSep + "</span><br/>";
+                output+="No. Rjk : " + histori[i].noRujukan + "<br/>";
+                output+="PPK Pelayanan : " + histori[i].ppkPelayanan;
+                output+="</div>";
+                output+="<div class=\"panel-footer\"><button class=\"btn btn-success btn-xs ubah_sep\" data-diagnosa=" + histori[i].diagnosa + " data-poli=" + poli + " data-tgl_sep=" + histori[i].tglSep + " data-no_sep=" + histori[i].noSep + " data-no_rujukan=" + histori[i].noRujukan + ">Ubah</button>";
+                output+="<button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button>";
+                output+="<button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">Cetak</button>";
+                if(histori[i].jnsPelayanan == 1) {
+                  output+="<button class=\"btn btn-warning btn-xs sep_pulang\" data-no_sep=" + histori[i].noSep + " id=\"sep_pulang_" + histori[i].noSep + "\">Pulang</button>";
+                }
+                output+="</div>";
+            }
+            output+="</div>";
+            $("#histori_pelayanan").html(output).show();
+          } else {
+            alert(json_obj[0].metaData.message);
+          }
+        });
+    }
+  });
+  $('#parameter_sep_internal').on('click',function(e){
+    e.preventDefault();
+    var baseURL = mlite.url + '/' + mlite.admin;
+    var nomor_sep_internal = $('input:text[name=nomor_sep_internal]').val();
+    var url_vclaim    = baseURL + '/vclaim/sepinternal/' + nomor_sep_internal + '/?t=' + mlite.token;
+
+    if(nomor_sep_internal!="") {
+        // tampilkan data yang sudah di perbaharui
+        $.get(url_vclaim,function(data) {
+          // console.log(JSON.parse(data));
+          var data = JSON.parse(data);
+          if(data.metaData.code == 200) {
+            var histori = data.response.list;
+            var output="<div class=\"panel panel-default m-t-xl\">";
+            for (var i in histori) {
+                var jnsPelayanan = "Rawat Inap";
+                var poli = "null";
+                if(histori[i].jnsPelayanan == 2) {
+                  var jnsPelayanan = "Rawat Jalan";
+                  var poli = histori[i].poli;
+                }
+                output+="<div class=\"panel-body\">";
+                output+="Diagnosa : " + histori[i].diagnosa + "<br/>";
+                output+="Jenis : " + jnsPelayanan + "<br/>";
+                output+="Kelas : " + histori[i].kelasRawat + "<br/>";
+                output+="Poli : " + poli + "<br/>";
+                output+="Tgl. SEP : " + histori[i].tglSep + "<br/>";
+                output+="No. SEP : <span id=\"sep_no_sep\" class=\"text-info\" role=\"button\" data-jenis=" + histori[i].jnsPelayanan + ">" + histori[i].noSep + "</span><br/>";
+                output+="No. Rjk : " + histori[i].noRujukan + "<br/>";
+                output+="PPK Pelayanan : " + histori[i].ppkPelayanan;
+                output+="</div>";
+                output+="<div class=\"panel-footer\"><button class=\"btn btn-success btn-xs ubah_sep\" data-diagnosa=" + histori[i].diagnosa + " data-poli=" + poli + " data-tgl_sep=" + histori[i].tglSep + " data-no_sep=" + histori[i].noSep + " data-no_rujukan=" + histori[i].noRujukan + ">Ubah</button> <button class=\"btn btn-danger btn-xs hapus_sep\" data-no_sep=" + histori[i].noSep + ">Hapus</button> <button class=\"btn btn-primary btn-xs print_sep\" data-no_sep=" + histori[i].noSep + ">Cetak</button>";
+                if(histori[i].jnsPelayanan == 1) {
+                  output+=" <button class=\"btn btn-warning text-primary btn-xs sep_pulang\" data-no_sep=" + histori[i].noSep + " id=\"sep_pulang_" + histori[i].noSep + "\">Pulang</button>";
+                }
+                output+="</div>";
+            }
+            output+="</div>";
+            $("#sep_internal").html(output).show();
+          } else {
+            alert(data.metaData.message);
+          }
+        });
+    }
+  });
+  $("#form_sep").on("click","#sep_no_sep", function(event){
+    var jnsPelayanan = $(this).data('jenis');
+    if(jnsPelayanan == 1) {
+      $('#sep_nomor_rujukan').val($(this).text());
+    } else {
+      $('#collapseFour').collapse('show');
+      $('#collapseThree').collapse('hide');
+      $('#nomor_sep_internal').val($(this).text());
+    }
+  });
+  // end pencarian
+</script>
+<script type="text/javascript">
+  // Global function: Inisialisasi selectator untuk semua select di form SEP
+  // Dapat dipanggil dari parent page setelah #form_sep ditampilkan
+  function initSelectatorFormSep() {
+    // Destroy existing selectator instances first
+    $('#form_sep select').each(function() {
+      if ($(this).data('selectator')) {
+        try { $(this).selectator('destroy'); } catch(e) {}
+      }
+    });
+    var staticFields = [
+      'sep_jenis_kelamin_nama', 'sep_eksekutif_nama', 'sep_asal_faskes_nama',
+      'sep_pelayanan_nama', 'sep_kelas_nama', 'sep_naik_kelas_nama',
+      'sep_pembiayaan_nama', 'sep_kunjungan_nama', 'sep_prosedur_nama',
+      'sep_penunjang_nama', 'sep_assesment_nama', 'sep_cob_nama',
+      'sep_katarak_nama', 'sep_status_kecelakaan_nama', 'sep_penjamin_kecelakaan_nama',
+      'sep_suplesi_nama'
+    ];
+    for (var i = 0; i < staticFields.length; i++) {
+      (function(fieldId) {
+        var $sel = $('#' + fieldId);
+        var kodeField = $sel.data('kode');
+        if (kodeField) {
+          $sel.on('change', function() {
+            $('#' + kodeField).val($(this).val());
+          });
+        }
+        $sel.selectator({ useSearch: true });
+      })(staticFields[i]);
+    }
+
+    // === PPK Rujukan (faskes search) ===
+    var $asalRujukan = $('#sep_asal_rujukan_nama');
+    var asalRujukanUrl = '{?=url()?}/{?=ADMIN?}/vclaim/faskes/';
+    $asalRujukan.selectator({
+      useSearch: true,
+      minSearchLength: 1,
+      load: function(query, callback) {
+        var sep_asal_faskes_kode = $('#sep_asal_faskes_kode').val();
+        $.ajax({
+          url: asalRujukanUrl + encodeURIComponent(query) + '/' + encodeURIComponent(sep_asal_faskes_kode) + '?t={?=$_SESSION["token"]?}',
+          method: 'GET',
+          data: {},
+          success: function(data) {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            var results = [];
+            if (json_obj[0].metaData.code == 200) {
+              var faskes = json_obj[0].response.faskes;
+              for (var i = 0; i < faskes.length; i++) {
+                results.push({value: faskes[i].kode, text: faskes[i].nama});
+              }
+            }
+            callback(results);
+          }
+        });
+      }
+    });
+    $asalRujukan.on('change', function() {
+      $('#sep_asal_rujukan_kode').val($(this).val());
+    });
+
+    // === Spesialis (poli search) ===
+    var $spesialis = $('#sep_spesialis_nama');
+    var spesialisUrl = '{?=url()?}/{?=ADMIN?}/vclaim/poli/';
+    $spesialis.selectator({
+      useSearch: true,
+      minSearchLength: 1,
+      load: function(query, callback) {
+        $.ajax({
+          url: spesialisUrl + encodeURIComponent(query) + '?t={?=$_SESSION["token"]?}',
+          method: 'GET',
+          data: {},
+          success: function(data) {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            var results = [];
+            if (json_obj[0].metaData.code == 200) {
+              var poli = json_obj[0].response.poli;
+              for (var i = 0; i < poli.length; i++) {
+                results.push({value: poli[i].kode, text: poli[i].nama});
+              }
+            }
+            callback(results);
+          }
+        });
+      }
+    });
+    $spesialis.on('change', function() {
+      $('#sep_spesialis_kode').val($(this).val());
+      // Trigger load DPJP when spesialis changes
+      loadDpjpBySpesialis();
+    });
+
+    // === DPJP (dokter search) ===
+    var $dpjp = $('#sep_dpjp_yang_melayani_nama');
+    $dpjp.selectator({
+      useSearch: true,
+      minSearchLength: 1,
+      load: function(query, callback) {
+        var sep_pelayanan_kode = $('#sep_pelayanan_kode').val();
+        var sep_spesialis_kode = $('#sep_spesialis_kode').val();
+        if (sep_spesialis_kode == 'IGD') sep_pelayanan_kode = '1';
+        var sep_tanggal_sep = $('#sep_tanggal_sep').val();
+        $.ajax({
+          url: '{?=url()?}/{?=ADMIN?}/vclaim/dokterdpjp/' + encodeURIComponent(sep_pelayanan_kode) + '/' + encodeURIComponent(sep_tanggal_sep) + '/' + encodeURIComponent(query) + '?t={?=$_SESSION["token"]?}',
+          method: 'GET',
+          data: {},
+          success: function(data) {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            var results = [];
+            if (json_obj[0].metaData.code == 200) {
+              var dokterdpjp = json_obj[0].response.list;
+              for (var i = 0; i < dokterdpjp.length; i++) {
+                results.push({value: dokterdpjp[i].kode, text: dokterdpjp[i].nama});
+              }
+            }
+            callback(results);
+          }
+        });
+      }
+    });
+    $dpjp.on('change', function() {
+      var kode_pelayanan = $('#sep_pelayanan_kode').val();
+      $('#sep_dpjp_yang_melayani_kode').val($(this).val());
+      $('#sep_dpjp_pelayanan_kode').val($(this).val());
+      var $dpjpPelayanan = $('#sep_dpjp_pelayanan_nama');
+      $dpjpPelayanan.find('option').not(':first').remove();
+      var text = $(this).find('option:selected').text();
+      var val = $(this).val();
+      if (val && text) {
+        $dpjpPelayanan.append('<option value="' + val + '" selected>' + text + '</option>');
+      }
+      if ($dpjpPelayanan.data('selectator')) {
+        try { $dpjpPelayanan.selectator('destroy'); } catch(e) {}
+      }
+      $dpjpPelayanan.selectator({ useSearch: true });
+      if (kode_pelayanan == '1') {
+        $spesialis.val('');
+        $('#sep_spesialis_kode').val('');
+        if ($spesialis.data('selectator')) {
+          try { $spesialis.selectator('destroy'); } catch(e) {}
+        }
+        $spesialis.selectator({ useSearch: true });
+      }
+    });
+
+    // === DPJP Pelayanan (dokter search) ===
+    var $dpjpPelayanan = $('#sep_dpjp_pelayanan_nama');
+    $dpjpPelayanan.selectator({
+      useSearch: true,
+      minSearchLength: 1,
+      load: function(query, callback) {
+        var sep_pelayanan_kode = $('#sep_pelayanan_kode').val();
+        var sep_tanggal_sep = $('#sep_tanggal_sep').val();
+        $.ajax({
+          url: '{?=url()?}/{?=ADMIN?}/vclaim/dokterdpjp/' + encodeURIComponent(sep_pelayanan_kode) + '/' + encodeURIComponent(sep_tanggal_sep) + '/' + encodeURIComponent(query) + '?t={?=$_SESSION["token"]?}',
+          method: 'GET',
+          data: {},
+          success: function(data) {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            var results = [];
+            if (json_obj[0].metaData.code == 200) {
+              var dokterdpjp = json_obj[0].response.list;
+              for (var i = 0; i < dokterdpjp.length; i++) {
+                results.push({value: dokterdpjp[i].kode, text: dokterdpjp[i].nama});
+              }
+            }
+            callback(results);
+          }
+        });
+      }
+    });
+    $dpjpPelayanan.on('change', function() {
+      $('#sep_dpjp_pelayanan_kode').val($(this).val());
+    });
+
+    // === Load DPJP by spesialis kode (auto-load when spesialis selected) ===
+    var loadDpjpBySpesialis = function() {
+      var query = $('#sep_spesialis_kode').val();
+      var sep_pelayanan_kode = $('#sep_pelayanan_kode').val();
+      if (query == 'IGD') sep_pelayanan_kode = '1';
+      var sep_tanggal_sep = $('#sep_tanggal_sep').val();
+      if (query != '') {
+        $.ajax({
+          url: '{?=url()?}/{?=ADMIN?}/vclaim/dokterdpjp/' + encodeURIComponent(sep_pelayanan_kode) + '/' + encodeURIComponent(sep_tanggal_sep) + '/' + encodeURIComponent(query) + '?t={?=$_SESSION["token"]?}',
+          method: 'GET',
+          data: {},
+          success: function(data) {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            if (json_obj[0].metaData.code == 200) {
+              var dokterdpjp = json_obj[0].response.list;
+              $dpjp.find('option').not(':first').remove();
+              for (var i = 0; i < dokterdpjp.length; i++) {
+                $dpjp.append('<option value="' + dokterdpjp[i].kode + '">' + dokterdpjp[i].nama + '</option>');
+              }
+              if ($dpjp.data('selectator')) {
+                try { $dpjp.selectator('destroy'); } catch(e) {}
+              }
+              $dpjp.selectator({ useSearch: true });
+            }
+          }
+        });
+      }
+    };
+
+    // === Diagnosa (diagnosa search) ===
+    var $diagnosa = $('#sep_diagnosa_nama');
+    var diagnosaUrl = '{?=url()?}/{?=ADMIN?}/vclaim/diagnosa/';
+    $diagnosa.selectator({
+      useSearch: true,
+      minSearchLength: 1,
+      load: function(query, callback) {
+        $.ajax({
+          url: diagnosaUrl + encodeURIComponent(query) + '?t={?=$_SESSION["token"]?}',
+          method: 'GET',
+          data: {},
+          success: function(data) {
+            var data = JSON.parse(data);
+            var json_obj = [data];
+            var results = [];
+            if (json_obj[0].metaData.code == 200) {
+              var diagnosa = json_obj[0].response.diagnosa;
+              for (var i = 0; i < diagnosa.length; i++) {
+                results.push({value: diagnosa[i].kode, text: diagnosa[i].nama});
+              }
+            }
+            callback(results);
+          }
+        });
+      }
+    });
+    $diagnosa.on('change', function() {
+      $('#sep_diagnosa_kode').val($(this).val());
+    });
+
+    // === Wilayah cascading selects ===
+    var $provinsi = $('#provinsi');
+    var $kabupaten = $('#kabupaten');
+    var $kecamatan = $('#kecamatan');
+
+    function refreshSelect(selectId, items) {
+      var $sel = $(selectId);
+      if ($sel.data('selectator')) {
+        try { $sel.selectator('destroy'); } catch(e) {}
+      }
+      $sel.find('option').not(':first').remove();
+      for (var i = 0; i < items.length; i++) {
+        $sel.append('<option value="' + items[i].value + '">' + items[i].text + '</option>');
+      }
+      $sel.selectator({ useSearch: true });
+    }
+
+    // Load provinsi on init using list endpoint (returns JSON)
+    $.ajax({
+      url: "{?=url([ADMIN, 'pasien', 'wilayah?show=listkabupaten'])?}".replace('listkabupaten', 'caripropinsi'),
+      method: 'POST',
+      data: {query: ''},
+      success: function(data) {
+        var $c = $('<div>').html(data);
+        var items = [];
+        $c.find('li').each(function() {
+          var t = $(this).text().trim();
+          var p = t.split(': ');
+          if (p.length >= 2) items.push({value: p[0], text: p.slice(1).join(': ')});
+        });
+        refreshSelect('#provinsi', items);
+      }
+    });
+
+    // Cascade: provinsi -> kabupaten -> kecamatan
+    $provinsi.on('change', function() {
+      var kd = $(this).val();
+      $('#id_provinsi').val(kd);
+      if (kd) {
+        $kabupaten.prop('disabled', false);
+        $.ajax({
+          url: "{?=url([ADMIN, 'pasien', 'wilayah?show=listkabupaten'])?}",
+          method: 'GET',
+          data: {kd_prop: kd},
+          dataType: 'json',
+          success: function(list) {
+            refreshSelect('#kabupaten', list.map(function(r){ return {value: r.kd, text: r.nm}; }));
+          }
+        });
+      } else {
+        $kabupaten.prop('disabled', true);
+        refreshSelect('#kabupaten', []);
+        $kecamatan.prop('disabled', true);
+        refreshSelect('#kecamatan', []);
+        $('#id_provinsi, #id_kabupaten, #id_kecamatan').val('');
+      }
+    });
+
+    $kabupaten.on('change', function() {
+      var kd = $(this).val();
+      $('#id_kabupaten').val(kd);
+      if (kd) {
+        $kecamatan.prop('disabled', false);
+        $.ajax({
+          url: "{?=url([ADMIN, 'pasien', 'wilayah?show=listkecamatan'])?}",
+          method: 'GET',
+          data: {kd_kab: kd},
+          dataType: 'json',
+          success: function(list) {
+            refreshSelect('#kecamatan', list.map(function(r){ return {value: r.kd, text: r.nm}; }));
+          }
+        });
+      } else {
+        $kecamatan.prop('disabled', true);
+        refreshSelect('#kecamatan', []);
+        $('#id_kecamatan').val('');
+      }
+    });
+
+    $kecamatan.on('change', function() {
+      $('#id_kecamatan').val($(this).val());
+    });
+  }
+
+  // Jalankan saat DOM ready
+  $(function(){
+    initSelectatorFormSep();
+
+    // Reinitialize saat #form_sep pertama kali ditampilkan
+    // Parent page memanggil $("#form_sep").show()
+    var _formSep = document.getElementById('form_sep');
+    if (_formSep) {
+      var _obs = new MutationObserver(function(){
+        if (_formSep.style && _formSep.style.display && _formSep.style.display !== 'none') {
+          setTimeout(function(){ initSelectatorFormSep(); }, 100);
+          _obs.disconnect();
+        }
+      });
+      _obs.observe(_formSep, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    // Fallback: reinitialize saat user klik/focus pada select di form_sep
+    $('#form_sep').on('focusin', 'select', function(){
+      var $sel = $(this);
+      if (!$sel.data('selectator')) {
+        $sel.selectator({ useSearch: true });
+      }
+    });
+  });
+</script>
+
+
