@@ -1,7 +1,4 @@
 jQuery().ready(function () {
-    // Konfigurasi relasi (diisi oleh generator)
-    var relasiConfig = RELASI_JSON;
-
     var var_tbl_NAMA_TABLE = $('#tbl_NAMA_TABLE').DataTable({
         'processing': true,
         'serverSide': true,
@@ -99,14 +96,6 @@ COLUMNDEFS_ISI
     });
 
     // ==============================================================
-    // RELASI: dropdown dari tabel referensi
-    // ==============================================================
-
-    function muatDropdownRelasi(rowData) {
-RELASI_FUNGSI_ISI
-    }
-
-    // ==============================================================
     // FORM VALIDASI
     // ==============================================================
 
@@ -173,7 +162,6 @@ MESSAGES_ISI
   
             FORM_ISI
             //$("#EDIT_FIELD").prop('disabled', true); // GA BISA DIEDIT KALI DISABLE
-            RELASI_SET_EDIT
             $('#modal-title').text("Edit Data NAMA_MODULE");
             $("#modal_NAMA_TABLE").modal();
         }
@@ -238,8 +226,6 @@ DELETE_ISI
 
         TAMBAH_ISI
 
-        RELASI_SET_ADD
-
         if(window.location.search.indexOf('no_rawat') !== -1) { 
             $('#no_rawat').val(searchParams.get('no_rawat'));
         }
@@ -295,7 +281,7 @@ DELETE_ISI
 DATA_ISI
             var baseURL = mlite.url + '/' + mlite.admin;
             event.preventDefault();
-            var loadURL =  baseURL + '/MODULE_NAME/detail?t=' + mlite.token + '&DATA_FIELD=' + encodeURIComponent(DEL_FIELD);
+            var loadURL =  baseURL + '/MODULE_NAME/detail/' + DEL_FIELD + '?t=' + mlite.token;
         
             var modal = $('#modal_detail_NAMA_TABLE');
             var modalContent = $('#modal_detail_NAMA_TABLE .modal-content');

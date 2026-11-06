@@ -197,13 +197,13 @@ class Admin extends AdminModule
         'username' => $username,
         'tanggal' => $tanggal,
         'show' => isset_or($show),
-        'loket' => htmlspecialchars_array(isset_or($loket)),
+        'loket' => isset_or($loket),
         'namaloket' => isset_or($namaloket),
-        'panggil_loket' => htmlspecialchars_array(isset_or($panggil_loket)),
-        'antrian' => htmlspecialchars_array(isset_or($tcounter)),
+        'panggil_loket' => isset_or($panggil_loket),
+        'antrian' => isset_or($tcounter),
         'hitung_antrian' => isset_or($hitung_antrian),
         'xcounter' => isset_or($xcounter),
-        'noantrian' =>htmlspecialchars_array(isset_or($noantrian)),
+        'noantrian' =>isset_or($noantrian),
         'display' => $display
       ]);
     }

@@ -146,7 +146,7 @@ class Admin extends AdminModule
         
         return $this->draw('perawat.html', [
             'jasa_medis' => htmlspecialchars_array($this->assign), 
-            'petugas' => htmlspecialchars_array($petugas),
+            'petugas' => $petugas,
             'tgl_awal' => $tgl_awal,
             'tgl_akhir' => $tgl_akhir,
             'search' => $search

@@ -1001,7 +1001,7 @@ class Admin extends AdminModule
       ['name' => 'User Vedika', 'url' => url([ADMIN, 'vedika', 'users']), 'icon' => 'code', 'desc' => 'User Vedika'],
       ['name' => 'Pengaturan', 'url' => url([ADMIN, 'vedika', 'settings']), 'icon' => 'code', 'desc' => 'Pengaturan Vedika'],
     ];
-    return $this->draw('manage.html', ['sub_modules' => htmlspecialchars_array($sub_modules), 'stats' => htmlspecialchars_array($stats), 'periode' => htmlspecialchars_array($date)]);
+    return $this->draw('manage.html', ['sub_modules' => htmlspecialchars_array($sub_modules), 'stats' => $stats, 'periode' => $date]);
   }
 
   public function Chart()
@@ -1065,14 +1065,6 @@ class Admin extends AdminModule
     }
 
     if (isset($_POST['simpanberkas'])) {
-      if (!empty($_FILES['files']['tmp_name'])) {
-        $cekUpload = validateUploadedFile($_FILES['files'], ['jpg', 'jpeg', 'png', 'gif', 'pdf'], ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'], 5 * 1024 * 1024);
-        if (isset($cekUpload['error'])) {
-          echo htmlspecialchars($cekUpload['error'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-          exit();
-        }
-      }
-
       if(MULTI_APP) {
 
         $curl = curl_init();
@@ -1090,8 +1082,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -1100,14 +1091,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else {
@@ -1269,7 +1259,7 @@ class Admin extends AdminModule
             ->where('no_rawat', $row['no_rawat'])
             ->toArray();
         }
-        $this->assign['list'][] = htmlspecialchars_array($row);
+        $this->assign['list'][] = $row;
       }
     }
 
@@ -1315,14 +1305,6 @@ class Admin extends AdminModule
     }
 
     if (isset($_POST['simpanberkas'])) {
-      if (!empty($_FILES['files']['tmp_name'])) {
-        $cekUpload = validateUploadedFile($_FILES['files'], ['jpg', 'jpeg', 'png', 'gif', 'pdf'], ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'], 5 * 1024 * 1024);
-        if (isset($cekUpload['error'])) {
-          echo htmlspecialchars($cekUpload['error'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-          exit();
-        }
-      }
-
 
       if(MULTI_APP) {
 
@@ -1341,8 +1323,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -1351,14 +1332,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else {      
@@ -1517,7 +1497,7 @@ class Admin extends AdminModule
             ->where('no_rawat', $row['no_rawat'])
             ->toArray();
         }
-        $this->assign['list'][] = htmlspecialchars_array($row);
+        $this->assign['list'][] = $row;
       }
     }
 
@@ -1563,14 +1543,6 @@ class Admin extends AdminModule
     }
 
     if (isset($_POST['simpanberkas'])) {
-      if (!empty($_FILES['files']['tmp_name'])) {
-        $cekUpload = validateUploadedFile($_FILES['files'], ['jpg', 'jpeg', 'png', 'gif', 'pdf'], ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'], 5 * 1024 * 1024);
-        if (isset($cekUpload['error'])) {
-          echo htmlspecialchars($cekUpload['error'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-          exit();
-        }
-      }
-
 
       if(MULTI_APP) {
 
@@ -1589,8 +1561,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -1599,14 +1570,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else {      
@@ -1763,7 +1733,7 @@ class Admin extends AdminModule
             ->where('no_rawat', $row['no_rawat'])
             ->toArray();
         }
-        $this->assign['list'][] = htmlspecialchars_array($row);
+        $this->assign['list'][] = $row;
       }
     }
 
@@ -1932,14 +1902,6 @@ class Admin extends AdminModule
     }
 
     if (isset($_POST['simpanberkas'])) {
-      if (!empty($_FILES['files']['tmp_name'])) {
-        $cekUpload = validateUploadedFile($_FILES['files'], ['jpg', 'jpeg', 'png', 'gif', 'pdf'], ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'], 5 * 1024 * 1024);
-        if (isset($cekUpload['error'])) {
-          echo htmlspecialchars($cekUpload['error'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-          exit();
-        }
-      }
-
 
       if(MULTI_APP) {
 
@@ -1958,8 +1920,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -1968,14 +1929,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else {      
@@ -2125,7 +2085,7 @@ class Admin extends AdminModule
           $get_bangsal = $this->db('bangsal')->where('kd_bangsal', $get_kamar['kd_bangsal'])->oneArray();
           $row['nm_poli'] = $get_bangsal['nm_bangsal'].'/'.$get_kamar['kd_kamar'];
         }
-        $this->assign['list'][] = htmlspecialchars_array($row);
+        $this->assign['list'][] = $row;
       }
     }
 
@@ -2163,18 +2123,15 @@ class Admin extends AdminModule
       $lokasi_file = $berkasPerawatan['lokasi_file'];
       $fileLoc = WEBAPPS_PATH . '/berkasrawat/' . $lokasi_file;
       if (file_exists($fileLoc)) {
-        // hapus file fisik bersama catatan DB
-        if (!@unlink($fileLoc)) {
-          echo 'Hapus berkas gagal, file pada server tidak dapat dihapus.';
-          exit();
+        //unlink($fileLoc);
+        $query = $this->db('berkas_digital_perawatan')->where('no_rawat', revertNorawat($no_rawat))->where('lokasi_file', $lokasi_file)->delete();
+        if ($query) {
+          echo 'Hapus berkas sukses';
+        } else {
+          echo 'Hapus berkas gagal';
         }
-      }
-      // hapus catatan DB walau file fisik sudah tidak ada, agar baris tak jadi orphan
-      $query = $this->db('berkas_digital_perawatan')->where('no_rawat', $berkasPerawatan['no_rawat'])->where('lokasi_file', $lokasi_file)->delete();
-      if ($query) {
-        echo 'Hapus berkas sukses';
       } else {
-        echo 'Hapus berkas gagal';
+        echo 'Hapus berkas gagal, berkas tidak ditemukan.';
       }
     } else {
       echo 'Hapus berkas gagal, tidak ada data perawatan.';
@@ -2365,7 +2322,7 @@ class Admin extends AdminModule
     }
   }
 
-  public function getPdfData($id)
+  public function getPDF($id)
   {
     $berkas_digital = $this->db('berkas_digital_perawatan')
       ->join('master_berkas_digital', 'master_berkas_digital.kode=berkas_digital_perawatan.kode')
@@ -2386,7 +2343,7 @@ class Admin extends AdminModule
     $rows = [];
     $total = '';
 
-    $data['total'] = $total;
+    $this->tpl->set('total', $total);
 
     $instansi['logo'] = $this->settings->get('settings.logo');
     $instansi['nama_instansi'] = $this->settings->get('settings.nama_instansi');
@@ -2396,13 +2353,13 @@ class Admin extends AdminModule
     $instansi['nomor_telepon'] = $this->settings->get('settings.nomor_telepon');
     $instansi['email'] = $this->settings->get('settings.email');
 
-    $data['billing'] = $rows;
+    $this->tpl->set('billing', $rows);
 
     /* Menggunakan billing bawaan mLITE */
 
     if($this->settings->get('vedika.billing') == 'mlite') {
         $settings = $this->settings('settings');
-        $data['settings'] = $this->tpl->noParse_array(htmlspecialchars_array($settings));
+        $this->tpl->set('settings', $this->tpl->noParse_array(htmlspecialchars_array($settings)));
 
        $reg_periksa = $this->db('reg_periksa')->where('no_rawat', $no_rawat)->oneArray();
        if($reg_periksa['status_lanjut'] == 'Ralan') {
@@ -2605,13 +2562,13 @@ class Admin extends AdminModule
 
        }
 
-       $data['billing'] = $result_detail;
+       $this->tpl->set('billing', $result_detail);
 
     }
 
     /* End menggunakan billing bawaan mlITE */
 
-    $data['instansi'] = $instansi;
+    $this->tpl->set('instansi', $instansi);
 
     $print_sep = array();
     if (!empty($this->_getSEPInfo('no_sep', $no_rawat))) {
@@ -2639,10 +2596,10 @@ class Admin extends AdminModule
     }
     $print_sep['nama_instansi'] = $this->settings->get('settings.nama_instansi');
     $print_sep['logoURL'] = url(MODULES . '/vclaim/img/bpjslogo.png');
-    $data['print_sep'] = $print_sep;
+    $this->tpl->set('print_sep', $print_sep);
 
     $cek_spri = $this->db('bridging_surat_pri_bpjs')->where('no_rawat', $this->revertNorawat($id))->oneArray();
-    $data['cek_spri'] = $cek_spri;
+    $this->tpl->set('cek_spri', $cek_spri);
 
     $print_spri = array();
     if (!empty($this->_getSPRIInfo('no_surat', $no_rawat))) {
@@ -2650,7 +2607,7 @@ class Admin extends AdminModule
     }
     $print_spri['nama_instansi'] = $this->settings->get('settings.nama_instansi');
     $print_spri['logoURL'] = url(MODULES . '/vclaim/img/bpjslogo.png');
-    $data['print_spri'] = $print_spri;
+    $this->tpl->set('print_spri', $print_spri);
 
     $resume_pasien = $this->db('resume_pasien')
       ->join('dokter', 'dokter.kd_dokter = resume_pasien.kd_dokter')
@@ -2662,7 +2619,7 @@ class Admin extends AdminModule
         ->where('no_rawat', $this->revertNorawat($id))
         ->oneArray();
     }
-    $data['resume_pasien'] = $resume_pasien;
+    $this->tpl->set('resume_pasien', $resume_pasien);
 
     $pasien = $this->db('pasien')
       ->join('kecamatan', 'kecamatan.kd_kec = pasien.kd_kec')
@@ -2796,45 +2753,36 @@ class Admin extends AdminModule
       ->where('no_rawat', $this->revertNorawat($id))
       ->oneArray();
 
-    $data['pasien'] = $pasien;
-    $data['reg_periksa'] = $reg_periksa;
-    //$data['rujukan_internal'] = $rujukan_internal;
-    $data['dpjp_ranap'] = $dpjp_ranap;
-    $data['diagnosa_pasien'] = $diagnosa_pasien;
-    $data['prosedur_pasien'] = $prosedur_pasien;
-    $data['pemeriksaan_ralan'] = $pemeriksaan_ralan;
-    $data['pemeriksaan_ranap'] = $pemeriksaan_ranap;
-    $data['rawat_jl_dr'] = $rawat_jl_dr;
-    $data['rawat_jl_pr'] = $rawat_jl_pr;
-    $data['rawat_jl_drpr'] = $rawat_jl_drpr;
-    $data['rawat_inap_dr'] = $rawat_inap_dr;
-    $data['rawat_inap_pr'] = $rawat_inap_pr;
-    $data['rawat_inap_drpr'] = $rawat_inap_drpr;
-    $data['kamar_inap'] = $kamar_inap;
-    $data['operasi'] = $operasi;
-    $data['tindakan_radiologi'] = $tindakan_radiologi;
-    $data['hasil_radiologi'] = $hasil_radiologi;
-    //$data['saran_rad'] = $saran_rad;
-    $data['pemeriksaan_laboratorium'] = $pemeriksaan_laboratorium;
-    $data['pemberian_obat'] = $pemberian_obat;
-    $data['obat_operasi'] = $obat_operasi;
-    $data['resep_pulang'] = $resep_pulang;
-    $data['laporan_operasi'] = $laporan_operasi;
+    $this->tpl->set('pasien', $pasien);
+    $this->tpl->set('reg_periksa', $reg_periksa);
+    //$this->tpl->set('rujukan_internal', $rujukan_internal);
+    $this->tpl->set('dpjp_ranap', $dpjp_ranap);
+    $this->tpl->set('diagnosa_pasien', $diagnosa_pasien);
+    $this->tpl->set('prosedur_pasien', $prosedur_pasien);
+    $this->tpl->set('pemeriksaan_ralan', $pemeriksaan_ralan);
+    $this->tpl->set('pemeriksaan_ranap', $pemeriksaan_ranap);
+    $this->tpl->set('rawat_jl_dr', $rawat_jl_dr);
+    $this->tpl->set('rawat_jl_pr', $rawat_jl_pr);
+    $this->tpl->set('rawat_jl_drpr', $rawat_jl_drpr);
+    $this->tpl->set('rawat_inap_dr', $rawat_inap_dr);
+    $this->tpl->set('rawat_inap_pr', $rawat_inap_pr);
+    $this->tpl->set('rawat_inap_drpr', $rawat_inap_drpr);
+    $this->tpl->set('kamar_inap', $kamar_inap);
+    $this->tpl->set('operasi', $operasi);
+    $this->tpl->set('tindakan_radiologi', $tindakan_radiologi);
+    $this->tpl->set('hasil_radiologi', $hasil_radiologi);
+    //$this->tpl->set('saran_rad', $saran_rad);
+    $this->tpl->set('pemeriksaan_laboratorium', $pemeriksaan_laboratorium);
+    $this->tpl->set('pemberian_obat', $pemberian_obat);
+    $this->tpl->set('obat_operasi', $obat_operasi);
+    $this->tpl->set('resep_pulang', $resep_pulang);
+    $this->tpl->set('laporan_operasi', $laporan_operasi);
 
-    $data['berkas_digital'] = $berkas_digital;
-    $data['hasil_radiologi'] = $this->db('hasil_radiologi')->where('no_rawat', $this->revertNorawat($id))->toArray();
-    $data['gambar_radiologi'] = $this->db('gambar_radiologi')->where('no_rawat', $this->revertNorawat($id))->toArray();
-    $data['vedika'] = htmlspecialchars_array($this->settings('vedika'));
-    $data['pengaturan_billing'] = $this->settings->get('vedika.billing');
-    return $data;
-  }
-
-  public function getPDF($id)
-  {
-    $data = $this->getPdfData($id);
-    foreach ($data as $key => $value) {
-      $this->tpl->set($key, $value);
-    }
+    $this->tpl->set('berkas_digital', $berkas_digital);
+    $this->tpl->set('hasil_radiologi', $this->db('hasil_radiologi')->where('no_rawat', $this->revertNorawat($id))->toArray());
+    $this->tpl->set('gambar_radiologi', $this->db('gambar_radiologi')->where('no_rawat', $this->revertNorawat($id))->toArray());
+    $this->tpl->set('vedika', htmlspecialchars_array($this->settings('vedika')));
+    $this->tpl->set('pengaturan_billing', $this->settings->get('vedika.billing'));
     echo $this->tpl->draw(MODULES . '/vedika/view/admin/pdf.html', true);
     exit();
   }
@@ -2877,16 +2825,6 @@ class Admin extends AdminModule
 
   public function postSaveBerkasDigital()
   {
-    $cekUpload = validateUploadedFile(
-      $_FILES['files'] ?? [],
-      ['jpg', 'jpeg', 'png', 'gif', 'pdf'],
-      ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'],
-      5 * 1024 * 1024 // maks 5MB per berkas klaim
-    );
-    if (isset($cekUpload['error'])) {
-      echo htmlspecialchars($cekUpload['error'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-      exit();
-    }
 
     if(MULTI_APP) {
 
@@ -2898,8 +2836,7 @@ class Admin extends AdminModule
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 45,
-        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_TIMEOUT => 0,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
@@ -2908,14 +2845,13 @@ class Admin extends AdminModule
       ));
 
       $response = curl_exec($curl);
-      $curlError = curl_error($curl);
 
       curl_close($curl);
       $json = json_decode($response, true);
       if($json['status'] == 'Success') {
         echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
       } else {
-        echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+        echo 'Gagal menambahkan gambar';
       }
 
     } else {    
@@ -3043,7 +2979,7 @@ class Admin extends AdminModule
         $row['editURL'] = url([ADMIN, 'vedika', 'useredit', $row['id']]);
         $row['delURL']  = url([ADMIN, 'vedika', 'userdelete', $row['id']]);
     }
-    return $this->draw('users.html', ['users' => htmlspecialchars_array($rows)]);
+    return $this->draw('users.html', ['users' => $rows]);
   }
 
   public function getUserAdd()
@@ -3178,20 +3114,20 @@ class Admin extends AdminModule
     if($status_lanjut == 'Ralan') {
       echo $this->draw('form.resume.html', [
         'status_lanjut' => $status_lanjut,
-        'reg_periksa' => htmlspecialchars_array($this->db('reg_periksa')->where('no_rawat', revertNoRawat($no_rawat))->oneArray()),
-        'diagnosa' => htmlspecialchars_array($this->db('diagnosa_pasien')->join('penyakit', 'penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('diagnosa_pasien.status', 'Ralan')->oneArray()),
-        'prosedur' => htmlspecialchars_array($this->db('prosedur_pasien')->join('icd9', 'icd9.kode=prosedur_pasien.kode')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('status', 'Ralan')->oneArray()),
-        'resume_pasien' => htmlspecialchars_array($this->db('resume_pasien')->where('no_rawat', revertNoRawat($no_rawat))->oneArray())
+        'reg_periksa' => $this->db('reg_periksa')->where('no_rawat', revertNoRawat($no_rawat))->oneArray(),
+        'diagnosa' => $this->db('diagnosa_pasien')->join('penyakit', 'penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('diagnosa_pasien.status', 'Ralan')->oneArray(),
+        'prosedur' => $this->db('prosedur_pasien')->join('icd9', 'icd9.kode=prosedur_pasien.kode')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('status', 'Ralan')->oneArray(),
+        'resume_pasien' => $this->db('resume_pasien')->where('no_rawat', revertNoRawat($no_rawat))->oneArray()
       ]);
     }
     if($status_lanjut == 'Ranap') {
       echo $this->draw('form.resume.ranap.html', [
         'status_lanjut' => $status_lanjut,
-        'reg_periksa' => htmlspecialchars_array($this->db('reg_periksa')->where('no_rawat', revertNoRawat($no_rawat))->oneArray()),
-        'kamar_inap' => htmlspecialchars_array($this->db('kamar_inap')->where('no_rawat', revertNoRawat($no_rawat))->oneArray()),
-        'diagnosa_utama' => htmlspecialchars_array($this->db('diagnosa_pasien')->join('penyakit', 'penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('diagnosa_pasien.status', 'Ranap')->oneArray()),
-        'prosedur_utama' => htmlspecialchars_array($this->db('prosedur_pasien')->join('icd9', 'icd9.kode=prosedur_pasien.kode')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('status', 'Ranap')->oneArray()),
-        'resume_pasien' => htmlspecialchars_array($this->db('resume_pasien_ranap')->where('no_rawat', revertNoRawat($no_rawat))->oneArray())
+        'reg_periksa' => $this->db('reg_periksa')->where('no_rawat', revertNoRawat($no_rawat))->oneArray(),
+        'kamar_inap' => $this->db('kamar_inap')->where('no_rawat', revertNoRawat($no_rawat))->oneArray(),
+        'diagnosa_utama' => $this->db('diagnosa_pasien')->join('penyakit', 'penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('diagnosa_pasien.status', 'Ranap')->oneArray(),
+        'prosedur_utama' => $this->db('prosedur_pasien')->join('icd9', 'icd9.kode=prosedur_pasien.kode')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('status', 'Ranap')->oneArray(),
+        'resume_pasien' => $this->db('resume_pasien_ranap')->where('no_rawat', revertNoRawat($no_rawat))->oneArray()
       ]);
     }
     exit();
@@ -3332,7 +3268,7 @@ class Admin extends AdminModule
   public function getDisplayResume($no_rawat)
   {
     $resume_pasien = $this->db('resume_pasien')->where('no_rawat', revertNoRawat($no_rawat))->oneArray();
-    echo $this->draw('display.resume.html', ['resume_pasien' => htmlspecialchars_array($resume_pasien)]);
+    echo $this->draw('display.resume.html', ['resume_pasien' => $resume_pasien]);
     exit();
   }
 
@@ -3438,7 +3374,7 @@ class Admin extends AdminModule
   public function getUbahDiagnosa($status_lanjut, $no_rawat)
   {
     $diagnosa_pasien = $this->db('diagnosa_pasien')->join('penyakit', 'penyakit.kd_penyakit = diagnosa_pasien.kd_penyakit')->where('diagnosa_pasien.no_rawat', revertNoRawat($no_rawat))->where('diagnosa_pasien.status', $status_lanjut)->asc('prioritas')->toArray();
-    echo $this->draw('ubah.diagnosa.html', ['no_rawat' => htmlspecialchars_array(revertNoRawat($no_rawat)), 'diagnosa_pasien' => htmlspecialchars_array($diagnosa_pasien), 'status_lanjut' => htmlspecialchars_array($status_lanjut)]);
+    echo $this->draw('ubah.diagnosa.html', ['no_rawat' => revertNoRawat($no_rawat), 'diagnosa_pasien' => htmlspecialchars_array($diagnosa_pasien), 'status_lanjut' => $status_lanjut]);
     exit();
   }
 
@@ -3459,7 +3395,7 @@ class Admin extends AdminModule
   public function getUbahProsedur($status_lanjut, $no_rawat)
   {
     $prosedur_pasien = $this->db('prosedur_pasien')->join('icd9', 'icd9.kode = prosedur_pasien.kode')->where('prosedur_pasien.no_rawat', revertNoRawat($no_rawat))->where('prosedur_pasien.status', $status_lanjut)->asc('prioritas')->toArray();
-    echo $this->draw('ubah.prosedur.html', ['no_rawat' => htmlspecialchars_array(revertNoRawat($no_rawat)), 'prosedur_pasien' => htmlspecialchars_array($prosedur_pasien), 'status_lanjut' => htmlspecialchars_array($status_lanjut)]);
+    echo $this->draw('ubah.prosedur.html', ['no_rawat' => revertNoRawat($no_rawat), 'prosedur_pasien' => htmlspecialchars_array($prosedur_pasien), 'status_lanjut' => $status_lanjut]);
     exit();
   }
 
@@ -4090,32 +4026,32 @@ class Admin extends AdminModule
       $hide_input_data = true;
     }
     echo $this->draw('inacbgs.html', [
-      'reg_periksa' => htmlspecialchars_array($reg_periksa),
-      'biaya_non_bedah' => htmlspecialchars_array($total_biaya_non_bedah),
-      'biaya_bedah' => htmlspecialchars_array($total_biaya_bedah),
-      'biaya_konsultasi' => htmlspecialchars_array($total_biaya_konsultasi),
-      'biaya_tenaga_ahli' => htmlspecialchars_array($total_biaya_tenaga_ahli),
-      'biaya_keperawatan' => htmlspecialchars_array($total_biaya_keperawatan),
-      'biaya_penunjang' => htmlspecialchars_array($total_biaya_penunjang),
-      'biaya_radiologi' => htmlspecialchars_array($total_biaya_radiologi),
-      'biaya_laboratorium' => htmlspecialchars_array($total_biaya_laboratorium),
-      'biaya_pelayanan_darah' => htmlspecialchars_array($total_biaya_pelayanan_darah),
-      'biaya_rehabilitasi' => htmlspecialchars_array($total_biaya_rehabilitasi),
-      'biaya_kamar' => htmlspecialchars_array($total_biaya_kamar),
-      'biaya_rawat_intensif' => htmlspecialchars_array($total_biaya_rawat_intensif),
-      'biaya_obat' => htmlspecialchars_array($total_biaya_obat),
-      'biaya_obat_kronis' => htmlspecialchars_array($total_biaya_obat_kronis),
-      'biaya_obat_kemoterapi' => htmlspecialchars_array($total_biaya_obat_kemoterapi),
-      'biaya_alkes' => htmlspecialchars_array($total_biaya_alkes),
-      'biaya_bmhp' => htmlspecialchars_array($total_biaya_bmhp),
-      'biaya_sewa_alat' => htmlspecialchars_array($total_biaya_sewa_alat),
-      'biaya_tarif_poli_eks' => htmlspecialchars_array($total_biaya_tarif_poli_eks),
-      'biaya_add_payment_pct' => htmlspecialchars_array($total_biaya_add_payment_pct),
-      'get_claim_data' => htmlspecialchars_array($get_claim_data),
-      'penyakit' => htmlspecialchars_array($penyakit),
-      'prosedur' => htmlspecialchars_array($prosedur),
-      'adl' => htmlspecialchars_array($adl),
-      'hide_input_data' => htmlspecialchars_array($hide_input_data)
+      'reg_periksa' => $reg_periksa,
+      'biaya_non_bedah' => $total_biaya_non_bedah,
+      'biaya_bedah' => $total_biaya_bedah,
+      'biaya_konsultasi' => $total_biaya_konsultasi,
+      'biaya_tenaga_ahli' => $total_biaya_tenaga_ahli,
+      'biaya_keperawatan' => $total_biaya_keperawatan,
+      'biaya_penunjang' => $total_biaya_penunjang,
+      'biaya_radiologi' => $total_biaya_radiologi,
+      'biaya_laboratorium' => $total_biaya_laboratorium,
+      'biaya_pelayanan_darah' => $total_biaya_pelayanan_darah,
+      'biaya_rehabilitasi' => $total_biaya_rehabilitasi,
+      'biaya_kamar' => $total_biaya_kamar,
+      'biaya_rawat_intensif' => $total_biaya_rawat_intensif,
+      'biaya_obat' => $total_biaya_obat,
+      'biaya_obat_kronis' => $total_biaya_obat_kronis,
+      'biaya_obat_kemoterapi' => $total_biaya_obat_kemoterapi,
+      'biaya_alkes' => $total_biaya_alkes,
+      'biaya_bmhp' => $total_biaya_bmhp,
+      'biaya_sewa_alat' => $total_biaya_sewa_alat,
+      'biaya_tarif_poli_eks' => $total_biaya_tarif_poli_eks,
+      'biaya_add_payment_pct' => $total_biaya_add_payment_pct,
+      'get_claim_data' => $get_claim_data,
+      'penyakit' => $penyakit,
+      'prosedur' => $prosedur,
+      'adl' => $adl,
+      'hide_input_data' => $hide_input_data
     ]);
     exit();
   }
@@ -4284,10 +4220,10 @@ class Admin extends AdminModule
         'username' => $this->core->getUserInfo('username')
     ]);
     echo $this->draw('idrg.html', [
-      'reg_periksa' => htmlspecialchars_array($reg_periksa),
-      'noRawat' => htmlspecialchars_array(revertNoRawat($no_rawat)), 
-      'msg' => htmlspecialchars_array(json_encode($msg)),
-      'is_final' => htmlspecialchars_array($is_final)
+      'reg_periksa' => $reg_periksa,
+      'noRawat' => revertNoRawat($no_rawat), 
+      'msg' => json_encode($msg),
+      'is_final' => $is_final
     ]);
     exit();
   }
@@ -4541,13 +4477,6 @@ class Admin extends AdminModule
 
   public function postKirimDataCenter()
   {
-    if (!empty($_FILES['files']['tmp_name'])) {
-      $cekUpload = validateUploadedFile($_FILES['files'], ['jpg', 'jpeg', 'png', 'gif', 'pdf'], ['image/jpeg', 'image/png', 'image/gif', 'application/pdf'], 5 * 1024 * 1024);
-      if (isset($cekUpload['error'])) {
-        echo htmlspecialchars($cekUpload['error'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-        exit();
-      }
-    }
     $nosep = $_POST['nosep'];
     $this->KirimKlaimIndividualKeDC($nosep);
     $cntr   = 0;
@@ -4574,8 +4503,7 @@ class Admin extends AdminModule
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 45,
-            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_TIMEOUT => 0,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
@@ -4584,14 +4512,13 @@ class Admin extends AdminModule
           ));
 
           $response = curl_exec($curl);
-          $curlError = curl_error($curl);
 
           curl_close($curl);
           $json = json_decode($response, true);
           if($json['status'] == 'Success') {
             echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
           } else {
-            echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+            echo 'Gagal menambahkan gambar';
           }
 
       } else {
@@ -5893,7 +5820,7 @@ class Admin extends AdminModule
       'filterUrl' => url([ADMIN, 'vedika', 'logseklaim']),
     ];
 
-    return $this->draw('logs.eklaim.html', ['logs' => htmlspecialchars_array($assign)]);
+    return $this->draw('logs.eklaim.html', ['logs' => $assign]);
   }
 
   public function getMliteEklaimLogs()

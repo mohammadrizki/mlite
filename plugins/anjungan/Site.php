@@ -250,7 +250,7 @@ class Site extends SiteModule
           'title' => $title,
           'logo' => $logo,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
+          'username' => $username,
           'tanggal' => $tanggal,
           'running_text' => $this->settings->get('anjungan.text_anjungan'),
           'poliklinik' => $poliklinik,
@@ -514,13 +514,13 @@ class Site extends SiteModule
         $username      = !empty($_username) ? $_username : $__username;
 
         $content = $this->draw('display.antrian.poli.html', [
-          'title' => htmlspecialchars_array($title),
-          'logo' => htmlspecialchars_array($logo),
+          'title' => $title,
+          'logo' => $logo,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
-          'tanggal' => htmlspecialchars_array($tanggal),
-          'running_text' => htmlspecialchars_array($this->settings->get('anjungan.text_poli')),
-          'display' => htmlspecialchars_array($display)
+          'username' => $username,
+          'tanggal' => $tanggal,
+          'running_text' => $this->settings->get('anjungan.text_poli'),
+          'display' => $display
         ]);
 
         $assign = [
@@ -661,14 +661,14 @@ class Site extends SiteModule
         $username      = !empty($_username) ? $_username : $__username;
 
         $content = $this->draw('display.antrian.poli.kode.html', [
-          'title' => htmlspecialchars_array($title),
-          'logo' => htmlspecialchars_array($logo),
+          'title' => $title,
+          'logo' => $logo,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
-          'tanggal' => htmlspecialchars_array($tanggal),
-          'vidio' => htmlspecialchars_array($vidio),
-          'running_text' => htmlspecialchars_array($running_text),
-          'jadwal' => htmlspecialchars_array($jadwal),
+          'username' => $username,
+          'tanggal' => $tanggal,
+          'vidio' => $vidio,
+          'running_text' => $running_text,
+          'jadwal' => $jadwal,
           'slug' => $slug
         ]);
 
@@ -721,14 +721,14 @@ class Site extends SiteModule
         $username      = !empty($_username) ? $_username : $__username;
 
         $content = $this->draw('display.antrian.poli.tvb.html', [
-          'title' => htmlspecialchars_array($title),
-          'logo' => htmlspecialchars_array($logo),
+          'title' => $title,
+          'logo' => $logo,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
-          'tanggal' => htmlspecialchars_array($tanggal),
+          'username' => $username,
+          'tanggal' => $tanggal,
           'vidio' => $vidio,
-          'running_text' => htmlspecialchars_array($running_text),
-          'jadwal' => htmlspecialchars_array($jadwal),
+          'running_text' => $running_text,
+          'jadwal' => $jadwal,
           'slug' => $slug
         ]);
 
@@ -769,7 +769,7 @@ class Site extends SiteModule
           'vidio' => $this->settings->get('anjungan.vidio'),
           'running_text' => $this->settings->get('anjungan.text_poli'),
           'slug' => $slug,
-          'display' => htmlspecialchars_array($display)
+          'display' => $display
         ]);
 
         $assign = [
@@ -902,7 +902,7 @@ class Site extends SiteModule
           'vidio' => $this->settings->get('anjungan.vidio'),
           'running_text' => $this->settings->get('anjungan.text_poli'),
           'slug' => $slug,
-          'display' => htmlspecialchars_array($display)
+          'display' => $display
         ]);
 
         $assign = [
@@ -1033,7 +1033,7 @@ class Site extends SiteModule
           'vidio' => $this->settings->get('anjungan.vidio'),
           'running_text' => $this->settings->get('anjungan.text_poli'),
           'slug' => $slug,
-          'display' => htmlspecialchars_array($display)
+          'display' => $display
         ]);
 
         $assign = [
@@ -1165,7 +1165,7 @@ class Site extends SiteModule
           'vidio' => $this->settings->get('anjungan.vidio'),
           'running_text' => $this->settings->get('anjungan.text_poli'),
           'slug' => $slug,
-          'display' => htmlspecialchars_array($display)
+          'display' => $display
         ]);
 
         $assign = [
@@ -1297,9 +1297,9 @@ class Site extends SiteModule
           'title' => $title,
           'logo' => $logo,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
+          'username' => $username,
           'tanggal' => $tanggal,
-          'vidio' => htmlspecialchars_array($this->settings->get('anjungan.vidio')),
+          'vidio' => $this->settings->get('anjungan.vidio'),
           'running_text' => $this->settings->get('anjungan.text_loket'),
           'display' => $display
         ]);
@@ -1338,10 +1338,10 @@ class Site extends SiteModule
           $display = 'Depan';
           $content = $this->draw('display.antrian.loket2.html', [
             'title' => $title,
-            'logo' => htmlspecialchars_array($logo),
+            'logo' => $logo,
             'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-            'username' => htmlspecialchars_array($username),
-            'tanggal' => htmlspecialchars_array($tanggal),
+            'username' => $username,
+            'tanggal' => $tanggal,
             'show' => $show,
             'vidio' => $this->settings->get('anjungan.vidio'),
             'running_text' => $this->settings->get('anjungan.text_loket'),
@@ -1377,7 +1377,7 @@ class Site extends SiteModule
           'logo' => $logo,
           'title' => $title,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
+          'username' => $username,
           'tanggal' => $tanggal,
           'running_text' => $this->settings->get('anjungan.text_laboratorium'),
           'display' => $display
@@ -1419,7 +1419,7 @@ class Site extends SiteModule
           'logo' => $logo,
           'title' => $title,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
+          'username' => $username,
           'tanggal' => $tanggal,
           'running_text' => $running_text,
           'display' => $display
@@ -1546,13 +1546,13 @@ class Site extends SiteModule
         $username      = !empty($_username) ? $_username : $__username;
 
         $content = $this->draw('display.antrian.apotek.html', [
-          'logo' => htmlspecialchars_array($logo),
-          'title' => htmlspecialchars_array($title),
+          'logo' => $logo,
+          'title' => $title,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
-          'tanggal' => htmlspecialchars_array($tanggal),
-          'running_text' => htmlspecialchars_array($this->settings->get('anjungan.text_apotek')),
-          'jadwal' => htmlspecialchars_array($jadwal),
+          'username' => $username,
+          'tanggal' => $tanggal,
+          'running_text' => $this->settings->get('anjungan.text_apotek'),
+          'jadwal' => $jadwal,
           'display' => $display
         ]);
 
@@ -1630,7 +1630,7 @@ class Site extends SiteModule
             'logo' => $logo,
             'title' => $title,
             'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-            'username' => htmlspecialchars_array($username),
+            'username' => $username,
             'vidio' => $this->settings->get('anjungan.vidio'),
             'tanggal' => $tanggal,
             'running_text' => $this->settings->get('anjungan.text_farmasi'),
@@ -1661,11 +1661,11 @@ class Site extends SiteModule
       $username      = !empty($_username) ? $_username : $this->core->getUserInfo('username');
 
       $content = $this->draw('display.jadwal.operasi.html', [
-        'logo' => htmlspecialchars_array($logo),
-        'title' => htmlspecialchars_array($title),
+        'logo' => $logo,
+        'title' => $title,
         'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-        'username' => htmlspecialchars_array($username),
-        'tanggal' => htmlspecialchars_array($tanggal),
+        'username' => $username,
+        'tanggal' => $tanggal,
         'running_text' => $this->settings->get('anjungan.text_laboratorium'),
         'display' => $display
       ]);
@@ -2505,15 +2505,15 @@ class Site extends SiteModule
       $tanggal       = getDayIndonesia(date('Y-m-d')).', '.dateIndonesia(date('Y-m-d'));
 
       $content = $this->draw('presensi.html', [
-        'title' => htmlspecialchars_array($title),
+        'title' => $title,
         'notify' => $this->core->getNotify(),
-        'logo' => htmlspecialchars_array($logo),
-        'wallpaper' => htmlspecialchars_array($wallpaper),
-        'text_color' => htmlspecialchars_array($text_color),
+        'logo' => $logo,
+        'wallpaper' => $wallpaper,
+        'text_color' => $text_color,
         'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-        'tanggal' => htmlspecialchars_array($tanggal),
+        'tanggal' => $tanggal,
         'running_text' => $this->settings->get('anjungan.text_poli'),
-        'jam_jaga' => htmlspecialchars_array($this->db('jam_jaga')->select('jam_masuk')->select('jam_pulang')->group('jam_masuk')->toArray())
+        'jam_jaga' => $this->db('jam_jaga')->select('jam_masuk')->select('jam_pulang')->group('jam_masuk')->toArray()
       ]);
 
       $assign = [
@@ -2699,11 +2699,11 @@ class Site extends SiteModule
         $username      = !empty($_username) ? $_username : $__username;
 
         $content = $this->draw('display.bed.html', [
-          'title' => htmlspecialchars_array($title),
-          'logo' => htmlspecialchars_array($logo),
+          'title' => $title,
+          'logo' => $logo,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
-          'tanggal' => htmlspecialchars_array($tanggal),
+          'username' => $username,
+          'tanggal' => $tanggal,
           'running_text' => $this->settings->get('anjungan.text_poli'),
           'display' => $display
         ]);
@@ -2776,12 +2776,12 @@ class Site extends SiteModule
         $username      = !empty($_username) ? $_username : $__username;
 
         $content = $this->draw('sep.mandiri.html', [
-          'title' => htmlspecialchars_array($title),
-          'logo' => htmlspecialchars_array($logo),
+          'title' => $title,
+          'logo' => $logo,
           'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-          'username' => htmlspecialchars_array($username),
-          'tanggal' => htmlspecialchars_array($tanggal),
-          'running_text' => htmlspecialchars_array($this->settings->get('anjungan.text_anjungan')),
+          'username' => $username,
+          'tanggal' => $tanggal,
+          'running_text' => $this->settings->get('anjungan.text_anjungan'),
         ]);
 
         $assign = [
@@ -2887,7 +2887,7 @@ class Site extends SiteModule
         'title' => $title,
         'logo' => $logo,
         'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-        'username' => htmlspecialchars_array($username),
+        'username' => $username,
         'tanggal' => $tanggal,
         'running_text' => $this->settings->get('anjungan.text_anjungan'),
         'no_rkm_medis' => $slug[3],
@@ -3050,18 +3050,18 @@ class Site extends SiteModule
       }
 
       $content = $this->draw('sep.mandiri.bikin.html', [
-        'title' => htmlspecialchars_array($title),
-        'logo' => htmlspecialchars_array($logo),
+        'title' => $title,
+        'logo' => $logo,
         'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-        'username' => htmlspecialchars_array($username),
-        'tanggal' => htmlspecialchars_array($tanggal),
-        'running_text' => htmlspecialchars_array($this->settings->get('anjungan.text_anjungan')),
-        'kode_ppk' => htmlspecialchars_array($kode_ppk),
-        'nama_ppk' => htmlspecialchars_array($nama_ppk),
-        'reg_periksa' => htmlspecialchars_array($reg_periksa),
-        'skdp_bpjs' => htmlspecialchars_array($no_surat_kontrol_bpjs),
-        'rujukan' => htmlspecialchars_array($rujukan),
-        'dpjp' => htmlspecialchars_array($dpjp)
+        'username' => $username,
+        'tanggal' => $tanggal,
+        'running_text' => $this->settings->get('anjungan.text_anjungan'),
+        'kode_ppk' => $kode_ppk,
+        'nama_ppk' => $nama_ppk,
+        'reg_periksa' => $reg_periksa,
+        'skdp_bpjs' => $no_surat_kontrol_bpjs,
+        'rujukan' => $rujukan,
+        'dpjp' => $dpjp
       ]);
 
       $assign = [
@@ -3423,7 +3423,7 @@ class Site extends SiteModule
         $potensi_prb = $this->db('bpjs_prb')->where('no_sep', $no_sep)->oneArray();
         $data_sep['potensi_prb'] = $potensi_prb['prb'];
 
-        echo $this->draw('cetak.sep.html', ['data_sep' => htmlspecialchars_array($data_sep)]);
+        echo $this->draw('cetak.sep.html', ['data_sep' => $data_sep]);
         $this->db('mutasi_berkas')->save([
           'no_rawat' => $data_sep['no_rawat'],
           'status' => 'Sudah Dikirim',
@@ -3604,14 +3604,14 @@ class Site extends SiteModule
       }
 
       $content = $this->draw('checkin.html', [
-        'title' => htmlspecialchars_array($title),
-        'notify' => htmlspecialchars_array($this->core->getNotify()),
-        'logo' => htmlspecialchars_array($logo),
+        'title' => $title,
+        'notify' => $this->core->getNotify(),
+        'logo' => $logo,
         'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-        'username' => htmlspecialchars_array($username),
-        'tanggal' => htmlspecialchars_array($tanggal),
+        'username' => $username,
+        'tanggal' => $tanggal,
         'running_text' => $this->settings->get('anjungan.text_poli'),
-        'redirect' => htmlspecialchars_array($redirect)
+        'redirect' => $redirect
       ]);
 
       $assign = [
@@ -3734,14 +3734,14 @@ class Site extends SiteModule
       }
 
       $content = $this->draw('daftar.html', [
-        'title' => htmlspecialchars_array($title),
-        'notify' => htmlspecialchars_array($this->core->getNotify()),
-        'logo' => htmlspecialchars_array($logo),
+        'title' => $title,
+        'notify' => $this->core->getNotify(),
+        'logo' => $logo,
         'powered' => 'Powered by <a href="https://mlite.id/">mLITE</a>',
-        'username' => htmlspecialchars_array($username),
-        'tanggal' => htmlspecialchars_array($tanggal),
+        'username' => $username,
+        'tanggal' => $tanggal,
         'running_text' => $this->settings->get('anjungan.text_poli'),
-        'redirect' => htmlspecialchars_array($redirect)
+        'redirect' => $redirect
       ]);
 
       $assign = [

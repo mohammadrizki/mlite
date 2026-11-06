@@ -274,7 +274,7 @@ class Admin extends AdminModule
               $bg_status = 'text-success';
             }
           }
-        echo $this->draw('stts.daftar.html', ['stts_daftar' => htmlspecialchars($stts_daftar, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'), 'stts_daftar_hidden' => htmlspecialchars($stts_daftar, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'), 'bg_status' => htmlspecialchars_array($bg_status)]);
+        echo $this->draw('stts.daftar.html', ['stts_daftar' => htmlspecialchars($stts_daftar, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'), 'stts_daftar_hidden' => htmlspecialchars($stts_daftar, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'), 'bg_status' => $bg_status]);
       } else {
         $no_rawat = htmlspecialchars($_POST['no_rawat'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $rawat = $this->db('reg_periksa')
@@ -472,22 +472,22 @@ class Admin extends AdminModule
           $this->db()->pdo()->beginTransaction();
           try {
             $no_resep = $this->core->setNoResep($_POST['tgl_perawatan']);
-            $cek_resep = $this->db('resep_obat')->join('resep_dokter', 'resep_obat.no_resep = resep_dokter.no_resep')->where('no_rawat', $_POST['no_rawat'])->where('tgl_peresepan', $_POST['tgl_perawatan'])->where('tgl_perawatan', '0000-00-00')->where('status', 'ranap')->oneArray();
+            $cek_resep = $this->db('resep_obat')->join('resep_dokter', 'resep_obat.no_resep = resep_dokter.no_resep')->where('no_rawat', $_POST['no_rawat'])->where('tgl_peresepan', $_POST['tgl_perawatan'])->where('tgl_perawatan', 'IS', 'NULL')->where('status', 'ranap')->oneArray();
 
             if(empty($cek_resep)) {
 
               $resep_obat = $this->db('resep_obat')
                 ->save([
                   'no_resep' => $no_resep,
-                  'tgl_perawatan' => '0000-00-00',
-                  'jam' => '00:00:00',
+                  'tgl_perawatan' => null,
+                  'jam' => null,
                   'no_rawat' => $_POST['no_rawat'],
                   'kd_dokter' => $_POST['kode_provider'],
                   'tgl_peresepan' => $_POST['tgl_perawatan'],
                   'jam_peresepan' => $_POST['jam_rawat'],
                   'status' => 'ranap',
-                  'tgl_penyerahan' => '0000-00-00',
-                  'jam_penyerahan' => '00:00:00'
+                  'tgl_penyerahan' => null,
+                  'jam_penyerahan' => null
                 ]);
 
               if ($this->db('resep_obat')->where('no_resep', $no_resep)->where('kd_dokter', $_POST['kode_provider'])->oneArray()) {
@@ -517,9 +517,7 @@ class Admin extends AdminModule
             $success = true;
           } catch (\Exception $e) {
             $this->db()->pdo()->rollBack();
-            // retry hanya untuk pelanggaran constraint sementara (mis. no_resep kembar),
-            // percobaan terakhir tetap dilempar agar kegagalan tidak dianggap sukses
-            if ($e->getCode() == '23000' && $retryCount < $maxRetries - 1) {
+            if ($e->getCode() == '23000') {
               $retryCount++;
               usleep(100000);
               continue;
@@ -1009,8 +1007,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -1019,14 +1016,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else {      
@@ -2277,9 +2273,7 @@ class Admin extends AdminModule
         if($cek_pegawai) {
           $cek_role = $this->core->getPegawaiInfo('nik', $this->core->getUserInfo('username', $_SESSION['mlite_user']));
         }
-        $this->assign['websocket'] = $this->settings->get('settings.websocket');
-        $this->assign['websocket_proxy'] = $this->settings->get('settings.websocket_proxy');
-        echo $this->draw(MODULES.'/rawat_inap/js/admin/rawat_inap.js', ['cek_role' => $cek_role, 'mlite' => htmlspecialchars_array($this->assign)]);
+        echo $this->draw(MODULES.'/rawat_inap/js/admin/rawat_inap.js', ['cek_role' => $cek_role]);
         exit();
     }
 

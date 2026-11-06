@@ -282,8 +282,8 @@ class Admin extends AdminModule
           ->where('no_rawat', $_POST['no_rawat'])
           ->oneArray();
         echo $this->draw('stts.daftar.html', [
-          'stts_daftar' => htmlspecialchars_array($rawat['stts_daftar']),
-          'stts_daftar_hidden' => htmlspecialchars_array($rawat['stts_daftar']),
+          'stts_daftar' => $rawat['stts_daftar'],
+          'stts_daftar_hidden' => $rawat['stts_daftar'],
           'bg_status' => ''
         ]);
       }
@@ -368,7 +368,7 @@ class Admin extends AdminModule
           }
         } catch (\Exception $e) {
           $this->db()->pdo()->rollBack();
-          if (($e->getCode() == '23000' || $e->getCode() == 1) && $retryCount < $maxRetries - 1) { // 1 is for custom error above
+          if ($e->getCode() == '23000' || $e->getCode() == 1) { // 1 is for custom error above
             $retryCount++;
             usleep(100000);
             continue;
@@ -546,7 +546,7 @@ class Admin extends AdminModule
             $success = true;
           } catch (\Exception $e) {
             $this->db()->pdo()->rollBack();
-            if ($e->getCode() == '23000' && $retryCount < $maxRetries - 1) {
+            if ($e->getCode() == '23000') {
               $retryCount++;
               usleep(100000);
               continue;
@@ -665,7 +665,7 @@ class Admin extends AdminModule
         }
         $resep[] = $row;
       }
-      echo $this->draw('rincian.html', ['rawat_jl_dr' => htmlspecialchars_array($rawat_jl_dr), 'rawat_jl_pr' => htmlspecialchars_array($rawat_jl_pr), 'rawat_jl_drpr' => htmlspecialchars_array($rawat_jl_drpr), 'jumlah_total' => $jumlah_total, 'jumlah_total_resep' => $jumlah_total_resep, 'resep' => htmlspecialchars_array($resep), 'no_rawat' => htmlspecialchars($_POST['no_rawat'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')]);
+      echo $this->draw('rincian.html', ['rawat_jl_dr' => $rawat_jl_dr, 'rawat_jl_pr' => $rawat_jl_pr, 'rawat_jl_drpr' => $rawat_jl_drpr, 'jumlah_total' => $jumlah_total, 'jumlah_total_resep' => $jumlah_total_resep, 'resep' => htmlspecialchars_array($resep), 'no_rawat' => htmlspecialchars($_POST['no_rawat'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')]);
       exit();
     }
 
@@ -854,8 +854,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -864,14 +863,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else {
@@ -1044,7 +1042,7 @@ class Admin extends AdminModule
       echo $this->draw('odontogram.html', [
         'odontogram' => htmlspecialchars_array($this->db('mlite_odontogram')->where('no_rkm_medis', $no_rkm_medis)->toArray()), 
         'ohis' => htmlspecialchars_array($this->db('mlite_ohis')->where('no_rkm_medis', $no_rkm_medis)->toArray()), 
-        'odt' => htmlspecialchars_array($odt)
+        'odt' => $odt
       ]);
       exit();
     }
@@ -1678,7 +1676,7 @@ class Admin extends AdminModule
       $cetak = $this->db('mlite_temporary')->toArray();
 
       $html = $this->draw('cetak.igd.html', [
-        'cetak' => htmlspecialchars_array($cetak)
+        'cetak' => $cetak
       ]);
 
       $mpdf = new \Mpdf\Mpdf([

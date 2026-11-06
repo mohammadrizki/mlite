@@ -53,7 +53,7 @@ class Admin extends AdminModule
     {
         $this->_addHeaderFiles();
         if (!empty($redirectData = getRedirectData())) {
-            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_STRING);
         } else {
             $this->assign['form'] = [
               'nik' => '',
@@ -254,7 +254,7 @@ class Admin extends AdminModule
     {
         $pegawai = $this->db('pegawai')->toArray();
 
-        $html = $this->draw('cetak.pegawai.html', ['pegawai' => htmlspecialchars_array($pegawai)]);
+        $html = $this->draw('cetak.pegawai.html', ['pegawai' => $pegawai]);
 
         /* ===============================
         * OUTPUT HTML (PREVIEW)

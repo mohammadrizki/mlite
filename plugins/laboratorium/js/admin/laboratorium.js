@@ -88,21 +88,7 @@ $("#form").on("click", "#simpan", function(event){
       kd_pj: kd_pj,
       stts_daftar: stts_daftar
     } ,function(data) {
-      var res = data;
-      try { if (typeof res === 'string') res = JSON.parse(res); } catch(e) { res = {}; }
-      if (res && (res.status == 'success' || res.status == 'error')) {
-        var audio = new Audio('{?=url()?}/assets/sound/' + res.status + '.mp3');
-        audio.play();
-      }
-      if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
-        let payload = {
-            'action' : 'simpan',
-            'modul' : 'laboratorium'
-        }
-        ws.send(JSON.stringify(payload));
-      } else {
-        $("#display").show().load(baseURL + '/laboratorium/display?t=' + mlite.token);
-      }
+      $("#display").show().load(baseURL + '/laboratorium/display?t=' + mlite.token);
       bersih();
       $("#status_pendaftaran").hide();
       $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
@@ -191,10 +177,6 @@ $("#rincian").on("click", ".bayar_parsial_lab", function(event){
       }, function(data) {
         var response = {};
         try { response = (typeof data === 'string') ? JSON.parse(data) : data; } catch(e) { response = data; }
-        if (response && (response.status === 'success' || response.status === 'error')) {
-          var audio = new Audio('{?=url()?}/assets/sound/' + response.status + '.mp3');
-          audio.play();
-        }
         if (response && response.status === 'error') {
           alert(response.message || 'Gagal menyimpan pembayaran parsial.');
           return;
@@ -257,43 +239,12 @@ $("#form").on("click","#hapus", function(event){
       $.post(url, {
         no_rawat: no_rawat
       } ,function(data) {
-
-        // server mengirim HTML alert ketika penghapusan gagal (status tetap 200)
-        if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-          $('#notif').html(data).show();
-          return;
-        }
-        var res = data;
-        try { if (typeof res === 'string') res = JSON.parse(res); } catch(e) { res = {}; }
-        if (res && (res.status == 'success' || res.status == 'error')) {
-          var audio = new Audio('{?=url()?}/assets/sound/' + res.status + '.mp3');
-          audio.play();
-        }
-        if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
-          let payload = {
-              'action' : 'simpan',
-              'modul' : 'laboratorium'
-          }
-          ws.send(JSON.stringify(payload));
-        } else {
-          // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
-          $("#display").load(baseURL + '/laboratorium/display?t=' + mlite.token);
-        }
+        // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
+        $("#display").load(baseURL + '/laboratorium/display?t=' + mlite.token);
         bersih();
         $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
         "Data pasien telah dihapus!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
-      }).fail(function(xhr) {
-        // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-        var pesan = 'Data pasien gagal dihapus!';
-        try {
-          var res = JSON.parse(xhr.responseText);
-          if (res && res.message) { pesan = res.message; }
-        } catch (e) {}
-        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        $("<div>").text(pesan).html()+
         "</div>").show();
       });
     }
@@ -642,12 +593,6 @@ $("#rincian").on("click",".hapus_laboratorium", function(event){
         jam_rawat: jam_rawat,
         provider: provider
       } ,function(data) {
-
-        // server mengirim HTML alert ketika penghapusan gagal (status tetap 200)
-        if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-          $('#notif').html(data).show();
-          return;
-        }
         var url = baseURL + '/laboratorium/rincian?t=' + mlite.token;
         $.post(url, {no_rawat : no_rawat, status: status
         }, function(data) {
@@ -655,19 +600,8 @@ $("#rincian").on("click",".hapus_laboratorium", function(event){
           $("#rincian").html(data).show();
         });
         $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "Pemeriksaan laboratorium telah dihapus!"+
+        "Data rincian rawat jalan telah dihapus!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
-      }).fail(function(xhr) {
-        // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-        var pesan = 'Pemeriksaan laboratorium gagal dihapus!';
-        try {
-          var res = JSON.parse(xhr.responseText);
-          if (res && res.message) { pesan = res.message; }
-        } catch (e) {}
-        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        $("<div>").text(pesan).html()+
         "</div>").show();
       });
     }
@@ -765,22 +699,10 @@ $("#form_rincian").on("click","#jam_reg", function(event){
     var URL_WEBSOCKET = "wss://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
   {/if}
 
-  var ws;
+  var ws = new WebSocket(URL_WEBSOCKET);
   var baseURL = mlite.url + '/' + mlite.admin;
-
-  function koneksiWebsocket() {
-    ws = new WebSocket(URL_WEBSOCKET);
-    ws.onmessage = ws_onmessage;
-
-    ws.onclose = function(){
-      // Jika terputus dari websocket server, maka mencoba terhubung kembali
-      // tiap 5 detik; onmessage dan onclose ikut terpasang ulang pada
-      // koneksi yang baru sehingga update tetap berjalan setelah reconnect.
-      setTimeout(koneksiWebsocket, 5000);
-    };
-  }
-
-  var ws_onmessage = function(response){
+  
+  ws.onmessage = function(response){
     try{
       output = JSON.parse(response.data);
       if(output['action'] == 'simpan'){
@@ -789,7 +711,7 @@ $("#form_rincian").on("click","#jam_reg", function(event){
         }
       }
       if(output['action'] == 'permintaan_laboratorium'){
-        if(output['modul'] == 'dokter_ralan' || output['modul'] == 'dokter_ranap'){
+        if(output['modul'] == 'dokter_ralan'){
           var audio = new Audio('{?=url()?}/assets/sound/alarm.mp3');
           audio.play();    
         }
@@ -800,6 +722,18 @@ $("#form_rincian").on("click","#jam_reg", function(event){
   }
   
   
-  koneksiWebsocket();
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
 
 {/if}

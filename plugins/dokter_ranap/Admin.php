@@ -299,7 +299,7 @@ class Admin extends AdminModule
             $success = true;
           } catch (\Exception $e) {
             $this->db()->pdo()->rollBack();
-            if ($e->getCode() == '23000' && $retryCount < $maxRetries - 1) {
+            if ($e->getCode() == '23000') {
               $retryCount++;
               usleep(100000);
               continue;
@@ -412,7 +412,7 @@ class Admin extends AdminModule
             $success = true;
           } catch (\Exception $e) {
             $this->db()->pdo()->rollBack();
-            if ($e->getCode() == '23000' && $retryCount < $maxRetries - 1) {
+            if ($e->getCode() == '23000') {
               $retryCount++;
               usleep(100000);
               continue;
@@ -495,7 +495,7 @@ class Admin extends AdminModule
             $success = true;
           } catch (\Exception $e) {
             $this->db()->pdo()->rollBack();
-            if ($e->getCode() == '23000' && $retryCount < $maxRetries - 1) {
+            if ($e->getCode() == '23000') {
               $retryCount++;
               usleep(100000);
               continue;
@@ -555,7 +555,7 @@ class Admin extends AdminModule
             $success = true;
           } catch (\Exception $e) {
             $this->db()->pdo()->rollBack();
-            if ($e->getCode() == '23000' && $retryCount < $maxRetries - 1) {
+            if ($e->getCode() == '23000') {
               $retryCount++;
               usleep(100000);
               continue;
@@ -1020,12 +1020,12 @@ class Admin extends AdminModule
       }
 
       echo $this->draw('rincian.html', [
-        'rawat_inap_dr' => htmlspecialchars_array($rawat_inap_dr),
-        'rawat_inap_pr' => htmlspecialchars_array($rawat_inap_pr),
-        'rawat_inap_drpr' => htmlspecialchars_array($rawat_inap_drpr),
-        'resep' => htmlspecialchars_array($resep),
+        'rawat_inap_dr' => $rawat_inap_dr,
+        'rawat_inap_pr' => $rawat_inap_pr,
+        'rawat_inap_drpr' => $rawat_inap_drpr,
+        'resep' => $resep,
         'resep_racikan' => htmlspecialchars_array($resep_racikan),
-        'data_resep' => htmlspecialchars_array($data_resep),
+        'data_resep' => $data_resep,
         'laboratorium' => htmlspecialchars_array($laboratorium),
         'radiologi' => htmlspecialchars_array($radiologi),
         'jumlah_total' => $jumlah_total,
@@ -1416,12 +1416,12 @@ class Admin extends AdminModule
     public function getResume($no_rawat)
     {
       $data_resume['pemeriksaan_ranap'] = $this->db('pemeriksaan_ranap')->where('no_rawat', revertNoRawat($no_rawat))->oneArray();
-      $data_resume['diagnosa'] = $this->db('diagnosa_pasien')->join('penyakit', 'penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('diagnosa_pasien.status', 'Ranap')->oneArray();
+      $data_resume['diagnosa'] = $this->db('diagnosa_pasien')->join('penyakit', 'penyakit.kd_penyakit=diagnosa_pasien.kd_penyakit')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('diagnosa_pasien.status', 'Ralan')->oneArray();
       $data_resume['prosedur'] = $this->db('prosedur_pasien')->join('icd9', 'icd9.kode=prosedur_pasien.kode')->where('no_rawat', revertNoRawat($no_rawat))->where('prioritas', 1)->where('status', 'Ranap')->oneArray();
       echo $this->draw('resume.html', [
-        'reg_periksa' => htmlspecialchars_array($this->db('reg_periksa')->where('no_rawat', revertNoRawat($no_rawat))->oneArray()),
+        'reg_periksa' => $this->db('reg_periksa')->where('no_rawat', revertNoRawat($no_rawat))->oneArray(),
         'resume_pasien' => htmlspecialchars_array($this->db('resume_pasien_ranap')->where('no_rawat', revertNoRawat($no_rawat))->join('dokter', 'dokter.kd_dokter=resume_pasien_ranap.kd_dokter')->toArray()),
-        'data_resume' => htmlspecialchars_array($data_resume)
+        'data_resume' => $data_resume
       ]);
       exit();
     }
@@ -1436,7 +1436,7 @@ class Admin extends AdminModule
     {
       $_POST['kd_dokter']	= $this->core->getUserInfo('username', $_SESSION['mlite_user']);
 
-      if($this->db('resume_pasien_ranap')->where('no_rawat', $_POST['no_rawat'])->oneArray()) {
+      if($this->db('resume_pasien_ranap')->where('no_rawat', $_POST['no_rawat'])->where('kd_dokter', $_POST['kd_dokter'])->oneArray()) {
         $this->db('resume_pasien_ranap')
           ->where('no_rawat', $_POST['no_rawat'])
           ->save([
@@ -1444,15 +1444,15 @@ class Admin extends AdminModule
             'diagnosa_awal' => $_POST['diagnosa_masuk'],
             'alasan' => '-',
             'keluhan_utama' => $_POST['keluhan_utama'],
-            'pemeriksaan_fisik' => $_POST['pemeriksaan_fisik'],
+            'pemeriksaan_fisik' => '-',
             'jalannya_penyakit' => $_POST['riwayat_penyakit'],
-            'pemeriksaan_penunjang' => $_POST['pemeriksaan_pj_penting'],
-            'hasil_laborat' => $_POST['pemeriksaan_lab'],
+            'pemeriksaan_penunjang' => '-',
+            'hasil_laborat' => '-',
             'tindakan_dan_operasi' => '-',
             'obat_di_rs' => '-',
             'diagnosa_utama' => $_POST['diagnosa_utama'],
             'kd_diagnosa_utama' => '-',
-            'diagnosa_sekunder' => $_POST['diagnosa_sekunder'],
+            'diagnosa_sekunder' => '-',
             'kd_diagnosa_sekunder' => '-',
             'diagnosa_sekunder2' => '-',
             'kd_diagnosa_sekunder2' => '-',
@@ -1462,7 +1462,7 @@ class Admin extends AdminModule
             'kd_diagnosa_sekunder4' => '-',
             'prosedur_utama' => $_POST['prosedur_utama'],
             'kd_prosedur_utama' => '-',
-            'prosedur_sekunder' => $_POST['prosedur_sekunder'],
+            'prosedur_sekunder' => '-',
             'kd_prosedur_sekunder' => '-',
             'prosedur_sekunder2' => '-',
             'kd_prosedur_sekunder2' => '-',
@@ -1479,7 +1479,7 @@ class Admin extends AdminModule
             'dilanjutkan' => 'Lainnya',
             'ket_dilanjutkan' => '-',
             'kontrol' => date('Y-m-d H:i:s'),
-            'obat_pulang' => $_POST['obat_pulang']
+            'obat_pulang' => '-'
         ]);
       } else {
         $this->db('resume_pasien_ranap')->save([
@@ -1488,15 +1488,15 @@ class Admin extends AdminModule
           'diagnosa_awal' => $_POST['diagnosa_masuk'],
           'alasan' => '-',
           'keluhan_utama' => $_POST['keluhan_utama'],
-          'pemeriksaan_fisik' => $_POST['pemeriksaan_fisik'],
+          'pemeriksaan_fisik' => '-',
           'jalannya_penyakit' => $_POST['riwayat_penyakit'],
-          'pemeriksaan_penunjang' => $_POST['pemeriksaan_pj_penting'],
-          'hasil_laborat' => $_POST['pemeriksaan_lab'],
+          'pemeriksaan_penunjang' => '-',
+          'hasil_laborat' => '-',
           'tindakan_dan_operasi' => '-',
           'obat_di_rs' => '-',
           'diagnosa_utama' => $_POST['diagnosa_utama'],
           'kd_diagnosa_utama' => '-',
-          'diagnosa_sekunder' => $_POST['diagnosa_sekunder'],
+          'diagnosa_sekunder' => '-',
           'kd_diagnosa_sekunder' => '-',
           'diagnosa_sekunder2' => '-',
           'kd_diagnosa_sekunder2' => '-',
@@ -1506,7 +1506,7 @@ class Admin extends AdminModule
           'kd_diagnosa_sekunder4' => '-',
           'prosedur_utama' => $_POST['prosedur_utama'],
           'kd_prosedur_utama' => '-',
-          'prosedur_sekunder' => $_POST['prosedur_sekunder'],
+          'prosedur_sekunder' => '-',
           'kd_prosedur_sekunder' => '-',
           'prosedur_sekunder2' => '-',
           'kd_prosedur_sekunder2' => '-',
@@ -1523,15 +1523,9 @@ class Admin extends AdminModule
           'dilanjutkan' => 'Lainnya',
           'ket_dilanjutkan' => '-',
           'kontrol' => date('Y-m-d H:i:s'),
-          'obat_pulang' => $_POST['obat_pulang']
+          'obat_pulang' => '-'
         ]);
       }
-      exit();
-    }
-
-    public function postResumeDelete()
-    {
-      $this->db('resume_pasien_ranap')->where('no_rawat', $_POST['no_rawat'])->delete();
       exit();
     }
     
@@ -1903,10 +1897,10 @@ class Admin extends AdminModule
         }
         
         echo $this->draw('medis.ranap.html', [
-            'reg_periksa' => htmlspecialchars_array($reg_periksa),
-            'pasien' => htmlspecialchars_array($reg_periksa),
-            'dokter' => htmlspecialchars_array($reg_periksa),
-            'penilaian_medis_ranap' => htmlspecialchars_array($penilaian_medis_ranap)
+            'reg_periksa' => $reg_periksa,
+            'pasien' => $reg_periksa,
+            'dokter' => $reg_periksa,
+            'penilaian_medis_ranap' => $penilaian_medis_ranap
         ]);
         exit();
     }
@@ -2184,11 +2178,11 @@ class Admin extends AdminModule
             ->oneArray();
         
         echo $this->draw('assessment.nyeri.html', [
-            'reg_periksa' => htmlspecialchars_array($reg_periksa),
-            'pasien' => htmlspecialchars_array($reg_periksa),
-            'dokter' => htmlspecialchars_array($reg_periksa),
-            'petugas' => htmlspecialchars_array($petugas),
-            'penilaian_ulang_nyeri' => htmlspecialchars_array($penilaian_ulang_nyeri)
+            'reg_periksa' => $reg_periksa,
+            'pasien' => $reg_periksa,
+            'dokter' => $reg_periksa,
+            'petugas' => $petugas,
+            'penilaian_ulang_nyeri' => $penilaian_ulang_nyeri
         ]);
         exit();
     }
@@ -2519,9 +2513,7 @@ class Admin extends AdminModule
         if($cek_pegawai) {
           $cek_role = $this->core->getPegawaiInfo('nik', $this->core->getUserInfo('username', $_SESSION['mlite_user']));
         }
-        $this->assign['websocket'] = $this->settings->get('settings.websocket');
-        $this->assign['websocket_proxy'] = $this->settings->get('settings.websocket_proxy');
-        echo $this->draw(MODULES.'/dokter_ranap/js/admin/dokter_ranap.js', ['cek_role' => $cek_role, 'mlite' => htmlspecialchars_array($this->assign)]);
+        echo $this->draw(MODULES.'/dokter_ranap/js/admin/dokter_ranap.js', ['cek_role' => $cek_role]);
         exit();
     }
 

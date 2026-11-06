@@ -19,14 +19,14 @@
         <th width="20">No</th>
         <th width="200">Tanggal</th>
         {if: $admin_mode == 'complex'}
-        <th>Suhu(C)</th>
-        <th>Tensi(mmHg)</th>
+        <th>Suhu (°C)</th>
+        <th>Tekanan Darah (mmHg)</th>
         <th>Nadi(/menit)</th>
-        <th>RR(/menit)</th>
-        <th>Tinggi(cm)</th>
-        <th>Berat(Kg)</th>
-        <th>GCS(E,V,M)</th>
-        <th>SPO2</th>
+        <th>Napas (x/menit)</th>
+        <th>Tinggi Badan (cm)</th>
+        <th>Berat Badan (kg)</th>
+        <th>GCS (E, V, M)</th>
+        <th>SpO2</th>
         <th>Alergi</th>
         <th>Instruksi & Evaluasi</th>
         {else}
@@ -84,15 +84,15 @@
       </tr>
       {/if}
       <tr>
-        <th colspan="2" width="100">Subyektif</th>
+        <th colspan="2" width="100">Subjektif</th>
         <td colspan="7">{?=isset_or($value.keluhan)?}</td>
       </tr>
       <tr>
-        <th colspan="2">Obyektif</th>
+        <th colspan="2">Objektif</th>
         <td colspan="7">{?=isset_or($value.pemeriksaan)?}</td>
       </tr>
       <tr>
-        <th colspan="2">Assesment</th>
+        <th colspan="2">Asesmen</th>
         <td colspan="7">{?=isset_or($value.penilaian)?}</td>
       </tr>
       <tr>
@@ -190,15 +190,15 @@
         <td colspan="7">{?=isset_or($data.kesadaran)?}</td>
       </tr>
       <tr>
-        <th colspan="2">Subyektif</th>
+        <th colspan="2">Subjektif</th>
         <td colspan="7">{?=isset_or($data.keluhan)?}</td>
       </tr>
       <tr>
-        <th colspan="2">Obyektif</th>
+        <th colspan="2">Objektif</th>
         <td colspan="7">{?=isset_or($data.pemeriksaan)?}</td>
       </tr>
       <tr>
-        <th colspan="2">Assesment</th>
+        <th colspan="2">Asesmen</th>
         <td colspan="7">{?=isset_or($data.penilaian)?}</td>
       </tr>
       <tr>

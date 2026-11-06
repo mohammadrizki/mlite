@@ -292,7 +292,7 @@
                   </ul>  
                 </li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rekan Medik</a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Rekam Medik</a>
                   <ul class="dropdown-menu">
                     {loop: $mlite.nav}
                     {if: $value.category == 'rekammedik'}
@@ -473,7 +473,7 @@
         Made with <i class="fa fa-heart text-danger"></i> by <a href="https://basoro.id/" target="_blank"><b>drg. F. Basoro</b>.</a>
         {$mlite.powered}.
       </p>
-      <p><i class="fa fa-fw fa-calendar"></i> <span>{$mlite.tanggal}</span> <i class="fa fa-fw fa-clock-o"></i><span id="clock"></span> <i class="fa fa-fw fa-user"></i> <span>{?= sprintf('Login sebagai <strong>%s</strong>', e($mlite.username)) ?}</span></p>
+      <p><i class="fa fa-fw fa-calendar"></i> <span>{$mlite.tanggal}</span> <i class="fa fa-fw fa-clock-o"></i><span id="clock"></span> <i class="fa fa-fw fa-user"></i> <span>{?= sprintf('Login sebagai <strong>%s</strong>', $mlite.username) ?}</span></p>
     </footer>
 
     {if: $this->core->getUserInfo('role') == 'medis'}
@@ -561,7 +561,7 @@
                     <p><b>Medic LITE Indonesia</b><br>
                       Clean, Light and Modular Medical Management Systems</p>
                     <p>Made with <i class="fa fa-heart text-danger"></i> and <i class="fa fa-coffee text-primary"></i> by <a href="https://basoro.id/" target="_blank"><b>drg. F. Basoro</b></a> & Friends.</p>
-                    <p>Thank you to our main sponsors <span class="badge badge-info badge-style-light">RSUD H. Damanhuri Barabai</span>, <span class="badge badge-warning badge-style-light">RS Aura Syifa Kediri</span> and Klinik Utama Cahaya Imani Kandangan. Also contributors who have been involved in development.</p>
+                    <p>Thank you to our main sponsors <span class="badge badge-info badge-style-light">RSUD H. Damanhuri Barabai</span> and <span class="badge badge-warning badge-style-light">RS Aura Syifa Kediri</span>. Also Klinik Utama Cahaya Imani Kandangan, RSUD Datu Sanggul Rantau, RSUD Daha Sejahtera Kandangan and other hospitals that we cannot mention one by one. Also contributors who have been involved in development.</p>
                     <p>Email: dentix.id@gmail.com - Telegram: @basoro</p>
                     <p>Copyright © 2018 - {?=date('Y')?}</p>
                   </div>

@@ -84,7 +84,7 @@
                             <th style="white-space: nowrap;">ID Observation Nadi</th>
                             <th style="white-space: nowrap;">ID Observation RR</th>
                             <th style="white-space: nowrap;">ID Observation Suhu</th>
-                            <th style="white-space: nowrap;">ID Observation SPO2</th>
+                            <th style="white-space: nowrap;">ID Observation SpO2</th>
                             <th style="white-space: nowrap;">ID Observation GCS</th>
                             <th style="white-space: nowrap;">ID Observation Tinggi</th>
                             <th style="white-space: nowrap;">ID Observation Berat</th>
@@ -175,15 +175,15 @@
                         if (row.id_encounter == '' && row.diagnosa_pasien != '' && row.tgl_pulang != '') {
                             return `${data} <br><a href="" class="btn btn-xs btn-info" data-id="${row.no_rawat_converted}" data-tipe="encounterbundle" data-toggle="modal" data-target="#asuransiModal" id="clearModalBtn"><i class="fa fa-plus"></i></a> <a href="" class="btn btn-xs btn-danger" data-id="${row.no_rawat_converted}" data-tipe="forwardnorawat" data-toggle="modal" data-target="#asuransiModal" id="clearModalBtn"><i class="fa fa-send"></i></a>`;
                         } else if (row.id_encounter == '' && row.tgl_pulang == '') {
-                            return `${data} <br><span class="badge badge-error">Belum Closing</span>`;
+                            return `${data} <br><span class="badge badge-error">Belum closing</span>`;
                         } else if (row.id_encounter == '' && row.tgl_pulang == '' && row.diagnosa_pasien == '') {
-                            return `${data} <br><span class="badge badge-error">Belum Closing & Belum Input Diagnosa</span>`;
+                            return `${data} <br><span class="badge badge-error">Belum closing & Belum input diagnosis</span>`;
                         } else if (row.id_encounter == '' && row.tgl_pulang != '' && row.diagnosa_pasien == '') {
-                            return `${data} <br><span class="badge badge-error">Belum Input Diagnosa</span>`;
+                            return `${data} <br><span class="badge badge-error">Belum input diagnosis</span>`;
                         } else if (row.id_encounter != '' && row.id_condition != '') {
-                            return `${data} <br><span class="badge badge-success">Sudah di Kirim</span>`;
+                            return `${data} <br><span class="badge badge-success">Sudah dikirim</span>`;
                         } else if (row.id_encounter != '' && row.id_condition == '') {
-                            return `${data} <br><span class="badge badge-warning">Sudah di Kirim Sebagian</span>`;
+                            return `${data} <br><span class="badge badge-warning">Sudah dikirim sebagian</span>`;
                         } else { return `${data}` }
                     }
                 },
@@ -211,7 +211,7 @@
                         if (row.id_encounter == '' && row.tgl_pulang != '') {
                             return `<a href="" class="btn btn-xs btn-info" data-id="${row.no_rawat_converted}" data-tipe="encounter" data-toggle="modal" data-target="#asuransiModal" id="clearModalBtn"><i class="fa fa-check"></i></a>`;
                         } else if (row.id_encounter == '' && row.tgl_pulang == '') {
-                            return `<span class="badge badge-error">Belum Closing</span>`;
+                            return `<span class="badge badge-error">Belum closing</span>`;
                         } else { return `${data}` }
                     }
                 },

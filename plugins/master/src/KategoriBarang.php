@@ -44,7 +44,7 @@ class KategoriBarang
           ];
         }
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function anyDisplay()
@@ -86,7 +86,7 @@ class KategoriBarang
           $return['halaman'] = $_POST['halaman'];
         }
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function postSave()

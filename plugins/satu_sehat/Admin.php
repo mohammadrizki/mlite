@@ -131,6 +131,64 @@ class Admin extends AdminModule
     return $this->draw('manage.html', ['sub_modules' => $sub_modules]);
   }
 
+  /*
+   * Mulai tambahan Rizki
+   */
+  public function getTestOAuth()
+{
+    // Hanya untuk pengujian pada instalasi lokal.
+    if (!in_array($_SERVER['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1'], true)) {
+        http_response_code(403);
+        return ['error' => 'Local access only'];
+    }
+
+    $authurl = rtrim((string) $this->settings->get('satu_sehat.authurl'), '/');
+    $clientid = (string) $this->settings->get('satu_sehat.clientid');
+    $secretkey = (string) $this->settings->get('satu_sehat.secretkey');
+
+    $ch = curl_init($authurl . '/accesstoken?grant_type=client_credentials');
+
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_POSTFIELDS => http_build_query([
+            'client_id' => $clientid,
+            'client_secret' => $secretkey
+        ]),
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Accept: application/json'
+        ],
+        CURLOPT_CONNECTTIMEOUT => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1
+    ]);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+
+    $json = is_string($response) ? json_decode($response, true) : null;
+
+
+    return '<pre>' . htmlspecialchars(
+    json_encode([
+        'http_code' => $httpCode,
+        'oauth_success' => !empty($json['access_token']),
+        'curl_error' => $curlError ?: null,
+        'response_type' => is_array($json) ? 'JSON' : 'non-JSON',
+        'credentials_configured' => $clientid !== '' && $secretkey !== ''
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
+    ENT_QUOTES,
+    'UTF-8'
+    ) . '</pre>';
+  }
+
+  /*
+   * Selesai tambahan Rizki
+   */
+
+
   public function getToken()
   {
 
@@ -304,112 +362,121 @@ class Admin extends AdminModule
   }
 
   public function getOrganization($kode_departemen, $kode_organization = '')
-  {
-    $partOf = $this->organizationid;
-    $nameResource = $this->core->getDepartemenInfo($kode_departemen);
-    if ($kode_organization != '') {
-      $partOf = $kode_organization;
-      $nameResource = $this->core->getPoliklinikInfo('nm_poli', $kode_departemen);
-    }
-    $curl = curl_init();
+{
+    $partOf = $kode_organization !== ''
+        ? $kode_organization
+        : $this->organizationid;
 
-    curl_setopt_array($curl, array(
-      CURLOPT_URL => $this->fhirurl . '/Organization',
-      CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_ENCODING => '',
-      CURLOPT_MAXREDIRS => 10,
-      CURLOPT_TIMEOUT => 0,
-      CURLOPT_FOLLOWLOCATION => true,
-      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-      CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Authorization: Bearer ' . $this->getAccessToken()),
-      CURLOPT_CUSTOMREQUEST => 'POST',
-      CURLOPT_POSTFIELDS => '{
-        "resourceType": "Organization",
-        "active": true,
-        "identifier": [
-            {
-                "use": "official",
-                "system": "http://sys-ids.kemkes.go.id/organization/' . $this->organizationid . '",
-                "value": "' . $kode_departemen . '"
-            }
-        ],
-        "type": [
-            {
-                "coding": [
-                    {
-                        "system": "http://terminology.hl7.org/CodeSystem/organization-type",
-                        "code": "dept",
-                        "display": "Hospital Department"
-                    }
-                ]
-            }
-        ],
-        "name": "' . $nameResource . '",
-        "telecom": [
-            {
-                "system": "phone",
-                "value": "' . $this->settings->get('settings.nomor_telepon') . '",
-                "use": "work"
-            },
-            {
-                "system": "email",
-                "value": "' . $this->settings->get('settings.email') . '",
-                "use": "work"
-            },
-            {
-                "system": "url",
-                "value": "www.' . $this->settings->get('settings.email') . '",
-                "use": "work"
-            }
-        ],
-        "address": [
-            {
-                "use": "work",
-                "type": "both",
-                "line": [
-                    "' . $this->settings->get('settings.alamat') . '"
-                ],
-                "city": "' . $this->settings->get('settings.kota') . '",
-                "postalCode": "' . $this->settings->get('satu_sehat.kodepos') . '",
-                "country": "ID",
-                "extension": [
-                    {
-                        "url": "https://fhir.kemkes.go.id/r4/StructureDefinition/administrativeCode",
-                        "extension": [
-                            {
-                                "url": "province",
-                                "valueCode": "' . $this->settings->get('satu_sehat.propinsi') . '"
-                            },
-                            {
-                                "url": "city",
-                                "valueCode": "' . $this->settings->get('satu_sehat.kabupaten') . '"
-                            },
-                            {
-                                "url": "district",
-                                "valueCode": "' . $this->settings->get('satu_sehat.kecamatan') . '"
-                            },
-                            {
-                                "url": "village",
-                                "valueCode": "' . $this->settings->get('satu_sehat.kelurahan') . '"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-        "partOf": {
-            "reference": "Organization/' . $partOf . '"
-        }
-    }',
-    ));
+    $nameResource = $kode_organization !== ''
+        ? $this->core->getPoliklinikInfo('nm_poli', $kode_departemen)
+        : $this->core->getDepartemenInfo($kode_departemen);
+
+    $kode_departemen = trim((string) $kode_departemen);
+    $partOf = trim((string) $partOf);
+    $nameResource = trim((string) $nameResource);
+
+    if ($kode_departemen === '' || $partOf === '' || $nameResource === '') {
+        return json_encode([
+            'resourceType' => 'OperationOutcome',
+            'issue' => [[
+                'severity' => 'error',
+                'code' => 'invalid',
+                'diagnostics' => 'Kode departemen, Organization induk, atau nama unit kosong.'
+            ]]
+        ]);
+    }
+
+    $token = $this->getAccessToken();
+
+    if (empty($token)) {
+        return json_encode([
+            'resourceType' => 'OperationOutcome',
+            'issue' => [[
+                'severity' => 'error',
+                'code' => 'security',
+                'diagnostics' => 'Access token SATUSEHAT tidak tersedia.'
+            ]]
+        ]);
+    }
+
+    $payload = [
+        'resourceType' => 'Organization',
+        'active' => true,
+        'identifier' => [[
+            'use' => 'official',
+            'system' => 'http://sys-ids.kemkes.go.id/organization/'
+                . $this->organizationid,
+            'value' => $kode_departemen
+        ]],
+        'type' => [[
+            'coding' => [[
+                'system' => 'http://terminology.hl7.org/CodeSystem/organization-type',
+                'code' => 'dept',
+                'display' => 'Hospital Department'
+            ]]
+        ]],
+        'name' => $nameResource,
+        'partOf' => [
+            'reference' => 'Organization/' . $partOf
+        ]
+    ];
+
+    $json = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+    if ($json === false) {
+        return json_encode([
+            'resourceType' => 'OperationOutcome',
+            'issue' => [[
+                'severity' => 'error',
+                'code' => 'invalid',
+                'diagnostics' => 'Gagal membentuk JSON Organization.'
+            ]]
+        ]);
+    }
+
+    $curl = curl_init(rtrim($this->fhirurl, '/') . '/Organization');
+
+    curl_setopt_array($curl, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => $json,
+        CURLOPT_HTTPHEADER => [
+            'Content-Type: application/fhir+json',
+            'Accept: application/fhir+json',
+            'Authorization: Bearer ' . $token
+        ]
+    ]);
 
     $response = curl_exec($curl);
+    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($curl);
 
     curl_close($curl);
+
+    if ($response === false || $httpCode < 200 || $httpCode >= 300) {
+        $decoded = is_string($response)
+            ? json_decode($response, true)
+            : null;
+
+        if (is_array($decoded) && ($decoded['resourceType'] ?? '') === 'OperationOutcome') {
+            return $response;
+        }
+
+        return json_encode([
+            'resourceType' => 'OperationOutcome',
+            'issue' => [[
+                'severity' => 'error',
+                'code' => 'processing',
+                'diagnostics' => 'POST Organization gagal. HTTP '
+                    . $httpCode . '. ' . $curlError
+                    . ' ' . substr((string) $response, 0, 500)
+            ]]
+        ]);
+    }
+
     return $response;
-    // echo $response;
-    // exit();    
-  }
+}
 
   public function getOrganizationById($kode_departemen)
   {
@@ -992,7 +1059,7 @@ class Admin extends AdminModule
 
     curl_close($curl);
     if ($render) {
-      echo $this->draw('encounter.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response), 'json' => $json]);
+      echo $this->draw('encounter.html', ['pesan' => $pesan, 'response' => $response, 'json' => $json]);
     } else {
       $data = json_decode($response);
       echo $data ? json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : $response;
@@ -1919,7 +1986,7 @@ class Admin extends AdminModule
     if ($param == "all") {
       return json_decode($response);
     } else {
-      echo $this->draw('encounter.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('encounter.html', ['pesan' => $pesan, 'response' => $response]);
       exit();
     }
   }
@@ -1986,7 +2053,7 @@ class Admin extends AdminModule
       ];
       $response = json_encode($error, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('condition.html', ['pesan' => 'Gagal mengirim condition platform Satu Sehat!!', 'response' => htmlspecialchars_array($response)]);
+        echo $this->draw('condition.html', ['pesan' => 'Gagal mengirim condition platform Satu Sehat!!', 'response' => $response]);
       } else {
         echo $response;
       }
@@ -2074,7 +2141,7 @@ class Admin extends AdminModule
 
     curl_close($curl);
     if ($render) {
-      echo $this->draw('condition.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('condition.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       $data = json_decode($response);
       echo $data ? json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : $response;
@@ -2154,7 +2221,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['nadi' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2174,7 +2241,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['respirasi' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2194,7 +2261,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['suhu_tubuh' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2214,7 +2281,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['spo2' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2234,7 +2301,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['gcs' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2253,7 +2320,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['tinggi' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2273,7 +2340,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['berat' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2293,7 +2360,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['lingkar_perut' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2319,7 +2386,7 @@ class Admin extends AdminModule
         ];
         $response = json_encode($error, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2338,7 +2405,7 @@ class Admin extends AdminModule
       if ($val === '') {
         $response = json_encode(['error' => 'Data tidak lengkap untuk Observation', 'missing' => ['kesadaran' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
         if ($render) {
-          echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+          echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
         } else {
           echo $response;
         }
@@ -2365,7 +2432,7 @@ class Admin extends AdminModule
       ];
       $response = json_encode($error, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array('Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!'), 'response' => htmlspecialchars_array($response)]);
+        echo $this->draw('observation.html', ['pesan' => 'Gagal mengirim observation ttv ' . $ttv . ' ke platform Satu Sehat!!', 'response' => $response]);
       } else {
         echo $response;
       }
@@ -2593,7 +2660,7 @@ class Admin extends AdminModule
 
     curl_close($curl);
     if ($render) {
-      echo $this->draw('observation.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('observation.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       $data = json_decode($response);
       echo $data ? json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : $response;
@@ -2608,7 +2675,7 @@ class Admin extends AdminModule
       ->join('template_laboratorium', 'template_laboratorium.id_template = mlite_satu_sehat_mapping_lab.id_template')
       ->toArray();
     $template_laboratorium = $this->db('template_laboratorium')->toArray();
-    return $this->draw('mapping.lab.html', ['mapping_lab_satu_sehat' => htmlspecialchars_array($mapping_lab), 'template_laboratorium' => htmlspecialchars_array($template_laboratorium)]);
+    return $this->draw('mapping.lab.html', ['mapping_lab_satu_sehat' => $mapping_lab, 'template_laboratorium' => $template_laboratorium]);
   }
 
   public function getMappingRad()
@@ -2618,7 +2685,7 @@ class Admin extends AdminModule
       ->join('jns_perawatan_radiologi', 'jns_perawatan_radiologi.kd_jenis_prw = mlite_satu_sehat_mapping_rad.kd_jenis_prw')
       ->toArray();
     $jns_perawatan_radiologi = $this->db('jns_perawatan_radiologi')->toArray();
-    return $this->draw('mapping.rad.html', ['mapping_rad_satu_sehat' => htmlspecialchars_array($mapping_rad), 'jns_perawatan_radiologi' => htmlspecialchars_array($jns_perawatan_radiologi)]);
+    return $this->draw('mapping.rad.html', ['mapping_rad_satu_sehat' => $mapping_rad, 'jns_perawatan_radiologi' => $jns_perawatan_radiologi]);
   }
 
   public function getLookupMaster()
@@ -2833,85 +2900,199 @@ class Admin extends AdminModule
 
     redirect(url([ADMIN, 'satu_sehat', 'mappinglab']));
   }
+  
+public function postSaveDepartemen()
+{
+    $table = $this->db('mlite_satu_sehat_departemen');
 
-  public function postSaveDepartemen()
-  {
     if (isset($_POST['simpan'])) {
+        $depId = trim((string) ($_POST['dep_id'] ?? ''));
 
-      $get_id_organisasi_satusehat = json_decode($this->getOrganization($_POST['dep_id']));
-
-      if ($get_id_organisasi_satusehat->issue[0]->code == 'duplicate') {
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => $this->fhirurl . '/Organization?partof=' . $this->organizationid,
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_HTTPHEADER => array('Content-Type: application/json', 'Authorization: Bearer ' . $this->getAccessToken()),
-          CURLOPT_CUSTOMREQUEST => 'GET',
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        $get_id_organisasi_satusehat = json_decode($response);
-        $get_id_organisasi_satusehat = json_encode($get_id_organisasi_satusehat, true);
-        // echo $get_id_organisasi_satusehat;
-
-        foreach (json_decode($get_id_organisasi_satusehat)->entry as $item) {
-          if ($item->resource->identifier[0]->value == $_POST['dep_id']) {
-            $id_organisasi_satusehat = $item->resource->id;
-            echo $id_organisasi_satusehat;
-          }
-        }
-      }
-
-      if ($id_organisasi_satusehat != '') {
-        $query = $this->db('mlite_satu_sehat_departemen')->save(
-          [
-            'dep_id' => $_POST['dep_id'],
-            'id_organisasi_satusehat' => $id_organisasi_satusehat
-          ]
-        );
-        if ($query) {
-          $this->notify('success', 'Mapping departemen telah disimpan');
+        if ($depId === '') {
+            $this->notify('danger', 'Departemen belum dipilih.');
         } else {
-          $this->notify('danger', 'Mapping departemen gagal disimpan');
+            $existing = $this->db('mlite_satu_sehat_departemen')
+                ->where('dep_id', $depId)
+                ->oneArray();
+
+            if (!empty($existing['id_organisasi_satusehat'])) {
+                $this->notify(
+                    'success',
+                    'Departemen ' . $depId . ' sudah memiliki mapping SATUSEHAT.'
+                );
+            } else {
+                $organizationId = '';
+                $lookupError = '';
+
+                // Cari dahulu Organization yang sudah ada di SATUSEHAT.
+                $token = $this->getAccessToken();
+
+                if (empty($token)) {
+                    $lookupError = 'Access token SATUSEHAT tidak tersedia.';
+                } else {
+                    $url = rtrim($this->fhirurl, '/')
+                        . '/Organization?partof='
+                        . rawurlencode($this->organizationid);
+
+                    $curl = curl_init($url);
+                    curl_setopt_array($curl, [
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_TIMEOUT => 30,
+                        CURLOPT_HTTPHEADER => [
+                            'Accept: application/fhir+json',
+                            'Authorization: Bearer ' . $token
+                        ]
+                    ]);
+
+                    $body = curl_exec($curl);
+                    $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+                    $curlError = curl_error($curl);
+                    curl_close($curl);
+
+                    if ($body === false || $httpCode !== 200) {
+                        $lookupError = 'Pencarian Organization gagal. HTTP '
+                            . $httpCode . '. ' . $curlError;
+                    } else {
+                        $bundle = json_decode($body, true);
+
+                        if (!is_array($bundle)
+                            || ($bundle['resourceType'] ?? '') !== 'Bundle') {
+                            $lookupError = 'Respons pencarian bukan FHIR Bundle.';
+                        } else {
+                            $expectedSystem =
+                                'http://sys-ids.kemkes.go.id/organization/'
+                                . $this->organizationid;
+
+                            foreach (($bundle['entry'] ?? []) as $entry) {
+                                $resource = $entry['resource'] ?? [];
+
+                                foreach (($resource['identifier'] ?? []) as $identifier) {
+                                    if (($identifier['system'] ?? '') === $expectedSystem
+                                        && ($identifier['value'] ?? '') === $depId) {
+                                        $organizationId = $resource['id'] ?? '';
+                                        break 2;
+                                    }
+                                }
+                            }
+
+                            // Hindari POST jika hasil pencarian belum lengkap.
+                            if ($organizationId === ''
+                                && !empty($bundle['link'])) {
+                                foreach ($bundle['link'] as $link) {
+                                    if (($link['relation'] ?? '') === 'next') {
+                                        $lookupError =
+                                            'Hasil pencarian memiliki halaman lanjutan. '
+                                            . 'Perlu pemeriksaan sebelum POST.';
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if ($lookupError !== '') {
+                    $this->notify('danger', $lookupError);
+                } else {
+                    // Buat Organization hanya jika belum ditemukan.
+                    if ($organizationId === '') {
+                        $created = json_decode(
+                            $this->getOrganization($depId),
+                            true
+                        );
+
+                        if (is_array($created)
+                            && ($created['resourceType'] ?? '') === 'Organization'
+                            && !empty($created['id'])) {
+                            $organizationId = $created['id'];
+                        } else {
+                            $issue = $created['issue'][0]['diagnostics']
+                                ?? $created['issue'][0]['details']['text']
+                                ?? 'Respons API tidak memiliki ID Organization.';
+
+                            $this->notify(
+                                'danger',
+                                'Gagal membuat Organization: ' . $issue
+                            );
+                        }
+                    }
+
+                    if ($organizationId !== '') {
+                        $saved = $this->db('mlite_satu_sehat_departemen')
+                            ->save([
+                                'dep_id' => $depId,
+                                'id_organisasi_satusehat' => $organizationId
+                            ]);
+
+                        if ($saved) {
+                            $this->notify(
+                                'success',
+                                'Mapping departemen berhasil disimpan.'
+                            );
+                        } else {
+                            $this->notify(
+                                'danger',
+                                'Organization ditemukan/dibuat, tetapi '
+                                . 'penyimpanan database gagal. ID: '
+                                . $organizationId
+                            );
+                        }
+                    }
+                }
+            }
         }
-      }
     }
 
     if (isset($_POST['update'])) {
-      $mlite_satu_sehat_departemen = $this->db('mlite_satu_sehat_departemen')->where('id_organisasi_satusehat', $_POST['id_organisasi_satusehat'])->oneArray();
-      $query = $this->db('mlite_satu_sehat_departemen')
-        ->where('id_organisasi_satusehat', $mlite_satu_sehat_departemen['id_organisasi_satusehat'])
-        ->save(
-          [
-            'dep_id' => $_POST['dep_id']
-          ]
+        $depId = trim((string) ($_POST['dep_id'] ?? ''));
+        $organizationId = trim(
+            (string) ($_POST['id_organisasi_satusehat'] ?? '')
         );
-      if ($query) {
-        $this->notify('success', 'Mapping departemen telah disimpan');
-      }
+
+        $existing = $this->db('mlite_satu_sehat_departemen')
+            ->where('id_organisasi_satusehat', $organizationId)
+            ->oneArray();
+
+        if ($depId === '' || empty($existing)) {
+            $this->notify('danger', 'Data mapping tidak valid.');
+        } else {
+            $saved = $this->db('mlite_satu_sehat_departemen')
+                ->where('id_organisasi_satusehat', $organizationId)
+                ->save(['dep_id' => $depId]);
+
+            $this->notify(
+                $saved ? 'success' : 'danger',
+                $saved
+                    ? 'Mapping departemen berhasil diperbarui.'
+                    : 'Mapping departemen gagal diperbarui.'
+            );
+        }
     }
 
     if (isset($_POST['hapus'])) {
-      $query = $this->db('mlite_satu_sehat_departemen')
-        ->where('id_organisasi_satusehat', $_POST['id_organisasi_satusehat'])
-        ->delete();
-      if ($query) {
-        $this->notify('success', 'Mapping departemen telah dihapus');
-      }
+        $organizationId = trim(
+            (string) ($_POST['id_organisasi_satusehat'] ?? '')
+        );
+
+        if ($organizationId === '') {
+            $this->notify('danger', 'ID Organization tidak valid.');
+        } else {
+            $deleted = $this->db('mlite_satu_sehat_departemen')
+                ->where('id_organisasi_satusehat', $organizationId)
+                ->delete();
+
+            $this->notify(
+                $deleted ? 'success' : 'danger',
+                $deleted
+                    ? 'Mapping lokal berhasil dihapus.'
+                    : 'Mapping lokal gagal dihapus.'
+            );
+        }
     }
 
     redirect(url([ADMIN, 'satu_sehat', 'departemen']));
-  }
+}
+
 
   public function getProcedure($no_rawat, $render = true)
   {
@@ -2950,7 +3131,7 @@ class Admin extends AdminModule
     if (!is_array($prosedur_pasien) || !isset($prosedur_pasien['kode']) || !isset($prosedur_pasien['deskripsi_panjang'])) {
       $resp = json_encode(['error' => 'Data tidak lengkap untuk Procedure', 'missing' => ['prosedur_pasien.kode' => 'missing', 'prosedur_pasien.deskripsi_panjang' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('procedure.html', ['pesan' => 'Gagal mengirim procedure platform Satu Sehat!!', 'response' => htmlspecialchars_array($resp)]);
+        echo $this->draw('procedure.html', ['pesan' => 'Gagal mengirim procedure platform Satu Sehat!!', 'response' => $resp]);
       } else {
         echo $resp;
       }
@@ -2971,7 +3152,7 @@ class Admin extends AdminModule
     if ($id_pasien === '') {
       $resp = json_encode(['error' => 'Data tidak lengkap untuk Procedure', 'missing' => ['patient_id' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('procedure.html', ['pesan' => 'Gagal mengirim procedure platform Satu Sehat!!', 'response' => htmlspecialchars_array($resp)]);
+        echo $this->draw('procedure.html', ['pesan' => 'Gagal mengirim procedure platform Satu Sehat!!', 'response' => $resp]);
       } else {
         echo $resp;
       }
@@ -3062,7 +3243,7 @@ class Admin extends AdminModule
     curl_close($curl);
     // echo $response;
     if ($render) {
-      echo $this->draw('procedure.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('procedure.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       $data = json_decode($response);
       echo $data ? json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : $response;
@@ -3110,7 +3291,7 @@ class Admin extends AdminModule
     if ($id_pasien === '') {
       $resp = json_encode(['error' => 'Data tidak lengkap untuk Diet Gizi', 'missing' => ['patient_id' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('dietgizi.html', ['pesan' => 'Gagal mengirim diet gizi platform Satu Sehat!!', 'response' => htmlspecialchars_array($resp)]);
+        echo $this->draw('dietgizi.html', ['pesan' => 'Gagal mengirim diet gizi platform Satu Sehat!!', 'response' => $resp]);
       } else {
         echo $resp;
       }
@@ -3233,7 +3414,7 @@ class Admin extends AdminModule
     // echo $response;
     // echo '<pre>' . $data . '</pre>';
     if ($render) {
-      echo $this->draw('dietgizi.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('dietgizi.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       echo $response;
     }
@@ -3280,7 +3461,7 @@ class Admin extends AdminModule
     if ($id_pasien === '') {
       $resp = json_encode(['error' => 'Data tidak lengkap untuk Diet Gizi', 'missing' => ['patient_id' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('dietgizi.html', ['pesan' => 'Gagal mengirim diet gizi platform Satu Sehat!!', 'response' => htmlspecialchars_array($resp)]);
+        echo $this->draw('dietgizi.html', ['pesan' => 'Gagal mengirim diet gizi platform Satu Sehat!!', 'response' => $resp]);
       } else {
         echo $resp;
       }
@@ -3373,7 +3554,7 @@ class Admin extends AdminModule
     // echo $response;
     // echo '<pre>' . $data . '</pre>';
     if ($render) {
-      echo $this->draw('questionnaire.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('questionnaire.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       echo $response;
     }
@@ -3425,7 +3606,7 @@ class Admin extends AdminModule
     if ($id_pasien === '') {
       $resp = json_encode(['error' => 'Data tidak lengkap untuk Vaksin', 'missing' => ['patient_id' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('vaksin.html', ['pesan' => 'Gagal mengirim vaksin platform Satu Sehat!!', 'response' => htmlspecialchars_array($resp)]);
+        echo $this->draw('vaksin.html', ['pesan' => 'Gagal mengirim vaksin platform Satu Sehat!!', 'response' => $resp]);
       } else {
         echo $resp;
       }
@@ -3577,7 +3758,7 @@ class Admin extends AdminModule
     }
 
     if ($render) {
-      echo $this->draw('vaksin.html', ['pesan' => htmlspecialchars_array(isset($pesan) ? $pesan : ''), 'response' => htmlspecialchars_array(isset($response) ? $response : '')]);
+      echo $this->draw('vaksin.html', ['pesan' => isset($pesan) ? $pesan : '', 'response' => isset($response) ? $response : '']);
     } else {
       echo isset($response) ? $response : '';
     }
@@ -3631,7 +3812,7 @@ class Admin extends AdminModule
     if ($id_pasien === '') {
       $resp = json_encode(['error' => 'Data tidak lengkap untuk Clinical Impression', 'missing' => ['patient_id' => 'missing']], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('clinical.impression.html', ['pesan' => 'Gagal mengirim clinical impression platform Satu Sehat!!', 'response' => htmlspecialchars_array($resp)]);
+        echo $this->draw('clinical.impression.html', ['pesan' => 'Gagal mengirim clinical impression platform Satu Sehat!!', 'response' => $resp]);
       } else {
         echo $resp;
       }
@@ -3727,7 +3908,7 @@ class Admin extends AdminModule
     // echo '<pre>' . $data . '</pre>';
 
     if ($render) {
-      echo $this->draw('clinical.impression.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('clinical.impression.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       echo $response;
     }
@@ -4371,8 +4552,8 @@ class Admin extends AdminModule
 
     if ($render) {
       echo $this->draw('medication.html', [
-        'pesan' => htmlspecialchars_array(isset_or($pesan, '')),
-        'response' => htmlspecialchars_array(isset_or($response, ''))
+        'pesan' => isset_or($pesan, ''),
+        'response' => isset_or($response, '')
       ]);
     } else {
       echo isset($response) ? $response : '';
@@ -4931,7 +5112,7 @@ class Admin extends AdminModule
     ;
 
     if ($render) {
-      echo $this->draw('laboratory.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('laboratory.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       echo $response;
     }
@@ -5641,7 +5822,7 @@ class Admin extends AdminModule
       }
     }
     if ($render) {
-      echo $this->draw('radiology.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('radiology.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       echo $response;
     }
@@ -5746,7 +5927,7 @@ class Admin extends AdminModule
       ];
       $response = json_encode($error, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('careplan.html', ['pesan' => 'Gagal mengirim careplan platform Satu Sehat!!', 'response' => htmlspecialchars_array($response)]);
+        echo $this->draw('careplan.html', ['pesan' => 'Gagal mengirim careplan platform Satu Sehat!!', 'response' => $response]);
       } else {
         echo $response;
       }
@@ -5833,7 +6014,7 @@ class Admin extends AdminModule
     curl_close($curl);
 
     if ($render) {
-      echo $this->draw('careplan.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('careplan.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       echo $response;
     }
@@ -5907,7 +6088,7 @@ class Admin extends AdminModule
       ];
       $response = json_encode($error, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
       if ($render) {
-        echo $this->draw('allergy.html', ['pesan' => 'Gagal mengirim allergy platform Satu Sehat!!', 'response' => htmlspecialchars_array($response)]);
+        echo $this->draw('allergy.html', ['pesan' => 'Gagal mengirim allergy platform Satu Sehat!!', 'response' => $response]);
       } else {
         echo $response;
       }
@@ -6060,7 +6241,7 @@ class Admin extends AdminModule
     curl_close($curl);
 
     if ($render) {
-      echo $this->draw('allergy.html', ['pesan' => htmlspecialchars_array($pesan), 'response' => htmlspecialchars_array($response)]);
+      echo $this->draw('allergy.html', ['pesan' => $pesan, 'response' => $response]);
     } else {
       echo $response;
     }
@@ -6073,7 +6254,7 @@ class Admin extends AdminModule
         $this->notify('failure', 'Anda tidak memiliki hak akses untuk halaman ini.');
         redirect(url([ADMIN, 'satu_sehat', 'praktisi']));
     }
-    return $this->draw('settings.html', ['satu_sehat' => htmlspecialchars_array($this->settings->get('satu_sehat')), 'mapping_lokasi' => htmlspecialchars_array($this->db('mlite_satu_sehat_lokasi')->toArray()), 'bidang' => htmlspecialchars_array($this->db('bidang')->toArray())]);
+    return $this->draw('settings.html', ['satu_sehat' => $this->settings->get('satu_sehat'), 'mapping_lokasi' => $this->db('mlite_satu_sehat_lokasi')->toArray(), 'bidang' => $this->db('bidang')->toArray()]);
   }
 
   public function postSaveSettings()
@@ -6096,7 +6277,7 @@ class Admin extends AdminModule
     if (isset($_POST['nik_dokter']) && $_POST['nik_dokter'] != '') {
       $response = json_decode($this->getPractitioner($_POST['nik_dokter']));
     }
-    return $this->draw('praktisi.html', ['response' => htmlspecialchars_array(json_encode($response, JSON_PRETTY_PRINT))]);
+    return $this->draw('praktisi.html', ['response' => json_encode($response, JSON_PRETTY_PRINT)]);
   }
 
   public function anyPasien()
@@ -6105,7 +6286,7 @@ class Admin extends AdminModule
     if (isset($_POST['nik_pasien']) && $_POST['nik_pasien'] != '') {
       $response = json_decode($this->getPatient($_POST['nik_pasien']));
     }
-    return $this->draw('pasien.html', ['response' => htmlspecialchars_array(json_encode($response, JSON_PRETTY_PRINT))]);
+    return $this->draw('pasien.html', ['response' => json_encode($response, JSON_PRETTY_PRINT)]);
   }
 
   public function getDepartemen()
@@ -6121,7 +6302,7 @@ class Admin extends AdminModule
       $value['nama'] = $nama;
       $satu_sehat[] = $value;
     }
-    return $this->draw('departemen.html', ['departemen' => htmlspecialchars_array($this->db('departemen')->toArray()), 'poli' => $poli, 'satu_sehat_departemen' => htmlspecialchars_array($satu_sehat)]);
+    return $this->draw('departemen.html', ['departemen' => $this->db('departemen')->toArray(), 'poli' => $poli, 'satu_sehat_departemen' => $satu_sehat]);
   }
 
   public function getLokasi()
@@ -6136,12 +6317,12 @@ class Admin extends AdminModule
     ])->toArray();
     $lokasi = array_merge($poliklinik, $bangsal);
     return $this->draw('lokasi.html', [
-      'lokasi' => htmlspecialchars_array($lokasi),
-      'satu_sehat_departemen' => htmlspecialchars_array($this->db('mlite_satu_sehat_departemen')->join('departemen', 'departemen.dep_id=mlite_satu_sehat_departemen.dep_id')->toArray()),
-      'satu_sehat_lokasi' => htmlspecialchars_array($this->db('mlite_satu_sehat_lokasi')
+      'lokasi' => $lokasi,
+      'satu_sehat_departemen' => $this->db('mlite_satu_sehat_departemen')->join('departemen', 'departemen.dep_id=mlite_satu_sehat_departemen.dep_id')->toArray(),
+      'satu_sehat_lokasi' => $this->db('mlite_satu_sehat_lokasi')
         ->join('mlite_satu_sehat_departemen', 'mlite_satu_sehat_departemen.id_organisasi_satusehat=mlite_satu_sehat_lokasi.id_organisasi_satusehat')
         ->join('departemen', 'departemen.dep_id=mlite_satu_sehat_departemen.dep_id')
-        ->toArray())
+        ->toArray()
     ]);
   }
 
@@ -6234,7 +6415,7 @@ class Admin extends AdminModule
     $apoteker = $this->db('pegawai')->where('stts_aktif', 'AKTIF')->where('bidang', $apotek_setting)->toArray();
     $lab = $this->db('pegawai')->where('stts_aktif', 'AKTIF')->where('bidang', $lab_setting)->toArray();
     $lab_apoteker = array_merge($lab, $apoteker);
-    return $this->draw('mapping.praktisi.html', ['mapping_praktisi' => htmlspecialchars_array($unique), 'dokter' => htmlspecialchars_array($dokter), 'apoteker' => htmlspecialchars_array($lab_apoteker)]);
+    return $this->draw('mapping.praktisi.html', ['mapping_praktisi' => $unique, 'dokter' => $dokter, 'apoteker' => $lab_apoteker]);
   }
 
   public function postSaveMappingPraktisi()
@@ -6358,7 +6539,7 @@ class Admin extends AdminModule
     $this->_addHeaderFiles();
     $databarang = $this->db('databarang')->where('status', '1')->toArray();
     $mapping_obat = $this->db('mlite_satu_sehat_mapping_obat')->toArray();
-    return $this->draw('mapping.obat.html', ['databarang' => htmlspecialchars_array($databarang), 'mapping_obat_satu_sehat' => htmlspecialchars_array($mapping_obat)]);
+    return $this->draw('mapping.obat.html', ['databarang' => $databarang, 'mapping_obat_satu_sehat' => $mapping_obat]);
   }
 
   public function getMappingObatSearch()
@@ -6467,8 +6648,8 @@ class Admin extends AdminModule
       ->join('jns_perawatan', 'jns_perawatan.kd_jenis_prw = mlite_satu_sehat_mapping_tindakan.kd_jenis_prw')
       ->toArray();
     return $this->draw('mapping.tindakan.html', [
-      'tindakan_satu_sehat' => htmlspecialchars_array($tindakan),
-      'mapping_tindakan_satu_sehat' => htmlspecialchars_array($mapping),
+      'tindakan_satu_sehat' => $tindakan,
+      'mapping_tindakan_satu_sehat' => $mapping,
     ]);
   }
 
@@ -7125,13 +7306,13 @@ class Admin extends AdminModule
       $url = $validation_web["data"]["url"];
       error_log('Satu Sehat KYC URL generated successfully');
 
-      return $this->draw('kyc.html', ['url' => htmlspecialchars_array($url)]);
+      return $this->draw('kyc.html', ['url' => $url]);
 
     } catch (\Exception $e) {
       error_log('Satu Sehat KYC Exception: ' . $e->getMessage());
       return $this->draw('error.html', [
         'title' => 'KYC Generation Error',
-        'message' => htmlspecialchars_array('An error occurred while generating KYC URL: ' . $e->getMessage())
+        'message' => 'An error occurred while generating KYC URL: ' . $e->getMessage()
       ]);
     }
   }
@@ -8694,8 +8875,8 @@ public function getRme($no_rawat = null)
     $no_rawat = revertNoRawat($no_rawat);
     $resolved = $this->resolveSsrmePayload($no_rawat);
     echo $this->draw('rme.html', [
-      'no_rawat' => htmlspecialchars_array($no_rawat),
-      'resolved' => htmlspecialchars_array($resolved),
+      'no_rawat' => $no_rawat,
+      'resolved' => $resolved,
       'ssrme_base_url' => $this->getSsrmeBaseUrl()
     ]);
     exit();

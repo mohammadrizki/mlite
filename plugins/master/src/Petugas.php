@@ -61,7 +61,7 @@ class Petugas
           ];
         }
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function anyDisplay()
@@ -107,7 +107,7 @@ class Petugas
           $return['halaman'] = $_POST['halaman'];
         }
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function postSave()

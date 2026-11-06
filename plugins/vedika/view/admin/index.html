@@ -38,8 +38,8 @@
                     <form action="{?=isset_or($vedika.searchUrl)?}" class="searchbox-input form-inline pull-right padding-bottom-lg" style="margin-top:5px;margin-bottom:15px;">
                         <div class="input-group">
                             <input type="text" name="s" minlength="3" class="form-control" placeholder="Search" required>
-                            <input type="hidden" name="start_date" value="{if: isset($_GET['start_date'])}{?=e($_GET['start_date'])?}{else}{?=date('Y-m-d')?}{/if}">
-                            <input type="hidden" name="end_date" value="{if: isset($_GET['end_date'])}{?=e($_GET['end_date'])?}{else}{?=date('Y-m-d')?}{/if}">
+                            <input type="hidden" name="start_date" value="{if: isset($_GET['start_date'])}{?=$_GET['start_date']?}{else}{?=date('Y-m-d')?}{/if}">
+                            <input type="hidden" name="end_date" value="{if: isset($_GET['end_date'])}{?=$_GET['end_date']?}{else}{?=date('Y-m-d')?}{/if}">
                             <input type="hidden" name="t" value="{?=$_SESSION['token']?}">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
@@ -163,7 +163,7 @@
                             <tr><td><br><a href="{?=isset_or($value.berkasPerawatan)?}"  data-toggle="modal" data-target="#moduleModal" class="btn btn-info btn-xs" target="_blank">Unggah Berkas Perawatan</a></td></tr>
                             {loop: $value.berkas_digital as $data}
                             <tr>
-                              <td>- <a href="{?=url(WEBAPPS_URL)?}/berkasrawat/{?=isset_or($data.lokasi_file)?}" class="gallery">{?=isset_or($data.nama)?}</a> <button class="btn btn-danger btn-xs fa fa-trash hapus_berkas" data-no_rawat={?=convertNorawat($value.no_rawat)?} data-nama_file="{?=basename($data.lokasi_file, '.'.pathinfo($data.lokasi_file)["extension"])?}" data-reload_url="{?=url([ADMIN,'vedika','berkasperawatan',convertNorawat($value.no_rawat)])?}"></button></td>
+                              <td>- <a href="{?=url(WEBAPPS_URL)?}/berkasrawat/{?=isset_or($data.lokasi_file)?}" class="gallery">{?=isset_or($data.nama)?}</a> <button class="btn btn-danger btn-xs fa fa-trash hapus_berkas" data-no_rawat={?=convertNorawat($value.no_rawat)?} data-nama_file="{?=basename($data.lokasi_file, '.'.pathinfo($data.lokasi_file)["extension"])?}"></button></td>
                             </tr>
                             {/loop}
                             {if: $value.status_lanjut == 'Ralan'}
@@ -239,37 +239,17 @@
   $("#display").on("click",".hapus_berkas", function(event){
     var baseURL = mlite.url + '/' + mlite.admin;
     event.preventDefault();
-    event.stopPropagation();
+    var url = baseURL + '/vedika/hapusberkas?t=' + mlite.token;
     var no_rawat = $(this).attr("data-no_rawat");
     var nama_file = $(this).attr("data-nama_file");
-    var reloadUrl = $(this).attr("data-reload_url");
-    var $btn = $(this);
 
     bootbox.confirm("Apakah Anda yakin ingin menghapus data ini?", function(result){
       // ketika ditekan tombol ok
       if (result){
-        $.get(baseURL + '/vedika/hapusberkas/' + no_rawat + '/' + nama_file + '?t=' + mlite.token, function(response){
-          if (response.indexOf('sukses') !== -1) {
-            // hapus baris berkas dari daftar di tempat, tanpa open new tab
-            $btn.closest('tr').remove();
-            // jika modal berkas sedang terbuka, muat ulang isi modal saja, modal tetap terbuka
-            if ($('#moduleModal').is(':visible') && reloadUrl) {
-              $('#moduleModal').find('.modal-content').load(reloadUrl);
-            }
-          } else {
-            bootbox.alert(response);
-          }
-        }).fail(function(xhr) {
-          // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-          var pesan = 'Hapus berkas gagal!';
-          try {
-            var res = JSON.parse(xhr.responseText);
-            if (res && res.message) { pesan = res.message; }
-          } catch (e) {}
-          bootbox.alert(pesan);
-        });
+        window.open(baseURL + '/vedika/hapusberkas/' + no_rawat + '/' + nama_file + '?t=' + mlite.token, '_blank');
       }
     });
+    event.stopPropagation();
     return false;
   });
 </script>

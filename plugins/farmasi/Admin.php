@@ -6,9 +6,6 @@ use Systems\AdminModule;
 
 class Admin extends AdminModule
 {
-    // Ambang "segera kedaluwarsa" (hari) untuk peringatan stok, daftar batch, dan filter.
-    const EXPIRE_SOON_DAYS = 90;
-
     public $assign = [];
 
     public function navigation()
@@ -47,7 +44,7 @@ class Admin extends AdminModule
         $sub_modules = [];
       }
 
-      // Peringatan batch kedaluwarsa / segera kedaluwarsa ≤ EXPIRE_SOON_DAYS hari (stok tersisa)
+      // Peringatan batch kedaluwarsa / segera kedaluwarsa ≤ 90 hari (stok tersisa)
       $expired_alert = [];
       $stmt = $this->db()->pdo()->prepare("SELECT b.kode_brng, d.nama_brng, g.nm_bangsal, b.no_batch, b.expire, b.stok, d.kode_sat
         FROM mlite_farmasi_obat_batch b
@@ -55,7 +52,7 @@ class Admin extends AdminModule
         LEFT JOIN bangsal g ON g.kd_bangsal = b.kd_bangsal
         WHERE b.stok > 0 AND b.expire IS NOT NULL AND b.expire <= ?
         ORDER BY b.expire ASC, b.kode_brng ASC");
-      $stmt->execute([date('Y-m-d', strtotime('+' . self::EXPIRE_SOON_DAYS . ' day'))]);
+      $stmt->execute([date('Y-m-d', strtotime('+90 day'))]);
       foreach ($stmt->fetchAll(\PDO::FETCH_ASSOC) as $row) {
         $selisih = (int) floor((strtotime((string) $row['expire']) - strtotime(date('Y-m-d'))) / 86400);
         $row['selisih_hari'] = $selisih;
@@ -126,11 +123,6 @@ class Admin extends AdminModule
     public function postSetStok()
     {
       $pdo = $this->db()->pdo();
-      $transaksi_set_stok = !$pdo->inTransaction();
-      if ($transaksi_set_stok) {
-        $pdo->beginTransaction();
-      }
-      try {
       $kode_brng = $_POST['kode_brng'];
       $kd_bangsal = $_POST['kd_bangsal'];
       $stok = (float) $_POST['stok'];
@@ -225,20 +217,6 @@ class Admin extends AdminModule
           ]);
         }
       }
-      if ($transaksi_set_stok && $pdo->inTransaction()) {
-        $pdo->commit();
-      }
-      header('Content-Type: application/json');
-      echo json_encode(['status' => 'success', 'message' => 'Set stok berhasil disimpan.']);
-      } catch (\Throwable $e) {
-        if ($transaksi_set_stok && $pdo->inTransaction()) {
-          $pdo->rollBack();
-        }
-        error_log('Set stok (farmasi, kode_brng=' . (isset($kode_brng) ? $kode_brng : '-') . ') gagal: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
-        header('Content-Type: application/json');
-        http_response_code(400);
-        echo json_encode(['status' => 'error', 'message' => 'Set stok gagal disimpan: ' . $e->getMessage()]);
-      }
 
       exit();
     }
@@ -246,11 +224,6 @@ class Admin extends AdminModule
     public function postReStok()
     {
       $pdo = $this->db()->pdo();
-      $transaksi_re_stok = !$pdo->inTransaction();
-      if ($transaksi_re_stok) {
-        $pdo->beginTransaction();
-      }
-      try {
       $kode_brng = $_POST['kode_brng'];
       $kd_bangsal = $_POST['kd_bangsal'];
       $stok = (float) $_POST['stok'];
@@ -297,20 +270,6 @@ class Admin extends AdminModule
       }
       if ($gudang_row) {
         $this->db('gudangbarang')->where('kode_brng', $kode_brng)->where('kd_bangsal', $kd_gudang)->save(['stok' => (float)$gudang_row['stok'] + $masuk_total]);
-      }
-      if ($transaksi_re_stok && $pdo->inTransaction()) {
-        $pdo->commit();
-      }
-      header('Content-Type: application/json');
-      echo json_encode(['status' => 'success', 'message' => 'Restok berhasil disimpan.']);
-      } catch (\Throwable $e) {
-        if ($transaksi_re_stok && $pdo->inTransaction()) {
-          $pdo->rollBack();
-        }
-        error_log('Restok (farmasi, kode_brng=' . (isset($kode_brng) ? $kode_brng : '-') . ') gagal: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
-        header('Content-Type: application/json');
-        http_response_code(400);
-        echo json_encode(['status' => 'error', 'message' => 'Restok gagal disimpan: ' . $e->getMessage()]);
       }
 
       exit();
@@ -364,7 +323,7 @@ class Admin extends AdminModule
             $selisihHari = (int) floor(($expireTs - strtotime(date('Y-m-d'))) / 86400);
             if ($selisihHari < 0) {
               $batch['status_expire'] = 'Kedaluwarsa';
-            } elseif ($selisihHari <= self::EXPIRE_SOON_DAYS) {
+            } elseif ($selisihHari <= 90) {
               $batch['status_expire'] = 'Segera Kedaluwarsa';
             } else {
               $batch['status_expire'] = 'Aman';
@@ -403,17 +362,11 @@ class Admin extends AdminModule
 
     public function postOpnameData()
     {
-      try {
-        $opname = $this->db('opname')
-          ->join('databarang', 'databarang.kode_brng=opname.kode_brng')
-          ->join('bangsal', 'bangsal.kd_bangsal=opname.kd_bangsal')
-          ->where('databarang.status', '1')
-          ->toJson();
-      } catch (\Throwable $e) {
-        // Endpoint AJAX: kegagalan query tetap dibalas JSON kosong, bukan halaman HTML.
-        error_log('farmasi/opnamedata gagal: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
-        $opname = json_encode([]);
-      }
+      $opname = $this->db('opname')
+        ->join('databarang', 'databarang.kode_brng=opname.kode_brng')
+        ->join('bangsal', 'bangsal.kd_bangsal=opname.kd_bangsal')
+        ->where('databarang.status', '1')
+        ->toJson();
       echo $opname;
       exit();
     }
@@ -777,11 +730,7 @@ class Admin extends AdminModule
         redirect(url([ADMIN, 'farmasi', 'penerimaanobatbmhp']));
       }
 
-      $pdo = $this->db()->pdo();
-      $transaksi_penerimaan = !$pdo->inTransaction();
-      if ($transaksi_penerimaan) {
-        $pdo->beginTransaction();
-      }
+      $this->db()->pdo()->beginTransaction();
       try {
         $saved = $this->db('mlite_farmasi_penerimaan_obat')->save([
           'pemesanan_id' => $pemesanan_id,
@@ -882,15 +831,10 @@ class Admin extends AdminModule
           'status_pemesanan' => $status_pemesanan
         ]);
 
-        if ($transaksi_penerimaan && $pdo->inTransaction()) {
-          $pdo->commit();
-        }
+        $this->db()->pdo()->commit();
         $this->notify('success', 'Penerimaan berhasil disimpan dan stok diperbarui.');
-      } catch (\Throwable $e) {
-        if ($transaksi_penerimaan && $pdo->inTransaction()) {
-          $pdo->rollBack();
-        }
-        error_log('Penerimaan obat (farmasi, pemesanan_id=' . (isset($_POST['pemesanan_id']) ? $_POST['pemesanan_id'] : '-') . ') gagal: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
+      } catch (\Exception $e) {
+        $this->db()->pdo()->rollBack();
         $this->notify('failure', 'Penerimaan gagal disimpan: '.$e->getMessage());
       }
       redirect(url([ADMIN, 'farmasi', 'penerimaanobatbmhp']));
@@ -942,180 +886,132 @@ class Admin extends AdminModule
 
     public function postDetailpemberianobatData()
     {
-        try {
-            $draw = (int) ($_POST['draw'] ?? 0);
-            $row1 = (int) ($_POST['start'] ?? 0);
-            $rowperpage = (int) ($_POST['length'] ?? 25); // Rows display per page
-            $columnIndex = (int) ($_POST['order'][0]['column'] ?? 0); // Column index
-            $columnName = (string) ($_POST['columns'][$columnIndex]['data'] ?? 'no_rawat'); // Column name
-            $columnSortOrder = (string) ($_POST['order'][0]['dir'] ?? 'asc'); // asc or desc
+        $draw = $_POST['draw'];
+        $row1 = $_POST['start'];
+        $rowperpage = $_POST['length']; // Rows display per page
+        $columnIndex = $_POST['order'][0]['column']; // Column index
+        $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
+        $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
+        $searchValue = $_POST['search']['value']; // Search value
 
-            ## Custom Field value
-            $search_field_detail_pemberian_obat = (string) ($_POST['search_field_detail_pemberian_obat'] ?? 'no_rawat');
-            $search_text_detail_pemberian_obat = (string) ($_POST['search_text_detail_pemberian_obat'] ?? '');
+        ## Custom Field value
+        $search_field_detail_pemberian_obat= $_POST['search_field_detail_pemberian_obat'];
+        $search_text_detail_pemberian_obat = $_POST['search_text_detail_pemberian_obat'];
 
-            // Kolom kode_brng, kd_bangsal, no_batch, no_faktur, dan h_beli juga ada di
-            // tabel batch (bb). Tanpa qualifier tabel, MySQL menolak query dengan error
-            // 1052 "Column ... is ambiguous" sehingga DataTables menerima respons
-            // non-JSON (Invalid JSON response) saat mencari kode obat/batch/faktur.
-            $searchable_fields = [
-                'no_rawat' => 'detail_pemberian_obat.no_rawat',
-                'kode_brng' => 'detail_pemberian_obat.kode_brng',
-                'tgl_perawatan' => 'detail_pemberian_obat.tgl_perawatan',
-                'jam' => 'detail_pemberian_obat.jam',
-                'kd_bangsal' => 'detail_pemberian_obat.kd_bangsal',
-                'no_batch' => 'detail_pemberian_obat.no_batch',
-                'no_faktur' => 'detail_pemberian_obat.no_faktur',
-                'status' => 'detail_pemberian_obat.status',
-                'nama_brng' => 'databarang.nama_brng',
-                'nm_bangsal' => 'bangsal.nm_bangsal',
-                'no_rkm_medis' => 'reg_periksa.no_rkm_medis',
-                'nm_pasien' => 'pasien.nm_pasien',
-            ];
-            $search_field_sql = $searchable_fields[$search_field_detail_pemberian_obat] ?? $searchable_fields['no_rawat'];
-
-            $allowed_sort = ['asc', 'desc'];
-            if (!in_array(strtolower($columnSortOrder), $allowed_sort)) {
-                $columnSortOrder = 'asc';
-            }
-            // Key aaData dari DataTables dipetakan ke kolom SQL ber-qualifier, karena
-            // sebagian kolom tampilan berasal dari tabel hasil lookup.
-            $sortable_fields = $searchable_fields + [
-                'h_beli' => 'detail_pemberian_obat.h_beli',
-                'biaya_obat' => 'detail_pemberian_obat.biaya_obat',
-                'jml' => 'detail_pemberian_obat.jml',
-                'embalase' => 'detail_pemberian_obat.embalase',
-                'tuslah' => 'detail_pemberian_obat.tuslah',
-                'total' => 'detail_pemberian_obat.total',
-                'expire' => 'bb.expire',
-            ];
-            $column_sql = $sortable_fields[$columnName] ?? $sortable_fields['no_rawat'];
-
-            $tgl_awal = isset_or($_POST['tgl_awal'], date('Y-m-d'));
-            $tgl_akhir = isset_or($_POST['tgl_akhir'], date('Y-m-d'));
-            $no_batch_filter = isset_or($_POST['no_batch_filter'], '');
-            $expire_filter = isset_or($_POST['expire_filter'], 'all');
-            if (!in_array($expire_filter, ['all', 'expired', 'soon', 'safe'])) {
-                $expire_filter = 'all';
-            }
-
-            $hari90 = date('Y-m-d', strtotime('+' . self::EXPIRE_SOON_DAYS . ' day'));
-
-            $searchQuery = " ";
-            $params = [];
-            if($search_text_detail_pemberian_obat != ''){
-                $searchQuery .= " and (".$search_field_sql." like ? ) ";
-                $params[] = "%".$search_text_detail_pemberian_obat."%";
-            }
-
-            $searchQuery .= " and (detail_pemberian_obat.tgl_perawatan between ? and ?) ";
-            $params[] = $tgl_awal;
-            $params[] = $tgl_akhir;
-
-            // Filter no. batch (pemberian)
-            if (trim($no_batch_filter) !== '') {
-                $searchQuery .= " and (detail_pemberian_obat.no_batch like ?) ";
-                $params[] = "%" . $no_batch_filter . "%";
-            }
-
-            // Filter kedaluwarsa batch (expire diambil dari ledger batch)
-            $sell_join = " FROM detail_pemberian_obat
-                LEFT JOIN mlite_farmasi_obat_batch bb
-                    ON bb.kode_brng = detail_pemberian_obat.kode_brng
-                   AND bb.kd_bangsal = detail_pemberian_obat.kd_bangsal
-                   AND bb.no_batch = detail_pemberian_obat.no_batch
-                   AND bb.no_faktur = detail_pemberian_obat.no_faktur
-                LEFT JOIN databarang
-                    ON databarang.kode_brng = detail_pemberian_obat.kode_brng
-                LEFT JOIN bangsal
-                    ON bangsal.kd_bangsal = detail_pemberian_obat.kd_bangsal
-                LEFT JOIN reg_periksa
-                    ON reg_periksa.no_rawat = detail_pemberian_obat.no_rawat
-                LEFT JOIN pasien
-                    ON pasien.no_rkm_medis = reg_periksa.no_rkm_medis ";
-            if ($expire_filter === 'expired') {
-                $searchQuery .= " and (bb.expire IS NOT NULL AND bb.expire < ?) ";
-                $params[] = date('Y-m-d');
-            } elseif ($expire_filter === 'soon') {
-                $searchQuery .= " and (bb.expire IS NOT NULL AND bb.expire >= ? AND bb.expire <= ?) ";
-                $params[] = date('Y-m-d');
-                $params[] = $hari90;
-            } elseif ($expire_filter === 'safe') {
-                $searchQuery .= " and (bb.expire IS NULL OR bb.expire > ?) ";
-                $params[] = $hari90;
-            }
-
-            ## Total number of records without filtering
-            $sel = $this->db()->pdo()->prepare("select count(*) as allcount from detail_pemberian_obat");
-            $sel->execute();
-            $records = $sel->fetch();
-            $totalRecords = $records['allcount'];
-
-            ## Total number of records with filtering
-            $sel = $this->db()->pdo()->prepare("select count(*) as allcount " . $sell_join . " WHERE 1 " . $searchQuery);
-            $sel->execute($params);
-            $records = $sel->fetch();
-            $totalRecordwithFilter = $records['allcount'];
-
-            ## Fetch records
-            $sel = $this->db()->pdo()->prepare("select detail_pemberian_obat.*, bb.expire as expire " . $sell_join . " WHERE 1 " . $searchQuery . " order by " . $column_sql . " " . $columnSortOrder . " limit " . (int)$row1 . "," . (int)$rowperpage);
-            $sel->execute($params);
-            $result = $sel->fetchAll(\PDO::FETCH_ASSOC);
-
-            $data = array();
-            foreach($result as $row) {
-                $databarang = $this->db('databarang')->select('nama_brng')->where('kode_brng', $row['kode_brng'])->oneArray();
-                $bangsal = $this->db('bangsal')->select('nm_bangsal')->where('kd_bangsal', $row['kd_bangsal'])->oneArray();
-                $no_rkm_medis = $this->core->getRegPeriksaInfo('no_rkm_medis', $row['no_rawat']);
-                $data[] = array(
-                    'tgl_perawatan'=>$row['tgl_perawatan'],
-                    'jam'=>$row['jam'],
-                    'no_rkm_medis' => $no_rkm_medis,
-                    'nm_pasien' => $this->core->getPasienInfo('nm_pasien', $no_rkm_medis),
-                    'no_rawat'=>$row['no_rawat'],
-                    'kode_brng'=>$row['kode_brng'],
-                    'nama_brng'=>$databarang['nama_brng'] ?? '',
-                    'h_beli'=>$row['h_beli'],
-                    'biaya_obat'=>$row['biaya_obat'],
-                    'jml'=>$row['jml'],
-                    'embalase'=>$row['embalase'],
-                    'tuslah'=>$row['tuslah'],
-                    'total'=>$row['total'],
-                    'status'=>$row['status'],
-                    'kd_bangsal'=>$row['kd_bangsal'],
-                    'nm_bangsal'=>$bangsal['nm_bangsal'] ?? '',
-                    'no_batch'=>$row['no_batch'],
-                    'no_faktur'=>$row['no_faktur'],
-                    'expire'=>$row['expire'] ?? ''
-                );
-            }
-
-            ## Response
-            $response = array(
-                "draw" => intval(htmlspecialchars($_POST['draw'] ?? 0, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')),
-                "iTotalRecords" => $totalRecords,
-                "iTotalDisplayRecords" => $totalRecordwithFilter,
-                "aaData" => $data
-            );
-
-            echo json_encode(htmlspecialchars_array($response));
-            exit();
-        } catch (\Throwable $e) {
-            // Endpoint AJAX: kegagalan query harus tetap berupa JSON, karena respons
-            // HTML membuat DataTables hanya menampilkan "Invalid JSON response".
-            error_log('farmasi/detailpemberianobatdata gagal: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
-            if (!headers_sent()) {
-                header('Content-Type: application/json');
-            }
-            echo json_encode([
-                'draw' => (int) ($_POST['draw'] ?? 0),
-                'iTotalRecords' => 0,
-                'iTotalDisplayRecords' => 0,
-                'aaData' => [],
-                'error' => $e->getMessage(),
-            ]);
-            exit();
+        $allowed_fields = ['no_rawat', 'kode_brng', 'tgl_perawatan', 'jam', 'kd_bangsal', 'no_batch', 'no_faktur'];
+        if (!in_array($search_field_detail_pemberian_obat, $allowed_fields)) {
+            $search_field_detail_pemberian_obat = 'no_rawat';
         }
+
+        $allowed_sort = ['asc', 'desc'];
+        if (!in_array(strtolower($columnSortOrder), $allowed_sort)) {
+            $columnSortOrder = 'asc';
+        }
+        if (!in_array($columnName, $allowed_fields)) {
+            $columnName = 'no_rawat';
+        }
+
+        $tgl_awal = isset_or($_POST['tgl_awal'], date('Y-m-d'));
+        $tgl_akhir = isset_or($_POST['tgl_akhir'], date('Y-m-d'));
+        $no_batch_filter = isset_or($_POST['no_batch_filter'], '');
+        $expire_filter = isset_or($_POST['expire_filter'], 'all');
+        if (!in_array($expire_filter, ['all', 'expired', 'soon', 'safe'])) {
+            $expire_filter = 'all';
+        }
+
+        $hari90 = date('Y-m-d', strtotime('+90 day'));
+
+        $searchQuery = " ";
+        $params = [];
+        if($search_text_detail_pemberian_obat != ''){
+            $searchQuery .= " and (".$search_field_detail_pemberian_obat." like ? ) ";
+            $params[] = "%".$search_text_detail_pemberian_obat."%";
+        }
+
+        $searchQuery .= " and (tgl_perawatan between ? and ?) ";
+        $params[] = $tgl_awal;
+        $params[] = $tgl_akhir;
+
+        // Filter no. batch (pemberian)
+        if (trim($no_batch_filter) !== '') {
+            $searchQuery .= " and (detail_pemberian_obat.no_batch like ?) ";
+            $params[] = "%" . $no_batch_filter . "%";
+        }
+
+        // Filter kedaluwarsa batch (expire diambil dari ledger batch)
+        $sell_join = " FROM detail_pemberian_obat
+            LEFT JOIN mlite_farmasi_obat_batch bb
+                ON bb.kode_brng = detail_pemberian_obat.kode_brng
+               AND bb.kd_bangsal = detail_pemberian_obat.kd_bangsal
+               AND bb.no_batch = detail_pemberian_obat.no_batch
+               AND bb.no_faktur = detail_pemberian_obat.no_faktur ";
+        if ($expire_filter === 'expired') {
+            $searchQuery .= " and (bb.expire IS NOT NULL AND bb.expire < ?) ";
+            $params[] = date('Y-m-d');
+        } elseif ($expire_filter === 'soon') {
+            $searchQuery .= " and (bb.expire IS NOT NULL AND bb.expire >= ? AND bb.expire <= ?) ";
+            $params[] = date('Y-m-d');
+            $params[] = $hari90;
+        } elseif ($expire_filter === 'safe') {
+            $searchQuery .= " and (bb.expire IS NULL OR bb.expire > ?) ";
+            $params[] = $hari90;
+        }
+
+        ## Total number of records without filtering
+        $sel = $this->db()->pdo()->prepare("select count(*) as allcount from detail_pemberian_obat");
+        $sel->execute();
+        $records = $sel->fetch();
+        $totalRecords = $records['allcount'];
+
+        ## Total number of records with filtering
+        $sel = $this->db()->pdo()->prepare("select count(*) as allcount " . $sell_join . " WHERE 1 " . $searchQuery);
+        $sel->execute($params);
+        $records = $sel->fetch();
+        $totalRecordwithFilter = $records['allcount'];
+
+        ## Fetch records
+        $sel = $this->db()->pdo()->prepare("select detail_pemberian_obat.*, bb.expire as expire " . $sell_join . " WHERE 1 " . $searchQuery . " order by " . $columnName . " " . $columnSortOrder . " limit " . (int)$row1 . "," . (int)$rowperpage);
+        $sel->execute($params);
+        $result = $sel->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        foreach($result as $row) {
+            $databarang = $this->db('databarang')->select('nama_brng')->where('kode_brng', $row['kode_brng'])->oneArray();
+            $bangsal = $this->db('bangsal')->select('nm_bangsal')->where('kd_bangsal', $row['kd_bangsal'])->oneArray();
+            $no_rkm_medis = $this->core->getRegPeriksaInfo('no_rkm_medis', $row['no_rawat']);
+            $data[] = array(
+                'tgl_perawatan'=>$row['tgl_perawatan'],
+                'jam'=>$row['jam'],
+                'no_rkm_medis' => $no_rkm_medis,
+                'nm_pasien' => $this->core->getPasienInfo('nm_pasien', $no_rkm_medis),
+                'no_rawat'=>$row['no_rawat'],
+                'kode_brng'=>$row['kode_brng'],
+                'nama_brng'=>$databarang['nama_brng'],
+                'h_beli'=>$row['h_beli'],
+                'biaya_obat'=>$row['biaya_obat'],
+                'jml'=>$row['jml'],
+                'embalase'=>$row['embalase'],
+                'tuslah'=>$row['tuslah'],
+                'total'=>$row['total'],
+                'status'=>$row['status'],
+                'kd_bangsal'=>$row['kd_bangsal'],
+                'nm_bangsal'=>$bangsal['nm_bangsal'],
+                'no_batch'=>$row['no_batch'],
+                'no_faktur'=>$row['no_faktur'],
+                'expire'=>$row['expire'] ?? ''
+            );
+        }
+
+        ## Response
+        $response = array(
+            "draw" => intval(htmlspecialchars($_POST['draw'] ?? 0, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+
+        echo json_encode(htmlspecialchars_array($response));
+        exit();
     }
 
     public function getDetailpemberianobatJS()
@@ -1136,112 +1032,96 @@ class Admin extends AdminModule
 
     public function postRiwayatbarangmedisData()
     {
-        try {
-            $draw = (int) ($_POST['draw'] ?? 0);
-            $row1 = (int) ($_POST['start'] ?? 0);
-            $rowperpage = (int) ($_POST['length'] ?? 25); // Rows display per page
-            $columnIndex = (int) ($_POST['order'][0]['column'] ?? 0); // Column index
-            $columnName = (string) ($_POST['columns'][$columnIndex]['data'] ?? 'kode_brng'); // Column name
-            $columnSortOrder = (string) ($_POST['order'][0]['dir'] ?? 'asc'); // asc or desc
+        $draw = $_POST['draw'];
+        $row1 = $_POST['start'];
+        $rowperpage = $_POST['length']; // Rows display per page
+        $columnIndex = $_POST['order'][0]['column']; // Column index
+        $columnName = $_POST['columns'][$columnIndex]['data']; // Column name
+        $columnSortOrder = $_POST['order'][0]['dir']; // asc or desc
+        $searchValue = $_POST['search']['value']; // Search value
 
-            ## Custom Field value
-            $search_field_riwayat_barang_medis = (string) ($_POST['search_field_riwayat_barang_medis'] ?? 'kode_brng');
-            $search_text_riwayat_barang_medis = (string) ($_POST['search_text_riwayat_barang_medis'] ?? '');
+        ## Custom Field value
+        $search_field_riwayat_barang_medis= $_POST['search_field_riwayat_barang_medis'];
+        $search_text_riwayat_barang_medis = $_POST['search_text_riwayat_barang_medis'];
 
-            $allowed_fields = ['kode_brng', 'stok_awal', 'masuk', 'keluar', 'stok_akhir', 'posisi', 'tanggal', 'jam', 'petugas', 'kd_bangsal', 'status', 'no_batch', 'no_faktur', 'keterangan'];
-            if (!in_array($search_field_riwayat_barang_medis, $allowed_fields)) {
-                $search_field_riwayat_barang_medis = 'kode_brng';
-            }
-
-            $allowed_sort = ['asc', 'desc'];
-            if (!in_array(strtolower($columnSortOrder), $allowed_sort)) {
-                $columnSortOrder = 'asc';
-            }
-            if (!in_array($columnName, $allowed_fields)) {
-                $columnName = 'kode_brng';
-            }
-
-            $tgl_awal = isset_or($_POST['tgl_awal'], date('Y-m-d'));
-            $tgl_akhir = isset_or($_POST['tgl_akhir'], date('Y-m-d'));
-
-            $searchQuery = " ";
-            $params = [];
-            if($search_text_riwayat_barang_medis != ''){
-                $searchQuery .= " and (".$search_field_riwayat_barang_medis." like ? ) ";
-                $params[] = "%".$search_text_riwayat_barang_medis."%";
-            }
-
-            $searchQuery .= " and (tanggal between ? and ?) ";
-            $params[] = $tgl_awal;
-            $params[] = $tgl_akhir;
-
-            ## Total number of records without filtering
-            $sel = $this->db()->pdo()->prepare("select count(*) as allcount from riwayat_barang_medis");
-            $sel->execute();
-            $records = $sel->fetch();
-            $totalRecords = $records['allcount'];
-
-            ## Total number of records with filtering
-            $sel = $this->db()->pdo()->prepare("select count(*) as allcount from riwayat_barang_medis WHERE 1 ".$searchQuery);
-            $sel->execute($params);
-            $records = $sel->fetch();
-            $totalRecordwithFilter = $records['allcount'];
-
-            ## Fetch records
-            $sel = $this->db()->pdo()->prepare("select * from riwayat_barang_medis WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".(int)$row1.",".(int)$rowperpage);
-            $sel->execute($params);
-            $result = $sel->fetchAll(\PDO::FETCH_ASSOC);
-
-            $data = array();
-            foreach($result as $row) {
-                $databarang = $this->db('databarang')->select('nama_brng')->where('kode_brng', $row['kode_brng'])->oneArray();
-                $bangsal = $this->db('bangsal')->select('nm_bangsal')->where('kd_bangsal', $row['kd_bangsal'])->oneArray();
-                $data[] = array(
-                    'kode_brng'=>$row['kode_brng'],
-                    'nama_brng'=>$databarang['nama_brng'] ?? '',
-                    'stok_awal'=>$row['stok_awal'],
-                    'masuk'=>$row['masuk'],
-                    'keluar'=>$row['keluar'],
-                    'stok_akhir'=>$row['stok_akhir'],
-                    'posisi'=>$row['posisi'],
-                    'tanggal'=>$row['tanggal'],
-                    'jam'=>$row['jam'],
-                    'petugas'=>$row['petugas'],
-                    'kd_bangsal'=>$row['kd_bangsal'],
-                    'nm_bangsal'=>$bangsal['nm_bangsal'] ?? '',
-                    'status'=>$row['status'],
-                    'no_batch'=>$row['no_batch'],
-                    'no_faktur'=>$row['no_faktur'],
-                    'keterangan'=>$row['keterangan']
-                );
-            }
-
-            ## Response
-            $response = array(
-                "draw" => intval(htmlspecialchars($_POST['draw'] ?? 0, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')),
-                "iTotalRecords" => $totalRecords,
-                "iTotalDisplayRecords" => $totalRecordwithFilter,
-                "aaData" => $data
-            );
-
-            echo json_encode(htmlspecialchars_array($response));
-            exit();
-        } catch (\Throwable $e) {
-            // Endpoint AJAX: kegagalan query harus tetap berupa JSON, karena respons
-            // HTML membuat DataTables hanya menampilkan "Invalid JSON response".
-            error_log('farmasi/riwayatbarangmedisdata gagal: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
-            if (!headers_sent()) {
-                header('Content-Type: application/json');
-            }
-            echo json_encode([
-                'draw' => (int) ($_POST['draw'] ?? 0),
-                'iTotalRecords' => 0,
-                'iTotalDisplayRecords' => 0,
-                'aaData' => [],
-                'error' => $e->getMessage(),
-            ]);
-            exit();
+        $allowed_fields = ['kode_brng', 'stok_awal', 'masuk', 'keluar', 'stok_akhir', 'posisi', 'tanggal', 'jam', 'petugas', 'kd_bangsal', 'status', 'no_batch', 'no_faktur', 'keterangan'];
+        if (!in_array($search_field_riwayat_barang_medis, $allowed_fields)) {
+            $search_field_riwayat_barang_medis = 'kode_brng';
         }
+
+        $allowed_sort = ['asc', 'desc'];
+        if (!in_array(strtolower($columnSortOrder), $allowed_sort)) {
+            $columnSortOrder = 'asc';
+        }
+        if (!in_array($columnName, $allowed_fields)) {
+            $columnName = 'kode_brng';
+        }
+
+        $tgl_awal = isset_or($_POST['tgl_awal'], date('Y-m-d'));
+        $tgl_akhir = isset_or($_POST['tgl_akhir'], date('Y-m-d'));
+
+        $searchQuery = " ";
+        $params = [];
+        if($search_text_riwayat_barang_medis != ''){
+            $searchQuery .= " and (".$search_field_riwayat_barang_medis." like ? ) ";
+            $params[] = "%".$search_text_riwayat_barang_medis."%";
+        }
+
+        $searchQuery .= " and (tanggal between ? and ?) ";
+        $params[] = $tgl_awal;
+        $params[] = $tgl_akhir;
+
+        ## Total number of records without filtering
+        $sel = $this->db()->pdo()->prepare("select count(*) as allcount from riwayat_barang_medis");
+        $sel->execute();
+        $records = $sel->fetch();
+        $totalRecords = $records['allcount'];
+
+        ## Total number of records with filtering
+        $sel = $this->db()->pdo()->prepare("select count(*) as allcount from riwayat_barang_medis WHERE 1 ".$searchQuery);
+        $sel->execute($params);
+        $records = $sel->fetch();
+        $totalRecordwithFilter = $records['allcount'];
+
+        ## Fetch records
+        $sel = $this->db()->pdo()->prepare("select * from riwayat_barang_medis WHERE 1 ".$searchQuery." order by ".$columnName." ".$columnSortOrder." limit ".(int)$row1.",".(int)$rowperpage);
+        $sel->execute($params);
+        $result = $sel->fetchAll(\PDO::FETCH_ASSOC);
+
+        $data = array();
+        foreach($result as $row) {
+            $databarang = $this->db('databarang')->select('nama_brng')->where('kode_brng', $row['kode_brng'])->oneArray();
+            $bangsal = $this->db('bangsal')->select('nm_bangsal')->where('kd_bangsal', $row['kd_bangsal'])->oneArray();
+            $data[] = array(
+                'kode_brng'=>$row['kode_brng'],
+                'nama_brng'=>$databarang['nama_brng'],
+                'stok_awal'=>$row['stok_awal'],
+                'masuk'=>$row['masuk'],
+                'keluar'=>$row['keluar'],
+                'stok_akhir'=>$row['stok_akhir'],
+                'posisi'=>$row['posisi'],
+                'tanggal'=>$row['tanggal'],
+                'jam'=>$row['jam'],
+                'petugas'=>$row['petugas'],
+                'kd_bangsal'=>$row['kd_bangsal'],
+                'nm_bangsal'=>$bangsal['nm_bangsal'],
+                'status'=>$row['status'],
+                'no_batch'=>$row['no_batch'],
+                'no_faktur'=>$row['no_faktur'],
+                'keterangan'=>$row['keterangan']
+            );
+        }
+
+        ## Response
+        $response = array(
+            "draw" => intval(htmlspecialchars($_POST['draw'] ?? 0, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')),
+            "iTotalRecords" => $totalRecords,
+            "iTotalDisplayRecords" => $totalRecordwithFilter,
+            "aaData" => $data
+        );
+
+        echo json_encode(htmlspecialchars_array($response));
+        exit();
     }
 
     public function getRiwayatbarangmedisJS()
@@ -1357,8 +1237,7 @@ class Admin extends AdminModule
                 "recordsFiltered" => intval($totalRecordwithFilter),
                 "data" => $data
             ];
-        } catch (\Throwable $e) {
-            error_log('farmasi/daruratstokdata gagal: ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
+        } catch (\Exception $e) {
             $response = [
                 "draw" => intval(htmlspecialchars($_POST['draw'] ?? 1, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')),
                 "recordsTotal" => 0,
@@ -1488,7 +1367,7 @@ class Admin extends AdminModule
             $expire = 'all';
         }
 
-        $hari90 = date('Y-m-d', strtotime('+' . self::EXPIRE_SOON_DAYS . ' day'));
+        $hari90 = date('Y-m-d', strtotime('+90 day'));
         $where = " WHERE b.stok <> 0";
         $params = [];
         if ($kode_brng !== '') {
@@ -1534,7 +1413,7 @@ class Admin extends AdminModule
             if (!empty($row['expire'])) {
                 $selisih = (int)floor((strtotime((string)$row['expire']) - strtotime(date('Y-m-d'))) / 86400);
                 $row['selisih_hari'] = $selisih;
-                $row['status_expire'] = $selisih < 0 ? 'Kedaluwarsa' : ($selisih <= self::EXPIRE_SOON_DAYS ? 'Segera Kedaluwarsa' : 'Aman');
+                $row['status_expire'] = $selisih < 0 ? 'Kedaluwarsa' : ($selisih <= 90 ? 'Segera Kedaluwarsa' : 'Aman');
             } else {
                 $row['selisih_hari'] = null;
                 $row['status_expire'] = 'Aman';
@@ -1624,7 +1503,7 @@ class Admin extends AdminModule
             $expire = 'all';
         }
 
-        $hari90 = date('Y-m-d', strtotime('+' . self::EXPIRE_SOON_DAYS . ' day'));
+        $hari90 = date('Y-m-d', strtotime('+90 day'));
         $where = " WHERE p.tgl_perawatan BETWEEN ? AND ?";
         $params = [$tgl_awal, $tgl_akhir];
         if ($search !== '') {

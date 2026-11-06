@@ -54,14 +54,14 @@ class Admin extends AdminModule
     $random_keys = array_rand($teks);
     $teks = $teks[$random_keys];
     return $this->draw('main.html', [
-      'settings' => htmlspecialchars_array($settings),
+      'settings' => $settings,
       'cek_presensi' => $cek_presensi,
       'cek_rekap' => $cek_rekap,
-      'jam_jaga' => htmlspecialchars_array($jam_jaga),
+      'jam_jaga' => $jam_jaga,
       'presensi' => $presensi,
-      'nama' => htmlspecialchars_array($nama_pegawai),
-      'teks' => htmlspecialchars_array($teks),
-      'pengaturan_presensi' => htmlspecialchars_array($pengaturan_presensi),
+      'nama' => $nama_pegawai,
+      'teks' => $teks,
+      'pengaturan_presensi' => $pengaturan_presensi,
       'notif_presensi' => $this->settings('settings', 'notif_presensi')
     ]);
   }

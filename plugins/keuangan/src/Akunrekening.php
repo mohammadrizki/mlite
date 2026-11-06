@@ -31,7 +31,7 @@ class Akunrekening
           ];
         }
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function anyDisplay()
@@ -41,7 +41,7 @@ class Akunrekening
           ->asc('kd_rek')
           ->toArray();
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function postSave()

@@ -210,19 +210,6 @@ $("#form_soap").on("click", "#simpan_soap", function(event){
     evaluasi : evaluasi,
     spo2 : spo2
     }, function(data) {
-      var res = data;
-      try { if (typeof res === 'string') res = JSON.parse(res); } catch(e) { res = {}; }
-      if (res && (res.status == 'success' || res.status == 'error')) {
-        var audio = new Audio('{?=url()?}/assets/sound/' + res.status + '.mp3');
-        audio.play();
-      }
-      if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
-        let payload = {
-            'action' : 'simpan',
-            'modul' : 'dokter_ralan'
-        }
-        ws.send(JSON.stringify(payload));
-      }
       // tampilkan data
       $("#display").hide();
       var url = baseURL + '/dokter_ralan/soap?t=' + mlite.token;
@@ -370,19 +357,6 @@ $("#soap").on("click",".hapus_soap", function(event){
         tgl_perawatan: tgl_perawatan,
         jam_rawat: jam_rawat
       } ,function(data) {
-        var res = data;
-        try { if (typeof res === 'string') res = JSON.parse(res); } catch(e) { res = {}; }
-        if (res && (res.status == 'success' || res.status == 'error')) {
-          var audio = new Audio('{?=url()?}/assets/sound/' + res.status + '.mp3');
-          audio.play();
-        }
-        if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
-          let payload = {
-              'action' : 'simpan',
-              'modul' : 'dokter_ralan'
-          }
-          ws.send(JSON.stringify(payload));
-        }
         var url = baseURL + '/dokter_ralan/soap?t=' + mlite.token;
         $.post(url, {no_rawat : no_rawat,
         }, function(data) {
@@ -853,11 +827,6 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
   informasi_tambahan : informasi_tambahan,
   diagnosa_klinis      : diagnosa_klinis
   }, function(data) {
-    // server mengirim HTML alert ketika penyimpanan gagal (status tetap 200)
-    if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-      $('#notif').html(data).show();
-      return;
-    }
     console.log(data);
     if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
       if(kat == 'obat' || kat == 'racikan') {
@@ -914,17 +883,6 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
     $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
     "Data pasien telah disimpan!"+
     "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-    "</div>").show();
-  }).fail(function(xhr) {
-    // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-    var pesan = 'Data rincian gagal disimpan!';
-    try {
-      var res = JSON.parse(xhr.responseText);
-      if (res && res.message) { pesan = res.message; }
-    } catch (e) {}
-    $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-    $("<div>").text(pesan).html()+
     "</div>").show();
   });
 });
@@ -1176,11 +1134,6 @@ $("#rincian").on("click","#simpan_copy_resep", function(event){
   });
 
   $.post(url_save, data, function(data) {
-    // server mengirim HTML alert ketika penyimpanan gagal (status tetap 200)
-    if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-      $('#notif').html(data).show();
-      return;
-    }
     //alert(data);
     //if(data == 'ErrorError') {
     //  alert('Stok tidak mencukupi pada satu atau lebih obat.');
@@ -1196,17 +1149,6 @@ $("#rincian").on("click","#simpan_copy_resep", function(event){
       "</div>").show();
 
     //}
-  }).fail(function(xhr) {
-    // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-    var pesan = 'Resep gagal disimpan!';
-    try {
-      var res = JSON.parse(xhr.responseText);
-      if (res && res.message) { pesan = res.message; }
-    } catch (e) {}
-    $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-    $("<div>").text(pesan).html()+
-    "</div>").show();
   });
 
 });
@@ -1718,22 +1660,10 @@ $(document).on('click', 'a[href="#hapus_rujukan_internal"]', function(event){
     var URL_WEBSOCKET = "wss://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
   {/if}
 
-  var ws;
+  var ws = new WebSocket(URL_WEBSOCKET);
   var baseURL = mlite.url + '/' + mlite.admin;
-
-  function koneksiWebsocket() {
-    ws = new WebSocket(URL_WEBSOCKET);
-    ws.onmessage = ws_onmessage;
-
-    ws.onclose = function(){
-      // Jika terputus dari websocket server, maka mencoba terhubung kembali
-      // tiap 5 detik; onmessage dan onclose ikut terpasang ulang pada
-      // koneksi yang baru sehingga update tetap berjalan setelah reconnect.
-      setTimeout(koneksiWebsocket, 5000);
-    };
-  }
-
-  var ws_onmessage = function(response){
+  
+  ws.onmessage = function(response){
     try{
       output = JSON.parse(response.data);
       if(output['action'] == 'simpan'){
@@ -1747,6 +1677,18 @@ $(document).on('click', 'a[href="#hapus_rujukan_internal"]', function(event){
   }
   
   
-  koneksiWebsocket();
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
 
 {/if}

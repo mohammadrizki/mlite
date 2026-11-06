@@ -11,7 +11,7 @@
             <input type="text" id="soap_jam_rawat" name="jam_rawat" class="form-control jam" value="{?=date('H:i:s')?}">
           </div>
           <div class="form-group">
-            <label for="id_pendaftaran">Id Rawat</label>
+            <label for="id_pendaftaran">ID Rawat</label>
             <input type="text" name="no_rawat" placeholder="ID Pendaftaran" class="form-control" value="{?=isset_or($patient_data.no_rawat)?}" readonly>
           </div>
           <div class="form-group">
@@ -36,27 +36,27 @@
         <div class="form-group">
           <div class="row">
             <div class="col-sm-2">
-              <label for="nama_pasien">Tensi(mmHg)</label>
+              <label for="nama_pasien">Tekanan Darah (mmHg)</label>
               <input type="text" name="tensi" class="form-control" placeholder="" value="{?=isset_or($default_values.tensi)?}">
             </div>
             <div class="col-sm-2">
-              <label for="nama_pasien">Suhu(C)</label>
+              <label for="nama_pasien">Suhu (°C)</label>
               <input type="text" name="suhu_tubuh" class="form-control" placeholder="" value="{?=isset_or($default_values.suhu_tubuh)?}">
             </div>
             <div class="col-sm-2">
-              <label for="nama_pasien">Nadi(/mnt)</label>
+              <label for="nama_pasien">Nadi (x/menit)</label>
               <input type="text" name="nadi" class="form-control" placeholder="" value="{?=isset_or($default_values.nadi)?}">
             </div>
             <div class="col-sm-2">
-              <label for="nama_pasien">RR(/mnt)</label>
+              <label for="nama_pasien">Napas (x/menit)</label>
               <input type="text" name="respirasi" class="form-control" placeholder="" value="{?=isset_or($default_values.respirasi)?}">
             </div>
             <div class="col-sm-2">
-              <label for="nama_pasien">Tinggi(cm)</label>
+              <label for="nama_pasien">Tinggi Badan (cm)</label>
               <input type="text" name="tinggi" class="form-control" placeholder="" value="{?=isset_or($default_values.tinggi)?}">
             </div>
             <div class="col-sm-2">
-              <label for="nama_pasien">Berat(kg)</label>
+              <label for="nama_pasien">Berat Badan (kg)</label>
               <input type="text" name="berat" class="form-control" placeholder="" value="{?=isset_or($default_values.berat)?}">
             </div>
           </div>
@@ -68,11 +68,11 @@
               <input type="text" name="kesadaran" class="form-control" placeholder="" value="{?=isset_or($default_values.kesadaran)?}">
             </div>
             <div class="col-sm-2">
-              <label for="nama_pasien">SPO2</label>
+              <label for="nama_pasien">SpO2</label>
               <input type="text" name="spo2" class="form-control" placeholder="" value="{?=isset_or($default_values.spo2)?}">
             </div>
             <div class="col-sm-2">
-              <label for="nama_pasien">GCS(E,V,M)</label>
+              <label for="nama_pasien">GCS (E, V, M)</label>
               <input type="text" name="gcs" class="form-control" placeholder="" value="{?=isset_or($default_values.gcs)?}">
             </div>
             <div class="col-sm-2">
@@ -89,13 +89,13 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="jenis">Subyektif</label>
+              <label for="jenis">Subjektif</label>
               <textarea name="keluhan" id="keluhan" rows="2" class="form-control">{?=isset_or($default_values.keluhan)?}</textarea>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label for="jenis">Obyektif</label>
+              <label for="jenis">Objektif</label>
               <textarea name="pemeriksaan" id="pemeriksaan" rows="2" class="form-control">{?=isset_or($default_values.pemeriksaan)?}</textarea>
             </div>
           </div>
@@ -103,7 +103,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="jenis">Assesment</label>
+              <label for="jenis">Asesmen</label>
               <textarea name="penilaian" id="penilaian" rows="2" class="form-control">{?=isset_or($default_values.penilaian)?}</textarea>
             </div>
           </div>
@@ -133,7 +133,7 @@
           <button type="button" name="button" class="btn btn-danger" id="buka_icd10dan9"><i class="fa fa-download"></i><span class="hidden-xs"> ICD 10 & 9</span></button>
           <button type="button" name="button" class="btn btn-success" id="selesai_soap"><i class="fa fa-check"></i><span class="hidden-xs"> Selesai</span></button>
           <span class="pull-right">
-            <a href="#" class="btn btn-warning assesment"><i class="fa fa-file-text"></i><span class="hidden-xs"> Assesment</span></a>
+            <a href="#" class="btn btn-warning assesment"><i class="fa fa-file-text"></i><span class="hidden-xs"> Asesmen</span></a>
             <a href="#" class="btn btn-warning adime_gizi"><i class="fa fa-file-text"></i><span class="hidden-xs"> ADIME Gizi</span></a>
             <a href="#" class="btn btn-warning assessment_nyeri"><i class="fa fa-heartbeat"></i><span class="hidden-xs"> Assessment Nyeri</span></a>
           </span>

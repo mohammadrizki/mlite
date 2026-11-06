@@ -105,7 +105,7 @@ class Admin extends AdminModule
       ->join('mlite_rekening', 'mlite_rekening.kd_rek=mlite_rekeningtahun.kd_rek')
       ->where('thn', $year)
       ->toArray();
-      return $this->draw('rekening.tahun.html', ['akunrekening' => htmlspecialchars_array($akunrekening), 'rekeningtahun' => htmlspecialchars_array($rekeningtahun), 'tahun_filter' => htmlspecialchars_array($year)]);
+      return $this->draw('rekening.tahun.html', ['akunrekening' => $akunrekening, 'rekeningtahun' => $rekeningtahun, 'tahun_filter' => $year]);
     }
 
     public function postSaveRekeningTahun()
@@ -145,7 +145,7 @@ class Admin extends AdminModule
         $this->core->addJS(url([ADMIN, 'keuangan', 'akunrekeningjs']), 'footer');
       $akunkegiatan = $this->db('mlite_akun_kegiatan')->toArray();
       $akunrekening = $this->db('mlite_rekening')->toArray();
-      return $this->draw('pengaturan.rekening.html', ['akunkegiatan' => htmlspecialchars_array($akunkegiatan), 'akunrekening' => htmlspecialchars_array($akunrekening)]);
+      return $this->draw('pengaturan.rekening.html', ['akunkegiatan' => $akunkegiatan, 'akunrekening' => $akunrekening]);
     }
 
     public function getPostingJurnal()
@@ -153,7 +153,7 @@ class Admin extends AdminModule
       $this->_addHeaderFiles();
       $kegiatan = $this->db('mlite_akun_kegiatan')->toArray();
       $akunrekening = $this->db('mlite_rekening')->toArray();
-      return $this->draw('posting.jurnal.html', ['kegiatan' => htmlspecialchars_array($kegiatan), 'akunrekening' => htmlspecialchars_array($akunrekening), 'no_jurnal' => htmlspecialchars_array($this->core->setNoJurnal())]);
+      return $this->draw('posting.jurnal.html', ['kegiatan' => $kegiatan, 'akunrekening' => $akunrekening, 'no_jurnal' => $this->core->setNoJurnal()]);
     }
 
     public function getJurnalHarian()
@@ -192,12 +192,12 @@ class Admin extends AdminModule
       }
       if(isset($_GET['action']) && $_GET['action'] == 'print') {
         echo $this->draw('jurnal.harian.print.html', [
-          'jurnalharian' => htmlspecialchars_array($jurnalharian),
+          'jurnalharian' => $jurnalharian,
           'action' => url([ADMIN,'keuangan','jurnalharian'])
         ]);
         exit();
       } else {
-        return $this->draw('jurnal.harian.html', ['jurnalharian' => htmlspecialchars_array($jurnalharian)]);
+        return $this->draw('jurnal.harian.html', ['jurnalharian' => $jurnalharian]);
       }
     }
 
@@ -486,22 +486,22 @@ class Admin extends AdminModule
 
       if(isset($_GET['action']) && $_GET['action'] == 'print') {
         echo $this->draw('buku.besar.print.html', [
-          'bukubesar' => htmlspecialchars_array($bukubesar),
+          'bukubesar' => $bukubesar,
           'action' => url([ADMIN,'keuangan','bukubesar']),
           'kd_rek_filter' => $kd_rek,
           'show_saldo_akhir' => $showSaldoAkhirInt,
-          'summary' => htmlspecialchars_array($summary),
+          'summary' => $summary,
         ]);
         exit();
       } else {
         return $this->draw('buku.besar.html', [
-          'bukubesar' => htmlspecialchars_array($bukubesar),
-          'akunrekening' => htmlspecialchars_array($akunrekening),
-          'kd_rek_filter' => htmlspecialchars_array($kd_rek),
-          'show_saldo_akhir' => htmlspecialchars_array($showSaldoAkhirInt),
+          'bukubesar' => $bukubesar,
+          'akunrekening' => $akunrekening,
+          'kd_rek_filter' => $kd_rek,
+          'show_saldo_akhir' => $showSaldoAkhirInt,
           'tgl_awal' => htmlspecialchars($tgl_awal, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
           'tgl_akhir' => htmlspecialchars($tgl_akhir, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
-          'summary' => htmlspecialchars_array($summary),
+          'summary' => $summary,
         ]);
       }
     }
@@ -970,7 +970,7 @@ class Admin extends AdminModule
         $this->assign['keuangan'] = htmlspecialchars_array($this->settings('keuangan'));
         $akunkegiatan = $this->db('mlite_settings')->where('module', 'keuangan')->where('field', '<>', 'jurnal_kasir')->toArray();
         $akunrekening = $this->db('mlite_rekening')->toArray();
-        return $this->draw('settings.html', ['settings' => htmlspecialchars_array($this->assign), 'akunkegiatan' => htmlspecialchars_array($akunkegiatan), 'akunrekening' => htmlspecialchars_array($akunrekening)]);
+        return $this->draw('settings.html', ['settings' => htmlspecialchars_array($this->assign), 'akunkegiatan' => $akunkegiatan, 'akunrekening' => $akunrekening]);
     }
 
     public function postSaveSettings()

@@ -935,11 +935,6 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
   informasi_tambahan : informasi_tambahan,
   diagnosa_klinis      : diagnosa_klinis
   }, function(data) {
-    // server mengirim HTML alert ketika penyimpanan gagal (status tetap 200)
-    if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-      $('#notif').html(data).show();
-      return;
-    }
     // tampilkan data
     $("#display").hide();
     var url = baseURL + '/dokter_igd/rincian?t=' + mlite.token;
@@ -973,17 +968,6 @@ $("#form_rincian").on("click", "#simpan_rincian", function(event){
     $('#notif').html("<div class=\"alert alert-success alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
     "Data pasien telah disimpan!"+
     "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-    "</div>").show();
-  }).fail(function(xhr) {
-    // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-    var pesan = 'Data rincian gagal disimpan!';
-    try {
-      var res = JSON.parse(xhr.responseText);
-      if (res && res.message) { pesan = res.message; }
-    } catch (e) {}
-    $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-    $("<div>").text(pesan).html()+
     "</div>").show();
   });
 });
@@ -1264,11 +1248,6 @@ $("#rincian").on("click","#simpan_copy_resep", function(event){
   });
 
   $.post(url_save, data, function(data) {
-    // server mengirim HTML alert ketika penyimpanan gagal (status tetap 200)
-    if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-      $('#notif').html(data).show();
-      return;
-    }
     //alert(data);
     //if(data == 'ErrorError') {
     //  alert('Stok tidak mencukupi pada satu atau lebih obat.');
@@ -1284,17 +1263,6 @@ $("#rincian").on("click","#simpan_copy_resep", function(event){
       "</div>").show();
 
     //}
-  }).fail(function(xhr) {
-    // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-    var pesan = 'Resep gagal disimpan!';
-    try {
-      var res = JSON.parse(xhr.responseText);
-      if (res && res.message) { pesan = res.message; }
-    } catch (e) {}
-    $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-    "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-    $("<div>").text(pesan).html()+
-    "</div>").show();
   });
 
 });
@@ -1564,15 +1532,6 @@ $("#triase_igd").on("submit", "#form_triase_igd", function(event){
   $.post(url, formData, function(response) {
     try {
       var data = JSON.parse(response);
-      var audio = new Audio('{?=url()?}/assets/sound/' + data.status + '.mp3');
-      audio.play();
-      if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
-        let payload = {
-            'action' : 'simpan',
-            'modul' : 'dokter_igd'
-        }
-        ws.send(JSON.stringify(payload));
-      }
       if(data.status === 'success') {
         alert(data.msg);
         // Refresh form dengan data terbaru
@@ -1617,15 +1576,6 @@ $("#triase_igd").on("click", "#btn_hapus_triase", function(event){
     $.post(url, {no_rawat: no_rawat}, function(response) {
       try {
         var data = JSON.parse(response);
-        var audio = new Audio('{?=url()?}/assets/sound/' + data.status + '.mp3');
-        audio.play();
-        if(typeof ws != 'undefined' && typeof ws.readyState != 'undefined' && ws.readyState == 1){
-          let payload = {
-              'action' : 'simpan',
-              'modul' : 'dokter_igd'
-          }
-          ws.send(JSON.stringify(payload));
-        }
         if(data.status === 'success') {
           alert(data.msg);
           $("#triase_igd").hide();
@@ -1652,22 +1602,10 @@ $("#triase_igd").on("click", "#btn_hapus_triase", function(event){
     var URL_WEBSOCKET = "wss://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
   {/if}
 
-  var ws;
+  var ws = new WebSocket(URL_WEBSOCKET);
   var baseURL = mlite.url + '/' + mlite.admin;
-
-  function koneksiWebsocket() {
-    ws = new WebSocket(URL_WEBSOCKET);
-    ws.onmessage = ws_onmessage;
-
-    ws.onclose = function(){
-      // Jika terputus dari websocket server, maka mencoba terhubung kembali
-      // tiap 5 detik; onmessage dan onclose ikut terpasang ulang pada
-      // koneksi yang baru sehingga update tetap berjalan setelah reconnect.
-      setTimeout(koneksiWebsocket, 5000);
-    };
-  }
-
-  var ws_onmessage = function(response){
+  
+  ws.onmessage = function(response){
     try{
       output = JSON.parse(response.data);
       if(output['action'] == 'simpan'){
@@ -1681,6 +1619,18 @@ $("#triase_igd").on("click", "#btn_hapus_triase", function(event){
   }
   
   
-  koneksiWebsocket();
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
 
 {/if}

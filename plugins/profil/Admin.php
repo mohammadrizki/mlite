@@ -54,7 +54,7 @@ class Admin extends AdminModule
         if (!empty($cek_profil['photo'])) {
             $fotoURL = WEBAPPS_URL . '/penggajian/' . $cek_profil['photo'];
         }
-        return $this->draw('manage.html', ['sub_modules' => htmlspecialchars_array($sub_modules), 'profil' => htmlspecialchars_array($profil), 'tanggal' => htmlspecialchars_array($tanggal), 'presensi' => $presensi, 'absensi' => $absensi, 'fotoURL' => htmlspecialchars_array($fotoURL)]);
+        return $this->draw('manage.html', ['sub_modules' => htmlspecialchars_array($sub_modules), 'profil' => $profil, 'tanggal' => $tanggal, 'presensi' => $presensi, 'absensi' => $absensi, 'fotoURL' => $fotoURL]);
     }
 
     public function getBiodata()
@@ -488,13 +488,7 @@ class Admin extends AdminModule
             redirect($location, $_POST);
         }
 
-        // validate new password strength (same rules as the users module)
-        if (($error = passwordStrengthError($_POST['pass_baru'])) !== null) {
-            $errors++;
-            $this->notify('failure', $error);
-        }
-
-        // new password must differ from the old one
+        // check if password is longer than 5 characters
         if ($_POST['pass_baru'] == $_POST['pass_lama']) {
             $errors++;
             $this->notify('failure', 'Kata kunci sama');

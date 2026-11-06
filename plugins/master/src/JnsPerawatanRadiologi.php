@@ -60,7 +60,7 @@ class JnsPerawatanRadiologi
           ];
         }
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function anyDisplay()
@@ -108,7 +108,7 @@ class JnsPerawatanRadiologi
           $return['halaman'] = $_POST['halaman'];
         }
 
-        return htmlspecialchars_array($return);
+        return $return;
     }
 
     public function postSave()

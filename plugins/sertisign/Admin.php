@@ -35,12 +35,6 @@ class Admin extends AdminModule
     public function postSigningInvisible()
     {
         if (isset($_FILES['document']) && $_FILES['document']['error'] == 0) {
-            $cekUpload = validateUploadedFile($_FILES['document'], ['pdf'], ['application/pdf'], 20 * 1024 * 1024);
-            if (isset($cekUpload['error'])) {
-                $this->notify('failure', $cekUpload['error']);
-                redirect(url([ADMIN, 'sertisign', 'signinginvisible']));
-                return;
-            }
             $document_path = $_FILES['document']['tmp_name'];
             $signers = json_decode($_POST['signer'], true);
             $page = $_POST['page'];
@@ -70,13 +64,6 @@ class Admin extends AdminModule
     {
         if (!isset($_FILES['document']) || $_FILES['document']['error'] !== UPLOAD_ERR_OK) {
             $this->notify('failure', 'Dokumen tidak valid');
-            redirect(url([ADMIN, 'sertisign', 'signingqr']));
-            return;
-        }
-
-        $cekUpload = validateUploadedFile($_FILES['document'], ['pdf'], ['application/pdf'], 20 * 1024 * 1024);
-        if (isset($cekUpload['error'])) {
-            $this->notify('failure', $cekUpload['error']);
             redirect(url([ADMIN, 'sertisign', 'signingqr']));
             return;
         }
@@ -260,7 +247,7 @@ public function postSigningQrERM()
         $settings['api_host'] = $this->settings('sertisign', 'api_host');
         $settings['api_key'] = $this->settings('sertisign', 'api_key');
         
-        return $this->draw('settings.html', ['settings' => htmlspecialchars_array($settings)]);
+        return $this->draw('settings.html', ['settings' => $settings]);
     }
 
     public function postSaveSettings()

@@ -94,8 +94,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -104,14 +103,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else { 
@@ -990,7 +988,7 @@ public function postHapusResepResponse()
     $this->_addHeaderFiles();
     $this->assign['row'] = $this->db('mlite_apotek_online_maping_obat')->toArray();
     $this->assign['obat'] = $this->db('databarang')->where('status', '1')->toArray();
-    return $this->draw('mappingobat.html', ['obat' => htmlspecialchars_array($this->assign['obat']), 'row' => htmlspecialchars_array($this->assign['row'])]);
+    return $this->draw('mappingobat.html', ['obat' => $this->assign['obat'], 'row' => $this->assign['row']]);
   }
 
   public function postSaveObat()

@@ -185,7 +185,7 @@ class Admin extends AdminModule
           ->where('no_rawat', $no_rawat)
           ->oneArray();
         echo $this->draw('form.html', [
-          'rawat_jalan' => htmlspecialchars_array($this->assign)
+          'rawat_jalan' => $this->assign
         ]);
       } else {
         $this->assign['mlite_pendaftaran_oral_diagnostic'] = [
@@ -217,7 +217,7 @@ class Admin extends AdminModule
           'pekerjaan' => ''
         ];
         echo $this->draw('form.html', [
-          'rawat_jalan' => htmlspecialchars_array($this->assign)
+          'rawat_jalan' => $this->assign
         ]);
       }
       exit();
@@ -498,7 +498,7 @@ class Admin extends AdminModule
             $success = true;
           } catch (\Exception $e) {
             $this->db()->pdo()->rollBack();
-            if ($e->getCode() == '23000' && $retryCount < $maxRetries - 1) {
+            if ($e->getCode() == '23000') {
               $retryCount++;
               usleep(100000);
               continue;
@@ -617,7 +617,7 @@ class Admin extends AdminModule
         }
         $resep[] = $row;
       }
-      echo $this->draw('rincian.html', ['rawat_jl_dr' => htmlspecialchars_array($rawat_jl_dr), 'rawat_jl_pr' => htmlspecialchars_array($rawat_jl_pr), 'rawat_jl_drpr' => htmlspecialchars_array($rawat_jl_drpr), 'jumlah_total' => $jumlah_total, 'jumlah_total_resep' => $jumlah_total_resep, 'resep' => htmlspecialchars_array($resep), 'no_rawat' => htmlspecialchars($_POST['no_rawat'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')]);
+      echo $this->draw('rincian.html', ['rawat_jl_dr' => $rawat_jl_dr, 'rawat_jl_pr' => $rawat_jl_pr, 'rawat_jl_drpr' => $rawat_jl_drpr, 'jumlah_total' => $jumlah_total, 'jumlah_total_resep' => $jumlah_total_resep, 'resep' => htmlspecialchars_array($resep), 'no_rawat' => htmlspecialchars($_POST['no_rawat'], ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')]);
       exit();
     }
 
@@ -786,8 +786,7 @@ class Admin extends AdminModule
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 45,
-          CURLOPT_CONNECTTIMEOUT => 10,
+          CURLOPT_TIMEOUT => 0,
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
@@ -796,14 +795,13 @@ class Admin extends AdminModule
         ));
 
         $response = curl_exec($curl);
-        $curlError = curl_error($curl);
 
         curl_close($curl);
         $json = json_decode($response, true);
         if($json['status'] == 'Success') {
           echo '<br><img src="'.WEBAPPS_URL.'/berkasrawat/'.$json['msg'].'" width="150" />';
         } else {
-          echo 'Gagal menambahkan gambar' . ($curlError !== '' ? ' (Transport: ' . $curlError . ')' : '');
+          echo 'Gagal menambahkan gambar';
         }
 
       } else {
@@ -1223,7 +1221,7 @@ class Admin extends AdminModule
         $cetak = $this->db('mlite_temporary')->toArray();
 
         echo $this->draw('cetak.oral_diagnostic.html', [
-            'cetak' => htmlspecialchars_array($cetak),
+            'cetak' => $cetak,
             'tgl_awal' => htmlspecialchars($tgl_awal, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'),
             'tgl_akhir' => htmlspecialchars($tgl_akhir, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
         ]);
@@ -1387,8 +1385,8 @@ class Admin extends AdminModule
         $data_assessment['penilaian_awal_keperawatan_ralan'] = $existing_assessment;
         
         echo $this->draw('assesment.html', [
-            'reg_periksa' => htmlspecialchars_array($this->db('reg_periksa')->where('no_rawat', $no_rawat_reverted)->oneArray()),
-            'penilaian_awal_keperawatan_ralan' => htmlspecialchars_array($penilaian_awal_keperawatan_ralan),
+            'reg_periksa' => $this->db('reg_periksa')->where('no_rawat', $no_rawat_reverted)->oneArray(),
+            'penilaian_awal_keperawatan_ralan' => $penilaian_awal_keperawatan_ralan,
             'pasien' => $this->db('pasien')->where('no_rawat', $no_rawat_reverted)->join('reg_periksa','pasien.no_rkm_medis=reg_periksa.no_rkm_medis')->oneArray(),
             'petugas' => $existing_assessment ? $this->db('petugas')->where('no_rawat', $no_rawat_reverted)->join('penilaian_awal_keperawatan_ralan','petugas.nip=penilaian_awal_keperawatan_ralan.nip')->oneArray() : [],
             'data_assessment' => $data_assessment
@@ -1539,7 +1537,7 @@ class Admin extends AdminModule
             $penilaian_awal_keperawatan_ralan['nm_petugas'] = $penilaian_awal_keperawatan_ralan['nama'];
         }
         
-        echo $this->draw('assesment.tampil.html', ['penilaian_awal_keperawatan_ralan' => htmlspecialchars_array($penilaian_awal_keperawatan_ralan)]);
+        echo $this->draw('assesment.tampil.html', ['penilaian_awal_keperawatan_ralan' => $penilaian_awal_keperawatan_ralan]);
         exit();
     }
 

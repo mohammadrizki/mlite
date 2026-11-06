@@ -113,7 +113,7 @@ class Admin extends AdminModule
     {
         $this->_addHeaderFiles();
         if (!empty($redirectData = getRedirectData())) {
-            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_STRING);
         } else {
             $this->assign['form'] =
                 [
@@ -300,7 +300,7 @@ class Admin extends AdminModule
     {
         $this->_addHeaderFiles();
         if (!empty($redirectData = getRedirectData())) {
-            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_STRING);
         } else {
             $this->assign['form'] = [
                 'id' => '',
@@ -566,7 +566,7 @@ class Admin extends AdminModule
     {
         $this->_addHeaderFiles();
         if (!empty($redirectData = getRedirectData())){
-            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_STRING);
         } else {
             $this->assign['form'] = [
                 'id' => '',
@@ -1358,7 +1358,7 @@ class Admin extends AdminModule
     {
         $this->_addHeaderFiles();
         if (!empty($redirectData = getRedirectData())) {
-            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_STRING);
         } else {
             $this->assign['form'] = [
                 'id' => '',
@@ -1495,7 +1495,7 @@ class Admin extends AdminModule
     {
         $this->_addHeaderFiles();
         if (!empty($redirectData = getRedirectData())) {
-            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $this->assign['form'] = filter_var_array($redirectData, FILTER_SANITIZE_STRING);
         } else {
             $this->assign['form'] = [
                 'shift' => '',

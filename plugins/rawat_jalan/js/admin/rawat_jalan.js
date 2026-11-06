@@ -127,7 +127,7 @@ $("#form").on("click", "#simpan", function(event){
       stts_daftar: stts_daftar
     },function(data) {
       console.log(data);
-      if (typeof data === 'string') data = JSON.parse(data);
+      data = JSON.parse(data);
       var audio = new Audio('{?=url()?}/assets/sound/' + data.status + '.mp3');
       audio.play();
       if(data.status == 'success') {
@@ -213,28 +213,12 @@ $("#form").on("click","#hapus", function(event){
       $.post(url, {
         no_rawat: no_rawat
       } ,function(data) {
-        // server mengirim HTML alert ketika penghapusan gagal (status tetap 200)
-        if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-          $('#notif').html(data).show();
-          return;
-        }
         // sembunyikan form, tampilkan data yang sudah di perbaharui, tampilkan notif
         $("#display").load(baseURL + '/rawat_jalan/display?t=' + mlite.token);
         bersih();
         $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
         "Data pasien telah dihapus!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
-      }).fail(function(xhr) {
-        // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-        var pesan = 'Data pasien gagal dihapus!';
-        try {
-          var res = JSON.parse(xhr.responseText);
-          if (res && res.message) { pesan = res.message; }
-        } catch (e) {}
-        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        $("<div>").text(pesan).html()+
         "</div>").show();
       });
     }
@@ -657,11 +641,6 @@ $("#soap").on("click",".hapus_soap", function(event){
         tgl_perawatan: tgl_perawatan,
         jam_rawat: jam_rawat
       } ,function(data) {
-        // server mengirim HTML alert ketika penghapusan gagal (status tetap 200)
-        if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-          $('#notif').html(data).show();
-          return;
-        }
         var url = baseURL + '/rawat_jalan/soap?t=' + mlite.token;
         $.post(url, {no_rawat : no_rawat,
         }, function(data) {
@@ -691,17 +670,6 @@ $("#soap").on("click",".hapus_soap", function(event){
         $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
         "Data rincian riwayat telah dihapus!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
-      }).fail(function(xhr) {
-        // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-        var pesan = 'Data rincian riwayat gagal dihapus!';
-        try {
-          var res = JSON.parse(xhr.responseText);
-          if (res && res.message) { pesan = res.message; }
-        } catch (e) {}
-        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        $("<div>").text(pesan).html()+
         "</div>").show();
       });
     }
@@ -775,11 +743,6 @@ $("#surat_kontrol").on("click",".hapus_kontrol", function(event){
         kd_poli: kd_poli,
         no_rkm_medis: no_rkm_medis
       } ,function(data) {
-        // server mengirim HTML alert ketika penghapusan gagal (status tetap 200)
-        if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-          $('#notif').html(data).show();
-          return;
-        }
         //console.log(data);
         var url = baseURL + '/rawat_jalan/kontrol?t=' + mlite.token;
         $.post(url, {no_rkm_medis : no_rkm_medis,
@@ -808,19 +771,8 @@ $("#surat_kontrol").on("click",".hapus_kontrol", function(event){
         $('input:text[name=jam_rawat]').val("{?=date('H:i:s')?}");
         */
         $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "Surat kontrol telah dihapus!"+
+        "Data rincian riwayat telah dihapus!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
-      }).fail(function(xhr) {
-        // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-        var pesan = 'Surat kontrol gagal dihapus!';
-        try {
-          var res = JSON.parse(xhr.responseText);
-          if (res && res.message) { pesan = res.message; }
-        } catch (e) {}
-        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        $("<div>").text(pesan).html()+
         "</div>").show();
       });
     }
@@ -968,11 +920,6 @@ $("#rincian").on("click",".hapus_detail", function(event){
         jam_rawat: jam_rawat,
         provider: provider
       } ,function(data) {
-        // server mengirim HTML alert ketika penghapusan gagal (status tetap 200)
-        if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-          $('#notif').html(data).show();
-          return;
-        }
         var url = baseURL + '/rawat_jalan/rincian?t=' + mlite.token;
         $.post(url, {no_rawat : no_rawat,
         }, function(data) {
@@ -982,17 +929,6 @@ $("#rincian").on("click",".hapus_detail", function(event){
         $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
         "Data rincian rawat jalan telah dihapus!"+
         "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        "</div>").show();
-      }).fail(function(xhr) {
-        // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-        var pesan = 'Data rincian rawat jalan gagal dihapus!';
-        try {
-          var res = JSON.parse(xhr.responseText);
-          if (res && res.message) { pesan = res.message; }
-        } catch (e) {}
-        $('#notif').html("<div class=\"alert alert-danger alert-dismissible fade in\" role=\"alert\" style=\"border-radius:0px;margin-top:-15px;\">"+
-        "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">&times;</button>"+
-        $("<div>").text(pesan).html()+
         "</div>").show();
       });
     }
@@ -1428,27 +1364,11 @@ $(document).on('click', 'a[href="#hapus_rujukan_internal"]', function(event){
       $.post(url, {
         no_rawat: no_rawat
       } ,function(data) {
-        // server mengirim HTML alert ketika penghapusan gagal (status tetap 200)
-        if (typeof data === 'string' && data.indexOf('alert-danger') !== -1) {
-          var $err = $('<div>').html(data);
-          var judul = $err.find('h4').text().trim();
-          var isi = $err.find('p').text().trim();
-          alert(judul || isi || 'Terjadi kesalahan pada server');
-          return;
-        }
         // console.log(data);
         var data = JSON.parse(data);
         alert(data.message);
         // Reload display setelah hapus
         $("#display").load(baseURL + '/rawat_jalan/display?t=' + mlite.token);
-      }).fail(function(xhr) {
-        // permintaan ditolak server (mis. CSRF 403) atau error jaringan
-        var pesan = 'Rujukan internal gagal dihapus!';
-        try {
-          var res = JSON.parse(xhr.responseText);
-          if (res && res.message) { pesan = res.message; }
-        } catch (e) {}
-        alert(pesan);
       });
     }
   });
@@ -1464,22 +1384,10 @@ $(document).on('click', 'a[href="#hapus_rujukan_internal"]', function(event){
     var URL_WEBSOCKET = "wss://<?php echo $_SERVER['HTTP_HOST'] ?>:3892";
   {/if}
 
-  var ws;
+  var ws = new WebSocket(URL_WEBSOCKET);
   var baseURL = mlite.url + '/' + mlite.admin;
-
-  function koneksiWebsocket() {
-    ws = new WebSocket(URL_WEBSOCKET);
-    ws.onmessage = ws_onmessage;
-
-    ws.onclose = function(){
-      // Jika terputus dari websocket server, maka mencoba terhubung kembali
-      // tiap 5 detik; onmessage dan onclose ikut terpasang ulang pada
-      // koneksi yang baru sehingga update tetap berjalan setelah reconnect.
-      setTimeout(koneksiWebsocket, 5000);
-    };
-  }
-
-  var ws_onmessage = function(response){
+  
+  ws.onmessage = function(response){
     try{
       output = JSON.parse(response.data);
       if(output['action'] == 'simpan'){
@@ -1493,6 +1401,18 @@ $(document).on('click', 'a[href="#hapus_rujukan_internal"]', function(event){
   }
   
   
-  koneksiWebsocket();
+  ws.onclose = function(){
+    // Jika terputus dari websocket server, maka mencoba terhubung kembali.
+    var interval_reconnect_ws = setInterval(function(){
+      if(ws.readyState != 0){
+        if(ws.readyState == 1){ // readyState = 1 (Open) , berarti sudah terhubung dengan websocket. Maka gak perlu interval lagi.
+          clearInterval(interval_reconnect_ws);
+        }else{
+          ws = new WebSocket(URL_WEBSOCKET);	
+        }
+      }
+      
+    },5000);
+  }   
 
 {/if}

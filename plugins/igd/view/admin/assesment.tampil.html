@@ -352,7 +352,7 @@
           </tr>
           <tr>
             <th>Hasil</th>
-            <td><span class="label {if: $penilaian_igd.hasil == 'Tidak beresiko (tidak ditemukan a dan b)'}label-success{elseif: $penilaian_igd.hasil == 'Resiko rendah (ditemukan a/b)'}label-warning{else}label-danger{/if}">{?=isset_or($penilaian_igd.hasil)?}</span></td>
+            <td><span class="label {if: $penilaian_igd.hasil == 'Tidak beresiko (tidak ditemukan a dan b)'}label-success{elseif: $penilaian_igd.hasil == 'Risiko rendah (ditemukan a/b)'}label-warning{else}label-danger{/if}">{?=isset_or($penilaian_igd.hasil)?}</span></td>
           </tr>
           <tr>
             <th>Lapor</th>
@@ -381,7 +381,7 @@
   {else}
   <div class="alert alert-info">
     <i class="fa fa-info-circle"></i> Belum ada data assessment untuk pasien ini.
-    <button type="button" class="btn btn-primary btn-sm pull-right buat_assesment" data-no_rawat="{?=e(isset_or($_GET.no_rawat))?}">
+    <button type="button" class="btn btn-primary btn-sm pull-right buat_assesment" data-no_rawat="{?=isset_or($_GET.no_rawat)?}">
       <i class="fa fa-plus"></i> Buat Assessment
     </button>
   </div>
